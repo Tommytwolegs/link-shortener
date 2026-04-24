@@ -1,0 +1,15 @@
+# Build output
+dist/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Node (in case you ever add tooling)
+node_modules/
+npm-debug.log*

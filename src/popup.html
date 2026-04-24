@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amazon Link Shortener</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="mark" aria-hidden="true">
+      <!-- Inline mini version of the product icon: long messy bar shortening
+           into a clean bar, mirroring the browser-toolbar icon. -->
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="48" height="48" rx="10" fill="url(#bg)"/>
+        <defs>
+          <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1B2A4E"/>
+            <stop offset="100%" stop-color="#0F7B8A"/>
+          </linearGradient>
+        </defs>
+        <rect x="6" y="13" width="36" height="5" rx="2.5" fill="#FFFFFF" opacity="0.35"/>
+        <circle cx="40" cy="15.5" r="1.5" fill="#FF9900"/>
+        <path d="M18 24 L24 30 L30 24" stroke="#FF9900" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <rect x="14" y="34" width="20" height="5" rx="2.5" fill="#FF9900"/>
+      </svg>
+    </div>
+    <div class="title">
+      <h1>Amazon Link Shortener</h1>
+      <p class="subtitle" id="status">Loading…</p>
+    </div>
+  </header>
+
+  <section class="toggle-row">
+    <label class="switch" for="enabled">
+      <span class="switch-label">Shorten Amazon URLs</span>
+      <span class="switch-control">
+        <input type="checkbox" id="enabled" />
+        <span class="slider" aria-hidden="true"></span>
+      </span>
+    </label>
+  </section>
+
+  <section class="info">
+    <p id="info-text">
+      When on, visiting an Amazon product page automatically trims the URL in
+      your address bar to the clean <code>/dp/ASIN</code> form.
+    </p>
+  </section>
+
+  <footer>
+    <span class="version" id="version"></span>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
