@@ -6,7 +6,7 @@ Paste-ready text for the Chrome Web Store submission form. This file is for your
 
 ## Name
 
-Link Shortener
+Jimothy's Link Shortener
 
 ## Summary (132 chars max)
 
