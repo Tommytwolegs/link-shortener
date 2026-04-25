@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Amazon Link Shortener",
-  "short_name": "Amazon Shortener",
-  "version": "1.0.0",
-  "description": "Automatically rewrites Amazon product URLs — in your address bar and in links on the page — to the shortest form: amazon.com/dp/ASIN.",
+  "name": "Link Shortener",
+  "short_name": "Link Shortener",
+  "version": "1.3.3",
+  "description": "Cleans long URLs on Amazon, Agoda, Booking.com, Expedia, and Airbnb — address bar + in-page links on Amazon, copy-link toolbar + address bar on hotel-listing sites.",
   "author": "Thomas Powers",
   "homepage_url": "https://github.com/Tommytwolegs/link-shortener",
   "icons": {
@@ -16,7 +16,7 @@
     "storage"
   ],
   "action": {
-    "default_title": "Amazon Link Shortener",
+    "default_title": "Link Shortener",
     "default_popup": "src/popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
@@ -45,7 +45,37 @@
     "*://*.amazon.eg/*",
     "*://*.amazon.com.mx/*",
     "*://*.amazon.com.br/*",
-    "*://*.amazon.com.be/*"
+    "*://*.amazon.com.be/*",
+    "*://*.agoda.com/*",
+    "*://*.booking.com/*",
+    "*://*.expedia.com/*",
+    "*://*.expedia.co.uk/*",
+    "*://*.expedia.ca/*",
+    "*://*.expedia.com.au/*",
+    "*://*.expedia.de/*",
+    "*://*.expedia.fr/*",
+    "*://*.expedia.it/*",
+    "*://*.expedia.es/*",
+    "*://*.expedia.nl/*",
+    "*://*.expedia.com.mx/*",
+    "*://*.expedia.com.br/*",
+    "*://*.expedia.co.jp/*",
+    "*://*.expedia.com.sg/*",
+    "*://*.expedia.co.in/*",
+    "*://*.airbnb.com/*",
+    "*://*.airbnb.co.uk/*",
+    "*://*.airbnb.ca/*",
+    "*://*.airbnb.com.au/*",
+    "*://*.airbnb.de/*",
+    "*://*.airbnb.fr/*",
+    "*://*.airbnb.it/*",
+    "*://*.airbnb.es/*",
+    "*://*.airbnb.nl/*",
+    "*://*.airbnb.com.mx/*",
+    "*://*.airbnb.com.br/*",
+    "*://*.airbnb.co.jp/*",
+    "*://*.airbnb.com.sg/*",
+    "*://*.airbnb.co.in/*"
   ],
   "content_scripts": [
     {
@@ -74,6 +104,60 @@
       ],
       "js": ["src/asin.js", "src/content.js"],
       "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": ["*://*.agoda.com/*"],
+      "js": ["src/site-toolbar.js", "src/agoda.js", "src/agoda-content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": ["*://*.booking.com/*"],
+      "js": ["src/site-toolbar.js", "src/booking.js", "src/booking-content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.expedia.com/*",
+        "*://*.expedia.co.uk/*",
+        "*://*.expedia.ca/*",
+        "*://*.expedia.com.au/*",
+        "*://*.expedia.de/*",
+        "*://*.expedia.fr/*",
+        "*://*.expedia.it/*",
+        "*://*.expedia.es/*",
+        "*://*.expedia.nl/*",
+        "*://*.expedia.com.mx/*",
+        "*://*.expedia.com.br/*",
+        "*://*.expedia.co.jp/*",
+        "*://*.expedia.com.sg/*",
+        "*://*.expedia.co.in/*"
+      ],
+      "js": ["src/site-toolbar.js", "src/expedia.js", "src/expedia-content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.airbnb.com/*",
+        "*://*.airbnb.co.uk/*",
+        "*://*.airbnb.ca/*",
+        "*://*.airbnb.com.au/*",
+        "*://*.airbnb.de/*",
+        "*://*.airbnb.fr/*",
+        "*://*.airbnb.it/*",
+        "*://*.airbnb.es/*",
+        "*://*.airbnb.nl/*",
+        "*://*.airbnb.com.mx/*",
+        "*://*.airbnb.com.br/*",
+        "*://*.airbnb.co.jp/*",
+        "*://*.airbnb.com.sg/*",
+        "*://*.airbnb.co.in/*"
+      ],
+      "js": ["src/site-toolbar.js", "src/airbnb.js", "src/airbnb-content.js"],
+      "run_at": "document_idle",
       "all_frames": false
     }
   ],

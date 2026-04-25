@@ -1,6 +1,6 @@
 /* popup.css
  * Tight, self-contained stylesheet for the toolbar popup. No external fonts,
- * no images — it ships inside the extension and must render instantly.
+ * no images -- it ships inside the extension and must render instantly.
  */
 
 :root {
@@ -84,10 +84,28 @@ body {
   .subtitle.off { color: #ff6b6b; }
 }
 
+.subtitle em {
+  font-style: italic;
+  font-weight: 600;
+}
+
 .toggle-row {
   padding: 14px 16px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+}
+
+/* Secondary switch (e.g. "Hide travel popup") sits below the master in the
+   same row, with a thin divider for visual separation. */
+.toggle-row .switch + .switch {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.switch-secondary .switch-label {
+  font-weight: 400;
+  font-size: 12.5px;
 }
 
 .switch {
@@ -151,6 +169,56 @@ body {
 .switch-control input:focus-visible + .slider {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+.site-toggles {
+  padding: 10px 16px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-toggles-heading {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.switch-sm {
+  padding: 5px 0;
+  font-size: 12.5px;
+}
+
+.switch-sm + .switch-sm {
+  border-top: 1px solid var(--border);
+}
+
+.switch-sm .switch-label {
+  font-weight: 400;
+}
+
+.switch-control-sm {
+  width: 32px;
+  height: 18px;
+}
+
+.switch-control-sm .slider::before {
+  width: 14px;
+  height: 14px;
+  left: 2px;
+  top: 2px;
+}
+
+.switch-control-sm input:checked + .slider::before {
+  transform: translateX(14px);
+}
+
+/* When master is off, per-site toggles are grayed out and non-interactive. */
+.site-toggles.disabled {
+  opacity: 0.45;
+  pointer-events: none;
 }
 
 .info {

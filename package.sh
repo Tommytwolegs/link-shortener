@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build a Chrome Web Store-ready zip of the extension.
 #
-# Output: dist/amazon-link-shortener-<version>.zip
+# Output: dist/link-shortener-<version>.zip
 #
 # Includes only the files Chrome actually loads — README/PRIVACY/LICENSE/etc.
 # stay in the repo but are not shipped in the package, since the Web Store
@@ -26,7 +26,7 @@ else
 fi
 
 OUT_DIR="$ROOT/dist"
-OUT_ZIP="$OUT_DIR/amazon-link-shortener-${VERSION}.zip"
+OUT_ZIP="$OUT_DIR/link-shortener-${VERSION}.zip"
 
 mkdir -p "$OUT_DIR"
 rm -f "$OUT_ZIP"

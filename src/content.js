@@ -9,9 +9,13 @@
 //      MutationObserver handles dynamically-added links (carousels, search
 //      pagination, SPA transitions).
 //
-// Respects the `enabled` flag in chrome.storage.sync. The initial pass is
-// deferred until storage.get resolves, so turning the toggle off actually
-// turns the extension off (no sneaky first-pass rewrite before state loads).
+// Respects two flags in chrome.storage.sync, both default true:
+//   • `enabled`        — master "Shorten All Links" toggle
+//   • `enabledAmazon`  — per-site toggle for Amazon
+//
+// The initial pass is deferred until storage.get resolves, so turning either
+// toggle off actually turns the extension off (no sneaky first-pass rewrite
+// before state loads).
 // ----------------------------------------------------------------------------
 
 (function () {
@@ -21,14 +25,19 @@
 
   // Start pessimistic — assume disabled until storage tells us otherwise.
   // This guarantees that if the user has turned the extension off, we never
-  // do a "just in case" rewrite before we've read the flag.
-  let enabled = false;
+  // do a "just in case" rewrite before we've read the flags.
+  let masterEnabled = false;
+  let siteEnabled = false;
   let observer = null;
+
+  function isOn() {
+    return masterEnabled && siteEnabled;
+  }
 
   // -------- Address bar rewriting ----------------------------------------
 
   function cleanCurrentUrl() {
-    if (!enabled) return false;
+    if (!isOn()) return false;
     try {
       if (!needsShortening(location.href)) return false;
       const short = shortenAmazonUrl(location.href);
@@ -45,7 +54,7 @@
 
   // Rewrite a single <a> if its href points to an Amazon product page.
   function rewriteAnchor(a) {
-    if (!enabled || !a) return;
+    if (!isOn() || !a) return;
     const href = a.getAttribute('href');
     if (!href) return;
     let absolute;
@@ -66,7 +75,7 @@
   }
 
   function rewriteAnchorsIn(root) {
-    if (!enabled || !root || typeof root.querySelectorAll !== 'function') return;
+    if (!isOn() || !root || typeof root.querySelectorAll !== 'function') return;
     const anchors = root.querySelectorAll('a[href]');
     for (const a of anchors) rewriteAnchor(a);
   }
@@ -74,7 +83,7 @@
   function startLinkObserver() {
     if (observer) return;
     observer = new MutationObserver((mutations) => {
-      if (!enabled) return;
+      if (!isOn()) return;
       for (const m of mutations) {
         if (m.type === 'attributes') {
           // href changed on an existing anchor (Amazon does this on
@@ -113,28 +122,41 @@
     startLinkObserver();
   }
 
-  // Load the enabled flag, then (and only then) do the initial pass.
-  // storage.get resolves in well under a millisecond in practice, so this
-  // still beats page render by a large margin.
+  // Load both flags, then (and only then) do the initial pass. storage.get
+  // resolves in well under a millisecond in practice, so this still beats
+  // page render by a large margin.
   if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
-    chrome.storage.sync.get({ enabled: true }, (items) => {
-      enabled = items.enabled !== false;
-      doFullPass();
-    });
+    chrome.storage.sync.get(
+      { enabled: true, enabledAmazon: true },
+      (items) => {
+        masterEnabled = items.enabled !== false;
+        siteEnabled = items.enabledAmazon !== false;
+        doFullPass();
+      },
+    );
 
     chrome.storage.onChanged.addListener((changes, area) => {
-      if (area === 'sync' && Object.prototype.hasOwnProperty.call(changes, 'enabled')) {
-        enabled = changes.enabled.newValue !== false;
-        if (enabled) doFullPass();
-        // Note: on toggle-off we don't un-rewrite past links. Original hrefs
-        // are gone the moment we replace them. The toggle governs future
-        // rewrites only.
+      if (area !== 'sync') return;
+      let touched = false;
+      if (Object.prototype.hasOwnProperty.call(changes, 'enabled')) {
+        masterEnabled = changes.enabled.newValue !== false;
+        touched = true;
       }
+      if (Object.prototype.hasOwnProperty.call(changes, 'enabledAmazon')) {
+        siteEnabled = changes.enabledAmazon.newValue !== false;
+        touched = true;
+      }
+      if (!touched) return;
+      if (isOn()) doFullPass();
+      // Note: on toggle-off we don't un-rewrite past links. Original hrefs
+      // are gone the moment we replace them. The toggles govern future
+      // rewrites only.
     });
   } else {
     // No storage API available (shouldn't happen in a real extension context,
     // but don't leave the user permanently disabled if something's weird).
-    enabled = true;
+    masterEnabled = true;
+    siteEnabled = true;
     doFullPass();
   }
 
@@ -146,7 +168,7 @@
     chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       if (message && message.type === 'CHECK_URL') {
         const changed = cleanCurrentUrl();
-        if (enabled) rewriteAnchorsIn(document);
+        if (isOn()) rewriteAnchorsIn(document);
         sendResponse({ changed });
       }
       return false;

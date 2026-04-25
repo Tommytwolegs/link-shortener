@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amazon Link Shortener</title>
+  <title>Link Shortener</title>
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
@@ -19,37 +19,86 @@
             <stop offset="100%" stop-color="#0F7B8A"/>
           </linearGradient>
         </defs>
-        <rect x="6" y="13" width="36" height="5" rx="2.5" fill="#FFFFFF" opacity="0.35"/>
-        <circle cx="40" cy="15.5" r="1.5" fill="#FF9900"/>
+        <rect x="6" y="13" width="36" height="5" rx="2.5" fill="#FF9900"/>
         <path d="M18 24 L24 30 L30 24" stroke="#FF9900" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         <rect x="14" y="34" width="20" height="5" rx="2.5" fill="#FF9900"/>
       </svg>
     </div>
     <div class="title">
-      <h1>Amazon Link Shortener</h1>
-      <p class="subtitle" id="status">Loading…</p>
+      <h1>Link Shortener</h1>
+      <p class="subtitle" id="status">Loading...</p>
     </div>
   </header>
 
   <section class="toggle-row">
     <label class="switch" for="enabled">
-      <span class="switch-label">Shorten Amazon URLs</span>
+      <span class="switch-label">Shorten All Links</span>
       <span class="switch-control">
         <input type="checkbox" id="enabled" />
+        <span class="slider" aria-hidden="true"></span>
+      </span>
+    </label>
+
+    <label class="switch switch-secondary" for="hideTravelPopup">
+      <span class="switch-label">Hide travel popup</span>
+      <span class="switch-control">
+        <input type="checkbox" id="hideTravelPopup" />
+        <span class="slider" aria-hidden="true"></span>
+      </span>
+    </label>
+  </section>
+
+  <section class="site-toggles" id="site-toggles">
+    <p class="site-toggles-heading">Per site</p>
+
+    <label class="switch switch-sm" for="enabledAmazon">
+      <span class="switch-label">Amazon</span>
+      <span class="switch-control switch-control-sm">
+        <input type="checkbox" id="enabledAmazon" data-site="Amazon" />
+        <span class="slider" aria-hidden="true"></span>
+      </span>
+    </label>
+
+    <label class="switch switch-sm" for="enabledAgoda">
+      <span class="switch-label">Agoda</span>
+      <span class="switch-control switch-control-sm">
+        <input type="checkbox" id="enabledAgoda" data-site="Agoda" />
+        <span class="slider" aria-hidden="true"></span>
+      </span>
+    </label>
+
+    <label class="switch switch-sm" for="enabledBooking">
+      <span class="switch-label">Booking.com</span>
+      <span class="switch-control switch-control-sm">
+        <input type="checkbox" id="enabledBooking" data-site="Booking" />
+        <span class="slider" aria-hidden="true"></span>
+      </span>
+    </label>
+
+    <label class="switch switch-sm" for="enabledExpedia">
+      <span class="switch-label">Expedia</span>
+      <span class="switch-control switch-control-sm">
+        <input type="checkbox" id="enabledExpedia" data-site="Expedia" />
+        <span class="slider" aria-hidden="true"></span>
+      </span>
+    </label>
+
+    <label class="switch switch-sm" for="enabledAirbnb">
+      <span class="switch-label">Airbnb</span>
+      <span class="switch-control switch-control-sm">
+        <input type="checkbox" id="enabledAirbnb" data-site="Airbnb" />
         <span class="slider" aria-hidden="true"></span>
       </span>
     </label>
   </section>
 
   <section class="info">
-    <p id="info-text">
-      When on, visiting an Amazon product page automatically trims the URL in
-      your address bar to the clean <code>/dp/ASIN</code> form.
-    </p>
+    <p>Long URLs on supported sites are rewritten in place. Right-click "Copy
+       link address" gives the short form too. Toggle individual sites above.</p>
   </section>
 
   <footer>
-    <span class="version" id="version"></span>
+    <span id="version"></span>
   </footer>
 
   <script src="popup.js"></script>
