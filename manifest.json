@@ -2,8 +2,8 @@
   "manifest_version": 3,
   "name": "Link Shortener",
   "short_name": "Link Shortener",
-  "version": "1.3.3",
-  "description": "Cleans long URLs on Amazon, Agoda, Booking.com, Expedia, and Airbnb — address bar + in-page links on Amazon, copy-link toolbar + address bar on hotel-listing sites.",
+  "version": "1.3.4",
+  "description": "Cleans long Amazon, Agoda, Booking.com, Expedia, and Airbnb URLs — automatic address bar + one-click short-link toolbar.",
   "author": "Thomas Powers",
   "homepage_url": "https://github.com/Tommytwolegs/link-shortener",
   "icons": {
@@ -102,19 +102,34 @@
         "*://*.amazon.com.br/*",
         "*://*.amazon.com.be/*"
       ],
-      "js": ["src/asin.js", "src/content.js"],
+      "js": [
+        "src/asin.js",
+        "src/content.js"
+      ],
       "run_at": "document_start",
       "all_frames": false
     },
     {
-      "matches": ["*://*.agoda.com/*"],
-      "js": ["src/site-toolbar.js", "src/agoda.js", "src/agoda-content.js"],
+      "matches": [
+        "*://*.agoda.com/*"
+      ],
+      "js": [
+        "src/site-toolbar.js",
+        "src/agoda.js",
+        "src/agoda-content.js"
+      ],
       "run_at": "document_idle",
       "all_frames": false
     },
     {
-      "matches": ["*://*.booking.com/*"],
-      "js": ["src/site-toolbar.js", "src/booking.js", "src/booking-content.js"],
+      "matches": [
+        "*://*.booking.com/*"
+      ],
+      "js": [
+        "src/site-toolbar.js",
+        "src/booking.js",
+        "src/booking-content.js"
+      ],
       "run_at": "document_idle",
       "all_frames": false
     },
@@ -135,7 +150,11 @@
         "*://*.expedia.com.sg/*",
         "*://*.expedia.co.in/*"
       ],
-      "js": ["src/site-toolbar.js", "src/expedia.js", "src/expedia-content.js"],
+      "js": [
+        "src/site-toolbar.js",
+        "src/expedia.js",
+        "src/expedia-content.js"
+      ],
       "run_at": "document_idle",
       "all_frames": false
     },
@@ -156,7 +175,11 @@
         "*://*.airbnb.com.sg/*",
         "*://*.airbnb.co.in/*"
       ],
-      "js": ["src/site-toolbar.js", "src/airbnb.js", "src/airbnb-content.js"],
+      "js": [
+        "src/site-toolbar.js",
+        "src/airbnb.js",
+        "src/airbnb-content.js"
+      ],
       "run_at": "document_idle",
       "all_frames": false
     }
