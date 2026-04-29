@@ -1,19 +1,28 @@
 // popup.js
 // ----------------------------------------------------------------------------
 // Toolbar popup controller. Reads/writes the master `enabled` flag plus a
-// per-site flag for each supported site (Amazon, Agoda, Booking, Expedia,
-// Airbnb) in chrome.storage.sync. The background service worker and content
-// scripts observe storage.onChanged and react on their own.
+// per-site flag for each supported site in chrome.storage.sync. The
+// background service worker and content scripts observe storage.onChanged
+// and react on their own.
 //
 // Storage shape (all booleans):
-//   enabled            -- master "Shorten All Links" toggle (default true)
-//   hideTravelPopup    -- if true, suppresses the floating toolbar on hotel
-//                         sites; URL-bar shortening still runs (default false)
-//   enabledAmazon      -- per-site (default true)
-//   enabledAgoda       -- per-site (default true)
-//   enabledBooking     -- per-site (default true)
-//   enabledExpedia     -- per-site (default true)
-//   enabledAirbnb      -- per-site (default true)
+//   enabled             -- master "Shorten All Links" toggle (default true)
+//   hideTravelPopup     -- if true, suppresses the floating toolbar on hotel
+//                          sites; URL-bar shortening still runs (default false)
+//   includeAmazonTitle  -- if true, Amazon URLs are shortened to
+//                          /<title-slug>/dp/ASIN instead of bare /dp/ASIN
+//                          (default false)
+//   enabledAmazon       -- per-site (default true)
+//   enabledAgoda        -- per-site (default true)
+//   enabledBooking      -- per-site (default true)
+//   enabledExpedia      -- per-site (default true)
+//   enabledAirbnb       -- per-site (default true)
+//   enabledSocial       -- combined Facebook + Instagram (default true)
+//   enabledYoutube      -- per-site (default true)
+//   enabledTwitter      -- combined Twitter + X (default true)
+//   enabledTiktok       -- per-site (default true)
+//   enabledReddit       -- per-site (default true)
+//   enabledSpotify      -- per-site (default true)
 // ----------------------------------------------------------------------------
 
 (function () {
@@ -25,16 +34,27 @@
     'enabledBooking',
     'enabledExpedia',
     'enabledAirbnb',
+    'enabledSocial',
+    'enabledYoutube',
+    'enabledTwitter',
+    'enabledTiktok',
+    'enabledReddit',
+    'enabledSpotify',
   ];
 
   // Default-true for everything so a fresh install has the extension fully on.
   // hideTravelPopup defaults FALSE so the floating toolbar shows by default --
-  // it's an opt-in suppression.
-  const DEFAULTS = { enabled: true, hideTravelPopup: false };
+  // it's an opt-in suppression. includeAmazonTitle also defaults FALSE.
+  const DEFAULTS = {
+    enabled: true,
+    hideTravelPopup: false,
+    includeAmazonTitle: false,
+  };
   for (const k of SITE_KEYS) DEFAULTS[k] = true;
 
   const masterEl = document.getElementById('enabled');
   const hidePopupEl = document.getElementById('hideTravelPopup');
+  const includeTitleEl = document.getElementById('includeAmazonTitle');
   const status = document.getElementById('status');
   const versionEl = document.getElementById('version');
   const siteTogglesEl = document.getElementById('site-toggles');
@@ -46,7 +66,12 @@
   function siteLabelFromKey(key) {
     // 'enabledBooking' -> 'Booking', then map to user-facing display name.
     const raw = key.replace(/^enabled/, '');
-    return raw === 'Booking' ? 'Booking.com' : raw;
+    if (raw === 'Booking') return 'Booking.com';
+    if (raw === 'Social') return 'Facebook/Instagram';
+    if (raw === 'Youtube') return 'YouTube';
+    if (raw === 'Twitter') return 'Twitter/X';
+    if (raw === 'Tiktok') return 'TikTok';
+    return raw;
   }
 
   function setStatusText(state) {
@@ -73,8 +98,11 @@
       text = 'On -- but no sites enabled';
     } else if (activeSites.length === 1) {
       text = 'On -- ' + activeSites[0] + ' only';
-    } else {
+    } else if (activeSites.length <= 3) {
       text = 'On -- ' + activeSites.join(', ');
+    } else {
+      // Avoid blowing out the popup width if many sites are toggled.
+      text = 'On -- ' + activeSites.length + ' sites';
     }
     status.textContent = text;
   }
@@ -82,12 +110,10 @@
   function setUi(state) {
     masterEl.checked = state.enabled !== false;
     hidePopupEl.checked = state.hideTravelPopup === true;
+    includeTitleEl.checked = state.includeAmazonTitle === true;
     for (const k of SITE_KEYS) {
-      siteEls[k].checked = state[k] !== false;
+      if (siteEls[k]) siteEls[k].checked = state[k] !== false;
     }
-    // Per-site toggles are visually disabled (and non-interactive) when the
-    // master is off. Their stored state is preserved so it comes back exactly
-    // as the user left it when the master is flipped on again.
     siteTogglesEl.classList.toggle('disabled', state.enabled === false);
     setStatusText(state);
   }
@@ -108,31 +134,37 @@
     chrome.storage.sync.set({ hideTravelPopup: hidePopupEl.checked });
   });
 
+  // "Include Amazon item name" -- when on, Amazon URLs are rewritten to
+  // /<slug>/dp/ASIN instead of /dp/ASIN. Affects Amazon only.
+  includeTitleEl.addEventListener('change', () => {
+    chrome.storage.sync.set({ includeAmazonTitle: includeTitleEl.checked });
+  });
+
   // Per-site toggles.
   for (const k of SITE_KEYS) {
-    siteEls[k].addEventListener('change', () => {
-      chrome.storage.sync.set({ [k]: siteEls[k].checked });
-    });
+    if (siteEls[k]) {
+      siteEls[k].addEventListener('change', () => {
+        chrome.storage.sync.set({ [k]: siteEls[k].checked });
+      });
+    }
   }
 
-  // React to storage changes from anywhere -- including the popup's own
-  // writes (so the status line stays in sync without us having to maintain a
-  // parallel in-memory state). Fetches fresh full state to avoid races.
+  // React to storage changes from anywhere.
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'sync') return;
     const touchesUs = Object.prototype.hasOwnProperty.call(changes, 'enabled')
       || Object.prototype.hasOwnProperty.call(changes, 'hideTravelPopup')
+      || Object.prototype.hasOwnProperty.call(changes, 'includeAmazonTitle')
       || SITE_KEYS.some((k) => Object.prototype.hasOwnProperty.call(changes, k));
     if (!touchesUs) return;
     chrome.storage.sync.get(DEFAULTS, (items) => setUi(items));
   });
 
-  // Show the extension's own version in the footer -- keeps the popup honest
-  // about which build is running, useful for bug reports.
+  // Show the extension's own version in the footer.
   try {
     const { version } = chrome.runtime.getManifest();
     versionEl.textContent = 'v' + version;
   } catch (_e) {
-    // runtime not available (e.g. opened as a plain HTML file) -- skip.
+    // runtime not available; skip.
   }
 })();

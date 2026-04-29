@@ -1,15 +1,14 @@
 // background.js
 // ----------------------------------------------------------------------------
 // Service worker:
-//   • Watches `chrome.webNavigation` events on Amazon, Agoda, Booking,
-//     Expedia, and Airbnb tabs and pings the appropriate content script when
-//     a history-state update happens, so SPA transitions get picked up
-//     without a full reload.
+//   • Watches `chrome.webNavigation` events on every site we handle (Amazon,
+//     four hotel sites, and seven social/media sites) and pings the
+//     appropriate content script on history-state updates so SPA transitions
+//     get picked up without a full reload.
 //   • Keeps the toolbar badge in sync with the enable/disable toggle — empty
 //     when on, "OFF" in red when off.
 //   • On extension update, reloads matching open tabs so they pick up the
-//     new content scripts (otherwise orphaned scripts ignore new flags like
-//     hideTravelPopup).
+//     new content scripts (otherwise orphaned scripts ignore new flags).
 // ----------------------------------------------------------------------------
 
 importScripts(
@@ -18,6 +17,13 @@ importScripts(
   'booking.js',
   'expedia.js',
   'airbnb.js',
+  'facebook.js',
+  'instagram.js',
+  'youtube.js',
+  'twitter.js',
+  'tiktok.js',
+  'reddit.js',
+  'spotify.js',
 );
 
 const AMAZON_URL_FILTERS = [
@@ -45,7 +51,6 @@ const AMAZON_URL_FILTERS = [
 ];
 
 const AGODA_URL_FILTERS = [{ hostSuffix: 'agoda.com' }];
-
 const BOOKING_URL_FILTERS = [{ hostSuffix: 'booking.com' }];
 
 const EXPEDIA_URL_FILTERS = [
@@ -82,11 +87,38 @@ const AIRBNB_URL_FILTERS = [
   { hostSuffix: 'airbnb.co.in' },
 ];
 
+const FACEBOOK_URL_FILTERS = [
+  { hostSuffix: 'facebook.com' },
+  { hostEquals: 'fb.watch' },
+];
+const INSTAGRAM_URL_FILTERS = [{ hostSuffix: 'instagram.com' }];
+const YOUTUBE_URL_FILTERS = [
+  { hostSuffix: 'youtube.com' },
+  { hostEquals: 'youtu.be' },
+];
+const TWITTER_URL_FILTERS = [
+  { hostSuffix: 'twitter.com' },
+  { hostSuffix: 'x.com' },
+];
+const TIKTOK_URL_FILTERS = [{ hostSuffix: 'tiktok.com' }];
+const REDDIT_URL_FILTERS = [
+  { hostSuffix: 'reddit.com' },
+  { hostEquals: 'redd.it' },
+];
+const SPOTIFY_URL_FILTERS = [{ hostEquals: 'open.spotify.com' }];
+
 const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(AGODA_URL_FILTERS)
   .concat(BOOKING_URL_FILTERS)
   .concat(EXPEDIA_URL_FILTERS)
-  .concat(AIRBNB_URL_FILTERS);
+  .concat(AIRBNB_URL_FILTERS)
+  .concat(FACEBOOK_URL_FILTERS)
+  .concat(INSTAGRAM_URL_FILTERS)
+  .concat(YOUTUBE_URL_FILTERS)
+  .concat(TWITTER_URL_FILTERS)
+  .concat(TIKTOK_URL_FILTERS)
+  .concat(REDDIT_URL_FILTERS)
+  .concat(SPOTIFY_URL_FILTERS);
 
 // -- Enable/disable state -----------------------------------------------------
 
@@ -117,12 +149,6 @@ chrome.storage.onChanged.addListener((changes, area) => {
 });
 
 // -- On-update tab reload ----------------------------------------------------
-// Content scripts already running in open tabs are orphaned after an upgrade.
-// They keep executing the prior version and never register new
-// storage.onChanged listeners (e.g. hideTravelPopup added in 1.3.x). Reload
-// any tab matching one of our content_scripts entries so the fresh code
-// loads. Host permissions cover all the URLs, so chrome.tabs.query with a
-// `url` filter does not require the `tabs` permission.
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason !== 'update') return;
   const groups = chrome.runtime.getManifest().content_scripts || [];
@@ -149,20 +175,24 @@ function isHandledHost(hostname) {
     self.AgodaLinkShortener.isAgodaHost(hostname) ||
     self.BookingLinkShortener.isBookingHost(hostname) ||
     self.ExpediaLinkShortener.isExpediaHost(hostname) ||
-    self.AirbnbLinkShortener.isAirbnbHost(hostname)
+    self.AirbnbLinkShortener.isAirbnbHost(hostname) ||
+    self.FacebookLinkShortener.isFacebookHost(hostname) ||
+    self.InstagramLinkShortener.isInstagramHost(hostname) ||
+    self.YoutubeLinkShortener.isYoutubeHost(hostname) ||
+    self.TwitterLinkShortener.isTwitterHost(hostname) ||
+    self.TiktokLinkShortener.isTiktokHost(hostname) ||
+    self.RedditLinkShortener.isRedditHost(hostname) ||
+    self.SpotifyLinkShortener.isSpotifyHost(hostname)
   );
 }
 
 function pingTab(tabId, frameId) {
-  // frameId 0 = top frame; we only inject into the top frame.
   if (frameId !== 0) return;
   chrome.storage.sync.get({ enabled: true }, (items) => {
     if (items.enabled === false) return;
     chrome.tabs.sendMessage(
       tabId,
       { type: 'CHECK_URL' },
-      // Swallow "Receiving end does not exist" — happens when the content
-      // script hasn't loaded yet (chrome:// pages, errored frames, etc).
       () => void chrome.runtime.lastError,
     );
   });

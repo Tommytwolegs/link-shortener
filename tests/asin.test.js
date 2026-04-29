@@ -3,8 +3,15 @@
 // Usage: node tests/asin.test.js
 
 const path = require('path');
-const { shortenAmazonUrl, needsShortening, extractAsin, isAmazonHost } =
-  require(path.join('..', 'src', 'asin.js'));
+const {
+  shortenAmazonUrl,
+  needsShortening,
+  extractAsin,
+  isAmazonHost,
+  extractTitleSlug,
+  extractSlug,
+  slugifyTitle,
+} = require(path.join('..', 'src', 'asin.js'));
 
 const CASES = [
   { name: 'US: slug + /dp/ASIN with ref and query params',
@@ -161,6 +168,102 @@ check('extractAsin: wrapper path + search',
 
 check('shorten on garbage string', shortenAmazonUrl('not a url'), null);
 check('needs on garbage string', needsShortening('not a url'), false);
+
+// ---- Title-slug feature ---------------------------------------------------
+
+// extractTitleSlug
+check('slug: /Foo-Bar/dp/ASIN',
+  extractTitleSlug('/Acme-Smoked-Fish-Whitefish-Portion/dp/B0D47V1Q5B'),
+  'Acme-Smoked-Fish-Whitefish-Portion');
+check('slug: /Foo/dp/ASIN with ref tail',
+  extractTitleSlug('/Foo-Bar/dp/B08N5WRWNW/ref=sr_1_3'),
+  'Foo-Bar');
+check('slug: /Foo/gp/product/ASIN',
+  extractTitleSlug('/Foo-Bar/gp/product/B07XJ8C8F5'),
+  'Foo-Bar');
+check('slug: bare /dp/ASIN -> null',
+  extractTitleSlug('/dp/B08N5WRWNW'),
+  null);
+check('slug: /gp/product/ASIN -> null',
+  extractTitleSlug('/gp/product/B08N5WRWNW'),
+  null);
+check('slug: blocklisted segment -> null',
+  extractTitleSlug('/dp/dp/B08N5WRWNW'),
+  null);
+check('slug: empty path -> null',
+  extractTitleSlug('/'),
+  null);
+
+// extractSlug — wrapper-aware
+check('extractSlug wrapper: sspa/click with encoded slug',
+  extractSlug('/sspa/click', '?url=%2FAcme-Foo-Bar%2Fdp%2FB0D47V1Q5B'),
+  'Acme-Foo-Bar');
+check('extractSlug wrapper: no slug in wrapped path',
+  extractSlug('/sspa/click', '?url=%2Fdp%2FB0D47V1Q5B'),
+  null);
+check('extractSlug direct path beats search',
+  extractSlug('/Direct-Slug/dp/B0D47V1Q5B', '?url=%2FOther%2Fdp%2FB0D47V1Q5B'),
+  'Direct-Slug');
+
+// slugifyTitle
+check('slugify: simple title',
+  slugifyTitle('Acme Smoked Fish Whitefish Portion'),
+  'Acme-Smoked-Fish-Whitefish-Portion');
+check('slugify: punctuation stripped',
+  slugifyTitle('Foo, Bar & Baz! (4-Pack)'),
+  'Foo-Bar-and-Baz-4-Pack');
+check('slugify: trademark glyphs stripped',
+  slugifyTitle('Bose® QuietComfort™ Headphones'),
+  'Bose-QuietComfort-Headphones');
+check('slugify: trims Amazon.com suffix from document.title',
+  slugifyTitle('Acme Smoked Fish Whitefish Portion : Amazon.com'),
+  'Acme-Smoked-Fish-Whitefish-Portion');
+check('slugify: trims Amazon.de prefix',
+  slugifyTitle('Amazon.de: Some Long German Product Name'),
+  'Some-Long-German-Product-Name');
+check('slugify: empty/whitespace -> null',
+  slugifyTitle('   '),
+  null);
+check('slugify: caps long titles at 80 chars',
+  slugifyTitle('A '.repeat(100).trim()).length <= 80,
+  true);
+check('slugify: returns null on null input',
+  slugifyTitle(null),
+  null);
+
+// shortenAmazonUrl with slug option
+check('shorten with slug: bare /dp/ASIN gets slug prepended',
+  shortenAmazonUrl('https://www.amazon.com/dp/B0D47V1Q5B', { slug: 'Acme-Foo' }),
+  'https://www.amazon.com/Acme-Foo/dp/B0D47V1Q5B');
+check('shorten with slug: messy URL gets clean slug form',
+  shortenAmazonUrl('https://www.amazon.com/Old-Slug/dp/B0D47V1Q5B/ref=sr_1?keywords=x', { slug: 'New-Slug' }),
+  'https://www.amazon.com/New-Slug/dp/B0D47V1Q5B');
+check('shorten with slug: regional TLD preserved',
+  shortenAmazonUrl('https://www.amazon.de/old/dp/B0D47V1Q5B', { slug: 'Foo-Bar' }),
+  'https://www.amazon.de/Foo-Bar/dp/B0D47V1Q5B');
+check('shorten with slug: gp/product input',
+  shortenAmazonUrl('https://www.amazon.com/gp/product/B07XJ8C8F5', { slug: 'My-Title' }),
+  'https://www.amazon.com/My-Title/dp/B07XJ8C8F5');
+check('shorten with slug:null falls back to bare form',
+  shortenAmazonUrl('https://www.amazon.com/dp/B0D47V1Q5B', { slug: null }),
+  'https://www.amazon.com/dp/B0D47V1Q5B');
+
+// needsShortening with slug option
+check('needs with slug: already in /<slug>/dp/ASIN form -> false',
+  needsShortening('https://www.amazon.com/Foo-Bar/dp/B0D47V1Q5B', { slug: 'Foo-Bar' }),
+  false);
+check('needs with slug: bare /dp/ASIN, slug requested -> true',
+  needsShortening('https://www.amazon.com/dp/B0D47V1Q5B', { slug: 'Foo-Bar' }),
+  true);
+check('needs with slug: different slug than current -> true',
+  needsShortening('https://www.amazon.com/Old/dp/B0D47V1Q5B', { slug: 'New' }),
+  true);
+check('needs with slug: trailing query -> true',
+  needsShortening('https://www.amazon.com/Foo/dp/B0D47V1Q5B?tag=x', { slug: 'Foo' }),
+  true);
+check('needs without slug option: in /<slug>/dp/ASIN form -> still true',
+  needsShortening('https://www.amazon.com/Foo/dp/B0D47V1Q5B'),
+  true);
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed (' + (passed + failed) + ' total)');
 if (failed > 0) {
