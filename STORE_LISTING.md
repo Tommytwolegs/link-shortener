@@ -1,6 +1,6 @@
 # Chrome Web Store Listing Copy
 
-Paste-ready text for the Chrome Web Store submission form. This file is for your reference only — it's not part of the extension itself.
+Paste-ready text for the Chrome Web Store submission form. This file is for your reference only — it's not part of the extension itself. Last updated for v1.6.2 (rewrote summary + description to satisfy the Web Store's "excessive keywords" / spam policy after the v1.6.1 update was rejected for naming brand sites too many times).
 
 ---
 
@@ -10,7 +10,7 @@ Jimothy's Link Shortener
 
 ## Summary (132 chars max)
 
-Cleans long Amazon, Agoda, Booking.com, Expedia, and Airbnb URLs — automatic address bar + one-click short-link toolbar.
+Cleans long URLs on shopping, travel, and social sites — strips tracking and gives you a clean shareable link.
 
 ## Category
 
@@ -24,66 +24,54 @@ English
 
 ## Description (detailed — up to 16,000 chars)
 
-Amazon, Agoda, Booking.com, Expedia, and Airbnb URLs are a mess. A link to a single product or hotel can be hundreds of characters of tracking IDs, session tokens, search-result breadcrumbs, and impression IDs. Link Shortener cleans them up automatically — and gives you a one-click way to share the short version.
+Long URLs from popular shopping, travel, and social sites are full of tracking IDs, session tokens, and search-result breadcrumbs — easily hundreds of characters of clutter. Jimothy's Link Shortener strips it automatically, so what stays in your address bar (and what you copy to share) is the clean canonical form.
 
-🛒 AMAZON — AUTOMATIC
+WHAT GETS SHORTENED
 
-Every time you land on an Amazon product page, the extension rewrites the URL in your address bar to the shortest shareable form — just `amazon.com/dp/<product-id>`. It also rewrites every product link on the page, so right-click → Copy link address gives you the clean URL too, without having to open the product first. Sponsored-result wrappers (`/sspa/click?...&url=…`) and `/gp/slredirect/…` redirectors are unwrapped automatically.
+The extension cleans URLs on Amazon, Booking, Expedia, Airbnb, Agoda, Facebook, Instagram, YouTube, Twitter/X, TikTok, Reddit, and Spotify.
 
-🏨 AGODA, BOOKING.COM, EXPEDIA, AIRBNB — AUTOMATIC + ONE-CLICK
+HOW IT WORKS
 
-On a hotel or rental listing page, two things happen:
+Land on a supported page and the URL in your address bar is rewritten to its canonical short form via history.replaceState — no reload, no flicker. Right-click → Copy link address on Amazon gives you the clean URL too, since in-page product links are also rewritten.
 
-1. The address bar is cleaned up automatically. Tracking, session, search-id, and impression params are stripped, leaving just the listing URL plus your selected dates and occupancy. The page doesn't reload.
-2. A small floating toolbar appears in the top-left corner with two copy buttons:
-   • Share Property / Share Listing — copies the bare listing URL (no dates, no query string).
-   • With Dates — copies the listing URL with check-in/check-out preserved. Disabled until you've actually picked dates.
+On hotel and rental listing pages, an unobtrusive floating widget appears with one-click copy buttons: one copies the bare listing URL, another copies it with your selected dates included. On phone-sized viewports the widget hides itself automatically.
 
-Click a button, the link is on your clipboard, a brief "Copied!" confirmation appears. That's it.
+On every other supported site, only the address bar is cleaned — no overlay, no UI on the page.
 
-🔧 ON ALL SUPPORTED SITES
+CONTROLS
 
-• Master on/off toggle in the toolbar popup, with a visible "OFF" badge when disabled.
-• Per-site toggles for Amazon, Agoda, Booking.com, Expedia, and Airbnb, so you can keep the extension on for the sites you care about and quiet for the rest.
-• Your toggle preferences sync across Chrome installations via your Google account.
-• Works on browser back/forward and in-page (single-page) navigations.
+A master on/off toggle puts the extension to sleep instantly with a visible "OFF" badge. Per-site toggles let you disable any site individually. A second toggle controls whether the cleaned Amazon URL is the bare canonical form or includes the human-readable product title slug. A third toggle hides the floating travel widget without disabling URL cleanup. All preferences sync across your browser installs.
 
-🌍 WORKS ACROSS REGIONAL DOMAINS
+ZERO DATA COLLECTION
 
-Amazon: amazon.com, .co.uk, .de, .fr, .it, .es, .nl, .se, .pl, .com.tr, .com.au, .co.jp, .in, .sg, .ae, .sa, .eg, .com.mx, .com.br, .ca, .com.be. A page on amazon.de stays on amazon.de — only the path is shortened.
+No analytics, no telemetry, no remote calls. The extension makes zero network requests. The only thing it stores is a handful of booleans for your toggle preferences. Nothing ever leaves your browser.
 
-Booking.com and Agoda each use a single global domain. Expedia and Airbnb are supported across their major regional TLDs (.com, .co.uk, .ca, .com.au, .de, .fr, .it, .es, .nl, .com.mx, .com.br, .co.jp, .com.sg, .co.in).
+TINY AND FAST
 
-🔒 ZERO DATA COLLECTION
+About a thousand lines of plain hand-written JavaScript running entirely on your machine. The travel-site widget lives in a closed Shadow DOM so the host page can't see or restyle it.
 
-No analytics. No telemetry. No remote calls. The extension makes zero network requests. It stores up to six booleans in `chrome.storage.sync`: one for the master on/off toggle and one per supported site. That's it.
+OPEN SOURCE
 
-⚡ TINY AND FAST
-
-The entire extension is a few hundred lines of JavaScript running entirely on your machine. The Amazon URL rewrite uses `history.replaceState`, so there's no reload and no flicker. The hotel-site toolbar uses a closed Shadow DOM so the host site's CSS can't touch it.
-
-📖 OPEN SOURCE
-
-Full source code and unit tests are available on GitHub: https://github.com/Tommytwolegs/link-shortener
+Source code and 584 unit tests at https://github.com/Tommytwolegs/link-shortener
 
 ---
 
 ## Single-purpose description
 
-The extension shortens shareable URLs on five shopping/booking sites: it rewrites Amazon product URLs in the address bar and in-page links to the canonical amazon.com/dp/ASIN form, and on Agoda, Booking.com, Expedia, and Airbnb listing pages it cleans up the address bar to dates + occupancy only, and adds copy-to-clipboard buttons that produce short listing URLs.
+The extension cleans up shareable URLs on a fixed list of supported shopping, travel, and social sites by stripping tracking parameters and unnecessary path components from the address bar (and from in-page links on Amazon). On hotel and rental listing pages it additionally adds copy-to-clipboard buttons for the cleaned URL. The extension does not collect, transmit, or share any user data.
 
 ---
 
 ## Permission justifications
 
-**host_permissions (Amazon storefronts + agoda.com + booking.com + expedia regional TLDs + airbnb regional TLDs)**
-Required so the content scripts can read and rewrite the URL of supported pages, and inject the copy-link toolbar on hotel/rental listing pages. The extension does not run on any other sites.
+**host_permissions (all listed hosts)**
+Required so the content scripts can read and rewrite the URL of supported pages, and on hotel/rental sites, inject the copy-link toolbar. The extension does not run on any other sites and never reads page content beyond the URL itself (with one narrow exception: on Amazon product pages, when the user has opted in to "Include Amazon item name", the extension reads the product title from the page's #productTitle element so it can build the slug-form URL).
 
 **webNavigation**
-Used to detect in-page (single-page) navigations on all supported sites so URLs are also handled when the page changes without a full reload.
+Used to detect in-page (single-page) navigations on supported sites so URLs are also handled when the page changes without a full reload — common on the social and media sites, which heavily use history.pushState.
 
 **storage**
-Used to remember the user's master on/off toggle and per-site toggle preferences across browser sessions and Chrome installations signed in to the same Google account. Up to six booleans are stored.
+Used to remember the user's master on/off toggle, per-site toggle preferences, and the two feature flags (hide travel popup, include Amazon title) across browser sessions and Chrome installations signed in to the same Google account.
 
 ---
 
@@ -97,15 +85,16 @@ Privacy policy URL: https://github.com/Tommytwolegs/link-shortener/blob/main/PRI
 
 ## Screenshots to prepare (1280×800 recommended)
 
-1. A long Amazon product URL in the address bar, then the shortened URL after the extension runs.
-2. A Booking.com (or Agoda / Expedia / Airbnb) hotel page with the Link Shortener toolbar visible in the top-left, buttons labeled "Share Property" and "With Dates", plus the cleaned-up URL in the address bar.
-3. The toolbar popup with the toggle ON ("On — cleaning Amazon, Agoda, Booking, Expedia & Airbnb links").
-4. The toolbar popup with the toggle OFF, with the red OFF badge visible on the toolbar icon.
+1. A long shopping-site URL in the address bar, then the shortened URL after the extension runs (before/after pair).
+2. A travel listing page with the Link Shortener toolbar visible in the top-left, buttons labeled "Share Property" and "With Dates", plus the cleaned-up URL in the address bar.
+3. The toolbar popup with the master toggle ON, showing the per-site list of supported sites and the feature toggles.
+4. A long social/media URL before/after — long form with tracking parameters vs. clean canonical form.
 
 Optional:
 
-5. A side-by-side: original long URL (copied from clipboard) vs. clean short URL.
+5. The toolbar popup with the toggle OFF, with the red OFF badge visible on the toolbar icon.
+6. A second before/after pair from a different supported site.
 
-## Promotional tile (440×280, optional)
+## Promotional tile (440×280)
 
-Icon on left, "Link Shortener" text on right, brief tagline like "Clean Amazon, Agoda, Booking, Expedia & Airbnb URLs, automatically."
+The bundled tile in icons/promo-tile-440x280.png covers the navy/teal gradient background + orange-bar icon + "Jimothy's Link Shortener" title + tagline format the store recommends.

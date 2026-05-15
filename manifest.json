@@ -2,8 +2,8 @@
   "manifest_version": 3,
   "name": "Jimothy's Link Shortener",
   "short_name": "Link Shortener",
-  "version": "1.6.0",
-  "description": "Auto-cleans long URLs on Amazon, Booking, Expedia, Airbnb, Agoda, FB, IG, YouTube, X, TikTok, Reddit & Spotify.",
+  "version": "1.6.2",
+  "description": "Cleans long URLs on shopping, travel, and social sites — strips tracking and gives you a clean shareable link.",
   "author": "Thomas Powers",
   "homepage_url": "https://github.com/Tommytwolegs/link-shortener",
   "icons": {
@@ -113,19 +113,34 @@
         "*://*.amazon.com.br/*",
         "*://*.amazon.com.be/*"
       ],
-      "js": ["src/asin.js", "src/content.js"],
+      "js": [
+        "src/asin.js",
+        "src/content.js"
+      ],
       "run_at": "document_start",
       "all_frames": false
     },
     {
-      "matches": ["*://*.agoda.com/*"],
-      "js": ["src/site-toolbar.js", "src/agoda.js", "src/agoda-content.js"],
+      "matches": [
+        "*://*.agoda.com/*"
+      ],
+      "js": [
+        "src/site-toolbar.js",
+        "src/agoda.js",
+        "src/agoda-content.js"
+      ],
       "run_at": "document_idle",
       "all_frames": false
     },
     {
-      "matches": ["*://*.booking.com/*"],
-      "js": ["src/site-toolbar.js", "src/booking.js", "src/booking-content.js"],
+      "matches": [
+        "*://*.booking.com/*"
+      ],
+      "js": [
+        "src/site-toolbar.js",
+        "src/booking.js",
+        "src/booking-content.js"
+      ],
       "run_at": "document_idle",
       "all_frames": false
     },
@@ -146,7 +161,11 @@
         "*://*.expedia.com.sg/*",
         "*://*.expedia.co.in/*"
       ],
-      "js": ["src/site-toolbar.js", "src/expedia.js", "src/expedia-content.js"],
+      "js": [
+        "src/site-toolbar.js",
+        "src/expedia.js",
+        "src/expedia-content.js"
+      ],
       "run_at": "document_idle",
       "all_frames": false
     },
@@ -167,49 +186,92 @@
         "*://*.airbnb.com.sg/*",
         "*://*.airbnb.co.in/*"
       ],
-      "js": ["src/site-toolbar.js", "src/airbnb.js", "src/airbnb-content.js"],
+      "js": [
+        "src/site-toolbar.js",
+        "src/airbnb.js",
+        "src/airbnb-content.js"
+      ],
       "run_at": "document_idle",
       "all_frames": false
     },
     {
-      "matches": ["*://*.facebook.com/*", "*://fb.watch/*"],
-      "js": ["src/facebook.js", "src/social-content.js"],
+      "matches": [
+        "*://*.facebook.com/*",
+        "*://fb.watch/*"
+      ],
+      "js": [
+        "src/facebook.js",
+        "src/social-content.js"
+      ],
       "run_at": "document_start",
       "all_frames": false
     },
     {
-      "matches": ["*://*.instagram.com/*"],
-      "js": ["src/instagram.js", "src/social-content.js"],
+      "matches": [
+        "*://*.instagram.com/*"
+      ],
+      "js": [
+        "src/instagram.js",
+        "src/social-content.js"
+      ],
       "run_at": "document_start",
       "all_frames": false
     },
     {
-      "matches": ["*://*.youtube.com/*", "*://youtu.be/*"],
-      "js": ["src/youtube.js", "src/social-content.js"],
+      "matches": [
+        "*://*.youtube.com/*",
+        "*://youtu.be/*"
+      ],
+      "js": [
+        "src/youtube.js",
+        "src/social-content.js"
+      ],
       "run_at": "document_start",
       "all_frames": false
     },
     {
-      "matches": ["*://*.twitter.com/*", "*://*.x.com/*"],
-      "js": ["src/twitter.js", "src/social-content.js"],
+      "matches": [
+        "*://*.twitter.com/*",
+        "*://*.x.com/*"
+      ],
+      "js": [
+        "src/twitter.js",
+        "src/social-content.js"
+      ],
       "run_at": "document_start",
       "all_frames": false
     },
     {
-      "matches": ["*://*.tiktok.com/*"],
-      "js": ["src/tiktok.js", "src/social-content.js"],
+      "matches": [
+        "*://*.tiktok.com/*"
+      ],
+      "js": [
+        "src/tiktok.js",
+        "src/social-content.js"
+      ],
       "run_at": "document_start",
       "all_frames": false
     },
     {
-      "matches": ["*://*.reddit.com/*", "*://redd.it/*"],
-      "js": ["src/reddit.js", "src/social-content.js"],
+      "matches": [
+        "*://*.reddit.com/*",
+        "*://redd.it/*"
+      ],
+      "js": [
+        "src/reddit.js",
+        "src/social-content.js"
+      ],
       "run_at": "document_start",
       "all_frames": false
     },
     {
-      "matches": ["*://open.spotify.com/*"],
-      "js": ["src/spotify.js", "src/social-content.js"],
+      "matches": [
+        "*://open.spotify.com/*"
+      ],
+      "js": [
+        "src/spotify.js",
+        "src/social-content.js"
+      ],
       "run_at": "document_start",
       "all_frames": false
     }

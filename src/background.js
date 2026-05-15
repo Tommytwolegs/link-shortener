@@ -11,20 +11,27 @@
 //     new content scripts (otherwise orphaned scripts ignore new flags).
 // ----------------------------------------------------------------------------
 
-importScripts(
-  'asin.js',
-  'agoda.js',
-  'booking.js',
-  'expedia.js',
-  'airbnb.js',
-  'facebook.js',
-  'instagram.js',
-  'youtube.js',
-  'twitter.js',
-  'tiktok.js',
-  'reddit.js',
-  'spotify.js',
-);
+// In Chrome (and Firefox 121+ with `background.service_worker`) this runs as
+// a service worker, where importScripts() pulls in the URL modules. Firefox's
+// event-page background mode (manifest's `background.scripts`) instead loads
+// each module via a separate manifest entry and importScripts is undefined —
+// guard the call so the same file works in both modes.
+if (typeof importScripts === 'function') {
+  importScripts(
+    'asin.js',
+    'agoda.js',
+    'booking.js',
+    'expedia.js',
+    'airbnb.js',
+    'facebook.js',
+    'instagram.js',
+    'youtube.js',
+    'twitter.js',
+    'tiktok.js',
+    'reddit.js',
+    'spotify.js',
+  );
+}
 
 const AMAZON_URL_FILTERS = [
   { hostSuffix: 'amazon.com' },

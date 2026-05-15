@@ -234,6 +234,16 @@
     // address-bar cleanup runs even when the floating toolbar is hidden via
     // the master "Hide travel popup" preference -- that toggle only suppresses
     // the floating widget, not URL shortening.
+    // The floating toolbar is awkward on phone-sized viewports — it overlaps
+    // mobile site UI and the buttons end up too small for comfortable touch
+    // targets. Auto-hide on narrow viewports; the user can still flip the
+    // "Hide travel popup" toggle off to bring it back, but they're more
+    // likely to want it gone. Threshold matches the typical break between
+    // tablet (≥600 CSS px) and phone-portrait widths.
+    function isNarrowViewport() {
+      return typeof window !== 'undefined' && window.innerWidth < 600;
+    }
+
     function reconcile() {
       if (!isOn() || !config.isListingPage(location.href)) {
         destroyUI();
@@ -241,7 +251,7 @@
         return;
       }
       cleanAddressBar();
-      if (hideToolbar) {
+      if (hideToolbar || isNarrowViewport()) {
         destroyUI();
       } else {
         buildUI();
@@ -289,6 +299,16 @@
 
     // Classic back/forward within the same document.
     window.addEventListener('popstate', reconcile);
+
+    // Re-evaluate on viewport resize so a user who rotates their phone or
+    // resizes a desktop window crosses the narrow-viewport threshold cleanly.
+    if (typeof window !== 'undefined' && window.addEventListener) {
+      let resizeTimer = null;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(reconcile, 150);
+      });
+    }
 
     // Service worker nudge on webNavigation history-state updates.
     if (
