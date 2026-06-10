@@ -7,6 +7,25 @@ const {
 } = require(path.join('..', 'src', 'reddit.js'));
 
 const CASES = [
+  // ----- User-profile front pages (keep sort/timeframe).
+  { name: 'user profile: share junk stripped',
+    input: 'https://www.reddit.com/user/spez/?utm_source=share&utm_medium=web2x',
+    expected: 'https://www.reddit.com/user/spez/' },
+  { name: 'user profile: sort + t kept',
+    input: 'https://www.reddit.com/user/spez/?sort=top&t=year&utm_source=share',
+    expected: 'https://www.reddit.com/user/spez/?t=year&sort=top' },
+  { name: 'user profile /u/ short form cleaned',
+    input: 'https://www.reddit.com/u/spez?share_id=abc123',
+    expected: 'https://www.reddit.com/u/spez' },
+  { name: 'user profile tab (submitted) cleaned',
+    input: 'https://www.reddit.com/user/spez/submitted/?sort=top&utm_source=share',
+    expected: 'https://www.reddit.com/user/spez/submitted/?sort=top' },
+  // (output order note: keepParams emit in ['t','sort'] order, matching the
+  // subreddit front-page behavior)
+  { name: 'user profile already clean',
+    input: 'https://www.reddit.com/user/spez/',
+    expected: 'https://www.reddit.com/user/spez/',
+    expectedNeeds: false },
   // ----- Post-style URLs (full strip).
   { name: 'comments: utm tracking stripped',
     input: 'https://www.reddit.com/r/javascript/comments/abc123/some_post_title/?utm_source=share&utm_medium=web2x&context=3',
@@ -76,9 +95,10 @@ const CASES = [
   { name: 'home → null',
     input: 'https://www.reddit.com/',
     expected: null },
-  { name: 'user profile (non-comments) → null',
+  { name: 'user profile now recognized (front page, no params)',
     input: 'https://www.reddit.com/user/janedoe/',
-    expected: null },
+    expected: 'https://www.reddit.com/user/janedoe/',
+    expectedNeeds: false },
   { name: 'non-Reddit → null',
     input: 'https://www.google.com/?q=reddit',
     expected: null },

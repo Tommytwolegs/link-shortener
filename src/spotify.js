@@ -13,6 +13,9 @@
 //   /user/<id>           → ditto
 //   /collection/<id>     → ditto
 //   /intl-<lang>/<kind>/<id>  → locale-prefixed; same allowlist per kind.
+//   /embed/<kind>/<id>   → embed player URLs. Keeps ?theme= (the embed's
+//                          visual theme — functional) and ?t= on track/episode;
+//                          strips utm_source=generator and the rest.
 //
 // The URL hash is preserved. Spotify doesn't use hashes for tracking, and a
 // future redesign that adopts hash routing won't be broken by us.
@@ -48,6 +51,10 @@
     // listeners often share a specific moment) + context for show continuity
     { pattern: /^\/episode\/[^/?#]+\/?$/i, allowedParams: new Set(['t', 'context']) },
     { pattern: /^\/intl-[a-z]{2,3}\/episode\/[^/?#]+\/?$/i, allowedParams: new Set(['t', 'context']) },
+    // Embed player forms — ?theme= is functional (visual theme); ?t= is the
+    // timestamp on playable kinds. utm_source=generator etc. gets stripped.
+    { pattern: /^\/embed\/(?:track|episode)\/[^/?#]+\/?$/i, allowedParams: new Set(['t', 'theme']) },
+    { pattern: /^\/embed\/(?:album|playlist|artist|show)\/[^/?#]+\/?$/i, allowedParams: new Set(['theme']) },
     // Everything else — strip all params
     { pattern: /^\/(?:album|playlist|artist|show|user|collection)\/[^/?#]+\/?$/i, allowedParams: new Set() },
     { pattern: /^\/intl-[a-z]{2,3}\/(?:album|playlist|artist|show|user|collection)\/[^/?#]+\/?$/i, allowedParams: new Set() },

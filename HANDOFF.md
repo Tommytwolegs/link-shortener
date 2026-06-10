@@ -23,7 +23,7 @@ GitHub repo: <https://github.com/Tommytwolegs/link-shortener>.
 
 Author: Thomas Powers. Extension ID (Firefox): `link-shortener@tommytwolegs.github.io`.
 
-**v1.7.0 is a large release.** It bundles seven new sites, the opt-in
+**v1.7.0 is a large release.** It bundles twelve new sites, the opt-in
 Universal tracking strip, an Advanced settings page, a right-click context
 menu, a popup redesign, a build-time parse-check guardrail, GitHub Actions
 CI, and a meaningful round of bug fixes for SPA-state preservation. See
@@ -31,7 +31,7 @@ CI, and a meaningful round of bug fixes for SPA-state preservation. See
 
 ---
 
-## Supported sites (19)
+## Supported sites (24)
 
 Each has a dedicated pure-function URL module under `src/`. The popup
 groups them into Shopping / Travel / Social & media:
@@ -62,7 +62,7 @@ groups them into Shopping / Travel / Social & media:
   etc.). Airbnb's `?modal=` preserved so the photo gallery / map / reviews
   modals stay open.
 
-**Social & media (10):**
+**Social & media (15):**
 - **Facebook, Instagram** — combined `enabledSocial` toggle. Facebook
   preserves `comment_id` + `reply_comment_id` for deep-links to specific
   comments across `/posts/`, `/videos/`, `/reel/`, group permalinks,
@@ -83,7 +83,27 @@ groups them into Shopping / Travel / Social & media:
   amount of parent context. `redd.it` short links.
 - **Pinterest** — `/pin/<id>/` with locale prefix. 19 regional TLDs. `pin.it/<short>`.
 - **Spotify** — `open.spotify.com` only. Preserves `?t=` (timestamp) and
-  `?context=` (playlist/album queue continuity) on `/track/` and `/episode/`.
+  `?context=` (playlist/album queue continuity) on `/track/` and
+  `/episode/`. `/embed/<kind>/<id>` forms keep `?theme=` (+ `?t=` on
+  playable kinds).
+- **Bluesky** — `bsky.app/profile/<handle>/post/<rkey>`, custom feeds,
+  starter packs. Strips `ref_src`/`ref_url` embed referrers.
+- **GitHub** — issue / PR / discussion / commit / release-tag permalinks
+  only (tight allowlist — GitHub uses functional query params on most
+  other routes). Strips `notification_referrer_id` + notification/email
+  junk. Hash deep-links (`#issuecomment-...`, `#discussion_r...`) are
+  where GitHub keeps its state — always preserved.
+- **Medium** — `/@user/<slug>-<hex>`, `/<pub>/<slug>-<hex>`, `/p/<hex>`,
+  and `<user>.medium.com/<slug>-<hex>`. **Preserves `?sk=` (Friend Link
+  share key — paywall gift links break without it)**; strips `source=`
+  and the rest. Custom-domain publications are out of scope.
+- **Quora** — question pages + `/answer/<user>` + `/unanswered/` forms.
+  Slug must contain a hyphen + reserved-segment blocklist so
+  navigational routes aren't touched. Strips `share`/`ch`/`oid`/`srid`.
+- **Substack** — `<pub>.substack.com/p/<slug>` (+ `/comments`,
+  `/comment/<id>`), `open.substack.com/pub/...` share-redirect form, and
+  substack.com `@user` post/Note forms. Strips `r=` referral codes,
+  `utm_*`, `triedRedirect`. Custom-domain publications are out of scope.
 
 Plus an opt-in **Universal tracking strip** that runs on every http(s)
 page (default OFF). See `utm.js` below.
@@ -102,8 +122,8 @@ page (default OFF). See `utm.js` below.
 
 ### Content-script dispatchers
 
-- `src/social-content.js` — dispatcher used by **all 14** sites that don't
-  have their own dedicated content script (the 12 social/media/shopping
+- `src/social-content.js` — dispatcher used by **all 19** sites that don't
+  have their own dedicated content script (the social/media/shopping
   sites that load social-content.js + their URL module). Detects which
   `*LinkShortener` global is loaded, reads that module's `STORAGE_KEY`,
   gates the cleanup on the master flag + per-site flag. **The dispatcher's
@@ -171,9 +191,10 @@ page (default OFF). See `utm.js` below.
 ### Popup
 
 - `src/popup.html` / `popup.js` / `popup.css` — toolbar popup. Master
-  toggle, 19 per-site toggles organized into collapsible Shopping (5) /
-  Travel (4) / Social & media (10) `<details>` groups (Shopping
-  default-open). Four feature flags (hide travel popup, include Amazon
+  toggle, 24 per-site toggles organized into collapsible Shopping (5) /
+  Travel (4) / Social & media (15) `<details>` groups (Shopping
+  default-open; expanded/collapsed state persists via
+  `popupOpenGroups` in chrome.storage.sync). Four feature flags (hide travel popup, include Amazon
   item name, universal tracking strip with NEW badge). Footer has version,
   "Advanced" link (opens options page via `chrome.runtime.openOptionsPage`),
   and "Report an issue" link. `popup.js` requests the optional `*://*/*`
@@ -198,7 +219,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **1,286 total assertions across 20 test files, all passing.** Run with:
+  **1,545 total assertions across 25 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -239,7 +260,7 @@ The Firefox xpi injects four things into the manifest:
 1. `browser_specific_settings.gecko.id` (`link-shortener@tommytwolegs.github.io`)
 2. `gecko.strict_min_version` (`121.0` — first Firefox with full MV3 SW support)
 3. `gecko.data_collection_permissions.required = ["none"]` (AMO requirement)
-4. `background.scripts` array (21 entries — Mozilla linter requires a
+4. `background.scripts` array (26 entries — Mozilla linter requires a
    fallback alongside `service_worker`; order matters since `background.js`
    uses `self.*LinkShortener` globals at top level)
 
@@ -321,6 +342,21 @@ Reddit and LinkedIn modules refactored from "flat list of regexes" to
 
 Test count: **1,045 → 1,276 (+231)** across **18 → 20 files**. 19 sites
 + universal stripper, 31 source files (was 28).
+
+**Round 6 — wishlist build-out (2026-06-11).** Five new sites: Substack,
+Bluesky, GitHub, Medium, Quora (24 total). Browser-verified URL-state
+assumptions before building: Target's own site config allowlists
+`preselect` on /p/ pages (confirms Round 5's fix); Airbnb adds
+`?modal=PHOTO_TOUR_SCROLLABLE` on gallery open; Booking sets
+`#tab-reviews` on the reviews tab; Medium's `sk=` Friend-Link key
+documented as the paywall-bypass token (kept). Existing-site polish:
+Twitter `/i/lists/<id>`, Reddit user-profile front pages (keep
+sort/t), TikTok `/share/photo` + `/share/user`, Spotify `/embed/` forms
+(keep theme), LinkedIn `/jobs/search/` (keep
+currentJobId/keywords/geoId/f_TPR/distance). Popup `<details>`
+group-state now persists (`popupOpenGroups`). `scripts/pre-commit` hook
+mirrors CI. Edge Add-ons submission section added to STORE_LISTING.md.
+Tests: 1,286 → 1,545 across 25 files.
 
 **Round 5 — pre-release full-codebase review (2026-06-11).** Caught a
 critical Windows-build bug before it shipped: `package.ps1`'s Firefox
@@ -475,9 +511,9 @@ Full per-version detail in `CHANGELOG.md`.
 
 - **Native `<details>` for category collapse.** No JS for expand/collapse
   itself — that's native HTML disclosure. `popup.js` keeps the "(N of M
-  on)" indicators in sync with storage. Group-state isn't persisted (each
-  popup open resets to default-open Shopping, default-closed others); if
-  you want to persist user-expanded state, that's a small storage addition.
+  on)" indicators in sync with storage. Group-state IS persisted (as of
+  the 2026-06-11 wishlist round) via `popupOpenGroups` in
+  chrome.storage.sync; first run defaults to Shopping open, others closed.
 - **`popup.js` SITES array must match `popup.html` ids exactly.** Each
   per-site checkbox needs an `id="enabled<Site>"` that the SITES array
   references. Mismatches cause silent toggle failures.
@@ -488,52 +524,40 @@ Full per-version detail in `CHANGELOG.md`.
 
 These came up but aren't built. Ranked by ROI:
 
-- **Live smoke tests in a real browser** before submitting v1.7.0. The
-  fixes are unit-test-covered but unit tests can't catch SPA re-render
-  timing issues. Recommended: Airbnb photo gallery, Instagram carousel
-  slide deep-link, an Amazon variant URL, a Spotify share-from-playlist
-  link, a Reddit comment deep-link.
+- **Load-the-extension smoke test** before submitting v1.7.0. URL-state
+  assumptions were browser-verified on 2026-06-11 (Target preselect ✓,
+  Airbnb ?modal ✓, Booking #tab-reviews ✓) but the extension itself
+  hasn't been exercised end-to-end in a real profile this round.
+  Recommended: load the unpacked build, then walk an Amazon variant URL,
+  the Airbnb gallery, an Instagram carousel deep-link, a Medium friend
+  link (sk= must survive), and a GitHub notification-opened issue.
 
-- **Verify Booking/Expedia/Agoda modal behavior in-browser.** The deep
-  research pass found no public evidence those three sites use URL state
-  for modals (likely React-internal), but it's worth a manual
-  confirmation. We also preemptively added hash preservation to all three
-  in case Booking uses `#tab-reviews` for tab routing.
-
-- **Edge Web Store.** Uses the same zip as Chrome; just a separate
-  listing submission. Edge has meaningfully more users than Firefox.
-
-- **Pre-commit hook** that runs the same checks as the GitHub Actions
-  workflow. CI catches issues post-push; a pre-commit hook catches them
-  before. Husky or a plain `.git/hooks/pre-commit` shell script would
-  suffice.
+- **Submit to the Edge Web Store.** Paste-ready section now exists in
+  STORE_LISTING.md; uses the same zip as Chrome. Edge has meaningfully
+  more users than Firefox.
 
 - **Firefox Android testing.** The xpi should work on Firefox for Android
   (which supports MV3) but hasn't been physically tested. The mobile
   auto-hide for the travel toolbar was added with this in mind.
 
-- **More sites:** Substack (`/p/<slug>`), Bluesky
-  (`bsky.app/profile/<handle>/post/<id>`), GitHub issues/PRs
-  (`?notification_referrer_id=`), Medium, Quora — all carry tracking
-  parameters and have natural canonical forms.
+- **Expedia/Agoda modal behavior.** No public evidence they use URL state
+  for modals (likely React-internal); hash preservation is in place
+  regardless. Worth a quick manual click-through someday.
 
-- **More polish on existing sites:** Twitter `/i/lists/<id>`, Reddit
-  `/user/<u>/` profile pages, TikTok `/share/photo/<id>` and
-  `/share/user/<id>`, Spotify `/embed/...` forms, LinkedIn
-  `/jobs/search/` (currently not recognized — would need a path pattern
-  + a tight keepParams allowlist for `currentJobId` / `keywords` /
-  `geoId` / `f_TPR` / `distance`).
-
-- **Group-state persistence in the popup.** Remember which `<details>`
-  groups the user has expanded; small chrome.storage.sync addition.
+- **More sites someday:** Walmart Canada French paths, AliExpress,
+  Temu, Best Buy, IMDb (`?ref_=`), Goodreads, Stack Overflow
+  (`?so_medium=`), npm (`?activeTab=`). All carry tracking or
+  state-bearing params with natural canonical forms.
 
 - **Stripped-count badge on the toolbar icon.** Visible feedback that
   the Universal strip is doing something (e.g. "3" badge after stripping
   3 trackers on the current page). Adds polish but might add noise.
+  (Considered and deliberately skipped in the 2026-06-11 round.)
 
 - **Telemetry-free "what got stripped" history in the popup.** Local-only
   log of recent cleanups. Useful for users who want to verify the
-  extension is working.
+  extension is working. (Considered and deliberately skipped in the
+  2026-06-11 round.)
 
 ---
 
@@ -542,7 +566,7 @@ These came up but aren't built. Ranked by ROI:
 ```
 link-shortener/
 ├── .github/workflows/test.yml      — CI: parse-check + run all tests on push/PR
-├── manifest.json                   — Chrome-canonical manifest (122 host_permissions, 19 content_scripts)
+├── manifest.json                   — Chrome-canonical manifest (128 host_permissions, 24 content_scripts)
 ├── package.sh                      — macOS/Linux build script
 ├── package.ps1                     — Windows PowerShell build script
 ├── package_lf.sh                   — (older, retained for reference)
@@ -554,20 +578,22 @@ link-shortener/
 ├── LICENSE                         — MIT
 ├── icons/                          — 16/48/128 px + promo tile
 ├── src/
-│   ├── manifest's per-site modules (19): asin, agoda, booking, expedia,
+│   ├── manifest's per-site modules (24): asin, agoda, booking, expedia,
 │   │   airbnb, facebook, instagram, youtube, twitter, tiktok, reddit,
-│   │   spotify, linkedin, ebay, etsy, threads, pinterest, walmart, target
+│   │   spotify, linkedin, ebay, etsy, threads, pinterest, walmart, target,
+│   │   substack, bluesky, github, medium, quora
 │   ├── per-site content scripts: agoda-content, booking-content,
 │   │   expedia-content, airbnb-content (the 4 hotel sites' wiring),
 │   │   content.js (Amazon-specific), social-content.js (dispatcher
-│   │   for the other 14)
+│   │   for the other 19)
 │   ├── site-toolbar.js             — shared floating toolbar (hotel sites)
 │   ├── background.js               — service worker / event page
 │   ├── popup.html / popup.css / popup.js
 │   ├── options.html / options.css / options.js  — advanced settings page
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
-├── tests/                          — 20 test files, 1,286 assertions
+├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
+├── tests/                          — 25 test files, 1,545 assertions
 └── dist/                           — built zip + xpi packages
 ```
 

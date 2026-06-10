@@ -10,6 +10,10 @@
 //   /feed/update/urn:li:share:<id>/             → share URN form
 //   /pulse/<slug-with-id>/                      → Pulse / newsletter article
 //   /jobs/view/<numeric id>/                    → job listing
+//   /jobs/search/                               → job search results. Keeps
+//        currentJobId (the selected job), keywords, geoId, f_TPR (time
+//        filter), distance — the params that define what the recipient
+//        sees. Strips refId/trackingId/origin/trk and the rest.
 //   /events/<numeric id>/                       → event page
 //
 // Profile pages (/in/<handle>/), company pages (/company/<name>/), and
@@ -52,6 +56,7 @@
     { regex: /^\/feed\/update\/urn:li:[^/]+:\d+\/?$/, keepParams: ['commentUrn', 'replyUrn'] },
     { regex: /^\/pulse\/[^/?#]+\/?$/, keepParams: [] },
     { regex: /^\/jobs\/view\/\d+\/?$/, keepParams: [] },
+    { regex: /^\/jobs\/search\/?$/, keepParams: ['currentJobId', 'keywords', 'geoId', 'f_TPR', 'distance'] },
     { regex: /^\/events\/\d+\/?$/, keepParams: [] },
   ];
 

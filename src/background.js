@@ -42,6 +42,11 @@ if (typeof importScripts === 'function') {
     'pinterest.js',
     'walmart.js',
     'target.js',
+    'substack.js',
+    'bluesky.js',
+    'github.js',
+    'medium.js',
+    'quora.js',
     'utm.js',
   );
 }
@@ -147,6 +152,14 @@ const WALMART_URL_FILTERS = [
 
 const TARGET_URL_FILTERS = [{ hostSuffix: 'target.com' }];
 
+const SUBSTACK_URL_FILTERS = [{ hostSuffix: 'substack.com' }];
+const BLUESKY_URL_FILTERS = [{ hostEquals: 'bsky.app' }];
+const GITHUB_URL_FILTERS = [
+  { hostEquals: 'github.com' }, { hostEquals: 'www.github.com' },
+];
+const MEDIUM_URL_FILTERS = [{ hostSuffix: 'medium.com' }];
+const QUORA_URL_FILTERS = [{ hostSuffix: 'quora.com' }];
+
 const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(AGODA_URL_FILTERS).concat(BOOKING_URL_FILTERS)
   .concat(EXPEDIA_URL_FILTERS).concat(AIRBNB_URL_FILTERS)
@@ -156,7 +169,10 @@ const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(SPOTIFY_URL_FILTERS).concat(LINKEDIN_URL_FILTERS)
   .concat(EBAY_URL_FILTERS).concat(ETSY_URL_FILTERS)
   .concat(THREADS_URL_FILTERS).concat(PINTEREST_URL_FILTERS)
-  .concat(WALMART_URL_FILTERS).concat(TARGET_URL_FILTERS);
+  .concat(WALMART_URL_FILTERS).concat(TARGET_URL_FILTERS)
+  .concat(SUBSTACK_URL_FILTERS).concat(BLUESKY_URL_FILTERS)
+  .concat(GITHUB_URL_FILTERS).concat(MEDIUM_URL_FILTERS)
+  .concat(QUORA_URL_FILTERS);
 
 // -- Enable/disable state -----------------------------------------------------
 
@@ -390,6 +406,26 @@ function cleanAnyUrl(input, keepParams) {
       match: (h) => self.TargetLinkShortener.isTargetHost(h),
       shorten: (u) => self.TargetLinkShortener.shortenTargetUrl(u),
     },
+    self.SubstackLinkShortener && {
+      match: (h) => self.SubstackLinkShortener.isSubstackHost(h),
+      shorten: (u) => self.SubstackLinkShortener.shortenSubstackUrl(u),
+    },
+    self.BlueskyLinkShortener && {
+      match: (h) => self.BlueskyLinkShortener.isBlueskyHost(h),
+      shorten: (u) => self.BlueskyLinkShortener.shortenBlueskyUrl(u),
+    },
+    self.GithubLinkShortener && {
+      match: (h) => self.GithubLinkShortener.isGithubHost(h),
+      shorten: (u) => self.GithubLinkShortener.shortenGithubUrl(u),
+    },
+    self.MediumLinkShortener && {
+      match: (h) => self.MediumLinkShortener.isMediumHost(h),
+      shorten: (u) => self.MediumLinkShortener.shortenMediumUrl(u),
+    },
+    self.QuoraLinkShortener && {
+      match: (h) => self.QuoraLinkShortener.isQuoraHost(h),
+      shorten: (u) => self.QuoraLinkShortener.shortenQuoraUrl(u),
+    },
   ].filter(Boolean);
 
   let working = input;
@@ -484,6 +520,11 @@ const HOST_CHECKS = [
   ['PinterestLinkShortener', 'isPinterestHost'],
   ['WalmartLinkShortener', 'isWalmartHost'],
   ['TargetLinkShortener', 'isTargetHost'],
+  ['SubstackLinkShortener', 'isSubstackHost'],
+  ['BlueskyLinkShortener', 'isBlueskyHost'],
+  ['GithubLinkShortener', 'isGithubHost'],
+  ['MediumLinkShortener', 'isMediumHost'],
+  ['QuoraLinkShortener', 'isQuoraHost'],
 ];
 
 function isHandledHost(hostname) {

@@ -46,6 +46,11 @@
     { key: 'enabledReddit',    group: 'social' },
     { key: 'enabledPinterest', group: 'social' },
     { key: 'enabledSpotify',   group: 'social' },
+    { key: 'enabledBluesky',   group: 'social' },
+    { key: 'enabledGithub',    group: 'social' },
+    { key: 'enabledMedium',    group: 'social' },
+    { key: 'enabledQuora',     group: 'social' },
+    { key: 'enabledSubstack',  group: 'social' },
   ];
   const SITE_KEYS = SITES.map((s) => s.key);
 
@@ -85,6 +90,7 @@
     if (raw === 'Tiktok') return 'TikTok';
     if (raw === 'Linkedin') return 'LinkedIn';
     if (raw === 'Ebay') return 'eBay';
+    if (raw === 'Github') return 'GitHub';
     return raw;
   }
 
@@ -238,6 +244,41 @@
   } catch (_e) {
     // runtime not available; skip.
   }
+
+  // -- Category group-state persistence ------------------------------------
+  // Remember which <details> groups the user expanded, in
+  // chrome.storage.sync (popupOpenGroups: { shopping, travel, social }).
+  // Programmatic restores also fire 'toggle' (asynchronously), so saves are
+  // suppressed until shortly after the restore pass has applied.
+  const groupEls = Array.from(
+    document.querySelectorAll('details.site-group[data-group]'),
+  );
+  let restoringGroups = true;
+
+  function saveGroupState() {
+    if (restoringGroups) return;
+    const state = {};
+    for (const el of groupEls) state[el.dataset.group] = el.open;
+    chrome.storage.sync.set({ popupOpenGroups: state });
+  }
+
+  for (const el of groupEls) {
+    el.addEventListener('toggle', saveGroupState);
+  }
+
+  chrome.storage.sync.get({ popupOpenGroups: null }, (items) => {
+    const saved = items.popupOpenGroups;
+    if (saved && typeof saved === 'object') {
+      for (const el of groupEls) {
+        if (Object.prototype.hasOwnProperty.call(saved, el.dataset.group)) {
+          el.open = saved[el.dataset.group] === true;
+        }
+      }
+    }
+    // <details> toggle events fire on a queued task, so lift the suppression
+    // on a short delay — the restore's own toggles land before this runs.
+    setTimeout(() => { restoringGroups = false; }, 50);
+  });
 
   // "Advanced" footer link -> open the options page (rendered inline by the
   // browser when options_ui.open_in_tab is false).

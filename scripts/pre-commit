@@ -1,0 +1,47 @@
+#!/bin/sh
+# Pre-commit hook for Jimothy's Link Shortener.
+#
+# Mirrors the checks in .github/workflows/test.yml so problems are caught
+# BEFORE they're committed, not after they're pushed:
+#   1. node --check every src/*.js (parse-check guardrail)
+#   2. NUL-byte scan (catches the truncation/padding corruption that shipped
+#      a broken content.js in v1.6.3)
+#   3. run every test file under tests/
+#
+# Install (from the repo root):
+#   cp scripts/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+#
+# Works in Git for Windows' bundled sh as well as macOS/Linux. Requires node.
+
+set -e
+cd "$(git rev-parse --show-toplevel)"
+
+echo "pre-commit: parse-checking src/*.js..."
+for f in src/*.js; do
+  node --check "$f"
+done
+
+echo "pre-commit: scanning for NUL bytes..."
+node -e "
+const fs = require('fs');
+const bad = [];
+for (const p of process.argv.slice(1)) {
+  if (fs.readFileSync(p).includes(0)) bad.push(p);
+}
+if (bad.length) {
+  console.error('NUL bytes found in: ' + bad.join(', '));
+  process.exit(1);
+}
+" src/*.js src/*.html src/*.css tests/*.test.js manifest.json package.sh package.ps1 .github/workflows/test.yml
+
+echo "pre-commit: running tests..."
+for t in tests/*.test.js; do
+  if ! node "$t" > /dev/null 2>&1; then
+    echo "pre-commit: FAIL: $t" >&2
+    node "$t" | tail -20
+    exit 1
+  fi
+done
+
+echo "pre-commit: OK"

@@ -119,6 +119,11 @@ $firefoxManifest.background = [pscustomobject]@{
         'src/pinterest.js',
         'src/walmart.js',
         'src/target.js',
+        'src/substack.js',
+        'src/bluesky.js',
+        'src/github.js',
+        'src/medium.js',
+        'src/quora.js',
         'src/utm.js',
         'src/background.js'
     )

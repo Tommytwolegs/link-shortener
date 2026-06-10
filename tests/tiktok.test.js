@@ -7,6 +7,20 @@ const {
 } = require(path.join('..', 'src', 'tiktok.js'));
 
 const CASES = [
+  // /share/photo + /share/user forms
+  { name: 'share/photo: tracking stripped',
+    input: 'https://www.tiktok.com/share/photo/7301234567890123456?checksum=abc&sec_uid=xyz',
+    expected: 'https://www.tiktok.com/share/photo/7301234567890123456' },
+  { name: 'share/user: tracking stripped',
+    input: 'https://www.tiktok.com/share/user/6812345678901234567?u_code=abc&sec_uid=xyz',
+    expected: 'https://www.tiktok.com/share/user/6812345678901234567' },
+  { name: 'share/photo already clean',
+    input: 'https://www.tiktok.com/share/photo/7301234567890123456',
+    expected: 'https://www.tiktok.com/share/photo/7301234567890123456',
+    expectedNeeds: false },
+  { name: 'share/photo non-numeric → null',
+    input: 'https://www.tiktok.com/share/photo/abc',
+    expected: null },
   { name: 'video: tracking params stripped',
     input: 'https://www.tiktok.com/@user/video/1234567890?is_from_webapp=1&sender_device=pc&web_id=abc',
     expected: 'https://www.tiktok.com/@user/video/1234567890' },

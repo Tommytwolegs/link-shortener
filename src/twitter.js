@@ -12,6 +12,7 @@
 //   /i/web/status/<id>            → tweet-ID-only links
 //   /i/spaces/<id>                → Spaces
 //   /<user>/communities/<id>      → community pages
+//   /i/lists/<id>                 → list pages
 //
 // Profile pages (/<user>) and search (/search?q=) are intentionally NOT
 // recognized — those URLs are usually shared with intent (e.g. ?f=live for
@@ -42,6 +43,7 @@
     /^\/i\/web\/status\/\d+\/?$/,
     /^\/i\/status\/\d+\/?$/,
     /^\/i\/spaces\/[^/?#]+\/?$/,
+    /^\/i\/lists\/\d+\/?$/,
     /^\/[^/]+\/communities\/\d+\/?$/,
     // Photo/video sub-pages: /<user>/status/<id>/photo/1, /video/1
     /^\/[^/]+\/status\/\d+\/(?:photo|video)\/\d+\/?$/,

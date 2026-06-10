@@ -149,7 +149,13 @@
     "*://pin.it/*",
     "*://*.walmart.com/*",
     "*://*.walmart.ca/*",
-    "*://*.target.com/*"
+    "*://*.target.com/*",
+    "*://*.substack.com/*",
+    "*://bsky.app/*",
+    "*://github.com/*",
+    "*://www.github.com/*",
+    "*://*.medium.com/*",
+    "*://*.quora.com/*"
   ],
   "optional_host_permissions": [
     "*://*/*"
@@ -494,6 +500,62 @@
       ],
       "js": [
         "src/target.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.substack.com/*"
+      ],
+      "js": [
+        "src/substack.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://bsky.app/*"
+      ],
+      "js": [
+        "src/bluesky.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://github.com/*",
+        "*://www.github.com/*"
+      ],
+      "js": [
+        "src/github.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.medium.com/*"
+      ],
+      "js": [
+        "src/medium.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.quora.com/*"
+      ],
+      "js": [
+        "src/quora.js",
         "src/social-content.js"
       ],
       "run_at": "document_start",

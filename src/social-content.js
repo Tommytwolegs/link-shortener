@@ -6,7 +6,8 @@
 // on the right per-site toggle.
 //
 // Currently dispatches for: Facebook, Instagram, YouTube, Twitter/X, TikTok,
-// Reddit, Spotify, LinkedIn, eBay, Etsy, Threads, Pinterest, Walmart, Target.
+// Reddit, Spotify, LinkedIn, eBay, Etsy, Threads, Pinterest, Walmart, Target,
+// Substack, Bluesky, GitHub, Medium, Quora.
 // (Amazon and the four hotel sites have their own scripts.)
 //
 // Why no in-page anchor rewriting (unlike Amazon's content.js): on social/
@@ -49,6 +50,11 @@
     self.PinterestLinkShortener ||
     self.WalmartLinkShortener ||
     self.TargetLinkShortener ||
+    self.SubstackLinkShortener ||
+    self.BlueskyLinkShortener ||
+    self.GithubLinkShortener ||
+    self.MediumLinkShortener ||
+    self.QuoraLinkShortener ||
     null;
 
   // Per-site storage key, taken from the active module. Falls back to

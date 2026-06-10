@@ -17,6 +17,11 @@
 //   /r/<sub>/                                → keep ?sort=, ?t= (sort + time)
 //   /r/<sub>/(hot|new|top|rising|controversial)/  → ditto
 //
+// User-profile front pages (also cleaned):
+//
+//   /user/<u>/ or /u/<u>/                    → keep ?sort=, ?t=
+//   /user/<u>/(comments|submitted|posts|overview)/  → profile tabs, ditto
+//
 // All other params (utm_*, share_id, correlation_id, context, etc.) are
 // stripped. The URL hash is preserved — Reddit doesn't use hashes for
 // tracking, and dropping them is the kind of foot-gun that already bit us
@@ -76,6 +81,12 @@
     /^\/r\/[^/]+(?:\/(?:hot|new|top|rising|controversial))?\/?$/;
   const SUBREDDIT_KEEP_PARAMS = ['t', 'sort'];
 
+  // User-profile front pages — /user/<u>/ or /u/<u>/, optionally with a
+  // tab segment. Post permalinks under /user/.../comments/<id> are matched
+  // by POST_PATTERNS first (formFor checks those before this).
+  const USER_PROFILE_PATTERN =
+    /^\/u(?:ser)?\/[^/]+(?:\/(?:comments|submitted|posts|overview))?\/?$/;
+
   // redd.it: any single non-trivial path segment is the short ID.
   const REDD_IT_PATH = /^\/[^/?#]+\/?$/;
 
@@ -90,6 +101,9 @@
       if (p.regex.test(pathname)) return { keepParams: p.keepParams };
     }
     if (SUBREDDIT_PATTERN.test(pathname)) {
+      return { keepParams: SUBREDDIT_KEEP_PARAMS };
+    }
+    if (USER_PROFILE_PATTERN.test(pathname)) {
       return { keepParams: SUBREDDIT_KEEP_PARAMS };
     }
     return null;
@@ -149,6 +163,7 @@
     REDD_IT_HOST_REGEX,
     POST_PATTERNS,
     SUBREDDIT_PATTERN,
+    USER_PROFILE_PATTERN,
   };
   global.RedditLinkShortener = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

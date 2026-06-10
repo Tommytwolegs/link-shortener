@@ -7,7 +7,8 @@ features, patch bumps mark bug-fix-only releases.
 ## [1.7.0] — 2026-06-11
 
 ### Added
-- **5 new supported sites**: LinkedIn, eBay, Etsy, Threads, Pinterest. Each
+- **10 new supported sites** (rounds 1–3: LinkedIn, eBay, Etsy, Threads,
+  Pinterest; wishlist round: Substack, Bluesky, GitHub, Medium, Quora). Each
   has its own toggle in the popup.
   - LinkedIn: `/posts/`, `/feed/update/urn:li:...`, `/pulse/`, `/jobs/view/`,
     `/events/`.
@@ -27,8 +28,8 @@ features, patch bumps mark bug-fix-only releases.
   collapsible Shopping / Travel / Social & media sections (with the
   Shopping group expanded by default), each summary showing "N of M on".
 - **2 more supported sites**: Walmart, Target. Both follow the Etsy
-  pattern (path stays canonical, site-specific tracking stripped). The
-  supported-site list is now 19.
+  pattern (path stays canonical, site-specific tracking stripped). With
+  the wishlist round below, the supported-site list is now 24.
 - **Expanded universal tracker list** — 30+ new params and 5 new
   prefix families added to `utm.js`. Notable additions: TikTok Ads
   (`ttclid`), LinkedIn (`li_fat_id`, `trkCampaign`), Pinterest (`epik`),
@@ -55,7 +56,7 @@ features, patch bumps mark bug-fix-only releases.
   as a fallback, then writes the result to the clipboard. Uses
   `contextMenus` + `activeTab` so it doesn't need broad host access.
 - **GitHub Actions CI** (`.github/workflows/test.yml`): parse-checks
-  every JS source file and runs all 1,286 unit tests on every push
+  every JS source file and runs all 1,545 unit tests on every push
   and pull request.
 - **Accessibility polish**: popup respects `prefers-reduced-motion` —
   slider toggles and disclosure-triangle rotation become instant for
@@ -123,6 +124,32 @@ by the "Share Listing" / "Copy clean URL" buttons remain stripped.
   `M` resolved to null and in-page URL cleanup silently did nothing. All
   14 namespaces now in the chain.
 
+### Added — wishlist build-out (2026-06-11)
+
+- **5 more supported sites** (24 total): Substack (posts, comments,
+  Notes, the open.substack share-redirect form; strips `r=` referral
+  codes), Bluesky (posts, custom feeds, starter packs), GitHub
+  (issue/PR/discussion/commit/release permalinks; strips
+  `notification_referrer_id` and friends; `#issuecomment-` anchors
+  preserved), Medium (**preserves `?sk=`, the Friend Link share key —
+  paywall gift links keep working**; strips `source=`), and Quora
+  (questions + answers; strips `share`/`ch`/`oid`/`srid`).
+- **New URL forms on existing sites**: Twitter/X `/i/lists/<id>`;
+  Reddit user-profile front pages (keep `?sort=`/`?t=`); TikTok
+  `/share/photo/<id>` + `/share/user/<id>`; Spotify `/embed/` player
+  forms (keep `?theme=`, `?t=`); LinkedIn `/jobs/search/` (keeps
+  `currentJobId`, `keywords`, `geoId`, `f_TPR`, `distance` — the params
+  that define what the recipient sees).
+- **Popup remembers your expanded categories** across opens
+  (`popupOpenGroups` in chrome.storage.sync).
+- **Pre-commit hook** at `scripts/pre-commit` mirroring CI (parse-check
+  + NUL-byte scan + full test run); install with
+  `cp scripts/pre-commit .git/hooks/pre-commit`.
+- **URL-state assumptions browser-verified** before building: Target's
+  own site config allowlists `preselect` on product pages; Airbnb's
+  gallery adds `?modal=PHOTO_TOUR_SCROLLABLE`; Booking's reviews tab
+  sets `#tab-reviews`; Medium's `sk=` confirmed as the gift-link token.
+
 ### Fixed — pre-release code review (2026-06-11)
 
 A full-codebase review before submission caught one would-have-shipped
@@ -178,7 +205,7 @@ packaging bug and a round of smaller defects:
   install-time prompt is now smaller than in v1.6.x.
 
 ### Documentation
-- README refreshed to reflect 19 supported sites + universal tracking strip.
+- README refreshed to reflect 24 supported sites + universal tracking strip.
 - PRIVACY policy updated to cover the new feature and the optional
   permission.
 - This CHANGELOG file added.

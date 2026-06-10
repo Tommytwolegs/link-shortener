@@ -7,6 +7,20 @@ const {
 } = require(path.join('..', 'src', 'spotify.js'));
 
 const CASES = [
+  // /embed/ player forms
+  { name: 'embed track: utm_source=generator stripped, theme kept',
+    input: 'https://open.spotify.com/embed/track/4uLU6hMCjMI75M1A2tKUQC?utm_source=generator&theme=0',
+    expected: 'https://open.spotify.com/embed/track/4uLU6hMCjMI75M1A2tKUQC?theme=0' },
+  { name: 'embed episode: t kept',
+    input: 'https://open.spotify.com/embed/episode/abc123?utm_source=generator&t=600',
+    expected: 'https://open.spotify.com/embed/episode/abc123?t=600' },
+  { name: 'embed playlist: theme kept, si stripped',
+    input: 'https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?si=blob&theme=0',
+    expected: 'https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?theme=0' },
+  { name: 'embed track already clean',
+    input: 'https://open.spotify.com/embed/track/4uLU6hMCjMI75M1A2tKUQC',
+    expected: 'https://open.spotify.com/embed/track/4uLU6hMCjMI75M1A2tKUQC',
+    expectedNeeds: false },
   { name: 'track: si stripped',
     input: 'https://open.spotify.com/track/abc123?si=trackingblob',
     expected: 'https://open.spotify.com/track/abc123' },

@@ -7,6 +7,17 @@ const {
 } = require(path.join('..', 'src', 'linkedin.js'));
 
 const CASES = [
+  // /jobs/search/ — functional search state kept, tracking stripped
+  { name: 'jobs search: functional params kept, tracking stripped',
+    input: 'https://www.linkedin.com/jobs/search/?currentJobId=3987654321&keywords=software%20engineer&geoId=103644278&refId=abc&trackingId=def&origin=JOB_SEARCH_PAGE',
+    expected: 'https://www.linkedin.com/jobs/search/?currentJobId=3987654321&keywords=software+engineer&geoId=103644278' },
+  { name: 'jobs search: f_TPR + distance kept',
+    input: 'https://www.linkedin.com/jobs/search/?keywords=designer&f_TPR=r86400&distance=25&trk=jobs_jserp',
+    expected: 'https://www.linkedin.com/jobs/search/?keywords=designer&f_TPR=r86400&distance=25' },
+  { name: 'jobs search already clean',
+    input: 'https://www.linkedin.com/jobs/search/?keywords=designer',
+    expected: 'https://www.linkedin.com/jobs/search/?keywords=designer',
+    expectedNeeds: false },
   // /posts/
   { name: 'posts: tracking stripped',
     input: 'https://www.linkedin.com/posts/jane-doe_some-title-activity-7187234567890123456-AbCd?utm_source=share&utm_medium=member_desktop',
@@ -58,9 +69,10 @@ const CASES = [
   { name: 'feed home → null',
     input: 'https://www.linkedin.com/feed/',
     expected: null },
-  { name: 'jobs search → null',
+  { name: 'jobs search now recognized (keywords kept)',
     input: 'https://www.linkedin.com/jobs/search/?keywords=engineer',
-    expected: null },
+    expected: 'https://www.linkedin.com/jobs/search/?keywords=engineer',
+    expectedNeeds: false },
   { name: 'events directory → null (non-numeric id)',
     input: 'https://www.linkedin.com/events/upcoming',
     expected: null },

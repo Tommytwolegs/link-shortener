@@ -68,7 +68,7 @@
   <section class="site-toggles" id="site-toggles">
     <p class="site-toggles-heading">Per site</p>
 
-    <details class="site-group" open>
+    <details class="site-group" data-group="shopping" open>
       <summary>
         <span class="group-name">Shopping</span>
         <span class="group-count" id="group-count-shopping"></span>
@@ -116,7 +116,7 @@
 
     </details>
 
-    <details class="site-group">
+    <details class="site-group" data-group="travel">
       <summary>
         <span class="group-name">Travel</span>
         <span class="group-count" id="group-count-travel"></span>
@@ -155,7 +155,7 @@
       </label>
     </details>
 
-    <details class="site-group">
+    <details class="site-group" data-group="social">
       <summary>
         <span class="group-name">Social &amp; media</span>
         <span class="group-count" id="group-count-social"></span>
@@ -229,6 +229,46 @@
         <span class="switch-label">Spotify</span>
         <span class="switch-control switch-control-sm">
           <input type="checkbox" id="enabledSpotify" data-site="Spotify" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledBluesky">
+        <span class="switch-label">Bluesky</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledBluesky" data-site="Bluesky" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledGithub">
+        <span class="switch-label">GitHub</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledGithub" data-site="Github" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledMedium">
+        <span class="switch-label">Medium</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledMedium" data-site="Medium" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledQuora">
+        <span class="switch-label">Quora</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledQuora" data-site="Quora" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledSubstack">
+        <span class="switch-label">Substack</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledSubstack" data-site="Substack" data-group="social" />
           <span class="slider" aria-hidden="true"></span>
         </span>
       </label>

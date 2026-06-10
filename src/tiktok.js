@@ -8,6 +8,8 @@
 //   /@<user>/photo/<id>           → photo posts
 //   /t/<short>                    → tiktok.com/t short links
 //   /share/video/<id>             → TikTok's canonical "share" form
+//   /share/photo/<id>             → photo-post share form
+//   /share/user/<id>              → user-profile share form
 //   vm.tiktok.com/<short>         → mobile share short links
 //   vt.tiktok.com/<short>         → another short-link variant
 //
@@ -40,6 +42,8 @@
     /^\/t\/[^/?#]+\/?$/,
     // /share/video/<id> — TikTok's canonical share URL form
     /^\/share\/video\/\d+\/?$/,
+    /^\/share\/photo\/\d+\/?$/,
+    /^\/share\/user\/\d+\/?$/,
   ];
 
   function isPostPath(hostname, pathname) {

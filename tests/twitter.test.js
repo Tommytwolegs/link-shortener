@@ -7,6 +7,17 @@ const {
 } = require(path.join('..', 'src', 'twitter.js'));
 
 const CASES = [
+  // /i/lists/<id> — list pages
+  { name: '/i/lists/<id> tracking stripped',
+    input: 'https://twitter.com/i/lists/123456789?s=20&t=trackingblob',
+    expected: 'https://twitter.com/i/lists/123456789' },
+  { name: '/i/lists already clean',
+    input: 'https://x.com/i/lists/123456789',
+    expected: 'https://x.com/i/lists/123456789',
+    expectedNeeds: false },
+  { name: '/i/lists non-numeric → null',
+    input: 'https://x.com/i/lists/abc',
+    expected: null },
   { name: 'twitter.com /status/ tracking stripped',
     input: 'https://twitter.com/jack/status/20?s=20&t=trackingblob',
     expected: 'https://twitter.com/jack/status/20' },

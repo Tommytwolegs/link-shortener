@@ -9,12 +9,13 @@ No analytics. No telemetry. No remote calls.
 
 ## Supported sites
 
-Nineteen, organized by category in the popup:
+Twenty-four, organized by category in the popup:
 
 - **Shopping**: Amazon, eBay, Etsy, Walmart, Target
 - **Travel**: Booking.com, Expedia, Airbnb, Agoda
 - **Social & media**: Facebook, Instagram, Threads, LinkedIn, YouTube,
-  Twitter/X, TikTok, Reddit, Pinterest, Spotify
+  Twitter/X, TikTok, Reddit, Pinterest, Spotify, Bluesky, GitHub,
+  Medium, Quora, Substack
 
 Plus an opt-in **Universal tracking strip** mode that strips well-known
 tracking parameters (`utm_*`, `gclid`, `fbclid`, `mc_cid`, `igshid`,
@@ -61,14 +62,23 @@ The toolbar lives in a closed Shadow DOM so the host site's CSS can't
 touch it. It auto-hides on phone-sized viewports (under 600px wide) and
 can be hidden entirely via a popup toggle.
 
-### Facebook, Instagram, Threads, LinkedIn, YouTube, Twitter/X, TikTok, Reddit, Pinterest, Spotify
+### Facebook, Instagram, Threads, LinkedIn, YouTube, Twitter/X, TikTok, Reddit, Pinterest, Spotify, Bluesky, GitHub, Medium, Quora, Substack
 Address-bar URLs cleaned in place. Each site has its own rules for which
 query parameters are meaningful and which are tracking:
 
-- **YouTube** keeps `?v=` and `?t=` (timestamp); drops `si`, `pp`,
-  `feature`, `list`, `index`, `ab_channel`, `utm_*`.
-- **Spotify** keeps `?t=` (podcast moment-share) on `/track/` and
-  `/episode/`; strips everything else.
+- **YouTube** keeps `?v=`, `?t=` (timestamp), `?list=` and `?index=`
+  (playlist context + position); drops `si`, `pp`, `feature`,
+  `ab_channel`, `utm_*`.
+- **Spotify** keeps `?t=` (podcast moment-share) and `?context=` (queue
+  continuity) on `/track/` and `/episode/`, and `?theme=` on `/embed/`
+  forms; strips everything else.
+- **Medium** keeps `?sk=` — the Friend Link share key that lets
+  non-members read a paywalled story — and strips the `source=`
+  attribution junk.
+- **GitHub** cleans issue / PR / discussion / commit / release-tag
+  permalinks (dropping `notification_referrer_id` and friends) while
+  leaving functional routes like file views and `?tab=` pages alone.
+  Hash deep-links (`#issuecomment-...`) are preserved.
 - **Reddit** cleans post permalinks, the new `/r/<sub>/s/<short>` form,
   user-profile permalinks, and subreddit front pages (keeping `?sort=`
   and `?t=`); preserves `old.reddit.com`, `np.reddit.com`, and other
@@ -158,7 +168,7 @@ script registration described above.
 
 ## Tests
 
-1286 unit tests across 20 modules, runnable with plain Node. From the
+1545 unit tests across 25 modules, runnable with plain Node. From the
 repo root:
 
 ```
@@ -189,6 +199,14 @@ Both scripts parse-check every `src/*.js` with `node --check` before
 staging — a truncated or malformed source file aborts the build. The
 output goes to `dist/link-shortener-<version>.zip` (Chrome) and
 `dist/link-shortener-<version>.xpi` (Firefox).
+
+A pre-commit hook mirroring CI (parse-check + NUL-byte scan + full test
+run) lives at `scripts/pre-commit`. Install it once per clone:
+
+```bash
+cp scripts/pre-commit .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
 
 ## Permissions
 

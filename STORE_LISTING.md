@@ -1,6 +1,6 @@
 # Chrome Web Store Listing Copy
 
-Paste-ready text for the Chrome Web Store submission form. This file is for your reference only — it's not part of the extension itself. Last updated for v1.7.0 (added LinkedIn, eBay, Etsy, Threads, Pinterest, Walmart, Target; added an opt-in Universal tracking strip that works on any site; added a right-click "Copy clean URL" context menu; added an Advanced settings page for the strip; reorganized the popup into collapsible category groups; moved `*://*/*` from required to optional host permission so the install-time prompt no longer asks for access to every site). Brand-name discipline preserved from the v1.6.2 rewrite — each supported site is named exactly once in the long description except Amazon, which gets a few extra mentions because it has unique features.
+Paste-ready text for the Chrome Web Store submission form. This file is for your reference only — it's not part of the extension itself. Last updated for v1.7.0 (added LinkedIn, eBay, Etsy, Threads, Pinterest, Walmart, Target, Substack, Bluesky, GitHub, Medium, Quora — 24 supported sites; added an opt-in Universal tracking strip that works on any site; added a right-click "Copy clean URL" context menu; added an Advanced settings page for the strip; reorganized the popup into collapsible category groups; moved `*://*/*` from required to optional host permission so the install-time prompt no longer asks for access to every site). Brand-name discipline preserved from the v1.6.2 rewrite — each supported site is named exactly once in the long description except Amazon, which gets a few extra mentions because it has unique features.
 
 **Important for v1.7.0 submission:** the install-time permission prompt is now minimal — only the fixed per-site host list is required. The Universal tracking strip's `*://*/*` access is requested at runtime, the first time the user enables the toggle, via `chrome.permissions.request`. The `contextMenus` + `activeTab` permissions are required for the new "Copy clean URL" right-click menu. See "Permission justifications" below.
 
@@ -30,7 +30,9 @@ Long URLs from popular shopping, travel, and social sites are full of tracking I
 
 WHAT GETS SHORTENED
 
-The extension cleans URLs on Amazon, eBay, Etsy, Walmart, Target, Booking, Expedia, Airbnb, Agoda, Facebook, Instagram, Threads, LinkedIn, YouTube, Twitter/X, TikTok, Reddit, Pinterest, and Spotify.
+The extension cleans URLs on Amazon, eBay, Etsy, Walmart, Target, Booking, Expedia, Airbnb, Agoda, Facebook, Instagram, Threads, LinkedIn, YouTube, Twitter/X, TikTok, Reddit, Pinterest, Spotify, Substack, Bluesky, GitHub, Medium, and Quora.
+
+Functional state survives the cleanup: variant selectors stay locked, playlist position is kept, comment deep-links still scroll to the right comment, and paywall gift links keep working — only the tracking clutter goes.
 
 HOW IT WORKS
 
@@ -56,7 +58,7 @@ A few thousand lines of plain hand-written JavaScript running entirely on your m
 
 OPEN SOURCE
 
-Source code and 1286 unit tests at https://github.com/Tommytwolegs/link-shortener
+Source code and 1545 unit tests at https://github.com/Tommytwolegs/link-shortener
 
 ---
 
@@ -141,7 +143,7 @@ NO REMOTE CODE
 No eval, no Function constructor, no remote script loading, no innerHTML on user-controlled data. All JS is shipped inside the xpi. No CDNs.
 
 BUILD REPRODUCIBILITY
-Built with package.sh from the same source tree at https://github.com/Tommytwolegs/link-shortener (tag v1.7.0). Zero npm dependencies — pure hand-written JS. To reproduce: clone the repo (the repo root is the extension root), check out tag v1.7.0, and run `bash package.sh`. The script parse-checks every src/*.js with `node --check` before zipping (guardrail added after v1.6.3 shipped truncated content.js). Output is dist/link-shortener-1.7.0.xpi. 1286 unit tests across 20 files in tests/, runnable with `for t in tests/*.test.js; do node "$t"; done`.
+Built with package.sh from the same source tree at https://github.com/Tommytwolegs/link-shortener (tag v1.7.0). Zero npm dependencies — pure hand-written JS. To reproduce: clone the repo (the repo root is the extension root), check out tag v1.7.0, and run `bash package.sh`. The script parse-checks every src/*.js with `node --check` before zipping (guardrail added after v1.6.3 shipped truncated content.js). Output is dist/link-shortener-1.7.0.xpi. 1545 unit tests across 25 files in tests/, runnable with `for t in tests/*.test.js; do node "$t"; done`.
 
 CHANGED FROM v1.6.3
 - Seven new site modules: linkedin, ebay, etsy, threads, pinterest, walmart, target.
@@ -158,6 +160,21 @@ browser_specific_settings.gecko.strict_min_version = 121.0 (needed for chrome.sc
 A background.scripts array is provided alongside service_worker because Firefox 121 still uses the event-page fallback. All URL modules are listed in load order before background.js.
 
 ---
+
+## Microsoft Edge Add-ons (Partner Center)
+
+Edge uses the SAME zip as the Chrome Web Store — `dist/link-shortener-<version>.zip`. No
+manifest changes needed (Edge is Chromium; `minimum_chrome_version` is honored).
+
+- Submit at: https://partner.microsoft.com/dashboard/microsoftedge/
+- A (free) Partner Center account is required the first time.
+- Reuse the long description, single-purpose description, and permission
+  justifications above verbatim — Edge's form fields mirror Chrome's.
+- Edge also asks for a privacy policy URL — use the same one:
+  https://github.com/Tommytwolegs/link-shortener/blob/main/PRIVACY.md
+- Edge review historically takes a few business days; there is no equivalent
+  of Chrome's "excessive keywords" rejection on record, but keep the brand
+  discipline anyway (the same description ships everywhere).
 
 ## Screenshots to prepare (1280×800 recommended)
 
