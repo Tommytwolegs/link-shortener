@@ -28,7 +28,10 @@
   'use strict';
 
   // Expedia ships per regional TLD. Match the common ones — anything else
-  // falls through and the user can ask us to add it.
+  // falls through and the user can ask us to add it. NOTE: this regex
+  // accepts more TLDs than the manifest injects content scripts on — the
+  // extras are reachable only via the background "Copy clean URL" context
+  // menu (activeTab).
   const EXPEDIA_HOST_REGEX =
     /(?:^|\.)expedia\.(?:com|co\.uk|ca|com\.au|de|fr|it|es|nl|com\.mx|com\.br|co\.jp|com\.sg|co\.in|ie|be|at|dk|fi|no|se|ch|com\.hk|co\.kr|com\.tw|co\.nz|co\.th|com\.my|com\.ph|com\.vn|com\.tr)$/i;
 

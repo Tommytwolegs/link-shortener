@@ -21,10 +21,14 @@ const CASES = [
     expected: 'https://www.target.com/p/some-product/-/A-89898989/',
     expectedNeeds: false },
 
-  // Tracking strip
-  { name: 'preselect stripped',
+  // Variant selector preserved — preselect carries the child TCIN of the
+  // size/color the user picked (Target's analog of Amazon's th/psc).
+  { name: 'preselect (variant selector) preserved',
     input: 'https://www.target.com/p/foo/-/A-12345678?preselect=99999999',
-    expected: 'https://www.target.com/p/foo/-/A-12345678' },
+    expected: 'https://www.target.com/p/foo/-/A-12345678?preselect=99999999',
+    expectedNeeds: false },
+
+  // Tracking strip
   { name: 'lnk + clkid + ref stripped',
     input: 'https://www.target.com/p/foo/-/A-12345678?lnk=item&clkid=abc&ref=carousel',
     expected: 'https://www.target.com/p/foo/-/A-12345678' },
@@ -40,7 +44,7 @@ const CASES = [
 
   // Hash preservation
   { name: 'hash preserved alongside tracking strip',
-    input: 'https://www.target.com/p/foo/-/A-12345678?preselect=999#reviews',
+    input: 'https://www.target.com/p/foo/-/A-12345678?clkid=abc#reviews',
     expected: 'https://www.target.com/p/foo/-/A-12345678#reviews' },
   { name: 'hash preserved when no tracking present',
     input: 'https://www.target.com/p/foo/-/A-12345678#specs',
@@ -52,9 +56,9 @@ const CASES = [
     input: 'https://www.target.com/p/foo/-/A-12345678?storeId=2999',
     expected: 'https://www.target.com/p/foo/-/A-12345678?storeId=2999',
     expectedNeeds: false },
-  { name: 'mixed: tracking stripped, functional preserved',
-    input: 'https://www.target.com/p/foo/-/A-12345678?preselect=999&storeId=2999',
-    expected: 'https://www.target.com/p/foo/-/A-12345678?storeId=2999' },
+  { name: 'mixed: tracking stripped, preselect + functional preserved',
+    input: 'https://www.target.com/p/foo/-/A-12345678?preselect=999&clkid=abc&storeId=2999',
+    expected: 'https://www.target.com/p/foo/-/A-12345678?preselect=999&storeId=2999' },
 
   // Not a product
   { name: 'category page → null',
@@ -108,6 +112,12 @@ check('isPostUrl: /p/.../-/A-...', isPostUrl('https://www.target.com/p/foo/-/A-1
 check('isPostUrl: /c/', isPostUrl('https://www.target.com/c/electronics/-/N-1'), false);
 check('shorten on garbage', shortenTargetUrl('not a url'), null);
 check('needs on garbage', needsShortening('not a url'), false);
+
+// Mutation guard: URL-object inputs must not be modified in place.
+const probe = new URL('https://www.target.com/p/foo/-/A-12345678?clkid=abc');
+check('shorten on URL object', shortenTargetUrl(probe), 'https://www.target.com/p/foo/-/A-12345678');
+check('URL-object input not mutated', probe.href, 'https://www.target.com/p/foo/-/A-12345678?clkid=abc');
+check('needs on URL object', needsShortening(new URL('https://www.target.com/p/foo/-/A-12345678?clkid=abc')), true);
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed (' + (passed + failed) + ' total)');
 if (failed > 0) {

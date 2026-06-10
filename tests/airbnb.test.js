@@ -221,6 +221,11 @@ t('shortUrlForBar: drops empty params', () =>
     ),
     'https://www.airbnb.com/rooms/12345?check_out=2026-05-29&adults=2',
   ));
+t('shortUrlForBar: hash preserved', () =>
+  assertEq(
+    shortUrlForBar('https://www.airbnb.com/rooms/12345?source_impression_id=xyz#photos'),
+    'https://www.airbnb.com/rooms/12345#photos',
+  ));
 t('shortUrlForBar: non-listing page returns null', () =>
   assertEq(
     shortUrlForBar(

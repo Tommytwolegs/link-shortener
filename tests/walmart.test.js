@@ -114,6 +114,12 @@ check('isPostUrl: /browse/', isPostUrl('https://www.walmart.com/browse/x/12345')
 check('shorten on garbage', shortenWalmartUrl('not a url'), null);
 check('needs on garbage', needsShortening('not a url'), false);
 
+// Mutation guard: URL-object inputs must not be modified in place.
+const probe = new URL('https://www.walmart.com/ip/Foo/123456?athcpid=abc');
+check('shorten on URL object', shortenWalmartUrl(probe), 'https://www.walmart.com/ip/Foo/123456');
+check('URL-object input not mutated', probe.href, 'https://www.walmart.com/ip/Foo/123456?athcpid=abc');
+check('needs on URL object', needsShortening(new URL('https://www.walmart.com/ip/Foo/123456?athcpid=abc')), true);
+
 console.log('\n' + passed + ' passed, ' + failed + ' failed (' + (passed + failed) + ' total)');
 if (failed > 0) {
   console.log('\nFailures:');

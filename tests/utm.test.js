@@ -236,9 +236,9 @@ const CASES = [
     input: 'https://example.com/buy?ttclid=abc123',
     expected: 'https://example.com/buy' },
   // LinkedIn
-  { name: 'li_fat_id + trk + trkCampaign (LinkedIn)',
+  { name: 'li_fat_id + trkCampaign (LinkedIn) stripped; bare trk preserved (too generic)',
     input: 'https://example.com/?li_fat_id=abc&trk=public_post&trkCampaign=spring',
-    expected: 'https://example.com/' },
+    expected: 'https://example.com/?trk=public_post' },
   // Pinterest
   { name: 'epik (Pinterest) stripped',
     input: 'https://example.com/?epik=long_blob_token',
@@ -315,9 +315,9 @@ const CASES = [
   { name: 'real-world: TikTok ad landing page',
     input: 'https://shop.example.com/product?id=42&ttclid=abc&utm_source=tiktok&utm_medium=cpc',
     expected: 'https://shop.example.com/product?id=42' },
-  { name: 'real-world: LinkedIn share with tracking',
+  { name: 'real-world: LinkedIn share with tracking (trk left for the LinkedIn module)',
     input: 'https://example.com/blog/post?trk=public_post-feed-share&li_fat_id=abc&id=1',
-    expected: 'https://example.com/blog/post?id=1' },
+    expected: 'https://example.com/blog/post?trk=public_post-feed-share&id=1' },
   { name: 'real-world: affiliate-network click-through',
     input: 'https://store.example.com/?rfsn=12345.abc&sscid=def&utm_source=affiliate&pid=99',
     expected: 'https://store.example.com/?pid=99' },
@@ -390,6 +390,17 @@ check('isTrackingParam: utm_source false when in keep set',
 check('isTrackingParam: utm_medium true when only utm_source in keep set',
   isTrackingParam('utm_medium', new Set(['utm_source'])),
   true);
+
+// Hash edge case: a '?' inside the hash must survive the dangling-? cleanup.
+check('hash containing ? preserved when query fully stripped',
+  stripTrackingParams('https://example.com/?utm_source=x#sec?'),
+  'https://example.com/#sec?');
+
+// Mutation guard: URL-object inputs must not be modified in place.
+const probe = new URL('https://example.com/?utm_source=x&id=1');
+const probeOut = stripTrackingParams(probe);
+check('URL-object input not mutated', probe.href, 'https://example.com/?utm_source=x&id=1');
+check('URL-object input still stripped correctly', probeOut, 'https://example.com/?id=1');
 
 // Garbage inputs
 check('strip on garbage string returns input unchanged', stripTrackingParams('not a url'), 'not a url');

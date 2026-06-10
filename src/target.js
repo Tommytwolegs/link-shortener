@@ -10,9 +10,13 @@
 //
 // "tcin" is Target's product ID, e.g. A-89898989 (always digits after A-).
 //
-// Tracking parameters stripped: preselect, lnk, clkid, ref, linkId,
-// searchTerm, afid, cpng, ci_src, ci_sku, plus generic ad-network params
-// already in the universal strip list.
+// Tracking parameters stripped: lnk, clkid, ref, linkId, searchTerm,
+// afid, cpng, ci_src, ci_sku, plus generic ad-network params already in
+// the universal strip list.
+//
+// `preselect` is PRESERVED — it carries the child TCIN of the size/color
+// variant the user picked (Target's analog of Amazon's th/psc). Stripping
+// it would snap shared links back to the default variant.
 //
 // Plus URLs (/+/<slug>) — collections, deal pages, category landings —
 // are NOT recognized.
@@ -51,14 +55,16 @@
 
   // Target-specific tracking parameters. Universal strip handles utm_/gclid/etc.
   const TRACKING_PARAMS = new Set([
-    'preselect', 'lnk', 'clkid', 'ref', 'linkid',
+    'lnk', 'clkid', 'ref', 'linkid',
     'searchterm', 'afid', 'cpng', 'ci_src', 'ci_sku',
     'lookup', 'pi', 'sgo',
   ]);
 
   function shortenTargetUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    // Clone URL-object inputs — searchParams.delete below would otherwise
+    // mutate the caller's object (and break needsShortening's comparison).
+    try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
     if (!isTargetHost(url.hostname)) return null;
     if (!isProductPath(url.pathname)) return null;
     const names = Array.from(url.searchParams.keys());

@@ -21,7 +21,9 @@
 //   * Instagram share identifiers: igshid, ig_rid, ig_share, igsh.
 //   * Microsoft Ads / Bing Clarity: msclkid, msockid.
 //   * TikTok Ads: ttclid.
-//   * LinkedIn: li_fat_id, trk, trkCampaign.
+//   * LinkedIn: li_fat_id, trkCampaign. (Bare `trk` is intentionally NOT
+//     stripped universally — too generic a name for a host-agnostic
+//     denylist; the LinkedIn per-site module strips it on linkedin.com.)
 //   * Pinterest: epik.
 //   * Snapchat Ads: ScCid.
 //   * Reddit Ads: rdt_cid.
@@ -83,7 +85,7 @@
     // TikTok Ads
     'ttclid',
     // LinkedIn
-    'li_fat_id', 'trk', 'trkcampaign',
+    'li_fat_id', 'trkcampaign',
     // Pinterest
     'epik',
     // Snapchat Ads
@@ -166,7 +168,9 @@
   function stripTrackingParams(input, options) {
     let url;
     try {
-      url = typeof input === 'string' ? new URL(input) : input;
+      // Clone URL-object inputs so we never mutate the caller's object
+      // (searchParams.delete below would otherwise modify it in place).
+      url = new URL(typeof input === 'string' ? input : input.href);
     } catch (_e) {
       return typeof input === 'string' ? input : null;
     }
@@ -196,11 +200,17 @@
     // url.href is now the cleaned form. URL serialization may slightly
     // reformat (e.g. percent-encoding, trailing `?`) — we accept that.
     let cleaned = url.href;
-    // If we stripped everything in the query, URL still serializes with no
-    // trailing `?`, which is what we want. But the URL API does leave a
-    // bare `?` if the last param had a `=` and no value in some cases —
-    // be defensive and trim a dangling `?` not followed by anything.
-    cleaned = cleaned.replace(/\?(?=#|$)/, '');
+    // If we stripped everything in the query, URL normally serializes with
+    // no trailing `?`. Be defensive anyway — but only trim a dangling `?`
+    // sitting at the end of the pre-hash part (i.e. one belonging to the
+    // now-empty query). A `?` inside the hash must survive.
+    if (!url.search) {
+      const hashIdx = cleaned.indexOf('#');
+      const head = hashIdx === -1 ? cleaned : cleaned.slice(0, hashIdx);
+      if (head.endsWith('?')) {
+        cleaned = head.slice(0, -1) + (hashIdx === -1 ? '' : cleaned.slice(hashIdx));
+      }
+    }
     return cleaned;
   }
 

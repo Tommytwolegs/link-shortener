@@ -4,8 +4,9 @@
 //
 // Recognized forms and how each is cleaned:
 //
-//   /watch?v=ID&t=N&list=PL&...   → keep ?v= and ?t= (timestamp); drop si,
-//                                    pp, feature, list, index, ab_channel,
+//   /watch?v=ID&t=N&list=PL&...   → keep ?v=, ?t= (timestamp), ?list= and
+//                                    ?index= (playlist context + position);
+//                                    drop si, pp, feature, ab_channel,
 //                                    utm_*, etc.
 //   /shorts/ID?si=X               → /shorts/ID
 //   /playlist?list=PLID&...       → keep ?list= only

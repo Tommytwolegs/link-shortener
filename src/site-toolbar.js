@@ -103,8 +103,8 @@
     }
 
     let host = null;
-    let buttonEls = []; // [{ el, originalLabel, def }]
-    let toastTimer = null;
+    let buttonEls = []; // [{ el, originalLabel, def, toastTimer }]
+    let pollTimer = null;
     let lastHref = location.href;
 
     // -- UI lifecycle ------------------------------------------------------
@@ -150,9 +150,8 @@
       if (!host) return;
       host.remove();
       host = null;
+      for (const b of buttonEls) clearTimeout(b.toastTimer);
       buttonEls = [];
-      clearTimeout(toastTimer);
-      toastTimer = null;
     }
 
     function refreshButtonStates() {
@@ -205,8 +204,11 @@
       if (!found) return;
       btnEl.classList.add('copied');
       btnEl.textContent = 'Copied!';
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
+      // Per-button timer — a shared one would cancel the first button's
+      // reset when a second button is clicked within the toast window,
+      // leaving it stuck on "Copied!".
+      clearTimeout(found.toastTimer);
+      found.toastTimer = setTimeout(() => {
         btnEl.classList.remove('copied');
         btnEl.textContent = found.originalLabel;
       }, 1500);
@@ -245,6 +247,11 @@
     }
 
     function reconcile() {
+      // Polling only runs while the site is enabled — mirrors
+      // social-content.js. (It must run on non-listing pages too, so an
+      // SPA navigation INTO a listing page is still detected.)
+      if (isOn()) startPolling();
+      else stopPolling();
       if (!isOn() || !config.isListingPage(location.href)) {
         destroyUI();
         lastHref = location.href;
@@ -330,13 +337,24 @@
     // Content scripts run in an isolated world so we can't monkey-patch the
     // page's history API directly. Skip when the tab is hidden — no URL can
     // have changed without user interaction; visibilitychange catches up.
-    setInterval(() => {
-      if (typeof document !== 'undefined' && document.hidden) return;
-      if (location.href !== lastHref) {
-        lastHref = location.href;
-        reconcile();
+    // Started/stopped from reconcile() based on the toggles.
+    function startPolling() {
+      if (pollTimer) return;
+      pollTimer = setInterval(() => {
+        if (typeof document !== 'undefined' && document.hidden) return;
+        if (location.href !== lastHref) {
+          lastHref = location.href;
+          reconcile();
+        }
+      }, 500);
+    }
+
+    function stopPolling() {
+      if (pollTimer) {
+        clearInterval(pollTimer);
+        pollTimer = null;
       }
-    }, 500);
+    }
 
     // When a backgrounded tab returns to the foreground, check immediately
     // in case the URL changed while we were skipping polls.

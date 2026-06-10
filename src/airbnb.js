@@ -27,7 +27,9 @@
   'use strict';
 
   // Airbnb has regional TLDs but they normally redirect to airbnb.com with a
-  // locale param. Match the common ones.
+  // locale param. Match the common ones. NOTE: this regex accepts more TLDs
+  // than the manifest injects content scripts on — the extras are reachable
+  // only via the background "Copy clean URL" context menu (activeTab).
   const AIRBNB_HOST_REGEX =
     /(?:^|\.)airbnb\.(?:com|co\.uk|ca|com\.au|de|fr|it|es|nl|com\.mx|com\.br|co\.jp|com\.sg|co\.in|ie|be|at|dk|fi|no|se|ch|com\.hk|co\.kr|com\.tw|co\.nz|com\.tr|ru|pl|cz|gr|pt)$/i;
 
@@ -127,10 +129,13 @@
       if (val !== null && val !== '') qs.set(key, val);
     }
 
+    // Hash preserved, same as the other hotel modules — harmless when
+    // absent, and future-proof against hash routing.
+    const hash = url.hash || '';
     const search = qs.toString();
     return search
-      ? `${url.protocol}//${url.host}${url.pathname}?${search}`
-      : `${url.protocol}//${url.host}${url.pathname}`;
+      ? `${url.protocol}//${url.host}${url.pathname}?${search}${hash}`
+      : `${url.protocol}//${url.host}${url.pathname}${hash}`;
   }
 
   const api = {

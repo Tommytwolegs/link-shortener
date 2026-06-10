@@ -50,8 +50,15 @@
   }
 
   function setUi(items) {
-    skipDomainsEl.value = (items.utmStripSkipDomains || []).join('\n');
-    keepParamsEl.value = (items.utmStripKeepParams || []).join('\n');
+    // Don't clobber a textarea the user is actively editing — onChanged can
+    // fire mid-edit (popup toggle, or a sync write from another device).
+    const active = document.activeElement;
+    if (active !== skipDomainsEl) {
+      skipDomainsEl.value = (items.utmStripSkipDomains || []).join('\n');
+    }
+    if (active !== keepParamsEl) {
+      keepParamsEl.value = (items.utmStripKeepParams || []).join('\n');
+    }
     if (items.enabledUtmStrip) {
       stripStatusEl.textContent = 'Universal tracking strip is ON.';
       stripStatusEl.classList.add('on');

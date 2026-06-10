@@ -132,8 +132,8 @@
     } else if (utmActive) {
       status.textContent = 'On -- universal only';
     } else if (sitesFrag === 'all sites') {
-      // Friendly all-on state matches the historical text.
-      status.innerHTML = 'On <em>some</em> sites';
+      // Every per-site toggle is on (universal strip off).
+      status.innerHTML = 'On <em>all</em> sites';
     } else {
       status.textContent = 'On -- ' + sitesFrag;
     }

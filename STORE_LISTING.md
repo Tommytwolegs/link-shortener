@@ -56,7 +56,7 @@ A few thousand lines of plain hand-written JavaScript running entirely on your m
 
 OPEN SOURCE
 
-Source code and 1276 unit tests at https://github.com/Tommytwolegs/link-shortener
+Source code and 1286 unit tests at https://github.com/Tommytwolegs/link-shortener
 
 ---
 
@@ -141,7 +141,7 @@ NO REMOTE CODE
 No eval, no Function constructor, no remote script loading, no innerHTML on user-controlled data. All JS is shipped inside the xpi. No CDNs.
 
 BUILD REPRODUCIBILITY
-Built with package.sh from the same source tree at https://github.com/Tommytwolegs/link-shortener (tag v1.7.0). Zero npm dependencies — pure hand-written JS. To reproduce: clone the repo (the repo root is the extension root), check out tag v1.7.0, and run `bash package.sh`. The script parse-checks every src/*.js with `node --check` before zipping (guardrail added after v1.6.3 shipped truncated content.js). Output is dist/link-shortener-1.7.0.xpi. 1276 unit tests across 20 files in tests/, runnable with `for t in tests/*.test.js; do node "$t"; done`.
+Built with package.sh from the same source tree at https://github.com/Tommytwolegs/link-shortener (tag v1.7.0). Zero npm dependencies — pure hand-written JS. To reproduce: clone the repo (the repo root is the extension root), check out tag v1.7.0, and run `bash package.sh`. The script parse-checks every src/*.js with `node --check` before zipping (guardrail added after v1.6.3 shipped truncated content.js). Output is dist/link-shortener-1.7.0.xpi. 1286 unit tests across 20 files in tests/, runnable with `for t in tests/*.test.js; do node "$t"; done`.
 
 CHANGED FROM v1.6.3
 - Seven new site modules: linkedin, ebay, etsy, threads, pinterest, walmart, target.

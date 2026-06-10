@@ -46,29 +46,6 @@ if (typeof importScripts === 'function') {
   );
 }
 
-// User's "Always keep these parameters" list for the Universal tracking
-// strip. Cached at module load and kept in sync with chrome.storage.sync so
-// the context-menu "Copy clean URL" applies the same keep-list the on-page
-// universal stripper does. (Skip-domains is intentionally NOT cached here:
-// the context menu is an explicit user gesture, so the cleanest possible
-// URL is what they want even on hosts they've allowlisted.)
-let cachedKeepParams = [];
-
-if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
-  chrome.storage.sync.get({ utmStripKeepParams: [] }, (items) => {
-    if (Array.isArray(items.utmStripKeepParams)) {
-      cachedKeepParams = items.utmStripKeepParams;
-    }
-  });
-  chrome.storage.onChanged.addListener((changes, area) => {
-    if (area !== 'sync') return;
-    if (Object.prototype.hasOwnProperty.call(changes, 'utmStripKeepParams')) {
-      const v = changes.utmStripKeepParams.newValue;
-      cachedKeepParams = Array.isArray(v) ? v : [];
-    }
-  });
-}
-
 const AMAZON_URL_FILTERS = [
   { hostSuffix: 'amazon.com' }, { hostSuffix: 'amazon.co.uk' },
   { hostSuffix: 'amazon.ca' }, { hostSuffix: 'amazon.de' },
@@ -307,25 +284,28 @@ if (chrome.permissions && chrome.permissions.onRemoved) {
 
 const CONTEXT_MENU_ID = 'copy-clean-url';
 
-chrome.runtime.onInstalled.addListener(() => {
-  try {
+// removeAll + create is idempotent and covers both browsers: Chrome
+// persists menus across restarts, Firefox event pages don't reliably —
+// so we recreate on BOTH onInstalled and onStartup. Note that
+// contextMenus.create reports duplicate-id failures via
+// chrome.runtime.lastError in its callback; a try/catch can't see them.
+function ensureContextMenu() {
+  chrome.contextMenus.removeAll(() => {
+    void chrome.runtime.lastError;
     chrome.contextMenus.create({
       id: CONTEXT_MENU_ID,
       title: 'Copy clean URL',
       contexts: ['link', 'page'],
-    });
-  } catch (e) {
-    // Menu may already exist (re-install); update is harmless.
-    chrome.contextMenus.update(CONTEXT_MENU_ID, {
-      title: 'Copy clean URL',
-      contexts: ['link', 'page'],
     }, () => void chrome.runtime.lastError);
-  }
-});
+  });
+}
+
+chrome.runtime.onInstalled.addListener(ensureContextMenu);
+chrome.runtime.onStartup.addListener(ensureContextMenu);
 
 // Try every per-site shortener in turn, then fall back to UTM stripping,
 // then to the original URL. Returns the cleanest form we can produce.
-function cleanAnyUrl(input) {
+function cleanAnyUrl(input, keepParams) {
   let url;
   try {
     url = new URL(input);
@@ -425,7 +405,7 @@ function cleanAnyUrl(input) {
   // regardless of the user's toggle setting. The user explicitly invoked
   // "Copy clean URL" so we give them the cleanest form we can.
   if (self.UtmStripper) {
-    const opts = cachedKeepParams.length ? { keepParams: cachedKeepParams } : undefined;
+    const opts = keepParams && keepParams.length ? { keepParams } : undefined;
     const stripped = self.UtmStripper.stripTrackingParams(working, opts);
     if (stripped) working = stripped;
   }
@@ -436,8 +416,16 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId !== CONTEXT_MENU_ID) return;
   const sourceUrl = info.linkUrl || info.pageUrl;
   if (!sourceUrl) return;
-  const cleaned = cleanAnyUrl(sourceUrl);
   if (!tab || tab.id == null) return;
+  // Read the user's "always keep these parameters" list fresh on every
+  // click. If this click is what woke the service worker, a module-level
+  // cache would still be empty at this point — reading storage inside the
+  // handler avoids that race. (Skip-domains is intentionally not honored
+  // here: the context menu is an explicit user gesture, so the cleanest
+  // possible URL is what they want even on hosts they've allowlisted.)
+  chrome.storage.sync.get({ utmStripKeepParams: [] }, (items) => {
+  const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
+  const cleaned = cleanAnyUrl(sourceUrl, keepParams);
   // Inject a tiny function into the active tab that writes to the clipboard.
   // `activeTab` permission grants us temporary access on user gesture.
   chrome.scripting.executeScript({
@@ -467,32 +455,42 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     },
     args: [cleaned],
   }, () => void chrome.runtime.lastError);
+  });
 });
 
 // -- SPA-navigation fallback --------------------------------------------------
 
+// [namespace, host-check method] for every per-site module. Checked
+// defensively: if a module failed to load (e.g. a packaging mistake left
+// one out of the Firefox background.scripts array), we skip it rather
+// than throw on every navigation event.
+const HOST_CHECKS = [
+  ['AmazonLinkShortener', 'isAmazonHost'],
+  ['AgodaLinkShortener', 'isAgodaHost'],
+  ['BookingLinkShortener', 'isBookingHost'],
+  ['ExpediaLinkShortener', 'isExpediaHost'],
+  ['AirbnbLinkShortener', 'isAirbnbHost'],
+  ['FacebookLinkShortener', 'isFacebookHost'],
+  ['InstagramLinkShortener', 'isInstagramHost'],
+  ['YoutubeLinkShortener', 'isYoutubeHost'],
+  ['TwitterLinkShortener', 'isTwitterHost'],
+  ['TiktokLinkShortener', 'isTiktokHost'],
+  ['RedditLinkShortener', 'isRedditHost'],
+  ['SpotifyLinkShortener', 'isSpotifyHost'],
+  ['LinkedinLinkShortener', 'isLinkedinHost'],
+  ['EbayLinkShortener', 'isEbayHost'],
+  ['EtsyLinkShortener', 'isEtsyHost'],
+  ['ThreadsLinkShortener', 'isThreadsHost'],
+  ['PinterestLinkShortener', 'isPinterestHost'],
+  ['WalmartLinkShortener', 'isWalmartHost'],
+  ['TargetLinkShortener', 'isTargetHost'],
+];
+
 function isHandledHost(hostname) {
-  return (
-    self.AmazonLinkShortener.isAmazonHost(hostname) ||
-    self.AgodaLinkShortener.isAgodaHost(hostname) ||
-    self.BookingLinkShortener.isBookingHost(hostname) ||
-    self.ExpediaLinkShortener.isExpediaHost(hostname) ||
-    self.AirbnbLinkShortener.isAirbnbHost(hostname) ||
-    self.FacebookLinkShortener.isFacebookHost(hostname) ||
-    self.InstagramLinkShortener.isInstagramHost(hostname) ||
-    self.YoutubeLinkShortener.isYoutubeHost(hostname) ||
-    self.TwitterLinkShortener.isTwitterHost(hostname) ||
-    self.TiktokLinkShortener.isTiktokHost(hostname) ||
-    self.RedditLinkShortener.isRedditHost(hostname) ||
-    self.SpotifyLinkShortener.isSpotifyHost(hostname) ||
-    self.LinkedinLinkShortener.isLinkedinHost(hostname) ||
-    self.EbayLinkShortener.isEbayHost(hostname) ||
-    self.EtsyLinkShortener.isEtsyHost(hostname) ||
-    self.ThreadsLinkShortener.isThreadsHost(hostname) ||
-    self.PinterestLinkShortener.isPinterestHost(hostname) ||
-    self.WalmartLinkShortener.isWalmartHost(hostname) ||
-    self.TargetLinkShortener.isTargetHost(hostname)
-  );
+  return HOST_CHECKS.some(([ns, fn]) => {
+    const m = self[ns];
+    return !!(m && typeof m[fn] === 'function' && m[fn](hostname));
+  });
 }
 
 function pingTab(tabId, frameId) {
@@ -518,4 +516,10 @@ function handleNav(details) {
   pingTab(details.tabId, details.frameId);
 }
 
-chrome.webNavigation.onHistoryStateUpdated.addListener(handleNav);
+// The URL filter keeps the event from firing at all on unrelated sites;
+// isHandledHost() inside handleNav stays as the precise check (hostSuffix
+// is a plain string-suffix match, so e.g. "notamazon.com" passes the
+// filter but is correctly rejected by the host regexes).
+chrome.webNavigation.onHistoryStateUpdated.addListener(handleNav, {
+  url: ALL_URL_FILTERS,
+});

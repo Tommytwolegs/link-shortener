@@ -4,7 +4,7 @@ All notable changes to Jimothy's Link Shortener. Versions follow
 [Semantic Versioning](https://semver.org/) loosely — minor bumps mark new
 features, patch bumps mark bug-fix-only releases.
 
-## [1.7.0] — 2026-05-29
+## [1.7.0] — 2026-06-11
 
 ### Added
 - **5 new supported sites**: LinkedIn, eBay, Etsy, Threads, Pinterest. Each
@@ -31,7 +31,7 @@ features, patch bumps mark bug-fix-only releases.
   supported-site list is now 19.
 - **Expanded universal tracker list** — 30+ new params and 5 new
   prefix families added to `utm.js`. Notable additions: TikTok Ads
-  (`ttclid`), LinkedIn (`li_fat_id`, `trk`), Pinterest (`epik`),
+  (`ttclid`), LinkedIn (`li_fat_id`, `trkCampaign`), Pinterest (`epik`),
   Snapchat (`ScCid`), Reddit Ads (`rdt_cid`), Branch.io
   (`_branch_match_id`), Bing Clarity (`msockid`), Klaviyo email
   (`_ke`), ConvertKit (`ck_subscriber_id`), Drip (`__s`), Bronto
@@ -55,7 +55,7 @@ features, patch bumps mark bug-fix-only releases.
   as a fallback, then writes the result to the clipboard. Uses
   `contextMenus` + `activeTab` so it doesn't need broad host access.
 - **GitHub Actions CI** (`.github/workflows/test.yml`): parse-checks
-  every JS source file and runs all 1,276 unit tests on every push
+  every JS source file and runs all 1,286 unit tests on every push
   and pull request.
 - **Accessibility polish**: popup respects `prefers-reduced-motion` —
   slider toggles and disclosure-triangle rotation become instant for
@@ -113,15 +113,59 @@ by the "Share Listing" / "Copy clean URL" buttons remain stripped.
   deep-links to specific comments.
 - **YouTube**: `list` + `index` preserved on `/watch` and `/playlist` so
   shared "video #5 in playlist X" URLs keep playlist context.
-- **Hotel sites**: `booking.js`, `expedia.js`, and `agoda.js` now preserve
-  the URL fragment in `shortUrlForBar` (Airbnb already did). Matters most
-  for Booking, which uses `#tab-reviews`, `#hotelTmpl`, `#map_opened` for
+- **Hotel sites**: `booking.js`, `expedia.js`, `agoda.js`, and `airbnb.js`
+  now preserve the URL fragment in `shortUrlForBar`. Matters most for
+  Booking, which uses `#tab-reviews`, `#hotelTmpl`, `#map_opened` for
   in-page tab/modal state.
 - **social-content.js dispatcher**: missing 7 site namespaces (LinkedIn,
   eBay, Etsy, Threads, Pinterest, Walmart, Target). The dispatcher was only
   loading the original 7 social sites; on the newer 7, the dispatcher's
   `M` resolved to null and in-page URL cleanup silently did nothing. All
   14 namespaces now in the chain.
+
+### Fixed — pre-release code review (2026-06-11)
+
+A full-codebase review before submission caught one would-have-shipped
+packaging bug and a round of smaller defects:
+
+- **package.ps1** (Windows build): the Firefox `background.scripts` array
+  was missing `walmart.js`, `target.js`, and `utm.js` — a Windows-built
+  xpi would have thrown on every navigation event in Firefox's event-page
+  mode. Now identical to package.sh (21 entries). Also added a guardrail
+  that fails the build if zip entries contain backslash separators
+  (Windows PowerShell 5.1's Compress-Archive does this; the stores reject
+  such archives).
+- **CI workflow**: removed a bad `working-directory` that pointed at a
+  nonexistent subdirectory; the workflow could never have passed.
+- **Target**: `?preselect=` is now preserved — it carries the child TCIN
+  of the variant (size/color) the user picked, Target's analog of
+  Amazon's `th`/`psc`. Previously stripped, which snapped shared links
+  back to the default variant.
+- **Universal strip**: bare `trk` removed from the universal denylist —
+  too generic a name for a host-agnostic strip (the LinkedIn module still
+  strips it on linkedin.com). Also fixed a defensive-cleanup regex that
+  could eat a literal `?` inside the URL fragment.
+- **URL-object inputs**: `walmart.js`, `target.js`, and `utm.js` no longer
+  mutate a caller-supplied `URL` object (which also made their
+  `needsShortening`/`needsStripping` checks self-defeating for that input
+  type). Regression tests added.
+- **Airbnb**: `shortUrlForBar` now preserves the URL fragment like the
+  other three hotel modules.
+- **Background**: the "Copy clean URL" context menu is re-created on
+  browser startup (Firefox event pages don't reliably persist it);
+  duplicate-id errors are checked via `runtime.lastError` instead of a
+  no-op try/catch; the user's keep-params list is read fresh on every
+  click (a module-level cache could race service-worker wake-up); the
+  `webNavigation` listener now passes its URL filters so it doesn't fire
+  on unrelated sites; per-site host checks are defensive against a
+  missing module.
+- **Popup**: status line said "On some sites" when every per-site toggle
+  was on; now says "On all sites".
+- **Travel toolbar**: the SPA-watchdog poll now stops when the site
+  toggle is off; per-button "Copied!" reset timers (clicking a second
+  button within 1.5s no longer leaves the first stuck on "Copied!").
+- **Options page**: a settings sync from another device no longer
+  overwrites a textarea you're actively editing.
 
 ### Permissions
 - New required: `scripting` (for dynamic content script registration of the

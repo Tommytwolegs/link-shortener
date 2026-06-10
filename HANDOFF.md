@@ -1,8 +1,8 @@
 # Jimothy's Link Shortener — Handoff
 
 Context document for picking up work on a new machine (or in a new Claude
-session). Last updated 2026-06-06 at v1.7.0 (ready-to-ship state after the
-modal/SPA-state audit round).
+session). Last updated 2026-06-11 at v1.7.0 (ready-to-ship state after the
+modal/SPA-state audit round and a full pre-release code review).
 
 ---
 
@@ -51,7 +51,8 @@ groups them into Shopping / Travel / Social & media:
   preserved. 15 regional TLDs.
 - **Walmart** — `/ip/<id>` and `/ip/<slug>/<id>` both kept as-is; strips
   ath* / from / wmlspartner / selectedSellerId / sourceid / etc.
-- **Target** — `/p/<slug>/-/A-<tcin>` kept as-is; strips preselect / lnk /
+- **Target** — `/p/<slug>/-/A-<tcin>` kept as-is; preserves `preselect`
+  (variant child-TCIN, Target's analog of Amazon's th/psc); strips lnk /
   clkid / ref / linkId / searchTerm.
 
 **Travel (4):**
@@ -157,11 +158,15 @@ page (default OFF). See `utm.js` below.
     function into the active tab via `chrome.scripting.executeScript`
     (uses `activeTab` permission so we don't need broad host access for
     the context menu).
-  - **Module-level `cachedKeepParams`** kept in sync with
-    `chrome.storage.sync.utmStripKeepParams` via `onChanged` so the
-    context menu's `cleanAnyUrl` respects the user's keep-list. (Skip-
-    domains is intentionally not honored in the context menu — the menu
-    is an explicit user gesture, the user wants the cleanest URL.)
+  - The context-menu click handler reads `utmStripKeepParams` from
+    storage **fresh on every click** (a module-level cache raced
+    service-worker wake-up: the click that wakes the SW could run before
+    the cache loaded). Skip-domains is intentionally not honored in the
+    context menu — the menu is an explicit user gesture, the user wants
+    the cleanest URL.
+  - The menu itself is (re)created via `removeAll` + `create` on BOTH
+    `onInstalled` and `onStartup` — Firefox event pages don't reliably
+    persist menus across browser restarts; Chrome doesn't mind.
 
 ### Popup
 
@@ -193,7 +198,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **1,276 total assertions across 20 test files, all passing.** Run with:
+  **1,286 total assertions across 20 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -317,6 +322,20 @@ Reddit and LinkedIn modules refactored from "flat list of regexes" to
 Test count: **1,045 → 1,276 (+231)** across **18 → 20 files**. 19 sites
 + universal stripper, 31 source files (was 28).
 
+**Round 5 — pre-release full-codebase review (2026-06-11).** Caught a
+critical Windows-build bug before it shipped: `package.ps1`'s Firefox
+`background.scripts` array was missing walmart/target/utm (a Windows-built
+xpi would throw on every navigation in Firefox). Also: CI workflow had a
+bogus `working-directory` (and was never committed — the whole repo was
+uncommitted since the v1.6.2 tag; now committed); Target's `?preselect=`
+(variant child-TCIN) is preserved instead of stripped; bare `trk` dropped
+from the universal denylist; URL-object mutation bugs fixed in
+walmart/target/utm; airbnb shortUrlForBar hash preservation; context-menu
+re-creation on startup + fresh keep-params read per click; webNavigation
+URL filters wired up; defensive isHandledHost; popup "all sites" status
+text; travel-toolbar poll lifecycle + per-button toast timers; options
+page mid-edit clobber guard. Tests: 1,276 → 1,286.
+
 ### v1.6.3
 
 Substantial bug-fix pass. The biggest fix is in `asin.js`: previously
@@ -439,7 +458,11 @@ Full per-version detail in `CHANGELOG.md`.
 
 - **Edit tool truncation in Claude sandboxes.** The Edit tool sometimes
   writes files to disk truncated even when it reports success — that's
-  how v1.6.3 shipped a broken `content.js`. The mitigations:
+  how v1.6.3 shipped a broken `content.js`. A second observed failure
+  mode (2026-06-11): an edit that SHRINKS a file can leave the file at
+  its old size, padded with trailing NUL bytes. `node --check` does not
+  reliably catch NUL padding in all file types (YAML, JSON, md), so also
+  scan for `\x00` bytes before packaging. The mitigations:
   1. The build-time parse-check guardrail catches truncated JS.
   2. For non-trivial edits, prefer bash heredoc (`cat > file << 'EOF' ...`)
      or Python string-replace over the Edit tool. Verify with
@@ -544,7 +567,7 @@ link-shortener/
 │   ├── options.html / options.css / options.js  — advanced settings page
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
-├── tests/                          — 20 test files, 1,276 assertions
+├── tests/                          — 20 test files, 1,286 assertions
 └── dist/                           — built zip + xpi packages
 ```
 

@@ -67,7 +67,9 @@
 
   function shortenWalmartUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    // Clone URL-object inputs — searchParams.delete below would otherwise
+    // mutate the caller's object (and break needsShortening's comparison).
+    try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
     if (!isWalmartHost(url.hostname)) return null;
     if (!isProductPath(url.pathname)) return null;
     // Strip Walmart-specific tracking params; leave anything else alone

@@ -26,7 +26,10 @@
 (function (global) {
   'use strict';
 
-  // Etsy ships per regional TLD. Match the major markets.
+  // Etsy ships per regional TLD. Match the major markets. NOTE: this regex
+  // accepts a couple more TLDs than the manifest injects content scripts
+  // on — the extras are reachable only via the background "Copy clean URL"
+  // context menu (activeTab).
   const ETSY_HOST_REGEX =
     /(?:^|\.)etsy\.(?:com|de|fr|it|es|nl|co\.uk|com\.au|ca|jp|pl|in|com\.br|com\.mx|ie|com\.hk|com\.sg)$/i;
 
