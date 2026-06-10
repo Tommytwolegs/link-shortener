@@ -13,6 +13,14 @@ const CASES = [
   { name: 'track: utm_* stripped',
     input: 'https://open.spotify.com/track/abc123?utm_source=copy-link&utm_medium=share',
     expected: 'https://open.spotify.com/track/abc123' },
+  // ?t= is the "share at this moment" timestamp — keep it.
+  { name: 'track: timestamp preserved',
+    input: 'https://open.spotify.com/track/abc123?si=X&t=180',
+    expected: 'https://open.spotify.com/track/abc123?t=180' },
+  { name: 'track: timestamp alone, already canonical',
+    input: 'https://open.spotify.com/track/abc123?t=180',
+    expected: 'https://open.spotify.com/track/abc123?t=180',
+    expectedNeeds: false },
   { name: 'album',
     input: 'https://open.spotify.com/album/abc123?si=X',
     expected: 'https://open.spotify.com/album/abc123' },
@@ -25,21 +33,50 @@ const CASES = [
   { name: 'episode',
     input: 'https://open.spotify.com/episode/abc123?si=X',
     expected: 'https://open.spotify.com/episode/abc123' },
+  // Podcast moment-share — episode timestamp preserved.
+  { name: 'episode: timestamp preserved',
+    input: 'https://open.spotify.com/episode/3PXr5HnGc7lEMVl0RjbR0V?si=X&t=1234',
+    expected: 'https://open.spotify.com/episode/3PXr5HnGc7lEMVl0RjbR0V?t=1234' },
+  { name: 'episode: timestamp with utm junk',
+    input: 'https://open.spotify.com/episode/3PXr5HnGc7lEMVl0RjbR0V?utm_source=copy-link&utm_medium=share&t=600&si=foo',
+    expected: 'https://open.spotify.com/episode/3PXr5HnGc7lEMVl0RjbR0V?t=600' },
   { name: 'show',
     input: 'https://open.spotify.com/show/abc123?si=X',
     expected: 'https://open.spotify.com/show/abc123' },
   { name: 'user',
     input: 'https://open.spotify.com/user/janedoe?si=X',
     expected: 'https://open.spotify.com/user/janedoe' },
+  // Albums don't support per-track timestamps in URL form — t= would just be
+  // ignored by Spotify, but it's not in the allowlist for /album/, so it's
+  // stripped along with everything else.
+  { name: 'album: t= is NOT preserved (not in allowlist)',
+    input: 'https://open.spotify.com/album/abc123?si=X&t=180',
+    expected: 'https://open.spotify.com/album/abc123' },
   { name: 'locale-prefixed track',
     input: 'https://open.spotify.com/intl-de/track/abc123?si=X',
     expected: 'https://open.spotify.com/intl-de/track/abc123' },
+  { name: 'locale-prefixed track keeps timestamp',
+    input: 'https://open.spotify.com/intl-de/track/abc123?si=X&t=42',
+    expected: 'https://open.spotify.com/intl-de/track/abc123?t=42' },
+  { name: 'locale-prefixed episode keeps timestamp',
+    input: 'https://open.spotify.com/intl-pt/episode/abc123?si=Y&t=900',
+    expected: 'https://open.spotify.com/intl-pt/episode/abc123?t=900' },
   { name: 'locale-prefixed album',
     input: 'https://open.spotify.com/intl-pt/album/abc123?si=X&utm_source=copy-link',
     expected: 'https://open.spotify.com/intl-pt/album/abc123' },
-  { name: 'hash dropped',
-    input: 'https://open.spotify.com/track/abc123?si=X#anchor',
-    expected: 'https://open.spotify.com/track/abc123' },
+  // Hash preservation — defensive consistency; Spotify doesn't use hashes
+  // today but dropping them is the same foot-gun that broke Amazon's
+  // in-page section links.
+  { name: 'track: hash preserved (no query)',
+    input: 'https://open.spotify.com/track/abc123#anchor',
+    expected: 'https://open.spotify.com/track/abc123#anchor',
+    expectedNeeds: false },
+  { name: 'track: hash preserved alongside timestamp',
+    input: 'https://open.spotify.com/track/abc123?si=X&t=60#anchor',
+    expected: 'https://open.spotify.com/track/abc123?t=60#anchor' },
+  { name: 'album: hash preserved when stripping query',
+    input: 'https://open.spotify.com/album/abc123?si=X#tracklist',
+    expected: 'https://open.spotify.com/album/abc123#tracklist' },
   { name: 'already clean',
     input: 'https://open.spotify.com/track/abc123',
     expected: 'https://open.spotify.com/track/abc123',
@@ -56,6 +93,23 @@ const CASES = [
   { name: 'wrong subdomain → null',
     input: 'https://api.spotify.com/track/abc123',
     expected: null },
+
+  // v1.7.0+ context preservation: ?context=spotify:playlist:<id> tells the
+  // player what to queue after this track. Without it, the track plays
+  // standalone.
+  { name: 'track: context preserved alongside t',
+    input: 'https://open.spotify.com/track/abc?t=42&context=spotify%3Aplaylist%3A37i9dQZF1DXcBWIGoYBM5M',
+    expected: 'https://open.spotify.com/track/abc?t=42&context=spotify%3Aplaylist%3A37i9dQZF1DXcBWIGoYBM5M' },
+  { name: 'track: context preserved, si stripped',
+    input: 'https://open.spotify.com/track/abc?context=spotify%3Aalbum%3A12345&si=xyz',
+    expected: 'https://open.spotify.com/track/abc?context=spotify%3Aalbum%3A12345' },
+  { name: 'episode: context preserved',
+    input: 'https://open.spotify.com/episode/abc?t=600&context=spotify%3Ashow%3A12345',
+    expected: 'https://open.spotify.com/episode/abc?t=600&context=spotify%3Ashow%3A12345' },
+  { name: 'intl track: context preserved',
+    input: 'https://open.spotify.com/intl-de/track/abc?context=spotify%3Aplaylist%3Aabc&si=xyz',
+    expected: 'https://open.spotify.com/intl-de/track/abc?context=spotify%3Aplaylist%3Aabc' },
+
 ];
 
 let passed = 0, failed = 0;

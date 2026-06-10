@@ -9,8 +9,6 @@
 <body>
   <header class="hero">
     <div class="mark" aria-hidden="true">
-      <!-- Inline mini version of the product icon: long messy bar shortening
-           into a clean bar, mirroring the browser-toolbar icon. -->
       <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
         <rect x="0" y="0" width="48" height="48" rx="10" fill="url(#bg)"/>
         <defs>
@@ -54,107 +52,204 @@
         <span class="slider" aria-hidden="true"></span>
       </span>
     </label>
+
+    <label class="switch switch-secondary" for="enabledUtmStrip">
+      <span class="switch-label" title="Strips utm_*, gclid, fbclid, etc. from every URL on every site. Asks for broader permission the first time you turn it on.">
+        Universal tracking strip
+        <span class="badge-new" aria-label="new">NEW</span>
+      </span>
+      <span class="switch-control">
+        <input type="checkbox" id="enabledUtmStrip" />
+        <span class="slider" aria-hidden="true"></span>
+      </span>
+    </label>
   </section>
 
   <section class="site-toggles" id="site-toggles">
     <p class="site-toggles-heading">Per site</p>
 
-    <label class="switch switch-sm" for="enabledAmazon">
-      <span class="switch-label">Amazon</span>
-      <span class="switch-control switch-control-sm">
-        <input type="checkbox" id="enabledAmazon" data-site="Amazon" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
+    <details class="site-group" open>
+      <summary>
+        <span class="group-name">Shopping</span>
+        <span class="group-count" id="group-count-shopping"></span>
+      </summary>
 
-    <label class="switch switch-sm" for="enabledAgoda">
-      <span class="switch-label">Agoda</span>
-      <span class="switch-control switch-control-sm">
-        <input type="checkbox" id="enabledAgoda" data-site="Agoda" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
+      <label class="switch switch-sm" for="enabledAmazon">
+        <span class="switch-label">Amazon</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledAmazon" data-site="Amazon" data-group="shopping" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
 
-    <label class="switch switch-sm" for="enabledBooking">
-      <span class="switch-label">Booking.com</span>
-      <span class="switch-control switch-control-sm">
-        <input type="checkbox" id="enabledBooking" data-site="Booking" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
+      <label class="switch switch-sm" for="enabledEbay">
+        <span class="switch-label">eBay</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledEbay" data-site="Ebay" data-group="shopping" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
 
-    <label class="switch switch-sm" for="enabledExpedia">
-      <span class="switch-label">Expedia</span>
-      <span class="switch-control switch-control-sm">
-        <input type="checkbox" id="enabledExpedia" data-site="Expedia" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
+      <label class="switch switch-sm" for="enabledEtsy">
+        <span class="switch-label">Etsy</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledEtsy" data-site="Etsy" data-group="shopping" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
 
-    <label class="switch switch-sm" for="enabledAirbnb">
-      <span class="switch-label">Airbnb</span>
-      <span class="switch-control switch-control-sm">
-        <input type="checkbox" id="enabledAirbnb" data-site="Airbnb" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
+      <label class="switch switch-sm" for="enabledWalmart">
+        <span class="switch-label">Walmart</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledWalmart" data-site="Walmart" data-group="shopping" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
 
-    <label class="switch switch-sm" for="enabledSocial">
-      <span class="switch-label">Facebook/Instagram</span>
-      <span class="switch-control switch-control-sm">
-        <input type="checkbox" id="enabledSocial" data-site="Social" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
+      <label class="switch switch-sm" for="enabledTarget">
+        <span class="switch-label">Target</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledTarget" data-site="Target" data-group="shopping" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
 
-    <label class="switch switch-sm" for="enabledYoutube">
-      <span class="switch-label">YouTube</span>
-      <span class="switch-control switch-control-sm">
-        <input type="checkbox" id="enabledYoutube" data-site="Youtube" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
+    </details>
 
-    <label class="switch switch-sm" for="enabledTwitter">
-      <span class="switch-label">Twitter / X</span>
-      <span class="switch-control switch-control-sm">
-        <input type="checkbox" id="enabledTwitter" data-site="Twitter" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
+    <details class="site-group">
+      <summary>
+        <span class="group-name">Travel</span>
+        <span class="group-count" id="group-count-travel"></span>
+      </summary>
 
-    <label class="switch switch-sm" for="enabledTiktok">
-      <span class="switch-label">TikTok</span>
-      <span class="switch-control switch-control-sm">
-        <input type="checkbox" id="enabledTiktok" data-site="Tiktok" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
+      <label class="switch switch-sm" for="enabledAgoda">
+        <span class="switch-label">Agoda</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledAgoda" data-site="Agoda" data-group="travel" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
 
-    <label class="switch switch-sm" for="enabledReddit">
-      <span class="switch-label">Reddit</span>
-      <span class="switch-control switch-control-sm">
-        <input type="checkbox" id="enabledReddit" data-site="Reddit" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
+      <label class="switch switch-sm" for="enabledBooking">
+        <span class="switch-label">Booking.com</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledBooking" data-site="Booking" data-group="travel" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
 
-    <label class="switch switch-sm" for="enabledSpotify">
-      <span class="switch-label">Spotify</span>
-      <span class="switch-control switch-control-sm">
-        <input type="checkbox" id="enabledSpotify" data-site="Spotify" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
+      <label class="switch switch-sm" for="enabledExpedia">
+        <span class="switch-label">Expedia</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledExpedia" data-site="Expedia" data-group="travel" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledAirbnb">
+        <span class="switch-label">Airbnb</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledAirbnb" data-site="Airbnb" data-group="travel" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+    </details>
+
+    <details class="site-group">
+      <summary>
+        <span class="group-name">Social &amp; media</span>
+        <span class="group-count" id="group-count-social"></span>
+      </summary>
+
+      <label class="switch switch-sm" for="enabledSocial">
+        <span class="switch-label">Facebook/Instagram</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledSocial" data-site="Social" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledThreads">
+        <span class="switch-label">Threads</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledThreads" data-site="Threads" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledLinkedin">
+        <span class="switch-label">LinkedIn</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledLinkedin" data-site="Linkedin" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledYoutube">
+        <span class="switch-label">YouTube</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledYoutube" data-site="Youtube" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledTwitter">
+        <span class="switch-label">Twitter / X</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledTwitter" data-site="Twitter" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledTiktok">
+        <span class="switch-label">TikTok</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledTiktok" data-site="Tiktok" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledReddit">
+        <span class="switch-label">Reddit</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledReddit" data-site="Reddit" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledPinterest">
+        <span class="switch-label">Pinterest</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledPinterest" data-site="Pinterest" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+
+      <label class="switch switch-sm" for="enabledSpotify">
+        <span class="switch-label">Spotify</span>
+        <span class="switch-control switch-control-sm">
+          <input type="checkbox" id="enabledSpotify" data-site="Spotify" data-group="social" />
+          <span class="slider" aria-hidden="true"></span>
+        </span>
+      </label>
+    </details>
   </section>
 
   <section class="info">
-    <p>Long URLs on supported sites are rewritten in place. Right-click "Copy
-       link address" gives the short form too. Toggle individual sites above.</p>
+    <p>Long URLs on supported sites are rewritten in place. Right-click any
+       link or page and choose "Copy clean URL" for a one-off cleanup, or
+       use "Copy link address" on Amazon to get the clean form directly.
+       The "Universal tracking strip" toggle (off by default) strips
+       common trackers like utm_* from URLs on every site you visit.</p>
   </section>
 
   <footer>
     <span id="version"></span>
+    <span class="footer-links">
+      <a href="#" id="open-options">Advanced</a>
+      <span class="footer-sep">·</span>
+      <a href="https://github.com/Tommytwolegs/link-shortener/issues" target="_blank" rel="noopener noreferrer">Report an issue</a>
+    </span>
   </footer>
 
   <script src="popup.js"></script>

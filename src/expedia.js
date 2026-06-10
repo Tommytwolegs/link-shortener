@@ -33,7 +33,7 @@
     /(?:^|\.)expedia\.(?:com|co\.uk|ca|com\.au|de|fr|it|es|nl|com\.mx|com\.br|co\.jp|com\.sg|co\.in|ie|be|at|dk|fi|no|se|ch|com\.hk|co\.kr|com\.tw|co\.nz|co\.th|com\.my|com\.ph|com\.vn|com\.tr)$/i;
 
   // Hotel listing path: ends in `.h<digits>.Hotel-Information`.
-  const HOTEL_PATH_REGEX = /^\/.+\.h\d+\.Hotel-Information$/i;
+  const HOTEL_PATH_REGEX = /^\/.+\.h\d+\.Hotel-Information\/?$/i;
 
   // Per-room occupancy keys: `rm1`, `rm2`, `rm3`, …
   const RM_KEY_REGEX = /^rm\d+$/i;
@@ -120,10 +120,11 @@
       qs.append(key, value);
     }
 
+    const hash = url.hash || '';
     const search = qs.toString();
     return search
-      ? `${url.protocol}//${url.host}${url.pathname}?${search}`
-      : `${url.protocol}//${url.host}${url.pathname}`;
+      ? `${url.protocol}//${url.host}${url.pathname}?${search}${hash}`
+      : `${url.protocol}//${url.host}${url.pathname}${hash}`;
   }
 
   const api = {

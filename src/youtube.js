@@ -15,6 +15,8 @@
 //
 // Hosts: youtube.com, m.youtube.com, music.youtube.com, youtu.be.
 //
+// The URL hash is preserved — YouTube doesn't use hashes for tracking.
+//
 // Loaded as classic content script, service-worker importScripts target, and
 // CommonJS module from Node-based unit tests.
 // ----------------------------------------------------------------------------
@@ -34,16 +36,17 @@
   // (if present) must all be set with non-empty values for the URL to count
   // as a post.
   const YT_PATTERNS = [
-    // /watch — needs v=, optionally keeps t=
-    { pattern: /^\/watch\/?$/, allowedParams: new Set(['v', 't']), requiredParams: ['v'] },
+    // /watch — needs v=. Keeps t= (timestamp) + list= (playlist context) +
+    // index= (1-based playlist position; pairs with list).
+    { pattern: /^\/watch\/?$/, allowedParams: new Set(['v', 't', 'list', 'index']), requiredParams: ['v'] },
     // /shorts/<id>
     { pattern: /^\/shorts\/[^/?#]+\/?$/, allowedParams: new Set(['t']) },
     // /live/<id>
     { pattern: /^\/live\/[^/?#]+\/?$/, allowedParams: new Set(['t']) },
     // /embed/<id>
     { pattern: /^\/embed\/[^/?#]+\/?$/, allowedParams: new Set(['t', 'start']) },
-    // /playlist — needs list=
-    { pattern: /^\/playlist\/?$/, allowedParams: new Set(['list']), requiredParams: ['list'] },
+    // /playlist — needs list=. Keeps index= for playlist-position deep-links.
+    { pattern: /^\/playlist\/?$/, allowedParams: new Set(['list', 'index']), requiredParams: ['list'] },
     // /clip/<clipid>
     { pattern: /^\/clip\/[^/?#]+\/?$/, allowedParams: new Set() },
   ];
@@ -95,7 +98,8 @@
       const s = params.toString();
       if (s) newSearch = '?' + s;
     }
-    return `${url.protocol}//${url.host}${url.pathname}${newSearch}`;
+    const hash = url.hash || '';
+    return `${url.protocol}//${url.host}${url.pathname}${newSearch}${hash}`;
   }
 
   function needsShortening(input) {

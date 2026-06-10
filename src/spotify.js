@@ -4,17 +4,18 @@
 //
 // Recognized forms (all on open.spotify.com):
 //
-//   /track/<id>          → strip query + fragment
-//   /album/<id>          → ditto
+//   /track/<id>          → keeps ?t= (timestamp); strips si, utm_*, etc.
+//   /episode/<id>        → keeps ?t= (podcast moment-share); strips the rest
+//   /album/<id>          → strips all query params
 //   /playlist/<id>       → ditto
 //   /artist/<id>         → ditto
-//   /episode/<id>        → ditto (podcast episodes)
-//   /show/<id>           → ditto (podcast shows)
-//   /user/<userid>       → ditto
-//   /intl-<lang>/<kind>/<id>  → locale-prefixed; preserved as-is, just the
-//                              query is stripped (removing the locale would
-//                              technically still resolve, but it changes the
-//                              structure and is more invasive than needed).
+//   /show/<id>           → ditto (podcast show)
+//   /user/<id>           → ditto
+//   /collection/<id>     → ditto
+//   /intl-<lang>/<kind>/<id>  → locale-prefixed; same allowlist per kind.
+//
+// The URL hash is preserved. Spotify doesn't use hashes for tracking, and a
+// future redesign that adopts hash routing won't be broken by us.
 //
 // Hosts: open.spotify.com (the only canonical share host).
 //
@@ -32,15 +33,35 @@
     return SPOTIFY_HOST_REGEX.test(hostname);
   }
 
-  const KINDS = '(?:track|album|playlist|artist|episode|show|user|collection)';
-  const POST_PATTERNS = [
-    new RegExp(`^/${KINDS}/[^/?#]+/?$`),
-    // Locale-prefixed (e.g. /intl-de/track/abc123)
-    new RegExp(`^/intl-[a-z]{2,3}/${KINDS}/[^/?#]+/?$`, 'i'),
+  // Per-form patterns and allowed query params. The `t` param is a timestamp
+  // in seconds (e.g. ?t=600 = jump to 10:00); Spotify uses it on tracks and
+  // podcast episodes for "share at this moment". Everything else is tracking
+  // or session-bound state and gets stripped.
+  const FORMS = [
+    // Tracks — keep timestamp + context (the context URI determines what
+    // plays after this track ends: ?context=spotify:playlist:<id> means
+    // "queue up the rest of <playlist>". Without it, the track plays in
+    // isolation regardless of how the user encountered it.)
+    { pattern: /^\/track\/[^/?#]+\/?$/i, allowedParams: new Set(['t', 'context']) },
+    { pattern: /^\/intl-[a-z]{2,3}\/track\/[^/?#]+\/?$/i, allowedParams: new Set(['t', 'context']) },
+    // Podcast episodes — keep timestamp (this is the big one — podcast
+    // listeners often share a specific moment) + context for show continuity
+    { pattern: /^\/episode\/[^/?#]+\/?$/i, allowedParams: new Set(['t', 'context']) },
+    { pattern: /^\/intl-[a-z]{2,3}\/episode\/[^/?#]+\/?$/i, allowedParams: new Set(['t', 'context']) },
+    // Everything else — strip all params
+    { pattern: /^\/(?:album|playlist|artist|show|user|collection)\/[^/?#]+\/?$/i, allowedParams: new Set() },
+    { pattern: /^\/intl-[a-z]{2,3}\/(?:album|playlist|artist|show|user|collection)\/[^/?#]+\/?$/i, allowedParams: new Set() },
   ];
 
+  function formFor(pathname) {
+    for (const f of FORMS) {
+      if (f.pattern.test(pathname)) return f;
+    }
+    return null;
+  }
+
   function isPostPath(pathname) {
-    return POST_PATTERNS.some((p) => p.test(pathname));
+    return formFor(pathname) !== null;
   }
 
   function isPostUrl(input) {
@@ -54,8 +75,21 @@
     let url;
     try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
     if (!isSpotifyHost(url.hostname)) return null;
-    if (!isPostPath(url.pathname)) return null;
-    return `${url.protocol}//${url.host}${url.pathname}`;
+    const form = formFor(url.pathname);
+    if (!form) return null;
+
+    const hash = url.hash || '';
+    let query = '';
+    if (form.allowedParams.size > 0) {
+      const params = new URLSearchParams();
+      for (const k of form.allowedParams) {
+        const v = url.searchParams.get(k);
+        if (v !== null && v !== '') params.set(k, v);
+      }
+      const s = params.toString();
+      if (s) query = '?' + s;
+    }
+    return `${url.protocol}//${url.host}${url.pathname}${query}${hash}`;
   }
 
   function needsShortening(input) {
@@ -75,7 +109,7 @@
     needsShortening,
     STORAGE_KEY: 'enabledSpotify',
     SPOTIFY_HOST_REGEX,
-    POST_PATTERNS,
+    FORMS,
   };
   global.SpotifyLinkShortener = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

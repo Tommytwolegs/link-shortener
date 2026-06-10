@@ -33,7 +33,7 @@
 
   // Listing path: `/rooms/<digits>` with an optional subtype segment in the
   // middle (`/rooms/plus/<digits>`, `/rooms/luxury/<digits>`, …).
-  const ROOM_PATH_REGEX = /^\/rooms(?:\/[a-z0-9_-]+)?\/\d+$/i;
+  const ROOM_PATH_REGEX = /^\/rooms(?:\/[a-z0-9_-]+)?\/\d+\/?$/i;
 
   function isAirbnbHost(hostname) {
     if (!hostname) return false;
@@ -88,12 +88,23 @@
 
   // Address-bar form. Strips Airbnb's tracking params (search_mode,
   // source_impression_id, previous_page_section_name, federated_search_id,
-  // etc.) down to dates + occupancy.
+  // etc.) down to dates + occupancy + in-page modal state.
   //
   // Kept params:
   //   check_in, check_out   — dates
   //   adults, children      — guest count
   //   infants, pets         — additional guest types
+  //   modal                 — in-page SPA state used by the photo gallery
+  //                           ("Show all photos" -> ?modal=PHOTO_TOUR_SCROLLABLE),
+  //                           the reviews modal, the map modal, etc.
+  //                           Without this, opening the gallery would briefly
+  //                           show the modal, then our 500ms cleanup pass
+  //                           would strip the param and the React app would
+  //                           close it again.
+  //
+  // The Share/With-Dates copy buttons go through shortPropertyUrl /
+  // shortUrlWithDates, NOT this function, so the shareable URLs stay
+  // canonical (no modal state leaks into pasted links).
   //
   // Returns null on non-listing pages so the caller can no-op cleanly.
   const ADDRESS_BAR_KEEP = [
@@ -103,6 +114,7 @@
     'children',
     'infants',
     'pets',
+    'modal',
   ];
 
   function shortUrlForBar(input) {

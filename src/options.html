@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Link Shortener — Advanced settings</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <header class="hero">
+    <h1>Advanced settings</h1>
+    <p class="subtitle">Fine-tune the Universal tracking strip.</p>
+  </header>
+
+  <main>
+    <section class="card" id="strip-section">
+      <h2>Universal tracking strip</h2>
+      <p class="card-intro">
+        These settings only matter when the <strong>Universal tracking strip</strong>
+        toggle is on. Per-site cleanup (Amazon, eBay, etc.) is unaffected.
+      </p>
+
+      <div class="status" id="strip-status">
+        <!-- Filled in by options.js: "Currently OFF — turn it on in the popup" /
+             "Currently ON". -->
+      </div>
+
+      <h3>Skip these domains</h3>
+      <p class="hint">
+        Hostnames you list here are ignored by the Universal tracking strip —
+        no params will be removed on these sites. Per-site cleanup still runs.
+        Enter one per line, no protocol or path. Wildcard subdomains are
+        supported via a leading dot: <code>.example.com</code> matches
+        <code>example.com</code> and any subdomain. Bare <code>example.com</code>
+        matches only the exact host.
+      </p>
+      <textarea id="skip-domains"
+                rows="6"
+                spellcheck="false"
+                placeholder=".example.com&#10;internal.corp&#10;localhost"></textarea>
+
+      <h3>Always keep these parameters</h3>
+      <p class="hint">
+        Names listed here are <em>never</em> stripped, even when the Universal
+        tracking strip would otherwise remove them. Matching is
+        case-insensitive. Enter one parameter name per line, no <code>=</code>
+        sign or value.
+      </p>
+      <textarea id="keep-params"
+                rows="6"
+                spellcheck="false"
+                placeholder="utm_source&#10;mc_eid"></textarea>
+
+      <div class="actions">
+        <button id="save" type="button" class="primary">Save</button>
+        <button id="reset" type="button" class="secondary">Reset to defaults</button>
+        <span class="saved-indicator" id="saved-indicator" aria-live="polite"></span>
+      </div>
+    </section>
+
+    <section class="card about">
+      <h2>About</h2>
+      <p>
+        Jimothy's Link Shortener stores your toggle preferences in
+        <code>chrome.storage.sync</code> so they follow you across
+        Chrome installs signed in to the same Google account. Nothing
+        is sent over the network — the extension makes zero remote calls.
+      </p>
+      <p>
+        Found a bug? <a href="https://github.com/Tommytwolegs/link-shortener/issues"
+                        target="_blank"
+                        rel="noopener noreferrer">Report it on GitHub</a>.
+      </p>
+    </section>
+  </main>
+
+  <script src="options.js"></script>
+</body>
+</html>

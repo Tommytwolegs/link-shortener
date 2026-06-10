@@ -1,14 +1,29 @@
 // asin.js
 // ----------------------------------------------------------------------------
 // Pure functions for detecting Amazon storefront URLs, pulling the ASIN out of
-// the path, and rebuilding the canonical short form (`/dp/ASIN`).
+// the path, and rebuilding the canonical form for each recognized URL shape.
 //
-// With the optional `{ slug }` option, `shortenAmazonUrl` instead produces
-// `/<slug>/dp/ASIN` — Amazon's own "title slug + ASIN" canonical form. The
-// slug segment is purely cosmetic to Amazon's router; it just makes the URL
-// human-readable. `extractTitleSlug` and `slugifyTitle` are exposed so the
-// content script can derive a slug either from the existing URL or from the
-// page DOM (#productTitle / document.title).
+// Amazon URLs that contain an ASIN aren't all the same page. For example:
+//   /dp/<ASIN>                    — the product page
+//   /gp/product/<ASIN>            — also the product page (legacy form)
+//   /product-reviews/<ASIN>       — the reviews list page (different page!)
+//   /gp/aw/reviews/<ASIN>         — mobile reviews list (different page!)
+//   /gp/offer-listing/<ASIN>      — third-party sellers list (different page!)
+//
+// Collapsing all of these to /dp/<ASIN> would break in-page "5 star" filter
+// links, "see all offers" links, etc. — they'd navigate the user to the bare
+// product page they were already on. So each form has its own canonical
+// destination, and an allowlist of query params worth preserving (e.g.
+// filterByStar + pageNumber on the reviews page).
+//
+// With the optional `{ slug }` option, `shortenAmazonUrl` prepends the title
+// slug (`/<slug>/dp/ASIN`, `/<slug>/product-reviews/ASIN`, etc.) — Amazon's
+// own readable URL shape. `extractTitleSlug` and `slugifyTitle` are exposed
+// so the content script can derive a slug from the URL or DOM.
+//
+// The URL hash is always preserved — Amazon uses fragments for in-page
+// section anchors (`#customerReviews`, `#productDescription`, `#aplus`)
+// and never for tracking.
 //
 // Loaded as:
 //   * a classic content script (sets `window.AmazonLinkShortener`)
@@ -26,45 +41,86 @@
   const AMAZON_HOST_REGEX =
     /(?:^|\.)amazon\.(com|co\.uk|ca|de|fr|it|es|nl|se|pl|com\.tr|com\.au|co\.jp|in|sg|ae|sa|eg|com\.mx|com\.br|com\.be)$/i;
 
-  // Path patterns where a 10-character ASIN appears. Tried in order; first hit
-  // wins. Each pattern is anchored with `/` on the left and a delimiter on the
-  // right so we never grab a 10-character chunk out of the middle of a slug.
-  const ASIN_PATTERNS = [
-    /\/dp\/([A-Z0-9]{10})(?:[/?#]|$)/,
-    /\/gp\/product(?:\/glance)?\/([A-Z0-9]{10})(?:[/?#]|$)/,
-    /\/gp\/aw\/d\/([A-Z0-9]{10})(?:[/?#]|$)/,
-    /\/gp\/aw\/reviews\/([A-Z0-9]{10})(?:[/?#]|$)/,
-    /\/gp\/offer-listing\/([A-Z0-9]{10})(?:[/?#]|$)/,
-    /\/product-reviews\/([A-Z0-9]{10})(?:[/?#]|$)/,
-    /\/exec\/obidos\/(?:tg\/detail\/-\/|ASIN\/)([A-Z0-9]{10})(?:[/?#]|$)/,
+  // Each form describes a recognized URL shape that contains an ASIN, the
+  // canonical path it should be rewritten to (with the ASIN substituted in),
+  // and the allowlist of query params worth keeping after the rewrite.
+  //
+  // The regex captures the ASIN as group 1 and is anchored with a delimiter
+  // on the right so we never grab a 10-character chunk out of the middle of
+  // a slug. The leading `\/` (any position) means slug prefixes like
+  // `/Some-Slug/dp/ASIN` still match — the slug, if any, is detected
+  // separately by extractTitleSlug.
+  //
+  // canonical: a path template like "dp" or "product-reviews" or
+  // "gp/offer-listing" — the rebuilt URL is `/<slug?>/<canonical>/<ASIN>`.
+  // keepParams: query params preserved on the rewritten URL. Empty = strip.
+  const URL_FORMS = [
+    // ----- Product page forms — all canonicalize to /dp/ASIN.
+    // th=1 + psc=1 are kept because they pre-lock the variant selector
+    // (size/color/etc.) on child-ASIN URLs. Without them, a shared link
+    // to "red, size M" snaps back to the default variant.
+    { regex: /\/dp\/([A-Z0-9]{10})(?:[/?#]|$)/,
+      canonical: 'dp',
+      keepParams: ['th', 'psc'] },
+    { regex: /\/gp\/product(?:\/glance)?\/([A-Z0-9]{10})(?:[/?#]|$)/,
+      canonical: 'dp',
+      keepParams: ['th', 'psc'] },
+    { regex: /\/gp\/aw\/d\/([A-Z0-9]{10})(?:[/?#]|$)/,
+      canonical: 'dp',
+      keepParams: ['th', 'psc'] },
+    { regex: /\/exec\/obidos\/(?:tg\/detail\/-\/|ASIN\/)([A-Z0-9]{10})(?:[/?#]|$)/,
+      canonical: 'dp',
+      keepParams: ['th', 'psc'] },
+
+    // ----- Reviews list page. Different destination than the product page —
+    // we must keep the path. Filter / sort / pagination params are meaningful
+    // user intent (e.g. "show me 5-star reviews, page 2"); everything else
+    // (ie=UTF8, ref=cm_cr_*, etc.) is tracking junk and gets stripped.
+    { regex: /\/product-reviews\/([A-Z0-9]{10})(?:[/?#]|$)/,
+      canonical: 'product-reviews',
+      keepParams: ['filterByStar', 'pageNumber', 'sortBy', 'reviewerType', 'formatType', 'mediaType'] },
+
+    // ----- Mobile reviews list. Same intent as /product-reviews.
+    { regex: /\/gp\/aw\/reviews\/([A-Z0-9]{10})(?:[/?#]|$)/,
+      canonical: 'gp/aw/reviews',
+      keepParams: ['filterByStar', 'pageNumber', 'sortBy', 'reviewerType'] },
+
+    // ----- Third-party sellers list. The condition / "new vs used"
+    // selectors are real user intent. Other params (ref=*, etc.) are
+    // tracking and get stripped.
+    { regex: /\/gp\/offer-listing\/([A-Z0-9]{10})(?:[/?#]|$)/,
+      canonical: 'gp/offer-listing',
+      keepParams: ['condition', 'f_new', 'f_used', 'f_collectible', 'f_refurbished', 'startIndex'] },
   ];
+
+  // The /dp/ form, used as the fallback for sponsored-click wrappers (where
+  // the wrapper itself isn't a real navigable form but the wrapped URL
+  // points at a product page).
+  const DP_FORM = URL_FORMS[0];
 
   function isAmazonHost(hostname) {
     if (!hostname) return false;
     return AMAZON_HOST_REGEX.test(hostname);
   }
 
-  // Try each ASIN path pattern against `pathname` and return the match or null.
-  function matchAsinPath(pathname) {
+  // Try each URL_FORM against `pathname` and return {asin, form} for the
+  // first match, or null.
+  function matchUrlForm(pathname) {
     if (!pathname) return null;
-    for (const pattern of ASIN_PATTERNS) {
-      const match = pattern.exec(pathname);
-      if (match) return match[1];
+    for (const form of URL_FORMS) {
+      const m = form.regex.exec(pathname);
+      if (m) return { asin: m[1], form };
     }
     return null;
   }
 
-  // Returns the 10-character ASIN or null.
-  //
-  // Accepts either:
-  //   * `pathname` — URL path, e.g. "/Some-Slug/dp/B08N5WRWNW"
-  //   * `pathname, search` — path plus query string, for wrapper URLs like
-  //     Amazon's sponsored-product click tracker `/sspa/click?url=%2Fdp%2F...`
-  //     or the various `/gp/…redirect.html?url=…` wrappers. If the path itself
-  //     doesn't contain an ASIN, the `url` query parameter (URL-decoded) is
-  //     searched as a fallback.
-  function extractAsin(pathname, search) {
-    const direct = matchAsinPath(pathname);
+  // Recognize a URL form on the path, falling back to inspecting wrapped
+  // URLs in `?url=` params (Amazon's sponsored-product clicktracker
+  // `/sspa/click?url=...` and `/gp/slredirect/...?url=...`). Wrapped URLs
+  // are always treated as /dp/ — sponsored clickthroughs land on product
+  // pages, and the wrapped tracking params aren't real UI state.
+  function matchUrlFormWithWrapper(pathname, search) {
+    const direct = matchUrlForm(pathname);
     if (direct) return direct;
 
     if (search) {
@@ -74,26 +130,39 @@
       } catch (_e) {
         return null;
       }
-      // `url` is the parameter Amazon uses on every wrapper we've seen, but
-      // check both common casings to be safe.
       const wrapped = params.get('url') || params.get('URL');
       if (wrapped) {
-        // URLSearchParams.get returns the decoded value, so the path portion
-        // can be fed straight into the ASIN patterns.
-        return matchAsinPath(wrapped);
+        let wrappedPath;
+        try {
+          // Wrapped value may be a path or absolute URL; URL() handles both.
+          wrappedPath = new URL(wrapped, 'https://amazon.com').pathname;
+        } catch (_e) {
+          return null;
+        }
+        const wrappedMatch = matchUrlForm(wrappedPath);
+        if (wrappedMatch) {
+          return { asin: wrappedMatch.asin, form: DP_FORM };
+        }
       }
     }
     return null;
   }
 
+  // Returns the 10-character ASIN or null. Public API; preserves the
+  // historical shape for callers that just want the ASIN.
+  function extractAsin(pathname, search) {
+    const matched = matchUrlFormWithWrapper(pathname, search);
+    return matched ? matched.asin : null;
+  }
+
   // -- Title slug -----------------------------------------------------------
 
   // Path patterns that reveal a single human-readable slug segment immediately
-  // before the ASIN. Mirrors the most common slug-bearing URL forms; matches
-  // the slug as group 1.
+  // before the form-defining path component. One per slug-bearing form.
   const SLUG_PATH_PATTERNS = [
     /^\/([^/]+)\/dp\/[A-Z0-9]{10}(?:[/?#]|$)/,
     /^\/([^/]+)\/gp\/product(?:\/glance)?\/[A-Z0-9]{10}(?:[/?#]|$)/,
+    /^\/([^/]+)\/product-reviews\/[A-Z0-9]{10}(?:[/?#]|$)/,
   ];
 
   // Path keywords that look like single-segment values but are Amazon route
@@ -135,8 +204,6 @@
     if (!wrapped) return null;
     let wrappedPath;
     try {
-      // Wrapped value may be either a path (e.g. "/Foo/dp/ASIN") or an
-      // absolute URL. URL() handles both when given a base.
       wrappedPath = new URL(wrapped, 'https://amazon.com').pathname;
     } catch (_e) {
       return null;
@@ -179,18 +246,20 @@
 
   // -- URL builders ---------------------------------------------------------
 
-  // Build the canonical short URL.
+  // Build the canonical short URL for whichever form `input` matches.
   //
-  // With no options (or `{ slug: null }`), produces the minimal `/dp/ASIN`
-  // form. With `{ slug: "Some-Title" }`, produces `/<slug>/dp/ASIN` —
-  // Amazon's "title slug + ASIN" form, which Amazon resolves identically but
-  // reads more clearly when shared.
+  // With no options (or `{ slug: null }`), produces the minimal form, e.g.
+  // /dp/ASIN, /product-reviews/ASIN. With `{ slug: "Some-Title" }`,
+  // prepends the slug to give /<slug>/dp/ASIN, /<slug>/product-reviews/ASIN.
+  //
+  // The URL hash is preserved. The query string is filtered to the form's
+  // allowlist of meaningful params (e.g. filterByStar + pageNumber for
+  // /product-reviews/), with everything else stripped.
   //
   // Always returns a same-origin URL — we never change protocol or hostname.
-  // That matters because the content script uses `history.replaceState`, which
-  // throws SecurityError on cross-origin URLs. So a page on `smile.amazon.com`
-  // gets shortened to `https://smile.amazon.com/dp/ASIN`, not the www. variant.
-  // Returns null if the input isn't an Amazon product URL.
+  // That matters because the content script uses `history.replaceState`,
+  // which throws SecurityError on cross-origin URLs.
+  // Returns null if the input isn't a recognized Amazon URL.
   function shortenAmazonUrl(input, options) {
     let url;
     try {
@@ -199,19 +268,33 @@
       return null;
     }
     if (!isAmazonHost(url.hostname)) return null;
-    const asin = extractAsin(url.pathname, url.search);
-    if (!asin) return null;
+    const matched = matchUrlFormWithWrapper(url.pathname, url.search);
+    if (!matched) return null;
+    const { asin, form } = matched;
+
     const slug = options && options.slug ? options.slug : null;
-    if (slug) {
-      return `${url.protocol}//${url.host}/${slug}/dp/${asin}`;
+    const slugPrefix = slug ? `/${slug}` : '';
+    const hash = url.hash || '';
+
+    // Filter query string to the form's allowlist.
+    let query = '';
+    if (form.keepParams && form.keepParams.length > 0) {
+      const params = new URLSearchParams();
+      for (const k of form.keepParams) {
+        const v = url.searchParams.get(k);
+        if (v !== null && v !== '') params.set(k, v);
+      }
+      const s = params.toString();
+      if (s) query = `?${s}`;
     }
-    return `${url.protocol}//${url.host}/dp/${asin}`;
+
+    return `${url.protocol}//${url.host}${slugPrefix}/${form.canonical}/${asin}${query}${hash}`;
   }
 
-  // Returns true if `input` points at an Amazon product page that is NOT
-  // already in the canonical form for the given options (i.e., calling
-  // shortenAmazonUrl with the same options would produce a different URL).
-  // Used to skip pointless replaceState calls.
+  // Returns true if `input` is a recognized Amazon URL whose canonical form
+  // for the given options would differ from `input` itself. Used to skip
+  // pointless replaceState calls. Compares the full rebuilt URL — pathname,
+  // filtered query string, AND hash — to the original.
   function needsShortening(input, options) {
     let url;
     try {
@@ -220,15 +303,9 @@
       return false;
     }
     if (!isAmazonHost(url.hostname)) return false;
-    const asin = extractAsin(url.pathname, url.search);
-    if (!asin) return false;
-    const slug = options && options.slug ? options.slug : null;
-    const expectedPath = slug ? `/${slug}/dp/${asin}` : `/dp/${asin}`;
-    return !(
-      url.pathname === expectedPath &&
-      url.search === '' &&
-      url.hash === ''
-    );
+    const cleaned = shortenAmazonUrl(url, options);
+    if (!cleaned) return false;
+    return cleaned !== url.href;
   }
 
   const api = {
@@ -240,7 +317,7 @@
     shortenAmazonUrl,
     needsShortening,
     AMAZON_HOST_REGEX,
-    ASIN_PATTERNS,
+    URL_FORMS,
     SLUG_BLOCKLIST,
   };
 

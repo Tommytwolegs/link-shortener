@@ -75,6 +75,16 @@ t('isHotelPage: Booking path with three-letter cc', () =>
     isHotelPage('https://www.booking.com/hotel/usa/foo.html'),
     false,
   ));
+t('isHotelPage: trailing slash accepted', () =>
+  assertEq(
+    isHotelPage('https://www.booking.com/hotel/th/aira-bangkok.html/'),
+    true,
+  ));
+t('shortPropertyUrl: trailing slash form cleans correctly', () =>
+  assertEq(
+    shortPropertyUrl('https://www.booking.com/hotel/th/aira-bangkok.html/?checkin=2026-05-15'),
+    'https://www.booking.com/hotel/th/aira-bangkok.html/',
+  ));
 
 // -- shortPropertyUrl -----------------------------------------------------
 

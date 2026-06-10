@@ -7,7 +7,7 @@
 //
 // Recognized forms:
 //
-//   /<user>/status/<id>           → strip query + fragment
+//   /<user>/status/<id>           → strip query, keep hash
 //   /<user>/statuses/<id>         → legacy — strip
 //   /i/web/status/<id>            → tweet-ID-only links
 //   /i/spaces/<id>                → Spaces
@@ -16,6 +16,8 @@
 // Profile pages (/<user>) and search (/search?q=) are intentionally NOT
 // recognized — those URLs are usually shared with intent (e.g. ?f=live for
 // search filters), and we'd risk stripping the user's intent.
+//
+// The URL hash is preserved — Twitter doesn't use hashes for tracking.
 //
 // Hosts: twitter.com, x.com, mobile.twitter.com.
 //
@@ -61,7 +63,8 @@
     try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
     if (!isTwitterHost(url.hostname)) return null;
     if (!isPostPath(url.pathname)) return null;
-    return `${url.protocol}//${url.host}${url.pathname}`;
+    const hash = url.hash || '';
+    return `${url.protocol}//${url.host}${url.pathname}${hash}`;
   }
 
   function needsShortening(input) {

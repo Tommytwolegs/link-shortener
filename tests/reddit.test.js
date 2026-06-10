@@ -7,6 +7,7 @@ const {
 } = require(path.join('..', 'src', 'reddit.js'));
 
 const CASES = [
+  // ----- Post-style URLs (full strip).
   { name: 'comments: utm tracking stripped',
     input: 'https://www.reddit.com/r/javascript/comments/abc123/some_post_title/?utm_source=share&utm_medium=web2x&context=3',
     expected: 'https://www.reddit.com/r/javascript/comments/abc123/some_post_title/' },
@@ -28,25 +29,75 @@ const CASES = [
   { name: 'redd.it short',
     input: 'https://redd.it/abc123/?utm_source=share',
     expected: 'https://redd.it/abc123/' },
-  { name: 'hash dropped',
+
+  // ----- User-profile post permalinks (previously unrecognized).
+  { name: '/user/<u>/comments/<id>/<slug>/ stripped',
+    input: 'https://www.reddit.com/user/janedoe/comments/abc123/title/?utm_source=share',
+    expected: 'https://www.reddit.com/user/janedoe/comments/abc123/title/' },
+  { name: '/u/<u>/comments/<id>/<slug>/ short form stripped',
+    input: 'https://www.reddit.com/u/janedoe/comments/abc123/title/?utm_source=share',
+    expected: 'https://www.reddit.com/u/janedoe/comments/abc123/title/' },
+
+  // ----- Subreddit front pages (previously left untouched).
+  { name: 'subreddit home: tracking stripped',
+    input: 'https://www.reddit.com/r/javascript/?utm_source=news_alert&utm_campaign=foo',
+    expected: 'https://www.reddit.com/r/javascript/' },
+  { name: 'subreddit home with /top/ sort and ?t=week kept',
+    input: 'https://www.reddit.com/r/javascript/top/?t=week&utm_source=share',
+    expected: 'https://www.reddit.com/r/javascript/top/?t=week' },
+  { name: 'subreddit home with /controversial/ sort and ?t=all kept',
+    input: 'https://www.reddit.com/r/javascript/controversial/?t=all',
+    expected: 'https://www.reddit.com/r/javascript/controversial/?t=all',
+    expectedNeeds: false },
+  { name: 'subreddit home with ?sort=new kept',
+    input: 'https://www.reddit.com/r/javascript/?sort=new&utm_source=foo',
+    expected: 'https://www.reddit.com/r/javascript/?sort=new' },
+  { name: 'subreddit home /new/ already clean',
+    input: 'https://www.reddit.com/r/javascript/new/',
+    expected: 'https://www.reddit.com/r/javascript/new/',
+    expectedNeeds: false },
+  { name: 'subreddit home no trailing slash works',
+    input: 'https://www.reddit.com/r/javascript?utm_source=foo',
+    expected: 'https://www.reddit.com/r/javascript' },
+
+  // ----- Hash preservation (defensive consistency).
+  { name: 'hash preserved on post URL',
     input: 'https://www.reddit.com/r/javascript/comments/abc123/title/#anchor',
-    expected: 'https://www.reddit.com/r/javascript/comments/abc123/title/' },
+    expected: 'https://www.reddit.com/r/javascript/comments/abc123/title/#anchor',
+    expectedNeeds: false },
+  { name: 'hash preserved on subreddit home',
+    input: 'https://www.reddit.com/r/javascript/?utm_source=foo#stickied',
+    expected: 'https://www.reddit.com/r/javascript/#stickied' },
+
   { name: 'already clean',
     input: 'https://www.reddit.com/r/javascript/comments/abc123/title/',
     expected: 'https://www.reddit.com/r/javascript/comments/abc123/title/',
     expectedNeeds: false },
-  { name: 'subreddit home → null',
-    input: 'https://www.reddit.com/r/javascript',
-    expected: null },
   { name: 'home → null',
     input: 'https://www.reddit.com/',
     expected: null },
-  { name: 'user profile → null',
+  { name: 'user profile (non-comments) → null',
     input: 'https://www.reddit.com/user/janedoe/',
     expected: null },
   { name: 'non-Reddit → null',
     input: 'https://www.google.com/?q=reddit',
     expected: null },
+
+  // v1.7.0+ context= on comment permalinks. Controls how many parent
+  // comments are shown above the linked one. Sub/post URLs still strip it.
+  { name: 'comment permalink: ?context=10 preserved',
+    input: 'https://www.reddit.com/r/javascript/comments/abc123/some_post_title/cid456/?context=10',
+    expected: 'https://www.reddit.com/r/javascript/comments/abc123/some_post_title/cid456/?context=10' },
+  { name: 'comment permalink: ?context=3 preserved, utm stripped',
+    input: 'https://www.reddit.com/r/javascript/comments/abc123/some_post_title/cid456/?context=3&utm_source=share',
+    expected: 'https://www.reddit.com/r/javascript/comments/abc123/some_post_title/cid456/?context=3' },
+  { name: 'post permalink (no comment id): context still stripped',
+    input: 'https://www.reddit.com/r/javascript/comments/abc123/some_post_title/?context=3',
+    expected: 'https://www.reddit.com/r/javascript/comments/abc123/some_post_title/' },
+  { name: 'user-profile comment permalink: ?context= preserved',
+    input: 'https://www.reddit.com/user/foo/comments/abc/some_title/cid456/?context=5',
+    expected: 'https://www.reddit.com/user/foo/comments/abc/some_title/cid456/?context=5' },
+
 ];
 
 let passed = 0, failed = 0;

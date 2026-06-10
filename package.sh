@@ -27,6 +27,32 @@ if ! command -v python3 >/dev/null 2>&1; then
   echo "error: 'python3' is required" >&2
   exit 1
 fi
+if ! command -v node >/dev/null 2>&1; then
+  echo "error: 'node' is required (for the parse-check guardrail)" >&2
+  exit 1
+fi
+
+# ----------------------------------------------------------------------------
+# Guardrail: every JS file must parse cleanly before we package. Catches
+# mid-line truncation, unterminated strings, missing braces, etc. — bugs
+# that would otherwise silently ship a broken extension. This is what the
+# v1.6.3 build cycle wanted: a truncated src/content.js made it into the
+# xpi and got the package rejected by AMO with "JavaScript syntax error".
+# ----------------------------------------------------------------------------
+echo "Parse-checking JS files..."
+parse_fail=0
+for f in src/*.js; do
+  if ! node --check "$f" 2>/dev/null; then
+    echo "  PARSE FAIL: $f" >&2
+    node --check "$f" >&2 || true
+    parse_fail=1
+  fi
+done
+if [ "$parse_fail" -ne 0 ]; then
+  echo "error: one or more source files failed to parse; aborting build" >&2
+  exit 1
+fi
+echo "  OK ($(ls src/*.js | wc -l | tr -d ' ') files)"
 
 VERSION="$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"])')"
 
@@ -35,7 +61,11 @@ OUT_ZIP="$OUT_DIR/link-shortener-${VERSION}.zip"
 OUT_XPI="$OUT_DIR/link-shortener-${VERSION}.xpi"
 
 mkdir -p "$OUT_DIR"
-rm -f "$OUT_ZIP" "$OUT_XPI"
+# Truncate rather than rm so the script also works on mounts where the
+# parent directory's permissions disallow unlink (e.g. some sandboxed
+# filesystems). zip will overwrite the empty file just fine.
+: > "$OUT_ZIP"
+: > "$OUT_XPI"
 
 STAGE_BASE="$(mktemp -d)"
 trap 'rm -rf "$STAGE_BASE"' EXIT
@@ -49,7 +79,10 @@ mkdir -p "$CHROME_STAGE"
 cp manifest.json "$CHROME_STAGE/"
 cp -r src "$CHROME_STAGE/"
 cp -r icons "$CHROME_STAGE/"
-(cd "$CHROME_STAGE" && zip -r -q "$OUT_ZIP" .)
+# Build the zip in a tmp path then copy bytes into place. Works even on
+# mounts where unlink is disallowed (we already truncated above).
+(cd "$CHROME_STAGE" && zip -r -q "$STAGE_BASE/chrome.zip" .)
+cat "$STAGE_BASE/chrome.zip" > "$OUT_ZIP"
 echo "Built $OUT_ZIP"
 
 # ----------------------------------------------------------------------------
@@ -94,6 +127,14 @@ m["background"] = {
         "src/tiktok.js",
         "src/reddit.js",
         "src/spotify.js",
+        "src/linkedin.js",
+        "src/ebay.js",
+        "src/etsy.js",
+        "src/threads.js",
+        "src/pinterest.js",
+        "src/walmart.js",
+        "src/target.js",
+        "src/utm.js",
         "src/background.js",
     ],
 }
@@ -102,7 +143,8 @@ PY
 
 cp -r src "$FIREFOX_STAGE/"
 cp -r icons "$FIREFOX_STAGE/"
-(cd "$FIREFOX_STAGE" && zip -r -q "$OUT_XPI" .)
+(cd "$FIREFOX_STAGE" && zip -r -q "$STAGE_BASE/firefox.xpi" .)
+cat "$STAGE_BASE/firefox.xpi" > "$OUT_XPI"
 echo "Built $OUT_XPI"
 
 echo

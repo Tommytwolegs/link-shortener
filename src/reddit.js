@@ -4,10 +4,23 @@
 //
 // Recognized forms:
 //
-//   /r/<sub>/comments/<id>/<slug>/        → strip query + fragment
-//   /r/<sub>/comments/<id>/<slug>/<cid>/  → individual comment links — same
-//   /r/<sub>/s/<short>/                   → reddit's "share" short form
-//   redd.it/<id>                          → redirector short URL
+//   /r/<sub>/comments/<id>/                  → post permalink (no slug)
+//   /r/<sub>/comments/<id>/<slug>/           → post permalink with slug
+//   /r/<sub>/comments/<id>/<slug>/<cid>/     → individual comment link
+//   /r/<sub>/s/<short>/                      → reddit's "share" short form
+//   /user/<u>/comments/<id>/<slug>/          → user-profile post permalink
+//   /u/<u>/comments/<id>/<slug>/             → ditto, short form
+//   redd.it/<id>                             → redirector short URL
+//
+// Subreddit front pages (also cleaned):
+//
+//   /r/<sub>/                                → keep ?sort=, ?t= (sort + time)
+//   /r/<sub>/(hot|new|top|rising|controversial)/  → ditto
+//
+// All other params (utm_*, share_id, correlation_id, context, etc.) are
+// stripped. The URL hash is preserved — Reddit doesn't use hashes for
+// tracking, and dropping them is the kind of foot-gun that already bit us
+// on Amazon's in-page section anchors.
 //
 // Subdomains preserved for fidelity:
 //   - reddit.com, www.reddit.com  (canonical)
@@ -33,22 +46,59 @@
     return REDDIT_HOST_REGEX.test(hostname) || REDD_IT_HOST_REGEX.test(hostname);
   }
 
+  // Post-style forms. The path itself is preserved as-is; per-form keepParams
+  // controls which query params survive cleanup.
+  const COMMENT_KEEP = ['context'];
   const POST_PATTERNS = [
-    /^\/r\/[^/]+\/comments\/[^/]+\/?$/,
-    /^\/r\/[^/]+\/comments\/[^/]+\/[^/]+\/?$/,
-    /^\/r\/[^/]+\/comments\/[^/]+\/[^/]+\/[^/]+\/?$/,
+    // /r/<sub>/comments/<postid>/ — post permalink without slug
+    { regex: /^\/r\/[^/]+\/comments\/[^/]+\/?$/, keepParams: [] },
+    // /r/<sub>/comments/<postid>/<slug>/ — post permalink with slug
+    { regex: /^\/r\/[^/]+\/comments\/[^/]+\/[^/]+\/?$/, keepParams: [] },
+    // /r/<sub>/comments/<postid>/<slug>/<commentid>/ — individual comment.
+    // ?context=N controls how many parent comments are shown above the
+    // linked one (default 3). Sharing "?context=10" preserves more of the
+    // thread; stripping it shows just the leaf.
+    { regex: /^\/r\/[^/]+\/comments\/[^/]+\/[^/]+\/[^/]+\/?$/, keepParams: COMMENT_KEEP },
     // /r/<sub>/s/<short> — the "share" short form
-    /^\/r\/[^/]+\/s\/[^/?#]+\/?$/,
+    { regex: /^\/r\/[^/]+\/s\/[^/?#]+\/?$/, keepParams: [] },
+    // User-profile post permalinks
+    { regex: /^\/user\/[^/]+\/comments\/[^/]+\/?$/, keepParams: [] },
+    { regex: /^\/user\/[^/]+\/comments\/[^/]+\/[^/]+\/?$/, keepParams: [] },
+    { regex: /^\/user\/[^/]+\/comments\/[^/]+\/[^/]+\/[^/]+\/?$/, keepParams: COMMENT_KEEP },
+    { regex: /^\/u\/[^/]+\/comments\/[^/]+\/?$/, keepParams: [] },
+    { regex: /^\/u\/[^/]+\/comments\/[^/]+\/[^/]+\/?$/, keepParams: [] },
+    { regex: /^\/u\/[^/]+\/comments\/[^/]+\/[^/]+\/[^/]+\/?$/, keepParams: COMMENT_KEEP },
   ];
+
+  // Subreddit front page forms — keep sort/timeframe params (real user
+  // intent), strip everything else (utm_*, share_id, etc.).
+  const SUBREDDIT_PATTERN =
+    /^\/r\/[^/]+(?:\/(?:hot|new|top|rising|controversial))?\/?$/;
+  const SUBREDDIT_KEEP_PARAMS = ['t', 'sort'];
 
   // redd.it: any single non-trivial path segment is the short ID.
   const REDD_IT_PATH = /^\/[^/?#]+\/?$/;
 
-  function isPostPath(hostname, pathname) {
+  // Match the path against the known forms. Returns { keepParams } describing
+  // how to clean, or null if the path isn't recognized.
+  function formFor(hostname, pathname) {
     if (REDD_IT_HOST_REGEX.test(hostname)) {
-      return REDD_IT_PATH.test(pathname);
+      if (REDD_IT_PATH.test(pathname)) return { keepParams: [] };
+      return null;
     }
-    return POST_PATTERNS.some((p) => p.test(pathname));
+    for (const p of POST_PATTERNS) {
+      if (p.regex.test(pathname)) return { keepParams: p.keepParams };
+    }
+    if (SUBREDDIT_PATTERN.test(pathname)) {
+      return { keepParams: SUBREDDIT_KEEP_PARAMS };
+    }
+    return null;
+  }
+
+  function isPostPath(hostname, pathname) {
+    // Kept for back-compat; matches the original notion of "post-or-share URL".
+    if (REDD_IT_HOST_REGEX.test(hostname)) return REDD_IT_PATH.test(pathname);
+    return POST_PATTERNS.some((p) => p.regex.test(pathname));
   }
 
   function isPostUrl(input) {
@@ -62,8 +112,21 @@
     let url;
     try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
     if (!isRedditHost(url.hostname)) return null;
-    if (!isPostPath(url.hostname, url.pathname)) return null;
-    return `${url.protocol}//${url.host}${url.pathname}`;
+    const form = formFor(url.hostname, url.pathname);
+    if (!form) return null;
+
+    const hash = url.hash || '';
+    let query = '';
+    if (form.keepParams.length > 0) {
+      const params = new URLSearchParams();
+      for (const k of form.keepParams) {
+        const v = url.searchParams.get(k);
+        if (v !== null && v !== '') params.set(k, v);
+      }
+      const s = params.toString();
+      if (s) query = '?' + s;
+    }
+    return `${url.protocol}//${url.host}${url.pathname}${query}${hash}`;
   }
 
   function needsShortening(input) {
@@ -85,6 +148,7 @@
     REDDIT_HOST_REGEX,
     REDD_IT_HOST_REGEX,
     POST_PATTERNS,
+    SUBREDDIT_PATTERN,
   };
   global.RedditLinkShortener = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

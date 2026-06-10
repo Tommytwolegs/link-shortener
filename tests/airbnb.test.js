@@ -84,10 +84,20 @@ t('isListingPage: homepage', () =>
   assertEq(isListingPage('https://www.airbnb.com/'), false));
 t('isListingPage: non-Airbnb site with same path', () =>
   assertEq(isListingPage('https://other.com/rooms/12345'), false));
-t('isListingPage: trailing slash on /rooms/<id>/', () =>
+t('isListingPage: trailing slash on /rooms/<id>/ accepted', () =>
   assertEq(
     isListingPage('https://www.airbnb.com/rooms/12345/'),
-    false,
+    true,
+  ));
+t('isListingPage: trailing slash on /rooms/luxury/<id>/ accepted', () =>
+  assertEq(
+    isListingPage('https://www.airbnb.com/rooms/luxury/12345/'),
+    true,
+  ));
+t('shortPropertyUrl: trailing slash form cleaned',
+  () => assertEq(
+    shortPropertyUrl('https://www.airbnb.com/rooms/12345/?source_impression_id=abc'),
+    'https://www.airbnb.com/rooms/12345/',
   ));
 t('isListingPage: experience URL is not a room', () =>
   assertEq(
@@ -225,6 +235,60 @@ t('shortUrlForBar: non-Airbnb host returns null', () =>
   ));
 t('shortUrlForBar: garbage returns null', () =>
   assertEq(shortUrlForBar('not a url'), null));
+
+
+// -- Modal preservation (photo gallery, reviews, map) ---------------------
+// Airbnb's photo gallery, reviews modal, map modal, etc. all open via a
+// pushState that adds ?modal=<MODAL_TYPE> to the URL. Our 500ms address-
+// bar cleanup must preserve it or the React app re-renders without the
+// modal state and the modal closes immediately. See airbnb.js ADDRESS_BAR_KEEP
+// for the design notes.
+
+t('shortUrlForBar: ?modal= preserved (photo gallery)', () =>
+  assertEq(
+    shortUrlForBar('https://www.airbnb.com/rooms/12345?modal=PHOTO_TOUR_SCROLLABLE'),
+    'https://www.airbnb.com/rooms/12345?modal=PHOTO_TOUR_SCROLLABLE',
+  ));
+
+t('shortUrlForBar: ?modal= preserved with tracking + dates', () =>
+  assertEq(
+    shortUrlForBar(
+      'https://www.airbnb.com/rooms/12345?check_in=2026-08-01&check_out=2026-08-05&modal=PHOTOS&source_impression_id=abc&federated_search_id=xyz',
+    ),
+    'https://www.airbnb.com/rooms/12345?check_in=2026-08-01&check_out=2026-08-05&modal=PHOTOS',
+  ));
+
+t('shortUrlForBar: alternative modal values preserved', () => {
+  for (const modal of ['PHOTOS', 'PHOTO_TOUR_SCROLLABLE', 'READ_REVIEWS', 'MAP', 'DESCRIPTION', 'HOST_PROFILE', 'SHARE']) {
+    assertEq(
+      shortUrlForBar(`https://www.airbnb.com/rooms/12345?modal=${modal}&source_impression_id=abc`),
+      `https://www.airbnb.com/rooms/12345?modal=${modal}`,
+    );
+  }
+});
+
+t('shortUrlForBar: modal stripped if empty', () =>
+  assertEq(
+    shortUrlForBar('https://www.airbnb.com/rooms/12345?modal=&source_impression_id=abc'),
+    'https://www.airbnb.com/rooms/12345',
+  ));
+
+// shortPropertyUrl is the "Share Listing" Copy-button form. It MUST NOT
+// include ?modal= because the user wants to share a clean canonical URL,
+// not a URL that opens a modal on the recipient's device.
+t('shortPropertyUrl: ?modal= is stripped (shareable form)', () =>
+  assertEq(
+    shortPropertyUrl('https://www.airbnb.com/rooms/12345?modal=PHOTO_TOUR_SCROLLABLE'),
+    'https://www.airbnb.com/rooms/12345',
+  ));
+
+t('shortUrlWithDates: ?modal= is stripped (shareable form)', () =>
+  assertEq(
+    shortUrlWithDates(
+      'https://www.airbnb.com/rooms/12345?check_in=2026-08-01&check_out=2026-08-05&modal=PHOTOS',
+    ),
+    'https://www.airbnb.com/rooms/12345?check_in=2026-08-01&check_out=2026-08-05',
+  ));
 
 // -- hasDates -------------------------------------------------------------
 

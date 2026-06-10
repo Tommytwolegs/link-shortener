@@ -328,13 +328,27 @@
     // Safety-net polling for SPA transitions that don't fire a webNavigation
     // event we can see (calendar pickers, in-page filter changes, etc).
     // Content scripts run in an isolated world so we can't monkey-patch the
-    // page's history API directly.
+    // page's history API directly. Skip when the tab is hidden — no URL can
+    // have changed without user interaction; visibilitychange catches up.
     setInterval(() => {
+      if (typeof document !== 'undefined' && document.hidden) return;
       if (location.href !== lastHref) {
         lastHref = location.href;
         reconcile();
       }
     }, 500);
+
+    // When a backgrounded tab returns to the foreground, check immediately
+    // in case the URL changed while we were skipping polls.
+    if (typeof document !== 'undefined' && document.addEventListener) {
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) return;
+        if (location.href !== lastHref) {
+          lastHref = location.href;
+          reconcile();
+        }
+      });
+    }
   }
 
   global.SiteToolbar = { init };

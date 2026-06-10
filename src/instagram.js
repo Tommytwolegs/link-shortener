@@ -14,10 +14,11 @@
 //   /stories/<username>/<story-id>
 //
 // Tracking parameters that get dropped: igsh, igshid, utm_source, utm_medium,
-// utm_campaign, taken-by, hl, etc. — the allowlist is empty so anything in
-// the query string is stripped. Carousel slide selector `img_index` is
-// dropped too: shared links typically open at slide 0, which is what people
-// expect when they paste a clean URL.
+// utm_campaign, taken-by, hl, etc. — only the carousel slide selector
+// `img_index` is preserved. Without it, a shared "slide 3 of 7" link snaps
+// back to slide 1 the moment our cleanup pass runs.
+//
+// The URL hash is preserved — Instagram doesn't use hashes for tracking.
 //
 // Loaded as:
 //   * a classic content script (sets `window.InstagramLinkShortener`)
@@ -60,6 +61,13 @@
     return isPostPath(url.pathname);
   }
 
+  // Carousel slide selector. Used on /p/ and /reel/ multi-photo posts —
+  // Instagram adds ?img_index=N when the user navigates to slide N, and the
+  // viewer initializes at that slide on page load. Without preserving it,
+  // someone sharing "slide 3 of 7" loses the slide context the moment our
+  // cleanup pass strips the param.
+  const KEEP_PARAMS = new Set(['img_index']);
+
   // Build the clean form. Returns null if `input` isn't an Instagram post URL.
   function shortenInstagramUrl(input) {
     let url;
@@ -70,7 +78,15 @@
     }
     if (!isInstagramHost(url.hostname)) return null;
     if (!isPostPath(url.pathname)) return null;
-    return `${url.protocol}//${url.host}${url.pathname}`;
+    const params = new URLSearchParams();
+    for (const k of KEEP_PARAMS) {
+      const v = url.searchParams.get(k);
+      if (v !== null && v !== '') params.set(k, v);
+    }
+    const q = params.toString();
+    const query = q ? '?' + q : '';
+    const hash = url.hash || '';
+    return `${url.protocol}//${url.host}${url.pathname}${query}${hash}`;
   }
 
   function needsShortening(input) {
@@ -95,6 +111,7 @@
     STORAGE_KEY: 'enabledSocial',
     INSTAGRAM_HOST_REGEX,
     POST_PATTERNS,
+    KEEP_PARAMS,
   };
 
   global.InstagramLinkShortener = api;

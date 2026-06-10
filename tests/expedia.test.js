@@ -86,6 +86,16 @@ t('isHotelPage: missing Hotel-Information suffix', () =>
     isHotelPage('https://www.expedia.com/Bangkok-Hotels-Foo.h520975'),
     false,
   ));
+t('isHotelPage: trailing slash accepted', () =>
+  assertEq(
+    isHotelPage('https://www.expedia.com/Bangkok-Hotels-Foo.h520975.Hotel-Information/'),
+    true,
+  ));
+t('shortPropertyUrl: trailing slash form cleans correctly', () =>
+  assertEq(
+    shortPropertyUrl('https://www.expedia.com/Bangkok-Hotels-Foo.h520975.Hotel-Information/?chkin=2026-05-15'),
+    'https://www.expedia.com/Bangkok-Hotels-Foo.h520975.Hotel-Information/',
+  ));
 
 // -- shortPropertyUrl -----------------------------------------------------
 

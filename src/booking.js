@@ -30,7 +30,7 @@
   const BOOKING_HOST_REGEX = /(?:^|\.)booking\.com$/i;
 
   // Hotel listing path: `/hotel/<2-letter-cc>/<slug>.html`.
-  const HOTEL_PATH_REGEX = /^\/hotel\/[a-z]{2}\/[^/]+\.html$/i;
+  const HOTEL_PATH_REGEX = /^\/hotel\/[a-z]{2}\/[^/]+\.html\/?$/i;
 
   function isBookingHost(hostname) {
     if (!hostname) return false;
@@ -118,10 +118,11 @@
       }
     }
 
+    const hash = url.hash || '';
     const search = qs.toString();
     return search
-      ? `${url.protocol}//${url.host}${url.pathname}?${search}`
-      : `${url.protocol}//${url.host}${url.pathname}`;
+      ? `${url.protocol}//${url.host}${url.pathname}?${search}${hash}`
+      : `${url.protocol}//${url.host}${url.pathname}${hash}`;
   }
 
   const api = {

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Jimothy's Link Shortener",
   "short_name": "Link Shortener",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "description": "Cleans long URLs on shopping, travel, and social sites — strips tracking and gives you a clean shareable link.",
   "author": "Thomas Powers",
   "homepage_url": "https://github.com/Tommytwolegs/link-shortener",
@@ -13,7 +13,10 @@
   },
   "permissions": [
     "webNavigation",
-    "storage"
+    "storage",
+    "scripting",
+    "contextMenus",
+    "activeTab"
   ],
   "action": {
     "default_title": "Link Shortener",
@@ -86,7 +89,70 @@
     "*://*.tiktok.com/*",
     "*://*.reddit.com/*",
     "*://redd.it/*",
-    "*://open.spotify.com/*"
+    "*://open.spotify.com/*",
+    "*://*.linkedin.com/*",
+    "*://*.ebay.com/*",
+    "*://*.ebay.co.uk/*",
+    "*://*.ebay.de/*",
+    "*://*.ebay.fr/*",
+    "*://*.ebay.it/*",
+    "*://*.ebay.es/*",
+    "*://*.ebay.nl/*",
+    "*://*.ebay.ca/*",
+    "*://*.ebay.com.au/*",
+    "*://*.ebay.ie/*",
+    "*://*.ebay.com.hk/*",
+    "*://*.ebay.com.my/*",
+    "*://*.ebay.com.sg/*",
+    "*://*.ebay.com.tw/*",
+    "*://*.ebay.at/*",
+    "*://*.ebay.be/*",
+    "*://*.ebay.ch/*",
+    "*://*.ebay.pl/*",
+    "*://*.ebay.com.tr/*",
+    "*://*.etsy.com/*",
+    "*://*.etsy.de/*",
+    "*://*.etsy.fr/*",
+    "*://*.etsy.it/*",
+    "*://*.etsy.es/*",
+    "*://*.etsy.nl/*",
+    "*://*.etsy.co.uk/*",
+    "*://*.etsy.com.au/*",
+    "*://*.etsy.ca/*",
+    "*://*.etsy.jp/*",
+    "*://*.etsy.pl/*",
+    "*://*.etsy.in/*",
+    "*://*.etsy.com.br/*",
+    "*://*.etsy.com.mx/*",
+    "*://*.etsy.ie/*",
+    "*://*.threads.net/*",
+    "*://*.threads.com/*",
+    "*://*.pinterest.com/*",
+    "*://*.pinterest.co.uk/*",
+    "*://*.pinterest.de/*",
+    "*://*.pinterest.fr/*",
+    "*://*.pinterest.it/*",
+    "*://*.pinterest.es/*",
+    "*://*.pinterest.ca/*",
+    "*://*.pinterest.com.au/*",
+    "*://*.pinterest.com.mx/*",
+    "*://*.pinterest.jp/*",
+    "*://*.pinterest.nz/*",
+    "*://*.pinterest.ie/*",
+    "*://*.pinterest.at/*",
+    "*://*.pinterest.ch/*",
+    "*://*.pinterest.dk/*",
+    "*://*.pinterest.nl/*",
+    "*://*.pinterest.se/*",
+    "*://*.pinterest.ph/*",
+    "*://*.pinterest.pt/*",
+    "*://pin.it/*",
+    "*://*.walmart.com/*",
+    "*://*.walmart.ca/*",
+    "*://*.target.com/*"
+  ],
+  "optional_host_permissions": [
+    "*://*/*"
   ],
   "content_scripts": [
     {
@@ -112,6 +178,34 @@
         "*://*.amazon.com.mx/*",
         "*://*.amazon.com.br/*",
         "*://*.amazon.com.be/*"
+      ],
+      "exclude_matches": [
+        "*://aws.amazon.com/*",
+        "*://*.aws.amazon.com/*",
+        "*://developer.amazon.com/*",
+        "*://sellercentral.amazon.com/*",
+        "*://sellercentral.amazon.co.uk/*",
+        "*://sellercentral.amazon.de/*",
+        "*://sellercentral.amazon.fr/*",
+        "*://sellercentral.amazon.it/*",
+        "*://sellercentral.amazon.es/*",
+        "*://sellercentral.amazon.ca/*",
+        "*://sellercentral.amazon.com.au/*",
+        "*://sellercentral.amazon.co.jp/*",
+        "*://sellercentral.amazon.in/*",
+        "*://sellercentral.amazon.com.mx/*",
+        "*://sellercentral.amazon.com.br/*",
+        "*://advertising.amazon.com/*",
+        "*://music.amazon.com/*",
+        "*://music.amazon.co.uk/*",
+        "*://music.amazon.de/*",
+        "*://music.amazon.fr/*",
+        "*://music.amazon.it/*",
+        "*://music.amazon.es/*",
+        "*://music.amazon.ca/*",
+        "*://music.amazon.com.au/*",
+        "*://music.amazon.co.jp/*",
+        "*://music.amazon.in/*"
       ],
       "js": [
         "src/asin.js",
@@ -274,10 +368,144 @@
       ],
       "run_at": "document_start",
       "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.linkedin.com/*"
+      ],
+      "js": [
+        "src/linkedin.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.ebay.com/*",
+        "*://*.ebay.co.uk/*",
+        "*://*.ebay.de/*",
+        "*://*.ebay.fr/*",
+        "*://*.ebay.it/*",
+        "*://*.ebay.es/*",
+        "*://*.ebay.nl/*",
+        "*://*.ebay.ca/*",
+        "*://*.ebay.com.au/*",
+        "*://*.ebay.ie/*",
+        "*://*.ebay.com.hk/*",
+        "*://*.ebay.com.my/*",
+        "*://*.ebay.com.sg/*",
+        "*://*.ebay.com.tw/*",
+        "*://*.ebay.at/*",
+        "*://*.ebay.be/*",
+        "*://*.ebay.ch/*",
+        "*://*.ebay.pl/*",
+        "*://*.ebay.com.tr/*"
+      ],
+      "js": [
+        "src/ebay.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.etsy.com/*",
+        "*://*.etsy.de/*",
+        "*://*.etsy.fr/*",
+        "*://*.etsy.it/*",
+        "*://*.etsy.es/*",
+        "*://*.etsy.nl/*",
+        "*://*.etsy.co.uk/*",
+        "*://*.etsy.com.au/*",
+        "*://*.etsy.ca/*",
+        "*://*.etsy.jp/*",
+        "*://*.etsy.pl/*",
+        "*://*.etsy.in/*",
+        "*://*.etsy.com.br/*",
+        "*://*.etsy.com.mx/*",
+        "*://*.etsy.ie/*"
+      ],
+      "js": [
+        "src/etsy.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.threads.net/*",
+        "*://*.threads.com/*"
+      ],
+      "js": [
+        "src/threads.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.pinterest.com/*",
+        "*://*.pinterest.co.uk/*",
+        "*://*.pinterest.de/*",
+        "*://*.pinterest.fr/*",
+        "*://*.pinterest.it/*",
+        "*://*.pinterest.es/*",
+        "*://*.pinterest.ca/*",
+        "*://*.pinterest.com.au/*",
+        "*://*.pinterest.com.mx/*",
+        "*://*.pinterest.jp/*",
+        "*://*.pinterest.nz/*",
+        "*://*.pinterest.ie/*",
+        "*://*.pinterest.at/*",
+        "*://*.pinterest.ch/*",
+        "*://*.pinterest.dk/*",
+        "*://*.pinterest.nl/*",
+        "*://*.pinterest.se/*",
+        "*://*.pinterest.ph/*",
+        "*://*.pinterest.pt/*",
+        "*://pin.it/*"
+      ],
+      "js": [
+        "src/pinterest.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.walmart.com/*",
+        "*://*.walmart.ca/*"
+      ],
+      "js": [
+        "src/walmart.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.target.com/*"
+      ],
+      "js": [
+        "src/target.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
     }
   ],
   "background": {
     "service_worker": "src/background.js"
   },
-  "minimum_chrome_version": "102"
+  "minimum_chrome_version": "102",
+  "options_ui": {
+    "page": "src/options.html",
+    "open_in_tab": false
+  }
 }

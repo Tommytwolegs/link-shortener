@@ -30,7 +30,7 @@
   //   /some-slug/hotel/city-xx.html
   //   /en-us/some-slug/hotel/city-xx.html  (locale prefix)
   // The defining feature is `/hotel/<file>.html`.
-  const HOTEL_PATH_REGEX = /\/hotel\/[^/]+\.html$/i;
+  const HOTEL_PATH_REGEX = /\/hotel\/[^/]+\.html\/?$/i;
 
   function isAgodaHost(hostname) {
     if (!hostname) return false;
@@ -109,10 +109,11 @@
       if (val !== null && val !== '') qs.set(key, val);
     }
 
+    const hash = url.hash || '';
     const search = qs.toString();
     return search
-      ? `${url.protocol}//${url.host}${url.pathname}?${search}`
-      : `${url.protocol}//${url.host}${url.pathname}`;
+      ? `${url.protocol}//${url.host}${url.pathname}?${search}${hash}`
+      : `${url.protocol}//${url.host}${url.pathname}${hash}`;
   }
 
   const api = {

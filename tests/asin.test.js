@@ -36,15 +36,49 @@ const CASES = [
   { name: 'US: /gp/aw/d/ASIN',
     input: 'https://www.amazon.com/gp/aw/d/B0BSHF7WHW?some=garbage',
     expected: 'https://www.amazon.com/dp/B0BSHF7WHW' },
-  { name: 'US: /gp/aw/reviews/ASIN',
-    input: 'https://www.amazon.com/gp/aw/reviews/B0BSHF7WHW',
-    expected: 'https://www.amazon.com/dp/B0BSHF7WHW' },
-  { name: 'US: /product-reviews/ASIN',
+
+  // ----- /product-reviews/ — reviews list page. Preserve PATH, strip ref tail
+  // and tracking, KEEP filter/sort/pagination params (they're real user intent).
+  { name: 'US: bare /product-reviews/ASIN with /ref tail',
+    input: 'https://www.amazon.com/Some-Product/product-reviews/B07XJ8C8F5/ref=cm_cr_arp_d_paging_btm_2',
+    expected: 'https://www.amazon.com/product-reviews/B07XJ8C8F5' },
+  { name: 'US: /product-reviews/ASIN with pagination',
     input: 'https://www.amazon.com/Some-Product/product-reviews/B07XJ8C8F5/ref=cm_cr_arp_d_paging_btm_2?pageNumber=2',
-    expected: 'https://www.amazon.com/dp/B07XJ8C8F5' },
-  { name: 'US: /gp/offer-listing/ASIN',
+    expected: 'https://www.amazon.com/product-reviews/B07XJ8C8F5?pageNumber=2' },
+  { name: 'US: /product-reviews/ASIN with 5-star filter',
+    input: 'https://www.amazon.com/Some-Product/product-reviews/B08N5WRWNW/ref=cm_cr_arp_d_viewopt_sr?ie=UTF8&reviewerType=all_reviews&filterByStar=five_star&pageNumber=1',
+    expected: 'https://www.amazon.com/product-reviews/B08N5WRWNW?filterByStar=five_star&pageNumber=1&reviewerType=all_reviews' },
+  { name: 'US: /product-reviews/ASIN with sort + filter combo',
+    input: 'https://www.amazon.com/product-reviews/B08N5WRWNW?sortBy=recent&filterByStar=four_star&pageNumber=3',
+    expected: 'https://www.amazon.com/product-reviews/B08N5WRWNW?filterByStar=four_star&pageNumber=3&sortBy=recent' },
+  { name: 'US: /product-reviews/ASIN with mediaType filter',
+    input: 'https://www.amazon.com/product-reviews/B08N5WRWNW?mediaType=media_reviews_only&formatType=current_format',
+    expected: 'https://www.amazon.com/product-reviews/B08N5WRWNW?formatType=current_format&mediaType=media_reviews_only' },
+  { name: 'US: /product-reviews/ASIN already canonical → no needs',
+    input: 'https://www.amazon.com/product-reviews/B07XJ8C8F5?filterByStar=five_star',
+    expected: 'https://www.amazon.com/product-reviews/B07XJ8C8F5?filterByStar=five_star',
+    expectedNeeds: false },
+
+  // ----- /gp/aw/reviews/ — mobile reviews list. Same intent.
+  { name: 'US: /gp/aw/reviews/ASIN preserves path',
+    input: 'https://www.amazon.com/gp/aw/reviews/B0BSHF7WHW',
+    expected: 'https://www.amazon.com/gp/aw/reviews/B0BSHF7WHW',
+    expectedNeeds: false },
+  { name: 'US: /gp/aw/reviews/ASIN with /ref tail and filter',
+    input: 'https://www.amazon.com/gp/aw/reviews/B0BSHF7WHW/ref=mw_dp_cr?filterByStar=three_star&pageNumber=2',
+    expected: 'https://www.amazon.com/gp/aw/reviews/B0BSHF7WHW?filterByStar=three_star&pageNumber=2' },
+
+  // ----- /gp/offer-listing/ — third-party sellers list. Preserve path.
+  { name: 'US: /gp/offer-listing/ASIN strips /ref tail',
     input: 'https://www.amazon.com/gp/offer-listing/B07XJ8C8F5/ref=dp_olp_NEW_mbc',
-    expected: 'https://www.amazon.com/dp/B07XJ8C8F5' },
+    expected: 'https://www.amazon.com/gp/offer-listing/B07XJ8C8F5' },
+  { name: 'US: /gp/offer-listing/ASIN with condition=new',
+    input: 'https://www.amazon.com/gp/offer-listing/B07XJ8C8F5/ref=dp_olp_NEW_mbc?condition=new',
+    expected: 'https://www.amazon.com/gp/offer-listing/B07XJ8C8F5?condition=new' },
+  { name: 'US: /gp/offer-listing/ASIN with f_used filter',
+    input: 'https://www.amazon.com/gp/offer-listing/B07XJ8C8F5?f_used=true&startIndex=10&ref=foo',
+    expected: 'https://www.amazon.com/gp/offer-listing/B07XJ8C8F5?f_used=true&startIndex=10' },
+
   { name: 'US: legacy /exec/obidos/ASIN/',
     input: 'https://www.amazon.com/exec/obidos/ASIN/0451524934/ref=foo',
     expected: 'https://www.amazon.com/dp/0451524934' },
@@ -99,12 +133,43 @@ const CASES = [
   { name: 'aws.amazon.com has no /dp/ paths',
     input: 'https://aws.amazon.com/some/path',
     expected: null },
-  { name: 'US: /dp/ASIN with #hash strips the hash',
+
+  // ----- Hash preservation across forms (Amazon uses #customerReviews etc.
+  // as in-page section anchors; stripping them turns an in-page scroll into
+  // a full navigation).
+  { name: 'US: /Slug/dp/ASIN with #hash preserves the hash',
     input: 'https://www.amazon.com/Slug/dp/B08N5WRWNW#customerReviews',
-    expected: 'https://www.amazon.com/dp/B08N5WRWNW' },
+    expected: 'https://www.amazon.com/dp/B08N5WRWNW#customerReviews' },
+  { name: 'US: bare /dp/ASIN with #hash is already canonical',
+    input: 'https://www.amazon.com/dp/B08N5WRWNW#customerReviews',
+    expected: 'https://www.amazon.com/dp/B08N5WRWNW#customerReviews',
+    expectedNeeds: false },
+  { name: 'US: /dp/ASIN with tracking + hash strips tracking, preserves hash',
+    input: 'https://www.amazon.com/Foo/dp/B08N5WRWNW/ref=sr_1?ie=UTF8#productDescription',
+    expected: 'https://www.amazon.com/dp/B08N5WRWNW#productDescription' },
+  { name: 'US: /dp/ASIN with ?th=1 preserves variant lock',
+    input: 'https://www.amazon.com/dp/B08N5WRWNW?th=1',
+    expected: 'https://www.amazon.com/dp/B08N5WRWNW?th=1' },
+  { name: 'US: /dp/ASIN with ?th=1&psc=1 preserves both',
+    input: 'https://www.amazon.com/dp/B08N5WRWNW?th=1&psc=1&ref=sr_1',
+    expected: 'https://www.amazon.com/dp/B08N5WRWNW?th=1&psc=1' },
+  { name: 'US: /gp/product/ASIN with ?th=1 preserves variant lock',
+    input: 'https://www.amazon.com/gp/product/B08N5WRWNW?th=1',
+    expected: 'https://www.amazon.com/dp/B08N5WRWNW?th=1' },
+  { name: 'US: /gp/product/ASIN with #hash preserves the hash',
+    input: 'https://www.amazon.com/gp/product/B07XJ8C8F5/ref=ppx_yo#aplus',
+    expected: 'https://www.amazon.com/dp/B07XJ8C8F5#aplus' },
+  { name: 'US: /product-reviews/ASIN with hash and filter preserves both',
+    input: 'https://www.amazon.com/product-reviews/B08N5WRWNW?filterByStar=five_star#cm_cr-review_list',
+    expected: 'https://www.amazon.com/product-reviews/B08N5WRWNW?filterByStar=five_star#cm_cr-review_list',
+    expectedNeeds: false },
+
   { name: 'Lowercase ASIN intentionally NOT matched',
     input: 'https://www.amazon.com/dp/b08n5wrwnw',
     expected: null },
+
+  // ----- Sponsored / wrapper URLs always go to /dp/ — sponsored-product
+  // clickthroughs land on the product page.
   { name: 'Sponsored: /sspa/click with url= param',
     input: 'https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo5MjkzMzg5ODA2MDQyOTE&url=%2FWordsworth-Black-Cartridges-Converter-Calligraphy%2Fdp%2FB0B57CV483%3Fpsc%3D1%26pd_rd_w%3D8Wtcb',
     expected: 'https://www.amazon.com/dp/B0B57CV483' },
@@ -161,6 +226,8 @@ check('isAmazonHost: amazon.de', isAmazonHost('amazon.de'), true);
 check('isAmazonHost: amazon-aws.com', isAmazonHost('amazon-aws.com'), false);
 check('isAmazonHost: aws.amazon.com', isAmazonHost('aws.amazon.com'), true);
 check('extractAsin: /dp/B08N5WRWNW', extractAsin('/dp/B08N5WRWNW'), 'B08N5WRWNW');
+check('extractAsin: /product-reviews/B08N5WRWNW', extractAsin('/product-reviews/B08N5WRWNW'), 'B08N5WRWNW');
+check('extractAsin: /gp/offer-listing/B08N5WRWNW', extractAsin('/gp/offer-listing/B08N5WRWNW'), 'B08N5WRWNW');
 check('extractAsin: /', extractAsin('/'), null);
 check('extractAsin: wrapper path + search',
   extractAsin('/sspa/click', '?url=%2Fdp%2FB08N5WRWNW'),
@@ -181,8 +248,14 @@ check('slug: /Foo/dp/ASIN with ref tail',
 check('slug: /Foo/gp/product/ASIN',
   extractTitleSlug('/Foo-Bar/gp/product/B07XJ8C8F5'),
   'Foo-Bar');
+check('slug: /Foo/product-reviews/ASIN',
+  extractTitleSlug('/Foo-Bar/product-reviews/B07XJ8C8F5'),
+  'Foo-Bar');
 check('slug: bare /dp/ASIN -> null',
   extractTitleSlug('/dp/B08N5WRWNW'),
+  null);
+check('slug: bare /product-reviews/ASIN -> null',
+  extractTitleSlug('/product-reviews/B08N5WRWNW'),
   null);
 check('slug: /gp/product/ASIN -> null',
   extractTitleSlug('/gp/product/B08N5WRWNW'),
@@ -247,6 +320,20 @@ check('shorten with slug: gp/product input',
 check('shorten with slug:null falls back to bare form',
   shortenAmazonUrl('https://www.amazon.com/dp/B0D47V1Q5B', { slug: null }),
   'https://www.amazon.com/dp/B0D47V1Q5B');
+check('shorten with slug: hash is preserved',
+  shortenAmazonUrl('https://www.amazon.com/Old/dp/B0D47V1Q5B/ref=foo#customerReviews', { slug: 'New' }),
+  'https://www.amazon.com/New/dp/B0D47V1Q5B#customerReviews');
+check('shorten with slug: already canonical /<slug>/dp/ASIN with hash is preserved',
+  shortenAmazonUrl('https://www.amazon.com/Foo/dp/B0D47V1Q5B#aplus', { slug: 'Foo' }),
+  'https://www.amazon.com/Foo/dp/B0D47V1Q5B#aplus');
+
+// shortenAmazonUrl with slug option for /product-reviews/
+check('shorten with slug: /<slug>/product-reviews/ASIN preserves slug + filter',
+  shortenAmazonUrl('https://www.amazon.com/Acme-Foo/product-reviews/B0D47V1Q5B/ref=cm_cr?filterByStar=five_star&pageNumber=2', { slug: 'Acme-Foo' }),
+  'https://www.amazon.com/Acme-Foo/product-reviews/B0D47V1Q5B?filterByStar=five_star&pageNumber=2');
+check('shorten with slug:null on product-reviews drops slug',
+  shortenAmazonUrl('https://www.amazon.com/Acme-Foo/product-reviews/B0D47V1Q5B?filterByStar=five_star', { slug: null }),
+  'https://www.amazon.com/product-reviews/B0D47V1Q5B?filterByStar=five_star');
 
 // needsShortening with slug option
 check('needs with slug: already in /<slug>/dp/ASIN form -> false',
@@ -263,6 +350,18 @@ check('needs with slug: trailing query -> true',
   true);
 check('needs without slug option: in /<slug>/dp/ASIN form -> still true',
   needsShortening('https://www.amazon.com/Foo/dp/B0D47V1Q5B'),
+  true);
+check('needs with slug: canonical /<slug>/dp/ASIN with hash -> false',
+  needsShortening('https://www.amazon.com/Foo/dp/B0D47V1Q5B#customerReviews', { slug: 'Foo' }),
+  false);
+check('needs without slug: canonical /dp/ASIN with hash -> false',
+  needsShortening('https://www.amazon.com/dp/B0D47V1Q5B#aplus'),
+  false);
+check('needs without slug: canonical /product-reviews/ASIN with filter -> false',
+  needsShortening('https://www.amazon.com/product-reviews/B0D47V1Q5B?filterByStar=five_star'),
+  false);
+check('needs without slug: /product-reviews/ with ref tail -> true',
+  needsShortening('https://www.amazon.com/product-reviews/B0D47V1Q5B/ref=foo'),
   true);
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed (' + (passed + failed) + ' total)');

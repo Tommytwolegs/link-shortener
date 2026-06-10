@@ -28,9 +28,23 @@ const CASES = [
   { name: 'm.tiktok.com mobile',
     input: 'https://m.tiktok.com/@user/video/1234567890?ref=web',
     expected: 'https://m.tiktok.com/@user/video/1234567890' },
-  { name: 'hash dropped',
+  { name: '/share/video/ canonical share form',
+    input: 'https://www.tiktok.com/share/video/1234567890?lang=en&u_code=foo',
+    expected: 'https://www.tiktok.com/share/video/1234567890' },
+  { name: '/share/video/ already clean',
+    input: 'https://www.tiktok.com/share/video/1234567890',
+    expected: 'https://www.tiktok.com/share/video/1234567890',
+    expectedNeeds: false },
+  { name: '/share/video/ non-numeric id → null',
+    input: 'https://www.tiktok.com/share/video/abc',
+    expected: null },
+  { name: 'hash preserved alongside tracking strip',
+    input: 'https://www.tiktok.com/@user/video/1234567890?lang=en#hash',
+    expected: 'https://www.tiktok.com/@user/video/1234567890#hash' },
+  { name: 'hash preserved when already clean',
     input: 'https://www.tiktok.com/@user/video/1234567890#hash',
-    expected: 'https://www.tiktok.com/@user/video/1234567890' },
+    expected: 'https://www.tiktok.com/@user/video/1234567890#hash',
+    expectedNeeds: false },
   { name: 'already clean',
     input: 'https://www.tiktok.com/@user/video/1234567890',
     expected: 'https://www.tiktok.com/@user/video/1234567890',
@@ -69,6 +83,7 @@ check('isTiktokHost: vm.tiktok.com', isTiktokHost('vm.tiktok.com'), true);
 check('isTiktokHost: vt.tiktok.com', isTiktokHost('vt.tiktok.com'), true);
 check('isTiktokHost: tiktok-clone.com', isTiktokHost('tiktok-clone.com'), false);
 check('isPostUrl: /@user/video/', isPostUrl('https://www.tiktok.com/@u/video/123'), true);
+check('isPostUrl: /share/video/', isPostUrl('https://www.tiktok.com/share/video/123'), true);
 check('isPostUrl: profile', isPostUrl('https://www.tiktok.com/@user'), false);
 check('shorten on garbage', shortenTiktokUrl('not a url'), null);
 check('needs on garbage', needsShortening('not a url'), false);

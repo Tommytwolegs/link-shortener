@@ -7,7 +7,7 @@
 # Equivalent to package.sh but uses PowerShell's built-in Compress-Archive,
 # so you don't need to install zip or WSL. Run from PowerShell:
 #
-#   cd "C:\Users\tommy\Documents\Link Shortener\Link Shortener Chrome Add On"
+#   cd "C:\Users\tommy\Documents\Projects\Link Shortener\link-shortener"
 #   .\package.ps1
 #
 # If PowerShell complains about execution policy, run once:
@@ -16,6 +16,35 @@
 $ErrorActionPreference = 'Stop'
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 Set-Location $ScriptDir
+
+# ---------------------------------------------------------------------------
+# Guardrail: every JS file must parse cleanly before we package. Catches
+# mid-line truncation, unterminated strings, missing braces, etc. — bugs
+# that would otherwise silently ship a broken extension. This is what the
+# v1.6.3 build cycle wanted: a truncated src/content.js made it into the
+# xpi and got the package rejected by AMO with "JavaScript syntax error".
+# ---------------------------------------------------------------------------
+$nodeCmd = Get-Command node -ErrorAction SilentlyContinue
+if (-not $nodeCmd) {
+    Write-Error "'node' is required for the parse-check guardrail. Install Node.js from https://nodejs.org"
+    exit 1
+}
+Write-Host "Parse-checking JS files..."
+$parseFailed = $false
+Get-ChildItem -Path 'src' -Filter '*.js' -File | ForEach-Object {
+    $output = & node --check $_.FullName 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "  PARSE FAIL: $($_.Name)"
+        Write-Host $output
+        $parseFailed = $true
+    }
+}
+if ($parseFailed) {
+    Write-Error "One or more source files failed to parse; aborting build."
+    exit 1
+}
+$jsCount = (Get-ChildItem -Path 'src' -Filter '*.js' -File).Count
+Write-Host "  OK ($jsCount files)"
 
 # Read version from manifest.
 $manifest = Get-Content -Raw -Path 'manifest.json' | ConvertFrom-Json
@@ -83,6 +112,14 @@ $firefoxManifest.background = [pscustomobject]@{
         'src/tiktok.js',
         'src/reddit.js',
         'src/spotify.js',
+        'src/linkedin.js',
+        'src/ebay.js',
+        'src/etsy.js',
+        'src/threads.js',
+        'src/pinterest.js',
+        'src/walmart.js',
+        'src/target.js',
+        'src/utm.js',
         'src/background.js'
     )
 }
@@ -106,11 +143,6 @@ Write-Host "Built $xpiPath"
 # Quick verification
 # ---------------------------------------------------------------------------
 
-Write-Host ""
-Write-Host "--- Chrome zip ---"
-Get-Item $zipPath | Select-Object Name, Length
-Write-Host ""
-Write-Host "--- Firefox xpi ---"
-Get-Item $xpiPath | Select-Object Name, Length
-Write-Host ""
-Write-Host "Done. Upload $zipPath to the Chrome Web Store, $xpiPath to AMO."
+# Guardrail: Windows PowerShell 5.1's Compress-Archive writes zip entry
+# names with backslash separators, which Chrome Web Store / AMO can reject
+# ("invalid file name"). PowerShell 7+ writes forward slashes. Ver

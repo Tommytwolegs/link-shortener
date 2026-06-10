@@ -1,0 +1,63 @@
+# CI for Jimothy's Link Shortener.
+#
+# Two cheap, fast checks on every push and pull request:
+#   1. Parse-check every JS source file with `node --check`. Mirrors the
+#      guardrail in package.sh; catches mid-line truncation, missing
+#      braces, unterminated strings -- the kind of silent corruption that
+#      shipped a broken src/content.js in v1.6.3 and got rejected by AMO.
+#   2. Run every test file under tests/. They are plain Node scripts with
+#      no dependencies and each exits non-zero on failure, so iterating
+#      over them and propagating exit codes is enough.
+#
+# No npm install, no package.json, no fixtures to download. The whole job
+# should finish in well under a minute.
+
+name: test
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: parse-check + unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Parse-check every JS source file
+        run: |
+          set -e
+          fail=0
+          for f in src/*.js; do
+            if ! node --check "$f"; then
+              echo "::error file=$f::failed to parse"
+              fail=1
+            fi
+          done
+          if [ "$fail" -ne 0 ]; then
+            exit 1
+          fi
+          echo "OK ($(ls src/*.js | wc -l | tr -d ' ') files parsed)"
+
+      - name: Run unit tests
+        run: |
+          set -e
+          total=0
+          for t in tests/*.test.js; do
+            echo "--- $t ---"
+            node "$t"
+            total=$((total + 1))
+          done
+          echo
+          echo "All $total test files passed."

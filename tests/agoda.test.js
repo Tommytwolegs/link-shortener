@@ -62,6 +62,16 @@ t('isHotelPage: non-Agoda site with /hotel/x.html', () =>
   assertEq(isHotelPage('https://other.com/foo/hotel/bar.html'), false));
 t('isHotelPage: Agoda path without .html', () =>
   assertEq(isHotelPage('https://www.agoda.com/hotel/some-thing'), false));
+t('isHotelPage: trailing slash accepted', () =>
+  assertEq(
+    isHotelPage('https://www.agoda.com/near-don-mueang-hotel/hotel/bangkok-th.html/'),
+    true,
+  ));
+t('shortPropertyUrl: trailing slash form cleans correctly', () =>
+  assertEq(
+    shortPropertyUrl('https://www.agoda.com/near-don-mueang-hotel/hotel/bangkok-th.html/?checkIn=2026-05-28'),
+    'https://www.agoda.com/near-don-mueang-hotel/hotel/bangkok-th.html/',
+  ));
 
 // -- shortPropertyUrl -----------------------------------------------------
 

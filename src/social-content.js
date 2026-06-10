@@ -6,13 +6,14 @@
 // on the right per-site toggle.
 //
 // Currently dispatches for: Facebook, Instagram, YouTube, Twitter/X, TikTok,
-// Reddit, Spotify. (Amazon and the four hotel sites have their own scripts.)
+// Reddit, Spotify, LinkedIn, eBay, Etsy, Threads, Pinterest, Walmart, Target.
+// (Amazon and the four hotel sites have their own scripts.)
 //
 // Why no in-page anchor rewriting (unlike Amazon's content.js): on social/
-// media feeds, link hrefs carry session-specific tracking that the host site
-// uses to attribute reactions and impressions to your account. Rewriting
-// those in place doesn't help anyone — the target server resolves the long
-// form to the same page either way.
+// media feeds and shopping listings, link hrefs often carry session-specific
+// tracking that the host site uses to attribute reactions and impressions
+// to your account. Rewriting those in place doesn't help anyone — the
+// target server resolves the long form to the same page either way.
 //
 // Respects two flags in chrome.storage.sync:
 //   • `enabled`              — master toggle (default true)
@@ -21,7 +22,9 @@
 // SPA navigations: most of these sites use history.pushState heavily. We
 // rely on (a) popstate, (b) the background service worker pinging
 // CHECK_URL on webNavigation.onHistoryStateUpdated, and (c) a periodic
-// poll, since pushState itself doesn't fire any standard event.
+// poll, since pushState itself doesn't fire any standard event. The poll
+// skips when the tab is hidden — a visibilitychange handler catches up
+// when the tab returns.
 // ----------------------------------------------------------------------------
 
 (function () {
@@ -29,7 +32,8 @@
 
   // Whichever module loaded for this host wins. Only one is in scope at a
   // time because each manifest content_scripts entry only loads its own
-  // URL module.
+  // URL module. The order here doesn't matter for correctness; we just
+  // pick the first that's defined.
   const M =
     self.FacebookLinkShortener ||
     self.InstagramLinkShortener ||
@@ -38,6 +42,13 @@
     self.TiktokLinkShortener ||
     self.RedditLinkShortener ||
     self.SpotifyLinkShortener ||
+    self.LinkedinLinkShortener ||
+    self.EbayLinkShortener ||
+    self.EtsyLinkShortener ||
+    self.ThreadsLinkShortener ||
+    self.PinterestLinkShortener ||
+    self.WalmartLinkShortener ||
+    self.TargetLinkShortener ||
     null;
 
   // Per-site storage key, taken from the active module. Falls back to
@@ -71,9 +82,12 @@
   function startPolling() {
     if (pollTimer) return;
     // 750ms is fast enough that share clicks land on a clean URL while
-    // still being far below any noticeable CPU cost.
+    // still being far below any noticeable CPU cost. Skip when the tab is
+    // hidden — no URL can have changed without user interaction and the
+    // visibilitychange handler below catches up when the tab returns.
     pollTimer = setInterval(() => {
       if (!isOn()) return;
+      if (typeof document !== 'undefined' && document.hidden) return;
       if (location.href !== lastHref) {
         cleanCurrentUrl();
         lastHref = location.href;
@@ -130,6 +144,19 @@
   window.addEventListener('popstate', () => {
     if (isOn()) cleanCurrentUrl();
   });
+
+  // When a backgrounded tab becomes visible again, check if the URL changed
+  // while we were skipping polls.
+  if (typeof document !== 'undefined' && document.addEventListener) {
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) return;
+      if (!isOn()) return;
+      if (location.href !== lastHref) {
+        cleanCurrentUrl();
+        lastHref = location.href;
+      }
+    });
+  }
 
   if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {
     chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {

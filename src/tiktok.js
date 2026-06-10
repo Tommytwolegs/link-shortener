@@ -4,11 +4,14 @@
 //
 // Recognized forms:
 //
-//   /@<user>/video/<id>           → strip query + fragment
+//   /@<user>/video/<id>           → strip query, keep hash
 //   /@<user>/photo/<id>           → photo posts
 //   /t/<short>                    → tiktok.com/t short links
+//   /share/video/<id>             → TikTok's canonical "share" form
 //   vm.tiktok.com/<short>         → mobile share short links
 //   vt.tiktok.com/<short>         → another short-link variant
+//
+// The URL hash is preserved — TikTok doesn't use hashes for tracking.
 //
 // Hosts: tiktok.com, m.tiktok.com, www.tiktok.com, vm.tiktok.com, vt.tiktok.com.
 //
@@ -35,6 +38,8 @@
     /^\/@[^/]+\/video\/\d+\/?$/,
     /^\/@[^/]+\/photo\/\d+\/?$/,
     /^\/t\/[^/?#]+\/?$/,
+    // /share/video/<id> — TikTok's canonical share URL form
+    /^\/share\/video\/\d+\/?$/,
   ];
 
   function isPostPath(hostname, pathname) {
@@ -56,7 +61,8 @@
     try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
     if (!isTiktokHost(url.hostname)) return null;
     if (!isPostPath(url.hostname, url.pathname)) return null;
-    return `${url.protocol}//${url.host}${url.pathname}`;
+    const hash = url.hash || '';
+    return `${url.protocol}//${url.host}${url.pathname}${hash}`;
   }
 
   function needsShortening(input) {

@@ -167,6 +167,14 @@
     });
   }
 
+  // Tear down the observer when we go off — frees the per-mutation callback
+  // overhead on pages where the user has the extension disabled.
+  function stopLinkObserver() {
+    if (!observer) return;
+    observer.disconnect();
+    observer = null;
+  }
+
   // -------- Lifecycle -----------------------------------------------------
 
   // Everything the content script does when it's newly enabled or when a new
@@ -231,10 +239,14 @@
         touched = true;
       }
       if (!touched) return;
-      if (isOn()) doFullPass();
-      // Note: on toggle-off we don't un-rewrite past links. Original hrefs
-      // are gone the moment we replace them. The toggles govern future
-      // rewrites only.
+      if (isOn()) {
+        doFullPass();
+      } else {
+        // Toggled off: stop wasting cycles on every DOM mutation. We don't
+        // un-rewrite past links — those original hrefs are gone the moment
+        // we replace them. The toggles govern future rewrites only.
+        stopLinkObserver();
+      }
     });
   } else {
     // No storage API available (shouldn't happen in a real extension context,

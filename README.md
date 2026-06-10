@@ -1,157 +1,207 @@
-# Link Shortener
+# Jimothy's Link Shortener
 
-A tiny Chrome extension that cleans up long, tracking-laden URLs on the sites where they're worst. Five sites are supported today:
+A small browser extension (Chrome MV3, also Firefox MV3) that strips
+tracking parameters and other URL clutter from shopping, travel, and
+social-media pages — so the URL you copy or share is the clean canonical
+form.
 
-- **Amazon** — automatic address-bar and in-page link cleanup. Long product URLs become `/dp/ASIN` the moment the page loads.
-- **Agoda**, **Booking.com**, **Expedia**, **Airbnb** — automatic address-bar cleanup on listing pages plus a small floating toolbar with one-click buttons to copy the short URL, optionally with your selected dates.
+No analytics. No telemetry. No remote calls.
 
-No analytics, no telemetry, no remote calls.
+## Supported sites
 
-## Amazon
+Nineteen, organized by category in the popup:
+
+- **Shopping**: Amazon, eBay, Etsy, Walmart, Target
+- **Travel**: Booking.com, Expedia, Airbnb, Agoda
+- **Social & media**: Facebook, Instagram, Threads, LinkedIn, YouTube,
+  Twitter/X, TikTok, Reddit, Pinterest, Spotify
+
+Plus an opt-in **Universal tracking strip** mode that strips well-known
+tracking parameters (`utm_*`, `gclid`, `fbclid`, `mc_cid`, `igshid`,
+`msclkid`, etc.) from URLs on every site you visit. Off by default.
+
+## What it does on each site
+
+### Amazon
+Long product URLs become the canonical short form the moment the page
+loads:
 
 ```
-https://www.amazon.com/Some-Long-Title-Slug/dp/B08N5WRWNW/ref=sr_1_3?keywords=...&qid=1234&sr=8-3
+https://www.amazon.com/Some-Long-Title-Slug/dp/B08N5WRWNW/ref=sr_1_3?keywords=...&qid=1234
                                             ↓
 https://www.amazon.com/dp/B08N5WRWNW
 ```
 
-Copy the URL from the address bar, or right-click any product link on the page and "Copy link address" — either way you get the clean version.
+Right-click any product link on the page and "Copy link address" — you
+get the clean URL too, because in-page anchor `href`s are also rewritten
+in place (a MutationObserver keeps up with carousels, search pagination,
+and SPA transitions). The reviews list (`/product-reviews/<ASIN>`) and
+third-party sellers (`/gp/offer-listing/<ASIN>`) keep their path and
+preserve filter/sort/pagination params so links like "See 5-star
+reviews" still work. Optional toggle to keep the human-readable title
+slug in URLs (`/<slug>/dp/<ASIN>` instead of bare `/dp/<ASIN>`). All 21
+regional storefronts are supported.
 
-### Amazon features
+### eBay, Etsy
+Item / listing URLs collapse to the canonical short form. eBay's `?var=`
+variation selector is preserved (a `var=0` "no variation" sentinel is
+dropped). Etsy preserves the slug and locale prefix.
 
-- **Automatic address-bar cleanup.** Runs the moment a product page loads (and again on browser back/forward and SPA navigations) so the URL bar is always in canonical form.
-- **In-page link rewriting.** Every product link on the page is rewritten in place, so right-click → Copy link address gives you the clean URL without having to open the product first. A MutationObserver catches links added dynamically (carousels, search pagination, SPA transitions).
-- **Handles sponsored-link wrappers.** Amazon's `/sspa/click?...&url=<encoded-product>` redirectors and `/gp/slredirect/picassoRedirect.html` wrappers are unwrapped to the underlying product URL.
-- **All regional storefronts.** amazon.com, .co.uk, .de, .fr, .it, .es, .nl, .se, .pl, .com.tr, .com.au, .co.jp, .in, .sg, .ae, .sa, .eg, .com.mx, .com.br, .ca, .com.be.
-- **Preserves your storefront.** A page on amazon.de stays on amazon.de — only the path is shortened.
+### Booking.com, Expedia, Airbnb, Agoda
+Address-bar URLs are auto-cleaned on listing pages — dates + occupancy
+are kept, everything else (tracking, session, search-id, impression
+params) is stripped. A small floating toolbar appears in the top-left
+with two copy buttons:
 
-## Hotel & rental sites (Agoda, Booking.com, Expedia, Airbnb)
+- **Share Property / Share Listing** — copies the bare listing URL.
+- **With Dates** — copies the listing URL with check-in/check-out
+  preserved. Disabled until you pick dates.
 
-On a listing page, two things happen:
+The toolbar lives in a closed Shadow DOM so the host site's CSS can't
+touch it. It auto-hides on phone-sized viewports (under 600px wide) and
+can be hidden entirely via a popup toggle.
 
-1. **The address bar is cleaned up automatically.** Tracking, session, search-id, and impression params are stripped, leaving just the listing URL plus your selected dates and occupancy. The page itself doesn't reload.
-2. **A small floating toolbar appears in the top-left corner** with two copy buttons:
-   - **Share Property / Share Listing** — copies the bare listing URL (no dates, no query string).
-   - **With Dates** — copies the listing URL with check-in/check-out preserved. Disabled until you've actually picked dates.
+### Facebook, Instagram, Threads, LinkedIn, YouTube, Twitter/X, TikTok, Reddit, Pinterest, Spotify
+Address-bar URLs cleaned in place. Each site has its own rules for which
+query parameters are meaningful and which are tracking:
 
-The toolbar uses a closed Shadow DOM so the host site's CSS can't touch it. Both buttons show a brief "Copied!" confirmation when clicked.
+- **YouTube** keeps `?v=` and `?t=` (timestamp); drops `si`, `pp`,
+  `feature`, `list`, `index`, `ab_channel`, `utm_*`.
+- **Spotify** keeps `?t=` (podcast moment-share) on `/track/` and
+  `/episode/`; strips everything else.
+- **Reddit** cleans post permalinks, the new `/r/<sub>/s/<short>` form,
+  user-profile permalinks, and subreddit front pages (keeping `?sort=`
+  and `?t=`); preserves `old.reddit.com`, `np.reddit.com`, and other
+  intentional subdomains.
+- **Facebook** handles posts, photos, videos, reels, groups, events,
+  marketplace items, `/watch?v=`, `/photo.php`, `/permalink.php`,
+  `fb.watch` short links.
+- **TikTok** handles `/@user/video/`, `/@user/photo/`, `/t/`,
+  `/share/video/`, plus `vm.tiktok.com` and `vt.tiktok.com` shorts.
+- And so on — see each site's module in `src/` for the full rules.
 
-### What gets kept
+URL hash fragments (`#customerReviews`, `#aplus`, `#section`, etc.) are
+preserved across all sites so in-page anchor links keep working as
+intended.
 
-| Site | Address bar keeps | "With Dates" button copies |
-|---|---|---|
-| Agoda | `checkIn`, `los`, `adults`, `children`, `rooms`, `childAges` | `checkIn`, `los` |
-| Booking.com | `checkin`, `checkout`, `group_adults`, `group_children`, `no_rooms`, `age` | `checkin`, `checkout` |
-| Expedia | `chkin`, `chkout`, `rm1`, `rm2`, … (per-room occupancy) | `chkin`, `chkout` |
-| Airbnb | `check_in`, `check_out`, `adults`, `children`, `infants`, `pets` | `check_in`, `check_out` |
+### Universal tracking strip (off by default)
 
-### Example — Booking.com
+A single toggle in the popup. When you turn it on, the browser asks you
+to grant access to all websites — this is the standard MV3 permission
+prompt for a content script that runs on every page. Once granted, the
+extension strips a fixed allowlist of cross-site tracking parameters
+(see `src/utm.js` for the full list) from URLs on every http(s) page.
+It still reads only the URL — never page content — and still makes zero
+network requests.
 
-```
-https://www.booking.com/hotel/th/aira-bangkok.html?aid=304142&label=gen173nr-...
-    &checkin=2026-05-28&checkout=2026-05-29&group_adults=2&group_children=0
-    &no_rooms=1&srpvid=5a6ca638786801e7&...&matching_block_id=...
-                                            ↓
-   Address bar:     https://www.booking.com/hotel/th/aira-bangkok.html?checkin=2026-05-28&checkout=2026-05-29&group_adults=2&group_children=0&no_rooms=1
-   Share Property:  https://www.booking.com/hotel/th/aira-bangkok.html
-   With Dates:      https://www.booking.com/hotel/th/aira-bangkok.html?checkin=2026-05-28&checkout=2026-05-29
-```
-
-## Shared features
-
-- **On/off toggles.** A toolbar popup lets you disable the extension entirely (master toggle) or just for individual sites (per-site toggles for Amazon, Agoda, Booking.com, Expedia, and Airbnb). When the master is off the toolbar icon shows a red "OFF" badge. Your preferences sync across Chrome profiles.
-- **Zero data collection.** No analytics, no telemetry, no remote calls. The whole extension runs entirely on your machine.
+The toggle is gated on the master "Shorten All Links" toggle, so
+flipping the master off stops the universal strip too. You can revoke
+the broad permission at any time from your browser's extension
+management page; the toggle will auto-untoggle in sync.
 
 ## Install
 
 ### From the Chrome Web Store
 
-*Coming soon.*
+[**Jimothy's Link Shortener**](https://chrome.google.com/webstore/) on the
+Chrome Web Store.
+
+### From Firefox Add-ons (AMO)
+
+[**Jimothy's Link Shortener**](https://addons.mozilla.org/) on AMO.
 
 ### From source (developer mode)
 
 1. Clone or download this repo.
-2. Open `chrome://extensions` in Chrome.
-3. Toggle **Developer mode** in the top right.
-4. Click **Load unpacked** and pick this folder.
+2. Open `chrome://extensions` (or `about:debugging` in Firefox).
+3. Toggle **Developer mode** in the top right (Chrome) or click **This
+   Firefox** (Firefox).
+4. Click **Load unpacked** (Chrome) / **Load Temporary Add-on…**
+   (Firefox) and pick this folder (Chrome) or the .xpi file from
+   `dist/` (Firefox).
 
 ## How it works
 
-### Amazon
-A content script runs at `document_start`. It uses a small set of regular expressions to find the ASIN (the 10-character product identifier) in any of Amazon's URL formats — `/dp/`, `/gp/product/`, `/gp/aw/d/`, `/product-reviews/`, `/exec/obidos/`, `/sspa/click?url=…`, etc. — and then calls `history.replaceState` to swap the address bar in place. No reload, no flicker.
+### Per-site cleanup
+Each supported site has a pure-function URL module under `src/`
+(asin.js, ebay.js, youtube.js, …). Each exports `is<Site>Host()`,
+`shortenUrl()`, `needsShortening()`, and a `STORAGE_KEY` constant.
+Dependency-free, runs in three contexts: classic content script,
+service-worker `importScripts`, and Node `require()` for unit tests.
 
-For in-page links, the same content script walks the DOM on load and rewrites the `href` attribute of every anchor pointing at an Amazon product page. A `MutationObserver` watches for subsequent changes so links added by Amazon's own JavaScript also get cleaned up.
+For Amazon, a dedicated content script (`src/content.js`) handles both
+address-bar rewriting and in-page anchor `href` rewriting, with a
+`MutationObserver` for SPA carousels and pagination. For the four hotel
+sites, a shared `site-toolbar.js` handles the floating-toolbar UI in a
+closed Shadow DOM. For all twelve other sites, a shared
+`src/social-content.js` dispatcher picks up whichever per-site
+`*LinkShortener` global is loaded and uses its `STORAGE_KEY` to gate
+the cleanup.
 
-### Hotel & rental sites
-Each site has a small URL module (`agoda.js`, `booking.js`, `expedia.js`, `airbnb.js`) of pure functions — listing-page detection plus three flavours of "make this URL short" (bare property URL, with dates, address-bar form). A shared `site-toolbar.js` module handles the UI: building the toolbar in a closed Shadow DOM, polling the URL every 500ms for SPA navigations, rewriting the address bar via `history.replaceState`, and copying via `navigator.clipboard.writeText()` with a `document.execCommand('copy')` fallback. Adding a new site is then a ~30-line wiring file plus a URL module.
+### Universal tracking strip
+`src/utm.js` is a pure function that takes a URL and returns the same
+URL with universal tracking parameters stripped. `src/utm-content.js`
+is the content script that uses it, registered dynamically by
+`background.js` (`chrome.scripting.registerContentScripts`) when the
+`enabledUtmStrip` storage flag is true AND the `*://*/*` host permission
+is granted.
 
-### Shared
-A background service worker watches `chrome.webNavigation` events as a safety net for SPA navigations on all sites, and pings the content script to re-check the URL.
+### Background service worker
+`src/background.js` runs as a service worker in Chrome (and as an
+event-page script in Firefox via the `background.scripts` fallback the
+build script injects). It watches `chrome.webNavigation` events on every
+per-site host and pings the content script on history-state updates so
+SPA transitions get picked up. It also keeps the toolbar badge in sync
+with the master toggle (empty when on, red "OFF" when off), reloads
+matching tabs on extension update, and handles the dynamic UTM content
+script registration described above.
+
+## Tests
+
+1276 unit tests across 20 modules, runnable with plain Node. From the
+repo root:
+
+```
+node tests/asin.test.js
+node tests/agoda.test.js
+# ...etc
+```
+
+Or loop them:
+
+```bash
+for f in tests/*.test.js; do node "$f"; done
+```
+
+## Build
+
+A Web-Store / AMO ready zip + xpi:
+
+```bash
+# macOS / Linux
+bash package.sh
+
+# Windows
+.\package.ps1
+```
+
+Both scripts parse-check every `src/*.js` with `node --check` before
+staging — a truncated or malformed source file aborts the build. The
+output goes to `dist/link-shortener-<version>.zip` (Chrome) and
+`dist/link-shortener-<version>.xpi` (Firefox).
 
 ## Permissions
 
 | Permission | Why |
 |---|---|
-| Host access on Amazon, Agoda, Booking, Expedia, and Airbnb domains | Needed for the content scripts to read and rewrite the page's URL, and (on hotel sites) inject the toolbar. |
+| Host access on supported sites | For per-site content scripts to read and rewrite the page's URL, and on hotel sites, inject the toolbar. |
 | `webNavigation` | Detect in-page navigations (pushState) so SPA transitions also get handled. |
-| `storage` | Remember your on/off and per-site toggle preferences across browser restarts (uses `chrome.storage.sync`, local to your Google account). |
+| `storage` | Remember your toggle preferences across browser restarts (`chrome.storage.sync`). |
+| `scripting` | Dynamically register the Universal tracking strip content script when you enable it. |
+| **Optional**: access to all sites (`*://*/*`) | Only requested if you enable the Universal tracking strip toggle in the popup. |
 
-The extension does not request `tabs`, `cookies`, or any broader permission.
-
-## Development
-
-```
-.
-├── manifest.json             # MV3 manifest
-├── src/
-│   ├── asin.js               # Amazon ASIN extraction + URL building (pure functions)
-│   ├── content.js            # Amazon content script; history.replaceState + link rewriting
-│   ├── agoda.js              # Agoda URL parsing (pure functions)
-│   ├── agoda-content.js      # Agoda toolbar wiring (~30 lines, calls SiteToolbar.init)
-│   ├── booking.js            # Booking.com URL parsing
-│   ├── booking-content.js    # Booking toolbar wiring
-│   ├── expedia.js            # Expedia URL parsing
-│   ├── expedia-content.js    # Expedia toolbar wiring
-│   ├── airbnb.js             # Airbnb URL parsing
-│   ├── airbnb-content.js     # Airbnb toolbar wiring
-│   ├── site-toolbar.js       # Shared toolbar module — UI, clipboard, address-bar cleanup
-│   ├── background.js         # Service worker; SPA-navigation fallback + badge
-│   ├── popup.html            # Toolbar popup markup
-│   ├── popup.css             # Popup styles (respects prefers-color-scheme)
-│   └── popup.js              # Master + per-site toggle wiring — chrome.storage.sync
-├── icons/                    # 16/32/48/128 PNGs
-├── tests/
-│   ├── asin.test.js          # Node-runnable unit tests for asin.js
-│   ├── agoda.test.js         # Node-runnable unit tests for agoda.js
-│   ├── booking.test.js       # Node-runnable unit tests for booking.js
-│   ├── expedia.test.js       # Node-runnable unit tests for expedia.js
-│   └── airbnb.test.js        # Node-runnable unit tests for airbnb.js
-└── package.sh                # Builds a Web-Store-ready zip
-```
-
-Run all tests:
-
-```
-node tests/asin.test.js
-node tests/agoda.test.js
-node tests/booking.test.js
-node tests/expedia.test.js
-node tests/airbnb.test.js
-```
-
-Build a Web-Store-ready zip:
-
-```
-./package.sh
-```
-
-The script writes `dist/link-shortener-<version>.zip`.
-
-## Roadmap
-
-- Optional: also strip tracking params on other shopping sites (eBay, Walmart, Etsy).
-- Optional: Vrbo / Hotels.com support (similar URL shape to Expedia).
-- Optional: setting to keep your affiliate tag (`?tag=…`) for Amazon Associates members.
+The extension does not request `tabs`, `cookies`, `webRequest`, or any
+broader permission.
 
 ## License
 
