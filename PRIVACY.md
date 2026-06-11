@@ -19,6 +19,7 @@ The only data the extension stores is your settings:
 
 - A handful of booleans: master on/off toggle, per-site toggles (one per supported site), and feature flags (hide travel popup, include Amazon item name, universal tracking strip).
 - Two optional list fields used by the Advanced settings page for the Universal tracking strip: `utmStripSkipDomains` (hosts to skip — strings you typed) and `utmStripKeepParams` (param names to never strip — strings you typed). Both default to empty.
+- Which category groups you've expanded in the popup (`popupOpenGroups` — three booleans), so the popup opens the way you left it.
 
 All of this is stored in `chrome.storage.sync`. It syncs between your own browser installations through your signed-in browser account; it is never sent to the developer or to any other party.
 
@@ -28,7 +29,7 @@ No browsing history, no URLs you've visited, no page content, no clicks, no clip
 
 | Permission | Purpose |
 |---|---|
-| Host access on the supported sites (Amazon, eBay, Etsy, Walmart, Target, Booking, Expedia, Airbnb, Agoda, Facebook, Instagram, Threads, LinkedIn, YouTube, Twitter/X, TikTok, Reddit, Pinterest, Spotify, plus their regional and short-link domains) | Allows the content scripts to run on those pages and rewrite the URL in the address bar (and on Amazon, the in-page anchor links). |
+| Host access on the supported sites (Amazon, eBay, Etsy, Walmart, Target, Booking, Expedia, Airbnb, Agoda, Facebook, Instagram, Threads, LinkedIn, YouTube, Twitter/X, TikTok, Reddit, Pinterest, Spotify, Substack, Bluesky, GitHub, Medium, Quora, plus their regional and short-link domains) | Allows the content scripts to run on those pages and rewrite the URL in the address bar (and on Amazon, the in-page anchor links). |
 | `webNavigation` | Detects in-page navigations (single-page-app `pushState` transitions) on supported sites so URLs are also handled when the page changes without a full reload. |
 | `storage` | Remembers your toggle preferences (a small number of booleans) across browser restarts and across browser installations signed in to the same account. |
 | `scripting` | Used to dynamically register the optional Universal tracking strip content script when you enable it (and unregister it when you disable it). |
