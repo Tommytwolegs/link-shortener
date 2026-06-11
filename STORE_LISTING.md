@@ -114,46 +114,33 @@ v1.7.0 — major release.
 
 ## AMO (Firefox) reviewer notes — paste into "Notes to reviewer"
 
-Jimothy's Link Shortener v1.7.0 — Firefox xpi submission.
+(Condensed 2026-06-11 to fit AMO's field limit — this is the version actually submitted with v1.7.0.)
 
-WHAT THE ADDON DOES
-Cleans up long URLs on a fixed list of 24 shopping, travel, and social/content sites (Amazon, eBay, Etsy, Walmart, Target, Booking, Expedia, Airbnb, Agoda, Facebook, Instagram, Threads, LinkedIn, YouTube, Twitter/X, TikTok, Reddit, Pinterest, Spotify, Substack, Bluesky, GitHub, Medium, Quora). Rewrites the address-bar URL in place via history.replaceState. On hotel sites, injects a Shadow-DOM copy-link widget. Provides a right-click "Copy clean URL" context menu. Opt-in "Universal tracking strip" feature strips common tracking params (utm_*, gclid, fbclid, etc.) on every site after the user grants an optional host permission.
+Jimothy's Link Shortener v1.7.0.
 
-PERMISSION SUMMARY
-* host_permissions: per-site list (Amazon stores, Booking, Expedia, Airbnb, Agoda, Facebook, Instagram, Threads, LinkedIn, YouTube, Twitter, TikTok, Reddit, Pinterest, Spotify, eBay markets, Etsy, Walmart, Target, Substack, Bluesky, GitHub, Medium, Quora). 128 entries total. Required at install — these are the only sites the per-site cleanup touches.
-* optional_host_permissions: ["*://*/*"]. NOT requested at install. Requested at runtime via browser.permissions.request when the user turns on the "Universal tracking strip" toggle in the popup. If declined, the toggle reverts off and no access is granted. Listens for permissions.onRemoved and disables the feature if the user later revokes.
-* webNavigation: detect SPA navigations on supported sites.
-* storage: remember toggle preferences (chrome.storage.sync).
-* scripting: dynamically register the universal-strip content script after permission is granted; inject a clipboard-write function for the context menu.
-* contextMenus: register the "Copy clean URL" menu item.
-* activeTab: used by the context menu so the clipboard write can target the current tab without broad host permissions.
+WHAT IT DOES
+Cleans long URLs on a fixed list of 24 shopping/travel/social sites (Amazon, eBay, Etsy, Walmart, Target, Booking, Expedia, Airbnb, Agoda, Facebook, Instagram, Threads, LinkedIn, YouTube, Twitter/X, TikTok, Reddit, Pinterest, Spotify, Substack, Bluesky, GitHub, Medium, Quora) by rewriting the address bar via history.replaceState. Hotel sites get a Shadow-DOM copy-link widget. Right-click "Copy clean URL" menu. Opt-in "Universal tracking strip" removes utm_*/gclid/fbclid etc. everywhere, only after the user grants an optional host permission.
 
-NO NETWORK REQUESTS
-The extension makes zero network requests. No fetch, no XHR, no WebSocket, no remote scripts. All cleanup logic is pure URL string manipulation in the per-site modules under src/ (asin, agoda, booking, expedia, airbnb, facebook, instagram, threads, linkedin, youtube, twitter, tiktok, reddit, pinterest, spotify, ebay, etsy, walmart, target, substack, bluesky, github, medium, quora) plus src/utm.js for the opt-in universal strip.
+PERMISSIONS
+- host_permissions (128 entries): the fixed per-site list above — the only sites per-site cleanup touches.
+- optional_host_permissions ["*://*/*"]: NOT requested at install. Requested via permissions.request only when the user enables the Universal strip toggle; declining reverts the toggle. permissions.onRemoved disables the feature on revoke.
+- webNavigation: detect SPA navigations. storage: settings sync. scripting: register the universal-strip script after grant + inject the clipboard-write for the menu. contextMenus/activeTab: the "Copy clean URL" item and its clipboard write without broad host access.
 
-NO DATA COLLECTED
-data_collection_permissions.required = ["none"]. The only things persisted (all in chrome.storage.sync) are: the user's toggle preferences (booleans), the two user-typed lists from the Advanced settings page (domains to skip / params to keep for the universal strip), and which popup category groups are expanded. Nothing derived from browsing.
-
-NO REMOTE CODE
-No eval, no Function constructor, no remote script loading, no innerHTML on user-controlled data. All JS is shipped inside the xpi. No CDNs.
+NO NETWORK REQUESTS, NO DATA, NO REMOTE CODE
+Zero fetch/XHR/WebSocket/remote scripts; all logic is pure URL string manipulation in src/. data_collection_permissions = ["none"]. Only chrome.storage.sync settings are persisted (toggles, two user-typed lists for the strip, popup group state) — nothing derived from browsing. No eval/Function constructor; all JS ships in the xpi.
 
 BUILD REPRODUCIBILITY
-Built with package.sh from the same source tree at https://github.com/Tommytwolegs/link-shortener (tag v1.7.0). Zero npm dependencies — pure hand-written JS. To reproduce: clone the repo (the repo root is the extension root), check out tag v1.7.0, and run `bash package.sh`. The script parse-checks every src/*.js with `node --check` before zipping (guardrail added after v1.6.3 shipped truncated content.js). Output is dist/link-shortener-1.7.0.xpi. 1545 unit tests across 25 files in tests/, runnable with `for t in tests/*.test.js; do node "$t"; done`.
+https://github.com/Tommytwolegs/link-shortener — repo root is the extension root. Check out tag v1.7.0, run `bash package.sh` (parse-checks every src/*.js; zero npm deps); output is dist/link-shortener-1.7.0.xpi. 1545 unit tests across 25 files: `for t in tests/*.test.js; do node "$t"; done`.
 
 CHANGED FROM v1.6.3
-- Twelve new site modules: linkedin, ebay, etsy, threads, pinterest, walmart, target, substack, bluesky, github, medium, quora. Notable keep-decisions: Target ?preselect= (variant child-TCIN — Target's own routing config allowlists it), Medium ?sk= (Friend Link share key; stripping it breaks paywall gift links), GitHub hash deep-links (#issuecomment-...) always preserved.
-- New URL forms on existing modules: Twitter /i/lists/, Reddit user-profile front pages, TikTok /share/photo + /share/user, Spotify /embed/ (keeps ?theme=), LinkedIn /jobs/search/ (keeps the five params defining the search).
-- New utm.js + utm-content.js for the opt-in Universal tracking strip (35+ tracker families). *://*/* is OPTIONAL — requested at runtime via permissions.request, not at install.
-- New contextMenus + activeTab for the right-click "Copy clean URL" menu.
-- New options page (chrome.runtime.openOptionsPage) for an advanced-settings page where users configure: domains the Universal strip should skip, and tracker params to always preserve.
-- Popup reorganized into collapsible Shopping/Travel/Social & media category groups with live counts. Smarter status text. prefers-reduced-motion respected.
-- Modal & SPA-state preservation: address-bar cleanup now respects URL params each site uses for in-page state on supported sites. Airbnb (?modal=), Instagram (?img_index=), Amazon (?th=1 & psc=1), Spotify (?context=), Reddit (?context=N on comment permalinks), LinkedIn (?commentUrn= & replyUrn= on /feed/update/), YouTube (?list= & index= on /watch and /playlist), Facebook (?comment_id= & reply_comment_id= on comment-thread URLs). Without these, modals were closing immediately after opening and slide/variant state was being lost.
-- Several other bug fixes: Amazon anchor preservation, Amazon star-filter canonicalization, observer disconnect on toggle-off, polling pause when tab hidden, URL fragment preservation on Booking/Expedia/Agoda, social-content.js dispatcher missing 7 namespaces (caused per-site toggles for new sites to silently do nothing — now fixed).
+- 12 new site modules (linkedin, ebay, etsy, threads, pinterest, walmart, target, substack, bluesky, github, medium, quora). Notable keep-decisions: Target ?preselect= (variant selector), Medium ?sk= (Friend Link key — gift links break without it), GitHub hash anchors always preserved.
+- New forms on existing modules: Twitter /i/lists/, Reddit profile pages, TikTok /share/photo|user, Spotify /embed/, LinkedIn /jobs/search/.
+- utm.js universal strip (35+ tracker families) + Advanced options page (skip-domains / keep-params).
+- SPA-state preservation: params sites use for in-page state are now kept (Airbnb ?modal=, Instagram ?img_index=, Amazon th/psc, Spotify ?context=, Reddit ?context=, LinkedIn commentUrn/replyUrn, YouTube list/index, Facebook comment_id) — previously stripped, which closed modals and lost state.
+- Misc: fragment preservation on hotel sites, observer disconnect on toggle-off, polling pause in hidden tabs, dispatcher wiring for the new sites.
 
-GECKO SETTINGS
-browser_specific_settings.gecko.id = link-shortener@tommytwolegs.github.io
-browser_specific_settings.gecko.strict_min_version = 121.0 (needed for chrome.scripting.registerContentScripts and other MV3 APIs)
-A background.scripts array is provided alongside service_worker because Firefox 121 still uses the event-page fallback. All URL modules are listed in load order before background.js.
+GECKO
+id link-shortener@tommytwolegs.github.io; strict_min_version 121.0. A background.scripts array is provided alongside service_worker for event-page mode; URL modules load before background.js.
 
 ---
 
