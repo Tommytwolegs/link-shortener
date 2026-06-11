@@ -114,33 +114,24 @@ v1.7.0 — major release.
 
 ## AMO (Firefox) reviewer notes — paste into "Notes to reviewer"
 
-(Condensed 2026-06-11 to fit AMO's field limit — this is the version actually submitted with v1.7.0.)
+(2,066 chars — AMO's field caps at ~3,000. This is the version submitted with v1.7.0.)
 
 Jimothy's Link Shortener v1.7.0.
 
-WHAT IT DOES
-Cleans long URLs on a fixed list of 24 shopping/travel/social sites (Amazon, eBay, Etsy, Walmart, Target, Booking, Expedia, Airbnb, Agoda, Facebook, Instagram, Threads, LinkedIn, YouTube, Twitter/X, TikTok, Reddit, Pinterest, Spotify, Substack, Bluesky, GitHub, Medium, Quora) by rewriting the address bar via history.replaceState. Hotel sites get a Shadow-DOM copy-link widget. Right-click "Copy clean URL" menu. Opt-in "Universal tracking strip" removes utm_*/gclid/fbclid etc. everywhere, only after the user grants an optional host permission.
+WHAT IT DOES: Cleans long URLs on a fixed list of 24 shopping/travel/social sites (full list = manifest host_permissions) by rewriting the address bar via history.replaceState. Hotel sites get a Shadow-DOM copy-link widget. Right-click "Copy clean URL" menu. Opt-in "Universal tracking strip" removes utm_*/gclid/fbclid etc. on any site, only after the user grants an optional host permission.
 
-PERMISSIONS
-- host_permissions (128 entries): the fixed per-site list above — the only sites per-site cleanup touches.
-- optional_host_permissions ["*://*/*"]: NOT requested at install. Requested via permissions.request only when the user enables the Universal strip toggle; declining reverts the toggle. permissions.onRemoved disables the feature on revoke.
-- webNavigation: detect SPA navigations. storage: settings sync. scripting: register the universal-strip script after grant + inject the clipboard-write for the menu. contextMenus/activeTab: the "Copy clean URL" item and its clipboard write without broad host access.
+PERMISSIONS:
+- host_permissions (128 entries): the fixed per-site list — the only sites per-site cleanup touches.
+- optional_host_permissions ["*://*/*"]: NOT requested at install; requested via permissions.request when the user enables the Universal strip toggle. Declining reverts the toggle; permissions.onRemoved disables the feature on revoke.
+- webNavigation: detect SPA navigations. storage: settings sync. scripting: register the strip script after grant + inject clipboard-write for the menu. contextMenus/activeTab: the menu item + its clipboard write without broad host access.
 
-NO NETWORK REQUESTS, NO DATA, NO REMOTE CODE
-Zero fetch/XHR/WebSocket/remote scripts; all logic is pure URL string manipulation in src/. data_collection_permissions = ["none"]. Only chrome.storage.sync settings are persisted (toggles, two user-typed lists for the strip, popup group state) — nothing derived from browsing. No eval/Function constructor; all JS ships in the xpi.
+NO NETWORK / NO DATA / NO REMOTE CODE: Zero network requests of any kind; all logic is pure URL string manipulation in src/. data_collection_permissions=["none"]. Only settings persist in storage.sync (toggles, two user-typed lists, popup group state). No eval/Function; all JS ships in the xpi.
 
-BUILD REPRODUCIBILITY
-https://github.com/Tommytwolegs/link-shortener — repo root is the extension root. Check out tag v1.7.0, run `bash package.sh` (parse-checks every src/*.js; zero npm deps); output is dist/link-shortener-1.7.0.xpi. 1545 unit tests across 25 files: `for t in tests/*.test.js; do node "$t"; done`.
+REPRODUCIBLE BUILD: https://github.com/Tommytwolegs/link-shortener (repo root = extension root). Check out tag v1.7.0, run `bash package.sh`; output is dist/link-shortener-1.7.0.xpi. Zero npm deps. 1545 unit tests: for t in tests/*.test.js; do node "$t"; done
 
-CHANGED FROM v1.6.3
-- 12 new site modules (linkedin, ebay, etsy, threads, pinterest, walmart, target, substack, bluesky, github, medium, quora). Notable keep-decisions: Target ?preselect= (variant selector), Medium ?sk= (Friend Link key — gift links break without it), GitHub hash anchors always preserved.
-- New forms on existing modules: Twitter /i/lists/, Reddit profile pages, TikTok /share/photo|user, Spotify /embed/, LinkedIn /jobs/search/.
-- utm.js universal strip (35+ tracker families) + Advanced options page (skip-domains / keep-params).
-- SPA-state preservation: params sites use for in-page state are now kept (Airbnb ?modal=, Instagram ?img_index=, Amazon th/psc, Spotify ?context=, Reddit ?context=, LinkedIn commentUrn/replyUrn, YouTube list/index, Facebook comment_id) — previously stripped, which closed modals and lost state.
-- Misc: fragment preservation on hotel sites, observer disconnect on toggle-off, polling pause in hidden tabs, dispatcher wiring for the new sites.
+CHANGED FROM v1.6.3: 12 new site modules; opt-in universal strip + Advanced options page (skip-domains/keep-params); right-click menu; popup category groups; SPA-state fixes — params sites use for in-page state (modals, carousels, variant selectors, comment deep-links, e.g. Medium ?sk= gift-link key, Target ?preselect=) are now kept.
 
-GECKO
-id link-shortener@tommytwolegs.github.io; strict_min_version 121.0. A background.scripts array is provided alongside service_worker for event-page mode; URL modules load before background.js.
+GECKO: id link-shortener@tommytwolegs.github.io; strict_min_version 121.0; background.scripts fallback provided, URL modules load before background.js.
 
 ---
 
