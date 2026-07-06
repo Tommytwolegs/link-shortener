@@ -4,6 +4,36 @@ All notable changes to Jimothy's Link Shortener. Versions follow
 [Semantic Versioning](https://semver.org/) loosely — minor bumps mark new
 features, patch bumps mark bug-fix-only releases.
 
+## [1.8.0] — unreleased
+
+### Added
+- **8 new international sites** (32 total), in a new "International
+  shopping" popup group plus two travel additions:
+  - **Shopee** (12 regional TLDs + shp.ee short links) — slug and
+    /product/ forms; strips sp_atk/xptdk/publish_id share tracking.
+  - **Lazada** (6 SE-Asia TLDs + .com) — /products/...-i<id>-s<sku>.html;
+    strips spm/scm/pvid/clickTrackInfo.
+  - **AliExpress** (.com + .us, all locale subdomains) — /item/<id>.html;
+    strips spm/gatewayAdapt/pdp_npi/aff_* junk.
+  - **Temu** — slug, /g-, and /goods.html forms; **preserves ?sku_id=**
+    (variant selector); strips _bg_fs/refer_page_*/_x_sessn_id.
+  - **Mercado Libre / Mercado Livre** (9 LatAm TLDs + .com.br) — item and
+    /p/ catalog forms; **preserves ?searchVariation=**; strips query junk
+    AND the fragment — the one site where the hash carries pure tracking
+    (#polycard_client=...&tracking_id=...), a documented exception to the
+    hash-preservation rule.
+  - **Rakuten Ichiba** (item.rakuten.co.jp) — shop/item form; **preserves
+    ?variantId=** (SKU selector); strips rafcid/scid/s-id affiliate ids.
+  - **Trip.com** — /hotels/detail/?hotelId= pages get the floating travel
+    toolbar (Share Property / With Dates) + address-bar cleanup keeping
+    hotelId, dates, occupancy, cityId. URL model verified live.
+  - **Hotels.com** — /ho<id>/ pages get the travel toolbar; handles both
+    the modern (chkin/chkout/rmN) and legacy (q-check-in/q-room-*) param
+    generations without renaming either.
+- **Popup reorganized into four collapsible groups**: Shopping (5),
+  International shopping (6), Travel (6), Social & media (15) — with
+  remembered expand/collapse state, as before.
+
 ## [1.7.0] — 2026-06-11
 
 ### Added

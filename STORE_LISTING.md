@@ -30,7 +30,7 @@ Long URLs from shopping, travel, and social sites are stuffed with tracking IDs,
 
 WHAT GETS CLEANED
 
-Two dozen popular sites are supported across three categories — shopping, travel booking, and social media / content platforms — each with hand-tuned rules for that site's URL structure. The full list is visible in the extension's popup and on the project page.
+More than thirty popular sites are supported across four categories — shopping, international shopping, travel booking, and social media / content platforms — each with hand-tuned rules for that site's URL structure. The full list is visible in the extension's popup and on the project page.
 
 The cleanup is careful about what it keeps. Parameters that change what the recipient actually sees survive: product variant selections stay locked, playlist position is kept, comment deep-links still scroll to the right comment, video timestamps survive, and paywall gift links keep working. Only the tracking clutter goes.
 
@@ -96,6 +96,19 @@ Privacy policy URL: https://github.com/Tommytwolegs/link-shortener/blob/main/PRI
 ---
 
 ## Chrome Web Store "What's new in this version?" (release notes)
+
+### v1.8.0 (unreleased — submit only after v1.7.0 clears review)
+
+v1.8.0 — international expansion.
+
+* Eight new sites supported (thirty-two total), with a new "International shopping" section in the popup: six major international marketplaces and two more travel booking sites (which get the floating copy-link widget).
+* Variant selections and SKU choices survive cleanup on the new sites, same as everywhere else.
+* One of the new marketplaces hides its tracking in the URL fragment rather than the query string — cleanup handles that too.
+* Popup now has four collapsible categories: Shopping, International shopping, Travel, Social & media.
+
+Reminder for the v1.8.0 AMO notes: update counts to 32 sites / 164 host permissions / 1,756 tests, and mention the new modules (shopee, lazada, aliexpress, temu, mercadolibre, rakuten, trip, hotelscom — the last two use the travel toolbar).
+
+### v1.7.0 (as submitted)
 
 v1.7.0 — major release.
 

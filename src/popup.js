@@ -33,10 +33,18 @@
     { key: 'enabledEtsy',      group: 'shopping' },
     { key: 'enabledWalmart',   group: 'shopping' },
     { key: 'enabledTarget',    group: 'shopping' },
+    { key: 'enabledShopee',       group: 'intlshopping' },
+    { key: 'enabledLazada',       group: 'intlshopping' },
+    { key: 'enabledAliexpress',   group: 'intlshopping' },
+    { key: 'enabledTemu',         group: 'intlshopping' },
+    { key: 'enabledMercadolibre', group: 'intlshopping' },
+    { key: 'enabledRakuten',      group: 'intlshopping' },
     { key: 'enabledAgoda',     group: 'travel' },
     { key: 'enabledBooking',   group: 'travel' },
     { key: 'enabledExpedia',   group: 'travel' },
     { key: 'enabledAirbnb',    group: 'travel' },
+    { key: 'enabledTrip',      group: 'travel' },
+    { key: 'enabledHotelscom', group: 'travel' },
     { key: 'enabledSocial',    group: 'social' },
     { key: 'enabledThreads',   group: 'social' },
     { key: 'enabledLinkedin',  group: 'social' },
@@ -77,6 +85,7 @@
   // Group-count summary elements (next to each <details><summary>).
   const groupCountEls = {
     shopping: document.getElementById('group-count-shopping'),
+    intlshopping: document.getElementById('group-count-intlshopping'),
     travel: document.getElementById('group-count-travel'),
     social: document.getElementById('group-count-social'),
   };
@@ -91,6 +100,10 @@
     if (raw === 'Linkedin') return 'LinkedIn';
     if (raw === 'Ebay') return 'eBay';
     if (raw === 'Github') return 'GitHub';
+    if (raw === 'Aliexpress') return 'AliExpress';
+    if (raw === 'Mercadolibre') return 'Mercado Libre';
+    if (raw === 'Trip') return 'Trip.com';
+    if (raw === 'Hotelscom') return 'Hotels.com';
     return raw;
   }
 
@@ -147,8 +160,8 @@
 
   // Update the "N of M" indicators next to each category summary.
   function setGroupCounts(state) {
-    const totals = { shopping: 0, travel: 0, social: 0 };
-    const ons = { shopping: 0, travel: 0, social: 0 };
+    const totals = { shopping: 0, intlshopping: 0, travel: 0, social: 0 };
+    const ons = { shopping: 0, intlshopping: 0, travel: 0, social: 0 };
     for (const s of SITES) {
       totals[s.group] += 1;
       if (state[s.key] !== false) ons[s.group] += 1;

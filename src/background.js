@@ -47,6 +47,14 @@ if (typeof importScripts === 'function') {
     'github.js',
     'medium.js',
     'quora.js',
+    'shopee.js',
+    'lazada.js',
+    'aliexpress.js',
+    'temu.js',
+    'mercadolibre.js',
+    'rakuten.js',
+    'trip.js',
+    'hotelscom.js',
     'utm.js',
   );
 }
@@ -160,6 +168,36 @@ const GITHUB_URL_FILTERS = [
 const MEDIUM_URL_FILTERS = [{ hostSuffix: 'medium.com' }];
 const QUORA_URL_FILTERS = [{ hostSuffix: 'quora.com' }];
 
+const SHOPEE_URL_FILTERS = [
+  { hostSuffix: 'shopee.com' }, { hostSuffix: 'shopee.sg' },
+  { hostSuffix: 'shopee.co.id' }, { hostSuffix: 'shopee.co.th' },
+  { hostSuffix: 'shopee.com.my' }, { hostSuffix: 'shopee.ph' },
+  { hostSuffix: 'shopee.vn' }, { hostSuffix: 'shopee.tw' },
+  { hostSuffix: 'shopee.com.br' }, { hostSuffix: 'shopee.com.mx' },
+  { hostSuffix: 'shopee.cl' }, { hostSuffix: 'shopee.com.co' },
+  { hostEquals: 'shp.ee' },
+];
+const LAZADA_URL_FILTERS = [
+  { hostSuffix: 'lazada.com' }, { hostSuffix: 'lazada.sg' },
+  { hostSuffix: 'lazada.co.id' }, { hostSuffix: 'lazada.com.my' },
+  { hostSuffix: 'lazada.co.th' }, { hostSuffix: 'lazada.com.ph' },
+  { hostSuffix: 'lazada.vn' },
+];
+const ALIEXPRESS_URL_FILTERS = [
+  { hostSuffix: 'aliexpress.com' }, { hostSuffix: 'aliexpress.us' },
+];
+const TEMU_URL_FILTERS = [{ hostSuffix: 'temu.com' }];
+const MERCADOLIBRE_URL_FILTERS = [
+  { hostSuffix: 'mercadolibre.com' }, { hostSuffix: 'mercadolibre.com.ar' },
+  { hostSuffix: 'mercadolibre.com.mx' }, { hostSuffix: 'mercadolibre.cl' },
+  { hostSuffix: 'mercadolibre.com.co' }, { hostSuffix: 'mercadolibre.com.pe' },
+  { hostSuffix: 'mercadolibre.com.uy' }, { hostSuffix: 'mercadolibre.com.ve' },
+  { hostSuffix: 'mercadolibre.com.ec' }, { hostSuffix: 'mercadolivre.com.br' },
+];
+const RAKUTEN_URL_FILTERS = [{ hostEquals: 'item.rakuten.co.jp' }];
+const TRIP_URL_FILTERS = [{ hostSuffix: 'trip.com' }];
+const HOTELSCOM_URL_FILTERS = [{ hostSuffix: 'hotels.com' }];
+
 const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(AGODA_URL_FILTERS).concat(BOOKING_URL_FILTERS)
   .concat(EXPEDIA_URL_FILTERS).concat(AIRBNB_URL_FILTERS)
@@ -172,7 +210,11 @@ const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(WALMART_URL_FILTERS).concat(TARGET_URL_FILTERS)
   .concat(SUBSTACK_URL_FILTERS).concat(BLUESKY_URL_FILTERS)
   .concat(GITHUB_URL_FILTERS).concat(MEDIUM_URL_FILTERS)
-  .concat(QUORA_URL_FILTERS);
+  .concat(QUORA_URL_FILTERS)
+  .concat(SHOPEE_URL_FILTERS).concat(LAZADA_URL_FILTERS)
+  .concat(ALIEXPRESS_URL_FILTERS).concat(TEMU_URL_FILTERS)
+  .concat(MERCADOLIBRE_URL_FILTERS).concat(RAKUTEN_URL_FILTERS)
+  .concat(TRIP_URL_FILTERS).concat(HOTELSCOM_URL_FILTERS);
 
 // -- Enable/disable state -----------------------------------------------------
 
@@ -426,6 +468,38 @@ function cleanAnyUrl(input, keepParams) {
       match: (h) => self.QuoraLinkShortener.isQuoraHost(h),
       shorten: (u) => self.QuoraLinkShortener.shortenQuoraUrl(u),
     },
+    self.ShopeeLinkShortener && {
+      match: (h) => self.ShopeeLinkShortener.isShopeeHost(h),
+      shorten: (u) => self.ShopeeLinkShortener.shortenShopeeUrl(u),
+    },
+    self.LazadaLinkShortener && {
+      match: (h) => self.LazadaLinkShortener.isLazadaHost(h),
+      shorten: (u) => self.LazadaLinkShortener.shortenLazadaUrl(u),
+    },
+    self.AliexpressLinkShortener && {
+      match: (h) => self.AliexpressLinkShortener.isAliexpressHost(h),
+      shorten: (u) => self.AliexpressLinkShortener.shortenAliexpressUrl(u),
+    },
+    self.TemuLinkShortener && {
+      match: (h) => self.TemuLinkShortener.isTemuHost(h),
+      shorten: (u) => self.TemuLinkShortener.shortenTemuUrl(u),
+    },
+    self.MercadolibreLinkShortener && {
+      match: (h) => self.MercadolibreLinkShortener.isMercadolibreHost(h),
+      shorten: (u) => self.MercadolibreLinkShortener.shortenMercadolibreUrl(u),
+    },
+    self.RakutenLinkShortener && {
+      match: (h) => self.RakutenLinkShortener.isRakutenHost(h),
+      shorten: (u) => self.RakutenLinkShortener.shortenRakutenUrl(u),
+    },
+    self.TripLinkShortener && {
+      match: (h) => self.TripLinkShortener.isTripHost(h),
+      shorten: (u) => self.TripLinkShortener.shortPropertyUrl(u),
+    },
+    self.HotelscomLinkShortener && {
+      match: (h) => self.HotelscomLinkShortener.isHotelscomHost(h),
+      shorten: (u) => self.HotelscomLinkShortener.shortPropertyUrl(u),
+    },
   ].filter(Boolean);
 
   let working = input;
@@ -525,6 +599,14 @@ const HOST_CHECKS = [
   ['GithubLinkShortener', 'isGithubHost'],
   ['MediumLinkShortener', 'isMediumHost'],
   ['QuoraLinkShortener', 'isQuoraHost'],
+  ['ShopeeLinkShortener', 'isShopeeHost'],
+  ['LazadaLinkShortener', 'isLazadaHost'],
+  ['AliexpressLinkShortener', 'isAliexpressHost'],
+  ['TemuLinkShortener', 'isTemuHost'],
+  ['MercadolibreLinkShortener', 'isMercadolibreHost'],
+  ['RakutenLinkShortener', 'isRakutenHost'],
+  ['TripLinkShortener', 'isTripHost'],
+  ['HotelscomLinkShortener', 'isHotelscomHost'],
 ];
 
 function isHandledHost(hostname) {

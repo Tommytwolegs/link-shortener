@@ -9,10 +9,12 @@ No analytics. No telemetry. No remote calls.
 
 ## Supported sites
 
-Twenty-four, organized by category in the popup:
+Thirty-two, organized by category in the popup:
 
 - **Shopping**: Amazon, eBay, Etsy, Walmart, Target
-- **Travel**: Booking.com, Expedia, Airbnb, Agoda
+- **International shopping**: Shopee, Lazada, AliExpress, Temu,
+  Mercado Libre, Rakuten
+- **Travel**: Booking.com, Expedia, Airbnb, Agoda, Trip.com, Hotels.com
 - **Social & media**: Facebook, Instagram, Threads, LinkedIn, YouTube,
   Twitter/X, TikTok, Reddit, Pinterest, Spotify, Bluesky, GitHub,
   Medium, Quora, Substack
@@ -168,7 +170,7 @@ script registration described above.
 
 ## Tests
 
-1545 unit tests across 25 modules, runnable with plain Node. From the
+1756 unit tests across 33 modules, runnable with plain Node. From the
 repo root:
 
 ```

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Jimothy's Link Shortener",
   "short_name": "Link Shortener",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Cleans long URLs on shopping, travel, and social sites — strips tracking and gives you a clean shareable link.",
   "author": "Thomas Powers",
   "homepage_url": "https://github.com/Tommytwolegs/link-shortener",
@@ -155,7 +155,43 @@
     "*://github.com/*",
     "*://www.github.com/*",
     "*://*.medium.com/*",
-    "*://*.quora.com/*"
+    "*://*.quora.com/*",
+    "*://*.shopee.com/*",
+    "*://*.shopee.sg/*",
+    "*://*.shopee.co.id/*",
+    "*://*.shopee.co.th/*",
+    "*://*.shopee.com.my/*",
+    "*://*.shopee.ph/*",
+    "*://*.shopee.vn/*",
+    "*://*.shopee.tw/*",
+    "*://*.shopee.com.br/*",
+    "*://*.shopee.com.mx/*",
+    "*://*.shopee.cl/*",
+    "*://*.shopee.com.co/*",
+    "*://shp.ee/*",
+    "*://*.lazada.com/*",
+    "*://*.lazada.sg/*",
+    "*://*.lazada.co.id/*",
+    "*://*.lazada.com.my/*",
+    "*://*.lazada.co.th/*",
+    "*://*.lazada.com.ph/*",
+    "*://*.lazada.vn/*",
+    "*://*.aliexpress.com/*",
+    "*://*.aliexpress.us/*",
+    "*://*.temu.com/*",
+    "*://*.mercadolibre.com/*",
+    "*://*.mercadolibre.com.ar/*",
+    "*://*.mercadolibre.com.mx/*",
+    "*://*.mercadolibre.cl/*",
+    "*://*.mercadolibre.com.co/*",
+    "*://*.mercadolibre.com.pe/*",
+    "*://*.mercadolibre.com.uy/*",
+    "*://*.mercadolibre.com.ve/*",
+    "*://*.mercadolibre.com.ec/*",
+    "*://*.mercadolivre.com.br/*",
+    "*://item.rakuten.co.jp/*",
+    "*://*.trip.com/*",
+    "*://*.hotels.com/*"
   ],
   "optional_host_permissions": [
     "*://*/*"
@@ -559,6 +595,124 @@
         "src/social-content.js"
       ],
       "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.shopee.com/*",
+        "*://*.shopee.sg/*",
+        "*://*.shopee.co.id/*",
+        "*://*.shopee.co.th/*",
+        "*://*.shopee.com.my/*",
+        "*://*.shopee.ph/*",
+        "*://*.shopee.vn/*",
+        "*://*.shopee.tw/*",
+        "*://*.shopee.com.br/*",
+        "*://*.shopee.com.mx/*",
+        "*://*.shopee.cl/*",
+        "*://*.shopee.com.co/*",
+        "*://shp.ee/*"
+      ],
+      "js": [
+        "src/shopee.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.lazada.com/*",
+        "*://*.lazada.sg/*",
+        "*://*.lazada.co.id/*",
+        "*://*.lazada.com.my/*",
+        "*://*.lazada.co.th/*",
+        "*://*.lazada.com.ph/*",
+        "*://*.lazada.vn/*"
+      ],
+      "js": [
+        "src/lazada.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.aliexpress.com/*",
+        "*://*.aliexpress.us/*"
+      ],
+      "js": [
+        "src/aliexpress.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.temu.com/*"
+      ],
+      "js": [
+        "src/temu.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.mercadolibre.com/*",
+        "*://*.mercadolibre.com.ar/*",
+        "*://*.mercadolibre.com.mx/*",
+        "*://*.mercadolibre.cl/*",
+        "*://*.mercadolibre.com.co/*",
+        "*://*.mercadolibre.com.pe/*",
+        "*://*.mercadolibre.com.uy/*",
+        "*://*.mercadolibre.com.ve/*",
+        "*://*.mercadolibre.com.ec/*",
+        "*://*.mercadolivre.com.br/*"
+      ],
+      "js": [
+        "src/mercadolibre.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://item.rakuten.co.jp/*"
+      ],
+      "js": [
+        "src/rakuten.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.trip.com/*"
+      ],
+      "js": [
+        "src/site-toolbar.js",
+        "src/trip.js",
+        "src/trip-content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.hotels.com/*"
+      ],
+      "js": [
+        "src/site-toolbar.js",
+        "src/hotelscom.js",
+        "src/hotelscom-content.js"
+      ],
+      "run_at": "document_idle",
       "all_frames": false
     }
   ],

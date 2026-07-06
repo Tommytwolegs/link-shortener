@@ -7,8 +7,9 @@
 //
 // Currently dispatches for: Facebook, Instagram, YouTube, Twitter/X, TikTok,
 // Reddit, Spotify, LinkedIn, eBay, Etsy, Threads, Pinterest, Walmart, Target,
-// Substack, Bluesky, GitHub, Medium, Quora.
-// (Amazon and the four hotel sites have their own scripts.)
+// Substack, Bluesky, GitHub, Medium, Quora, Shopee, Lazada, AliExpress,
+// Temu, Mercado Libre, Rakuten.
+// (Amazon and the six hotel sites have their own scripts.)
 //
 // Why no in-page anchor rewriting (unlike Amazon's content.js): on social/
 // media feeds and shopping listings, link hrefs often carry session-specific
@@ -55,6 +56,12 @@
     self.GithubLinkShortener ||
     self.MediumLinkShortener ||
     self.QuoraLinkShortener ||
+    self.ShopeeLinkShortener ||
+    self.LazadaLinkShortener ||
+    self.AliexpressLinkShortener ||
+    self.TemuLinkShortener ||
+    self.MercadolibreLinkShortener ||
+    self.RakutenLinkShortener ||
     null;
 
   // Per-site storage key, taken from the active module. Falls back to
