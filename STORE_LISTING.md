@@ -30,7 +30,7 @@ Long URLs from shopping, travel, and social sites are stuffed with tracking IDs,
 
 WHAT GETS CLEANED
 
-More than thirty popular sites are supported across four categories — shopping, international shopping, travel booking, and social media / content platforms — each with hand-tuned rules for that site's URL structure. The full list is visible in the extension's popup and on the project page.
+Nearly fifty popular sites are supported — shopping, travel booking, social media, and entertainment platforms across every world region — each with hand-tuned rules for that site's URL structure. The full list is visible in the extension's popup and on the project page.
 
 The cleanup is careful about what it keeps. Parameters that change what the recipient actually sees survive: product variant selections stay locked, playlist position is kept, comment deep-links still scroll to the right comment, video timestamps survive, and paywall gift links keep working. Only the tracking clutter goes.
 
@@ -97,7 +97,17 @@ Privacy policy URL: https://github.com/Tommytwolegs/link-shortener/blob/main/PRI
 
 ## Chrome Web Store "What's new in this version?" (release notes)
 
-### v1.9.0 (unreleased — submit the newest version once v1.7.0 clears review)
+### v1.10.0 (unreleased — submit the newest version once v1.7.0 clears review)
+
+v1.10.0 — media & entertainment expansion.
+
+* Eight more sites supported (forty-seven total) across music, video, gaming, film, books, and Q&A — the everyday "let me send you this" links.
+* Functional state survives as always: video timestamps, track deep-links within albums, and playlist context are preserved; share tokens, click-path breadcrumbs, and affiliate tags are stripped. On one Q&A network, the share button embeds the sharer's user id in the link path itself — that's now removed too.
+* The Global category now has separate Social and Media & entertainment sections.
+
+Reminder for the v1.10.0 AMO notes: 47 sites / 205 host permissions / 2,151 tests; new modules steam, imdb, stackoverflow, wikipedia, goodreads, soundcloud, applemusic, twitch.
+
+### v1.9.0 (superseded before submission — never shipped)
 
 v1.9.0 — regional expansion, round two.
 

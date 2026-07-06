@@ -9,13 +9,14 @@ No analytics. No telemetry. No remote calls.
 
 ## Supported sites
 
-Thirty-nine, organized by world region and type in the popup:
+Forty-seven, organized by world region and type in the popup:
 
 - **Global** — Shopping: Amazon, eBay, Etsy, AliExpress, Temu ·
   Travel: Booking.com, Expedia, Airbnb, Trip.com, Hotels.com, Vrbo ·
-  Social & media: Facebook, Instagram, Threads, LinkedIn, YouTube,
-  Twitter/X, TikTok, Reddit, Pinterest, Spotify, Bluesky, GitHub,
-  Medium, Quora, Substack
+  Social: Facebook, Instagram, Threads, LinkedIn, Twitter/X, TikTok,
+  Reddit, Bluesky, Pinterest · Media & entertainment: YouTube, Spotify,
+  Twitch, SoundCloud, Apple Music, Steam, IMDb, Goodreads, Wikipedia,
+  Stack Overflow, GitHub, Medium, Quora, Substack
 - **Americas** — Shopping: Walmart, Target, Mercado Libre
 - **Asia-Pacific** — Shopping: Shopee, Lazada, Tokopedia, Coupang,
   Flipkart, Mercari, Rakuten · Travel: Agoda

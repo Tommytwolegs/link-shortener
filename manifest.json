@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Jimothy's Link Shortener",
   "short_name": "Link Shortener",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "Cleans long URLs on shopping, travel, and social sites — strips tracking and gives you a clean shareable link.",
   "author": "Thomas Powers",
   "homepage_url": "https://github.com/Tommytwolegs/link-shortener",
@@ -219,7 +219,20 @@
     "*://*.allegro.cz/*",
     "*://*.allegro.sk/*",
     "*://*.allegro.hu/*",
-    "*://*.vrbo.com/*"
+    "*://*.vrbo.com/*",
+    "*://store.steampowered.com/*",
+    "*://*.imdb.com/*",
+    "*://*.stackoverflow.com/*",
+    "*://*.stackexchange.com/*",
+    "*://*.superuser.com/*",
+    "*://*.serverfault.com/*",
+    "*://*.askubuntu.com/*",
+    "*://*.wikipedia.org/*",
+    "*://*.goodreads.com/*",
+    "*://*.soundcloud.com/*",
+    "*://music.apple.com/*",
+    "*://podcasts.apple.com/*",
+    "*://*.twitch.tv/*"
   ],
   "optional_host_permissions": [
     "*://*/*"
@@ -840,6 +853,99 @@
         "src/vrbo-content.js"
       ],
       "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://store.steampowered.com/*"
+      ],
+      "js": [
+        "src/steam.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.imdb.com/*"
+      ],
+      "js": [
+        "src/imdb.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.stackoverflow.com/*",
+        "*://*.stackexchange.com/*",
+        "*://*.superuser.com/*",
+        "*://*.serverfault.com/*",
+        "*://*.askubuntu.com/*"
+      ],
+      "js": [
+        "src/stackoverflow.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.wikipedia.org/*"
+      ],
+      "js": [
+        "src/wikipedia.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.goodreads.com/*"
+      ],
+      "js": [
+        "src/goodreads.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.soundcloud.com/*"
+      ],
+      "js": [
+        "src/soundcloud.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://music.apple.com/*",
+        "*://podcasts.apple.com/*"
+      ],
+      "js": [
+        "src/applemusic.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.twitch.tv/*"
+      ],
+      "js": [
+        "src/twitch.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
       "all_frames": false
     }
   ],

@@ -139,6 +139,14 @@ $firefoxManifest.background = [pscustomobject]@{
         'src/vinted.js',
         'src/allegro.js',
         'src/vrbo.js',
+        'src/steam.js',
+        'src/imdb.js',
+        'src/stackoverflow.js',
+        'src/wikipedia.js',
+        'src/goodreads.js',
+        'src/soundcloud.js',
+        'src/applemusic.js',
+        'src/twitch.js',
         'src/utm.js',
         'src/background.js'
     )

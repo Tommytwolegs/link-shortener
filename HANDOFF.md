@@ -1,10 +1,10 @@
 # Jimothy's Link Shortener — Handoff
 
 Context document for picking up work on a new machine (or in a new Claude
-session). Last updated 2026-06-12 at v1.9.0 (second international round +
-region-based popup; v1.7.0 is submitted and in review at both stores — do
-NOT touch the 1.7.0 packages while that's pending. v1.8.0 and v1.9.0 are
-tagged but unsubmitted; when 1.7.0 clears, submit the NEWEST version).
+session). Last updated 2026-06-12 at v1.10.0 (media round; v1.7.0 is
+submitted and in review at both stores — do NOT touch the 1.7.0 packages
+while that's pending. v1.8.0/v1.9.0/v1.10.0 are tagged but unsubmitted;
+when 1.7.0 clears, submit the NEWEST version).
 
 ---
 
@@ -33,7 +33,7 @@ CI, and a meaningful round of bug fixes for SPA-state preservation. See
 
 ---
 
-## Supported sites (39)
+## Supported sites (47)
 
 Each has a dedicated pure-function URL module under `src/`. The popup
 groups them into Shopping / Travel / Social & media:
@@ -84,6 +84,28 @@ groups them into Shopping / Travel / Social & media:
   the hash-preservation rule (see gotchas).
 - **Rakuten Ichiba** — `item.rakuten.co.jp/<shop>/<item>/` only.
   Preserves `variantId`. Strip-all otherwise.
+
+**Media & entertainment (8, all Global):**
+- **Steam** — store.steampowered.com /app|sub|bundle. Strips `snr`.
+- **IMDb** — /title/tt, /name/nm, /list/ls. Strips `ref_`/`pf_rd_*`.
+- **Stack Overflow** (+ stackexchange.com network, superuser,
+  serverfault, askubuntu) — the ONLY module that rewrites the PATH:
+  share links /q/<id>/<uid> and /a/<id>/<uid> carry the sharer's user
+  id as an attribution segment, removed. Hash anchors are the deep-link
+  mechanism — always preserved.
+- **Wikipedia** — /wiki/<Article> any language/mobile subdomain.
+  Denylist strategy (strips only `wprov` + utm_*). /w/index.php is
+  untouched (oldid/diff are functional). Section anchors sacred.
+- **Goodreads** — /book/show, /author/show, /series. Strip-all.
+- **SoundCloud** — two-segment track + /sets/ forms with a user-name
+  blocklist; on.soundcloud.com short links. Denylist strategy; strips
+  `si` (share token), preserves `in` (playlist queue context).
+- **Apple Music / Podcasts** — storefront-prefixed album/song/playlist/
+  artist/podcast forms. Preserves `i` (track/episode deep link); strips
+  at/ct affiliate tokens.
+- **Twitch** — /videos/<id> (preserves `t` timestamp), channel clips,
+  clips.twitch.tv. Channel pages deliberately unhandled (single generic
+  segment, too collision-prone).
 
 **Travel (7):**
 - **Booking.com, Expedia, Airbnb, Agoda, Trip.com, Hotels.com, Vrbo** —
@@ -157,7 +179,7 @@ page (default OFF). See `utm.js` below.
 
 ### Content-script dispatchers
 
-- `src/social-content.js` — dispatcher used by **all 31** sites that don't
+- `src/social-content.js` — dispatcher used by **all 39** sites that don't
   have their own dedicated content script (the social/media/shopping
   sites that load social-content.js + their URL module). Detects which
   `*LinkShortener` global is loaded, reads that module's `STORAGE_KEY`,
@@ -226,10 +248,10 @@ page (default OFF). See `utm.js` below.
 ### Popup
 
 - `src/popup.html` / `popup.js` / `popup.css` — toolbar popup. Master
-  toggle, 38 per-site toggles (39 sites; Facebook+Instagram share one)
+  toggle, 46 per-site toggles (47 sites; Facebook+Instagram share one)
   organized by WORLD REGION → SITE TYPE: collapsible Global / Americas /
   Asia-Pacific / Europe `<details>` groups, each with Shopping / Travel /
-  Social & media subheadings (`.group-subhead`). Global default-open;
+  Social / Media & entertainment subheadings (`.group-subhead`). Global default-open;
   expanded/collapsed state persists via `popupOpenGroups` in
   chrome.storage.sync (keys = data-group values: global/americas/apac/
   europe — old keys from previous layouts are ignored harmlessly). Four feature flags (hide travel popup, include Amazon
@@ -257,7 +279,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **1,935 total assertions across 40 test files, all passing.** Run with:
+  **2,151 total assertions across 48 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -298,7 +320,7 @@ The Firefox xpi injects four things into the manifest:
 1. `browser_specific_settings.gecko.id` (`link-shortener@tommytwolegs.github.io`)
 2. `gecko.strict_min_version` (`121.0` — first Firefox with full MV3 SW support)
 3. `gecko.data_collection_permissions.required = ["none"]` (AMO requirement)
-4. `background.scripts` array (41 entries — Mozilla linter requires a
+4. `background.scripts` array (49 entries — Mozilla linter requires a
    fallback alongside `service_worker`; order matters since `background.js`
    uses `self.*LinkShortener` globals at top level)
 
@@ -380,6 +402,15 @@ Reddit and LinkedIn modules refactored from "flat list of regexes" to
 
 Test count: **1,045 → 1,276 (+231)** across **18 → 20 files**. 19 sites
 + universal stripper, 31 source files (was 28).
+
+**v1.10.0 round — media & entertainment (2026-06-12).** Eight sites:
+Steam, IMDb, Stack Overflow (+SE network — the first PATH-rewriting
+module: share-link attribution user-id segments removed), Wikipedia
+(wprov app-share junk), Goodreads, SoundCloud (si token; keeps ?in=
+context), Apple Music/Podcasts (keeps ?i=), Twitch (keeps ?t=). Global
+popup group split into Social + Media & entertainment subheads. Tests:
+1,935 → 2,151 across 48 files. Manifest: 205 hosts, 47 content scripts,
+49-entry Firefox background.scripts.
 
 **v1.9.0 round — more international sites + region popup (2026-06-12).**
 Seven more sites: Coupang, Flipkart, Tokopedia, Mercari, Vinted, Allegro
@@ -634,7 +665,7 @@ These came up but aren't built. Ranked by ROI:
 ```
 link-shortener/
 ├── .github/workflows/test.yml      — CI: parse-check + run all tests on push/PR
-├── manifest.json                   — Chrome-canonical manifest (192 host_permissions, 39 content_scripts)
+├── manifest.json                   — Chrome-canonical manifest (205 host_permissions, 47 content_scripts)
 ├── package.sh                      — macOS/Linux build script
 ├── package.ps1                     — Windows PowerShell build script
 ├── package_lf.sh                   — (older, retained for reference)
@@ -663,7 +694,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 40 test files, 1,935 assertions
+├── tests/                          — 48 test files, 2,151 assertions
 └── dist/                           — built zip + xpi packages
 ```
 

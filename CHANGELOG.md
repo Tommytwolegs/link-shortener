@@ -4,6 +4,23 @@ All notable changes to Jimothy's Link Shortener. Versions follow
 [Semantic Versioning](https://semver.org/) loosely — minor bumps mark new
 features, patch bumps mark bug-fix-only releases.
 
+## [1.10.0] — unreleased
+
+### Added
+- **8 media & entertainment sites** (47 total): Steam (strips the snr
+  click-path breadcrumb), IMDb (strips ref_/pf_rd_*), Stack Overflow +
+  the Stack Exchange network (rewrites share links — /q/<id>/<user> and
+  /a/<id>/<user> carry the sharer's user id as an attribution PATH
+  segment, now removed; answer/comment hash anchors preserved),
+  Wikipedia (strips the mobile apps' ?wprov= share attribution;
+  denylist strategy; section anchors sacred), Goodreads, SoundCloud
+  (strips the si= share token; preserves ?in= playlist context),
+  Apple Music/Podcasts (preserves ?i= track/episode deep links; strips
+  at/ct affiliate tokens), Twitch (VODs + clips; preserves ?t=
+  timestamps; channel pages deliberately out of scope).
+- **Global group now has separate "Social" and "Media & entertainment"
+  subheadings** — 33 toggles under Global stay navigable.
+
 ## [1.9.0] — unreleased
 
 ### Added

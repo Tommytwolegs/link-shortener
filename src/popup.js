@@ -42,13 +42,21 @@
     { key: 'enabledSocial', group: 'global' },
     { key: 'enabledThreads', group: 'global' },
     { key: 'enabledLinkedin', group: 'global' },
-    { key: 'enabledYoutube', group: 'global' },
     { key: 'enabledTwitter', group: 'global' },
     { key: 'enabledTiktok', group: 'global' },
     { key: 'enabledReddit', group: 'global' },
-    { key: 'enabledPinterest', group: 'global' },
-    { key: 'enabledSpotify', group: 'global' },
     { key: 'enabledBluesky', group: 'global' },
+    { key: 'enabledPinterest', group: 'global' },
+    { key: 'enabledYoutube', group: 'global' },
+    { key: 'enabledSpotify', group: 'global' },
+    { key: 'enabledTwitch', group: 'global' },
+    { key: 'enabledSoundcloud', group: 'global' },
+    { key: 'enabledAppleMusic', group: 'global' },
+    { key: 'enabledSteam', group: 'global' },
+    { key: 'enabledImdb', group: 'global' },
+    { key: 'enabledGoodreads', group: 'global' },
+    { key: 'enabledWikipedia', group: 'global' },
+    { key: 'enabledStackoverflow', group: 'global' },
     { key: 'enabledGithub', group: 'global' },
     { key: 'enabledMedium', group: 'global' },
     { key: 'enabledQuora', group: 'global' },
@@ -111,6 +119,10 @@
     if (raw === 'Mercadolibre') return 'Mercado Libre';
     if (raw === 'Trip') return 'Trip.com';
     if (raw === 'Hotelscom') return 'Hotels.com';
+    if (raw === 'Imdb') return 'IMDb';
+    if (raw === 'Stackoverflow') return 'Stack Overflow';
+    if (raw === 'Soundcloud') return 'SoundCloud';
+    if (raw === 'AppleMusic') return 'Apple Music';
     return raw;
   }
 

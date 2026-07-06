@@ -9,7 +9,8 @@
 // Reddit, Spotify, LinkedIn, eBay, Etsy, Threads, Pinterest, Walmart, Target,
 // Substack, Bluesky, GitHub, Medium, Quora, Shopee, Lazada, AliExpress,
 // Temu, Mercado Libre, Rakuten, Coupang, Flipkart, Tokopedia, Mercari,
-// Vinted, Allegro.
+// Vinted, Allegro, Steam, IMDb, Stack Overflow, Wikipedia, Goodreads,
+// SoundCloud, Apple Music, Twitch.
 // (Amazon and the seven travel sites have their own scripts.)
 //
 // Why no in-page anchor rewriting (unlike Amazon's content.js): on social/
@@ -69,6 +70,14 @@
     self.MercariLinkShortener ||
     self.VintedLinkShortener ||
     self.AllegroLinkShortener ||
+    self.SteamLinkShortener ||
+    self.ImdbLinkShortener ||
+    self.StackoverflowLinkShortener ||
+    self.WikipediaLinkShortener ||
+    self.GoodreadsLinkShortener ||
+    self.SoundcloudLinkShortener ||
+    self.AppleMusicLinkShortener ||
+    self.TwitchLinkShortener ||
     null;
 
   // Per-site storage key, taken from the active module. Falls back to

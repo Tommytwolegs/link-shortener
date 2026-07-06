@@ -62,6 +62,14 @@ if (typeof importScripts === 'function') {
     'vinted.js',
     'allegro.js',
     'vrbo.js',
+    'steam.js',
+    'imdb.js',
+    'stackoverflow.js',
+    'wikipedia.js',
+    'goodreads.js',
+    'soundcloud.js',
+    'applemusic.js',
+    'twitch.js',
     'utm.js',
   );
 }
@@ -217,6 +225,21 @@ const ALLEGRO_URL_FILTERS = [
 ];
 const VRBO_URL_FILTERS = [{ hostSuffix: 'vrbo.com' }];
 
+const STEAM_URL_FILTERS = [{ hostEquals: 'store.steampowered.com' }];
+const IMDB_URL_FILTERS = [{ hostSuffix: 'imdb.com' }];
+const STACKOVERFLOW_URL_FILTERS = [
+  { hostSuffix: 'stackoverflow.com' }, { hostSuffix: 'stackexchange.com' },
+  { hostSuffix: 'superuser.com' }, { hostSuffix: 'serverfault.com' },
+  { hostSuffix: 'askubuntu.com' },
+];
+const WIKIPEDIA_URL_FILTERS = [{ hostSuffix: 'wikipedia.org' }];
+const GOODREADS_URL_FILTERS = [{ hostSuffix: 'goodreads.com' }];
+const SOUNDCLOUD_URL_FILTERS = [{ hostSuffix: 'soundcloud.com' }];
+const APPLEMUSIC_URL_FILTERS = [
+  { hostEquals: 'music.apple.com' }, { hostEquals: 'podcasts.apple.com' },
+];
+const TWITCH_URL_FILTERS = [{ hostSuffix: 'twitch.tv' }];
+
 const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(AGODA_URL_FILTERS).concat(BOOKING_URL_FILTERS)
   .concat(EXPEDIA_URL_FILTERS).concat(AIRBNB_URL_FILTERS)
@@ -237,7 +260,11 @@ const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(COUPANG_URL_FILTERS).concat(FLIPKART_URL_FILTERS)
   .concat(TOKOPEDIA_URL_FILTERS).concat(MERCARI_URL_FILTERS)
   .concat(VINTED_URL_FILTERS).concat(ALLEGRO_URL_FILTERS)
-  .concat(VRBO_URL_FILTERS);
+  .concat(VRBO_URL_FILTERS)
+  .concat(STEAM_URL_FILTERS).concat(IMDB_URL_FILTERS)
+  .concat(STACKOVERFLOW_URL_FILTERS).concat(WIKIPEDIA_URL_FILTERS)
+  .concat(GOODREADS_URL_FILTERS).concat(SOUNDCLOUD_URL_FILTERS)
+  .concat(APPLEMUSIC_URL_FILTERS).concat(TWITCH_URL_FILTERS);
 
 // -- Enable/disable state -----------------------------------------------------
 
@@ -551,6 +578,38 @@ function cleanAnyUrl(input, keepParams) {
       match: (h) => self.VrboLinkShortener.isVrboHost(h),
       shorten: (u) => self.VrboLinkShortener.shortPropertyUrl(u),
     },
+    self.SteamLinkShortener && {
+      match: (h) => self.SteamLinkShortener.isSteamHost(h),
+      shorten: (u) => self.SteamLinkShortener.shortenSteamUrl(u),
+    },
+    self.ImdbLinkShortener && {
+      match: (h) => self.ImdbLinkShortener.isImdbHost(h),
+      shorten: (u) => self.ImdbLinkShortener.shortenImdbUrl(u),
+    },
+    self.StackoverflowLinkShortener && {
+      match: (h) => self.StackoverflowLinkShortener.isStackoverflowHost(h),
+      shorten: (u) => self.StackoverflowLinkShortener.shortenStackoverflowUrl(u),
+    },
+    self.WikipediaLinkShortener && {
+      match: (h) => self.WikipediaLinkShortener.isWikipediaHost(h),
+      shorten: (u) => self.WikipediaLinkShortener.shortenWikipediaUrl(u),
+    },
+    self.GoodreadsLinkShortener && {
+      match: (h) => self.GoodreadsLinkShortener.isGoodreadsHost(h),
+      shorten: (u) => self.GoodreadsLinkShortener.shortenGoodreadsUrl(u),
+    },
+    self.SoundcloudLinkShortener && {
+      match: (h) => self.SoundcloudLinkShortener.isSoundcloudHost(h),
+      shorten: (u) => self.SoundcloudLinkShortener.shortenSoundcloudUrl(u),
+    },
+    self.AppleMusicLinkShortener && {
+      match: (h) => self.AppleMusicLinkShortener.isAppleMusicHost(h),
+      shorten: (u) => self.AppleMusicLinkShortener.shortenAppleMusicUrl(u),
+    },
+    self.TwitchLinkShortener && {
+      match: (h) => self.TwitchLinkShortener.isTwitchHost(h),
+      shorten: (u) => self.TwitchLinkShortener.shortenTwitchUrl(u),
+    },
   ].filter(Boolean);
 
   let working = input;
@@ -665,6 +724,14 @@ const HOST_CHECKS = [
   ['VintedLinkShortener', 'isVintedHost'],
   ['AllegroLinkShortener', 'isAllegroHost'],
   ['VrboLinkShortener', 'isVrboHost'],
+  ['SteamLinkShortener', 'isSteamHost'],
+  ['ImdbLinkShortener', 'isImdbHost'],
+  ['StackoverflowLinkShortener', 'isStackoverflowHost'],
+  ['WikipediaLinkShortener', 'isWikipediaHost'],
+  ['GoodreadsLinkShortener', 'isGoodreadsHost'],
+  ['SoundcloudLinkShortener', 'isSoundcloudHost'],
+  ['AppleMusicLinkShortener', 'isAppleMusicHost'],
+  ['TwitchLinkShortener', 'isTwitchHost'],
 ];
 
 function isHandledHost(hostname) {
