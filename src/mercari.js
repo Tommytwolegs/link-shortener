@@ -7,6 +7,7 @@
 //   jp.mercari.com/item/m<digits>          → Japan listing
 //   www.mercari.com/us/item/m<digits>/     → US listing
 //   www.mercari.com/item/m<digits>/        → US listing (short form)
+//   jp.mercari.com/shops/product/<id>      → Mercari Shops (business sellers)
 //
 // Tracking stripped: utm_* family, afid, source_location, ref — everything;
 // listing identity is entirely in the path.
@@ -30,9 +31,10 @@
   }
 
   const ITEM_PATH_REGEX = /^\/(?:us\/)?item\/m\d+\/?$/i;
+  const SHOPS_PATH_REGEX = /^\/shops\/product\/[0-9a-z]+\/?$/i;
 
   function isItemPath(pathname) {
-    return ITEM_PATH_REGEX.test(pathname);
+    return ITEM_PATH_REGEX.test(pathname) || SHOPS_PATH_REGEX.test(pathname);
   }
 
   function isPostUrl(input) {
@@ -69,6 +71,7 @@
     STORAGE_KEY: 'enabledMercari',
     MERCARI_HOST_REGEX,
     ITEM_PATH_REGEX,
+    SHOPS_PATH_REGEX,
   };
   global.MercariLinkShortener = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

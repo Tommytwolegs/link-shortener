@@ -2,9 +2,11 @@
 // ----------------------------------------------------------------------------
 // Pure functions for cleaning Coupang product URLs. Address-bar-only.
 //
-// Recognized form:
+// Recognized forms:
 //
-//   /vp/products/<productid>     → product page
+//   /vp/products/<productid>     → desktop product page
+//   /vm/products/<productid>     → mobile web product page (m.coupang.com —
+//                                  this is the form phone shares produce)
 //
 // Params PRESERVED: itemId, vendorItemId — together with the path id they
 // pin the exact option/seller variant the user was looking at; a Coupang
@@ -32,7 +34,7 @@
     return COUPANG_HOST_REGEX.test(hostname);
   }
 
-  const PRODUCT_PATH_REGEX = /^\/vp\/products\/\d+\/?$/;
+  const PRODUCT_PATH_REGEX = /^\/v[pm]\/products\/\d+\/?$/;
 
   function isProductPath(pathname) {
     return PRODUCT_PATH_REGEX.test(pathname);

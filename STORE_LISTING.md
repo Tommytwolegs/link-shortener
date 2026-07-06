@@ -105,7 +105,7 @@ v1.9.0 — regional expansion, round two.
 * The popup is now organized by world region — Global, Americas, Asia-Pacific, Europe — with site-type subheadings inside each group, so the growing site list stays navigable.
 * Variant and option selections survive cleanup on the new sites, consistent with everywhere else.
 
-Reminder for the v1.9.0 AMO notes: 39 sites / 192 host permissions / 1,923 tests; new modules coupang, flipkart, tokopedia, mercari, vinted, allegro, vrbo (vrbo uses the travel toolbar).
+Reminder for the v1.9.0 AMO notes: 39 sites / 192 host permissions / 1,935 tests; new modules coupang, flipkart, tokopedia, mercari, vinted, allegro, vrbo (vrbo uses the travel toolbar).
 
 ### v1.8.0 (superseded by 1.9.0 before submission — never shipped)
 

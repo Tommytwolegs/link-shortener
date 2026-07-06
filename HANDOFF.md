@@ -257,7 +257,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **1,923 total assertions across 40 test files, all passing.** Run with:
+  **1,935 total assertions across 40 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -391,7 +391,7 @@ itemId+vendorItemId, Flipkart pid. Tokopedia uses the denylist strategy
 (its product form is two generic path segments — a false-positive match
 can only ever lose known tracking params). Vrbo handles both
 chkin/chkout and startDate/endDate generations; bot-walled during
-research, smoke-test before shipping. Tests: 1,756 → 1,923 across 40
+research, smoke-test before shipping. Tests: 1,756 → 1,935 across 40
 files. Manifest: 192 host permissions, 39 content scripts, 41-entry
 Firefox background.scripts.
 
@@ -663,7 +663,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 40 test files, 1,923 assertions
+├── tests/                          — 40 test files, 1,935 assertions
 └── dist/                           — built zip + xpi packages
 ```
 
