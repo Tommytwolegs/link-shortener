@@ -8,8 +8,9 @@
 // Currently dispatches for: Facebook, Instagram, YouTube, Twitter/X, TikTok,
 // Reddit, Spotify, LinkedIn, eBay, Etsy, Threads, Pinterest, Walmart, Target,
 // Substack, Bluesky, GitHub, Medium, Quora, Shopee, Lazada, AliExpress,
-// Temu, Mercado Libre, Rakuten.
-// (Amazon and the six hotel sites have their own scripts.)
+// Temu, Mercado Libre, Rakuten, Coupang, Flipkart, Tokopedia, Mercari,
+// Vinted, Allegro.
+// (Amazon and the seven travel sites have their own scripts.)
 //
 // Why no in-page anchor rewriting (unlike Amazon's content.js): on social/
 // media feeds and shopping listings, link hrefs often carry session-specific
@@ -62,6 +63,12 @@
     self.TemuLinkShortener ||
     self.MercadolibreLinkShortener ||
     self.RakutenLinkShortener ||
+    self.CoupangLinkShortener ||
+    self.FlipkartLinkShortener ||
+    self.TokopediaLinkShortener ||
+    self.MercariLinkShortener ||
+    self.VintedLinkShortener ||
+    self.AllegroLinkShortener ||
     null;
 
   // Per-site storage key, taken from the active module. Falls back to

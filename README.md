@@ -9,15 +9,17 @@ No analytics. No telemetry. No remote calls.
 
 ## Supported sites
 
-Thirty-two, organized by category in the popup:
+Thirty-nine, organized by world region and type in the popup:
 
-- **Shopping**: Amazon, eBay, Etsy, Walmart, Target
-- **International shopping**: Shopee, Lazada, AliExpress, Temu,
-  Mercado Libre, Rakuten
-- **Travel**: Booking.com, Expedia, Airbnb, Agoda, Trip.com, Hotels.com
-- **Social & media**: Facebook, Instagram, Threads, LinkedIn, YouTube,
+- **Global** — Shopping: Amazon, eBay, Etsy, AliExpress, Temu ·
+  Travel: Booking.com, Expedia, Airbnb, Trip.com, Hotels.com, Vrbo ·
+  Social & media: Facebook, Instagram, Threads, LinkedIn, YouTube,
   Twitter/X, TikTok, Reddit, Pinterest, Spotify, Bluesky, GitHub,
   Medium, Quora, Substack
+- **Americas** — Shopping: Walmart, Target, Mercado Libre
+- **Asia-Pacific** — Shopping: Shopee, Lazada, Tokopedia, Coupang,
+  Flipkart, Mercari, Rakuten · Travel: Agoda
+- **Europe** — Shopping: Vinted, Allegro
 
 Plus an opt-in **Universal tracking strip** mode that strips well-known
 tracking parameters (`utm_*`, `gclid`, `fbclid`, `mc_cid`, `igshid`,
@@ -170,7 +172,7 @@ script registration described above.
 
 ## Tests
 
-1756 unit tests across 33 modules, runnable with plain Node. From the
+1923 unit tests across 40 modules, runnable with plain Node. From the
 repo root:
 
 ```

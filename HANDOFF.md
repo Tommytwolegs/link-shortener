@@ -1,9 +1,10 @@
 # Jimothy's Link Shortener — Handoff
 
 Context document for picking up work on a new machine (or in a new Claude
-session). Last updated 2026-06-12 at v1.8.0 (international-sites round;
-v1.7.0 is submitted and in review at both stores — do NOT touch the 1.7.0
-packages while that's pending).
+session). Last updated 2026-06-12 at v1.9.0 (second international round +
+region-based popup; v1.7.0 is submitted and in review at both stores — do
+NOT touch the 1.7.0 packages while that's pending. v1.8.0 and v1.9.0 are
+tagged but unsubmitted; when 1.7.0 clears, submit the NEWEST version).
 
 ---
 
@@ -32,7 +33,7 @@ CI, and a meaningful round of bug fixes for SPA-state preservation. See
 
 ---
 
-## Supported sites (32)
+## Supported sites (39)
 
 Each has a dedicated pure-function URL module under `src/`. The popup
 groups them into Shopping / Travel / Social & media:
@@ -56,7 +57,19 @@ groups them into Shopping / Travel / Social & media:
   (variant child-TCIN, Target's analog of Amazon's th/psc); strips lnk /
   clkid / ref / linkId / searchTerm.
 
-**International shopping (6):**
+**International shopping (12):**
+- **Coupang** — `/vp/products/<id>`; preserves `itemId`+`vendorItemId`
+  (option/seller variant); strips searchId/rank/src/spec junk.
+- **Flipkart** — `/<slug>/p/itm<id>`; preserves `pid` (variant); strips
+  lid/otracker/ssid junk.
+- **Tokopedia** — `/<shop>/<product>` two-segment form with a
+  navigational-segment blocklist. DENYLIST param strategy (strips only
+  known-bad: extParam/src/refined/whid/trkid/utm_*) so accidental
+  matches can't lose functional state.
+- **Mercari** — `/item/m<id>` (jp.) and `/us/item/m<id>` (www.).
+  Strip-all.
+- **Vinted** — `/items/<id>-<slug>`, 19 TLDs. Strip-all.
+- **Allegro** — `/oferta/<slug>-<id>`, PL/CZ/SK/HU. Strip-all.
 - **Shopee** — slug (`/<name>-i.<shopid>.<itemid>`) + `/product/<shopid>/
   <itemid>` forms, 12 regional TLDs + `shp.ee` short links. Strip-all.
 - **Lazada** — `/products/...i<id>[-s<sku>].html` (sku lives in the PATH),
@@ -72,14 +85,15 @@ groups them into Shopping / Travel / Social & media:
 - **Rakuten Ichiba** — `item.rakuten.co.jp/<shop>/<item>/` only.
   Preserves `variantId`. Strip-all otherwise.
 
-**Travel (6):**
-- **Booking.com, Expedia, Airbnb, Agoda, Trip.com, Hotels.com** —
+**Travel (7):**
+- **Booking.com, Expedia, Airbnb, Agoda, Trip.com, Hotels.com, Vrbo** —
   hotel/rental listings. Address-bar cleanup PLUS a floating toolbar with
   "Share Property" and "With Dates" copy buttons. Trip.com is the odd one:
   hotel identity lives in `?hotelId=` (query, not path) — verified live
-  2026-06-12. Hotels.com handles both its param generations
-  (chkin/chkout/rmN and q-check-in/q-room-*) — bot-walled during
-  research, on the smoke-test list. URL fragments preserved (matters for Booking's `#tab-reviews`
+  2026-06-12. Hotels.com and Vrbo each handle two param generations
+  (chkin/chkout+rmN / q-check-in+q-room-*, and chkin/chkout /
+  startDate/endDate respectively) — both bot-walled during research, on
+  the smoke-test list. URL fragments preserved (matters for Booking's `#tab-reviews`
   etc.). Airbnb's `?modal=` preserved so the photo gallery / map / reviews
   modals stay open.
 
@@ -143,7 +157,7 @@ page (default OFF). See `utm.js` below.
 
 ### Content-script dispatchers
 
-- `src/social-content.js` — dispatcher used by **all 25** sites that don't
+- `src/social-content.js` — dispatcher used by **all 31** sites that don't
   have their own dedicated content script (the social/media/shopping
   sites that load social-content.js + their URL module). Detects which
   `*LinkShortener` global is loaded, reads that module's `STORAGE_KEY`,
@@ -212,11 +226,13 @@ page (default OFF). See `utm.js` below.
 ### Popup
 
 - `src/popup.html` / `popup.js` / `popup.css` — toolbar popup. Master
-  toggle, 31 per-site toggles (32 sites; Facebook+Instagram share one)
-  organized into collapsible Shopping (5) / International shopping (6) /
-  Travel (6) / Social & media (15) `<details>` groups (Shopping
-  default-open; expanded/collapsed state persists via
-  `popupOpenGroups` in chrome.storage.sync). Four feature flags (hide travel popup, include Amazon
+  toggle, 38 per-site toggles (39 sites; Facebook+Instagram share one)
+  organized by WORLD REGION → SITE TYPE: collapsible Global / Americas /
+  Asia-Pacific / Europe `<details>` groups, each with Shopping / Travel /
+  Social & media subheadings (`.group-subhead`). Global default-open;
+  expanded/collapsed state persists via `popupOpenGroups` in
+  chrome.storage.sync (keys = data-group values: global/americas/apac/
+  europe — old keys from previous layouts are ignored harmlessly). Four feature flags (hide travel popup, include Amazon
   item name, universal tracking strip with NEW badge). Footer has version,
   "Advanced" link (opens options page via `chrome.runtime.openOptionsPage`),
   and "Report an issue" link. `popup.js` requests the optional `*://*/*`
@@ -241,7 +257,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **1,756 total assertions across 33 test files, all passing.** Run with:
+  **1,923 total assertions across 40 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -282,7 +298,7 @@ The Firefox xpi injects four things into the manifest:
 1. `browser_specific_settings.gecko.id` (`link-shortener@tommytwolegs.github.io`)
 2. `gecko.strict_min_version` (`121.0` — first Firefox with full MV3 SW support)
 3. `gecko.data_collection_permissions.required = ["none"]` (AMO requirement)
-4. `background.scripts` array (34 entries — Mozilla linter requires a
+4. `background.scripts` array (41 entries — Mozilla linter requires a
    fallback alongside `service_worker`; order matters since `background.js`
    uses `self.*LinkShortener` globals at top level)
 
@@ -364,6 +380,20 @@ Reddit and LinkedIn modules refactored from "flat list of regexes" to
 
 Test count: **1,045 → 1,276 (+231)** across **18 → 20 files**. 19 sites
 + universal stripper, 31 source files (was 28).
+
+**v1.9.0 round — more international sites + region popup (2026-06-12).**
+Seven more sites: Coupang, Flipkart, Tokopedia, Mercari, Vinted, Allegro
+(shopping, via the dispatcher) and Vrbo (travel toolbar). Popup rebuilt
+as world region → site type: Global / Americas / Asia-Pacific / Europe
+groups with Shopping/Travel/Social subheadings — the scaling structure
+for future expansion. Variant params preserved: Coupang
+itemId+vendorItemId, Flipkart pid. Tokopedia uses the denylist strategy
+(its product form is two generic path segments — a false-positive match
+can only ever lose known tracking params). Vrbo handles both
+chkin/chkout and startDate/endDate generations; bot-walled during
+research, smoke-test before shipping. Tests: 1,756 → 1,923 across 40
+files. Manifest: 192 host permissions, 39 content scripts, 41-entry
+Firefox background.scripts.
 
 **v1.8.0 round — international sites (2026-06-12).** Eight new sites:
 Shopee, Lazada, AliExpress, Temu, Mercado Libre, Rakuten Ichiba (shopping,
@@ -604,7 +634,7 @@ These came up but aren't built. Ranked by ROI:
 ```
 link-shortener/
 ├── .github/workflows/test.yml      — CI: parse-check + run all tests on push/PR
-├── manifest.json                   — Chrome-canonical manifest (164 host_permissions, 32 content_scripts)
+├── manifest.json                   — Chrome-canonical manifest (192 host_permissions, 39 content_scripts)
 ├── package.sh                      — macOS/Linux build script
 ├── package.ps1                     — Windows PowerShell build script
 ├── package_lf.sh                   — (older, retained for reference)
@@ -616,15 +646,16 @@ link-shortener/
 ├── LICENSE                         — MIT
 ├── icons/                          — 16/48/128 px + promo tile
 ├── src/
-│   ├── manifest's per-site modules (32): asin, agoda, booking, expedia,
+│   ├── manifest's per-site modules (39): asin, agoda, booking, expedia,
 │   │   airbnb, facebook, instagram, youtube, twitter, tiktok, reddit,
 │   │   spotify, linkedin, ebay, etsy, threads, pinterest, walmart, target,
 │   │   substack, bluesky, github, medium, quora, shopee, lazada,
-│   │   aliexpress, temu, mercadolibre, rakuten, trip, hotelscom
+│   │   aliexpress, temu, mercadolibre, rakuten, trip, hotelscom, coupang,
+│   │   flipkart, tokopedia, mercari, vinted, allegro, vrbo
 │   ├── per-site content scripts: agoda-content, booking-content,
-│   │   expedia-content, airbnb-content, trip-content, hotelscom-content
-│   │   (the 6 hotel sites' wiring), content.js (Amazon-specific),
-│   │   social-content.js (dispatcher for the other 25)
+│   │   expedia-content, airbnb-content, trip-content, hotelscom-content,
+│   │   vrbo-content (the 7 travel sites' wiring), content.js
+│   │   (Amazon-specific), social-content.js (dispatcher for the other 31)
 │   ├── site-toolbar.js             — shared floating toolbar (hotel sites)
 │   ├── background.js               — service worker / event page
 │   ├── popup.html / popup.css / popup.js
@@ -632,7 +663,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 33 test files, 1,756 assertions
+├── tests/                          — 40 test files, 1,923 assertions
 └── dist/                           — built zip + xpi packages
 ```
 

@@ -55,6 +55,13 @@ if (typeof importScripts === 'function') {
     'rakuten.js',
     'trip.js',
     'hotelscom.js',
+    'coupang.js',
+    'flipkart.js',
+    'tokopedia.js',
+    'mercari.js',
+    'vinted.js',
+    'allegro.js',
+    'vrbo.js',
     'utm.js',
   );
 }
@@ -198,6 +205,18 @@ const RAKUTEN_URL_FILTERS = [{ hostEquals: 'item.rakuten.co.jp' }];
 const TRIP_URL_FILTERS = [{ hostSuffix: 'trip.com' }];
 const HOTELSCOM_URL_FILTERS = [{ hostSuffix: 'hotels.com' }];
 
+const COUPANG_URL_FILTERS = [{ hostSuffix: 'coupang.com' }];
+const FLIPKART_URL_FILTERS = [{ hostSuffix: 'flipkart.com' }];
+const TOKOPEDIA_URL_FILTERS = [{ hostSuffix: 'tokopedia.com' }];
+const MERCARI_URL_FILTERS = [{ hostSuffix: 'mercari.com' }];
+const VINTED_URL_FILTERS = ['com','fr','de','co.uk','pl','it','es','nl','be','at','cz','sk','lt','pt','se','dk','fi','hu','ro']
+  .map((tld) => ({ hostSuffix: 'vinted.' + tld }));
+const ALLEGRO_URL_FILTERS = [
+  { hostSuffix: 'allegro.pl' }, { hostSuffix: 'allegro.cz' },
+  { hostSuffix: 'allegro.sk' }, { hostSuffix: 'allegro.hu' },
+];
+const VRBO_URL_FILTERS = [{ hostSuffix: 'vrbo.com' }];
+
 const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(AGODA_URL_FILTERS).concat(BOOKING_URL_FILTERS)
   .concat(EXPEDIA_URL_FILTERS).concat(AIRBNB_URL_FILTERS)
@@ -214,7 +233,11 @@ const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(SHOPEE_URL_FILTERS).concat(LAZADA_URL_FILTERS)
   .concat(ALIEXPRESS_URL_FILTERS).concat(TEMU_URL_FILTERS)
   .concat(MERCADOLIBRE_URL_FILTERS).concat(RAKUTEN_URL_FILTERS)
-  .concat(TRIP_URL_FILTERS).concat(HOTELSCOM_URL_FILTERS);
+  .concat(TRIP_URL_FILTERS).concat(HOTELSCOM_URL_FILTERS)
+  .concat(COUPANG_URL_FILTERS).concat(FLIPKART_URL_FILTERS)
+  .concat(TOKOPEDIA_URL_FILTERS).concat(MERCARI_URL_FILTERS)
+  .concat(VINTED_URL_FILTERS).concat(ALLEGRO_URL_FILTERS)
+  .concat(VRBO_URL_FILTERS);
 
 // -- Enable/disable state -----------------------------------------------------
 
@@ -500,6 +523,34 @@ function cleanAnyUrl(input, keepParams) {
       match: (h) => self.HotelscomLinkShortener.isHotelscomHost(h),
       shorten: (u) => self.HotelscomLinkShortener.shortPropertyUrl(u),
     },
+    self.CoupangLinkShortener && {
+      match: (h) => self.CoupangLinkShortener.isCoupangHost(h),
+      shorten: (u) => self.CoupangLinkShortener.shortenCoupangUrl(u),
+    },
+    self.FlipkartLinkShortener && {
+      match: (h) => self.FlipkartLinkShortener.isFlipkartHost(h),
+      shorten: (u) => self.FlipkartLinkShortener.shortenFlipkartUrl(u),
+    },
+    self.TokopediaLinkShortener && {
+      match: (h) => self.TokopediaLinkShortener.isTokopediaHost(h),
+      shorten: (u) => self.TokopediaLinkShortener.shortenTokopediaUrl(u),
+    },
+    self.MercariLinkShortener && {
+      match: (h) => self.MercariLinkShortener.isMercariHost(h),
+      shorten: (u) => self.MercariLinkShortener.shortenMercariUrl(u),
+    },
+    self.VintedLinkShortener && {
+      match: (h) => self.VintedLinkShortener.isVintedHost(h),
+      shorten: (u) => self.VintedLinkShortener.shortenVintedUrl(u),
+    },
+    self.AllegroLinkShortener && {
+      match: (h) => self.AllegroLinkShortener.isAllegroHost(h),
+      shorten: (u) => self.AllegroLinkShortener.shortenAllegroUrl(u),
+    },
+    self.VrboLinkShortener && {
+      match: (h) => self.VrboLinkShortener.isVrboHost(h),
+      shorten: (u) => self.VrboLinkShortener.shortPropertyUrl(u),
+    },
   ].filter(Boolean);
 
   let working = input;
@@ -607,6 +658,13 @@ const HOST_CHECKS = [
   ['RakutenLinkShortener', 'isRakutenHost'],
   ['TripLinkShortener', 'isTripHost'],
   ['HotelscomLinkShortener', 'isHotelscomHost'],
+  ['CoupangLinkShortener', 'isCoupangHost'],
+  ['FlipkartLinkShortener', 'isFlipkartHost'],
+  ['TokopediaLinkShortener', 'isTokopediaHost'],
+  ['MercariLinkShortener', 'isMercariHost'],
+  ['VintedLinkShortener', 'isVintedHost'],
+  ['AllegroLinkShortener', 'isAllegroHost'],
+  ['VrboLinkShortener', 'isVrboHost'],
 ];
 
 function isHandledHost(hostname) {

@@ -347,3 +347,13 @@ footer a:hover {
     transition: none;
   }
 }
+
+/* Type subheadings inside the region groups (Shopping / Travel / Social) */
+.group-subhead {
+  margin: 8px 3px 2px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.55;
+}

@@ -28,37 +28,44 @@
   // Per-site toggle metadata. `group` matches the data-group attribute on the
   // checkbox in popup.html and the group-count-<id> element ID.
   const SITES = [
-    { key: 'enabledAmazon',    group: 'shopping' },
-    { key: 'enabledEbay',      group: 'shopping' },
-    { key: 'enabledEtsy',      group: 'shopping' },
-    { key: 'enabledWalmart',   group: 'shopping' },
-    { key: 'enabledTarget',    group: 'shopping' },
-    { key: 'enabledShopee',       group: 'intlshopping' },
-    { key: 'enabledLazada',       group: 'intlshopping' },
-    { key: 'enabledAliexpress',   group: 'intlshopping' },
-    { key: 'enabledTemu',         group: 'intlshopping' },
-    { key: 'enabledMercadolibre', group: 'intlshopping' },
-    { key: 'enabledRakuten',      group: 'intlshopping' },
-    { key: 'enabledAgoda',     group: 'travel' },
-    { key: 'enabledBooking',   group: 'travel' },
-    { key: 'enabledExpedia',   group: 'travel' },
-    { key: 'enabledAirbnb',    group: 'travel' },
-    { key: 'enabledTrip',      group: 'travel' },
-    { key: 'enabledHotelscom', group: 'travel' },
-    { key: 'enabledSocial',    group: 'social' },
-    { key: 'enabledThreads',   group: 'social' },
-    { key: 'enabledLinkedin',  group: 'social' },
-    { key: 'enabledYoutube',   group: 'social' },
-    { key: 'enabledTwitter',   group: 'social' },
-    { key: 'enabledTiktok',    group: 'social' },
-    { key: 'enabledReddit',    group: 'social' },
-    { key: 'enabledPinterest', group: 'social' },
-    { key: 'enabledSpotify',   group: 'social' },
-    { key: 'enabledBluesky',   group: 'social' },
-    { key: 'enabledGithub',    group: 'social' },
-    { key: 'enabledMedium',    group: 'social' },
-    { key: 'enabledQuora',     group: 'social' },
-    { key: 'enabledSubstack',  group: 'social' },
+    { key: 'enabledAmazon', group: 'global' },
+    { key: 'enabledEbay', group: 'global' },
+    { key: 'enabledEtsy', group: 'global' },
+    { key: 'enabledAliexpress', group: 'global' },
+    { key: 'enabledTemu', group: 'global' },
+    { key: 'enabledBooking', group: 'global' },
+    { key: 'enabledExpedia', group: 'global' },
+    { key: 'enabledAirbnb', group: 'global' },
+    { key: 'enabledTrip', group: 'global' },
+    { key: 'enabledHotelscom', group: 'global' },
+    { key: 'enabledVrbo', group: 'global' },
+    { key: 'enabledSocial', group: 'global' },
+    { key: 'enabledThreads', group: 'global' },
+    { key: 'enabledLinkedin', group: 'global' },
+    { key: 'enabledYoutube', group: 'global' },
+    { key: 'enabledTwitter', group: 'global' },
+    { key: 'enabledTiktok', group: 'global' },
+    { key: 'enabledReddit', group: 'global' },
+    { key: 'enabledPinterest', group: 'global' },
+    { key: 'enabledSpotify', group: 'global' },
+    { key: 'enabledBluesky', group: 'global' },
+    { key: 'enabledGithub', group: 'global' },
+    { key: 'enabledMedium', group: 'global' },
+    { key: 'enabledQuora', group: 'global' },
+    { key: 'enabledSubstack', group: 'global' },
+    { key: 'enabledWalmart', group: 'americas' },
+    { key: 'enabledTarget', group: 'americas' },
+    { key: 'enabledMercadolibre', group: 'americas' },
+    { key: 'enabledShopee', group: 'apac' },
+    { key: 'enabledLazada', group: 'apac' },
+    { key: 'enabledTokopedia', group: 'apac' },
+    { key: 'enabledCoupang', group: 'apac' },
+    { key: 'enabledFlipkart', group: 'apac' },
+    { key: 'enabledMercari', group: 'apac' },
+    { key: 'enabledRakuten', group: 'apac' },
+    { key: 'enabledAgoda', group: 'apac' },
+    { key: 'enabledVinted', group: 'europe' },
+    { key: 'enabledAllegro', group: 'europe' },
   ];
   const SITE_KEYS = SITES.map((s) => s.key);
 
@@ -84,10 +91,10 @@
 
   // Group-count summary elements (next to each <details><summary>).
   const groupCountEls = {
-    shopping: document.getElementById('group-count-shopping'),
-    intlshopping: document.getElementById('group-count-intlshopping'),
-    travel: document.getElementById('group-count-travel'),
-    social: document.getElementById('group-count-social'),
+    global: document.getElementById('group-count-global'),
+    americas: document.getElementById('group-count-americas'),
+    apac: document.getElementById('group-count-apac'),
+    europe: document.getElementById('group-count-europe'),
   };
 
   function siteLabelFromKey(key) {
@@ -160,8 +167,8 @@
 
   // Update the "N of M" indicators next to each category summary.
   function setGroupCounts(state) {
-    const totals = { shopping: 0, intlshopping: 0, travel: 0, social: 0 };
-    const ons = { shopping: 0, intlshopping: 0, travel: 0, social: 0 };
+    const totals = { global: 0, americas: 0, apac: 0, europe: 0 };
+    const ons = { global: 0, americas: 0, apac: 0, europe: 0 };
     for (const s of SITES) {
       totals[s.group] += 1;
       if (state[s.key] !== false) ons[s.group] += 1;

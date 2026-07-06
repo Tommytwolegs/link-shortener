@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Jimothy's Link Shortener",
   "short_name": "Link Shortener",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Cleans long URLs on shopping, travel, and social sites — strips tracking and gives you a clean shareable link.",
   "author": "Thomas Powers",
   "homepage_url": "https://github.com/Tommytwolegs/link-shortener",
@@ -191,7 +191,35 @@
     "*://*.mercadolivre.com.br/*",
     "*://item.rakuten.co.jp/*",
     "*://*.trip.com/*",
-    "*://*.hotels.com/*"
+    "*://*.hotels.com/*",
+    "*://*.coupang.com/*",
+    "*://*.flipkart.com/*",
+    "*://*.tokopedia.com/*",
+    "*://*.mercari.com/*",
+    "*://*.vinted.com/*",
+    "*://*.vinted.fr/*",
+    "*://*.vinted.de/*",
+    "*://*.vinted.co.uk/*",
+    "*://*.vinted.pl/*",
+    "*://*.vinted.it/*",
+    "*://*.vinted.es/*",
+    "*://*.vinted.nl/*",
+    "*://*.vinted.be/*",
+    "*://*.vinted.at/*",
+    "*://*.vinted.cz/*",
+    "*://*.vinted.sk/*",
+    "*://*.vinted.lt/*",
+    "*://*.vinted.pt/*",
+    "*://*.vinted.se/*",
+    "*://*.vinted.dk/*",
+    "*://*.vinted.fi/*",
+    "*://*.vinted.hu/*",
+    "*://*.vinted.ro/*",
+    "*://*.allegro.pl/*",
+    "*://*.allegro.cz/*",
+    "*://*.allegro.sk/*",
+    "*://*.allegro.hu/*",
+    "*://*.vrbo.com/*"
   ],
   "optional_host_permissions": [
     "*://*/*"
@@ -711,6 +739,105 @@
         "src/site-toolbar.js",
         "src/hotelscom.js",
         "src/hotelscom-content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.coupang.com/*"
+      ],
+      "js": [
+        "src/coupang.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.flipkart.com/*"
+      ],
+      "js": [
+        "src/flipkart.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.tokopedia.com/*"
+      ],
+      "js": [
+        "src/tokopedia.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.mercari.com/*"
+      ],
+      "js": [
+        "src/mercari.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.vinted.com/*",
+        "*://*.vinted.fr/*",
+        "*://*.vinted.de/*",
+        "*://*.vinted.co.uk/*",
+        "*://*.vinted.pl/*",
+        "*://*.vinted.it/*",
+        "*://*.vinted.es/*",
+        "*://*.vinted.nl/*",
+        "*://*.vinted.be/*",
+        "*://*.vinted.at/*",
+        "*://*.vinted.cz/*",
+        "*://*.vinted.sk/*",
+        "*://*.vinted.lt/*",
+        "*://*.vinted.pt/*",
+        "*://*.vinted.se/*",
+        "*://*.vinted.dk/*",
+        "*://*.vinted.fi/*",
+        "*://*.vinted.hu/*",
+        "*://*.vinted.ro/*"
+      ],
+      "js": [
+        "src/vinted.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.allegro.pl/*",
+        "*://*.allegro.cz/*",
+        "*://*.allegro.sk/*",
+        "*://*.allegro.hu/*"
+      ],
+      "js": [
+        "src/allegro.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.vrbo.com/*"
+      ],
+      "js": [
+        "src/site-toolbar.js",
+        "src/vrbo.js",
+        "src/vrbo-content.js"
       ],
       "run_at": "document_idle",
       "all_frames": false

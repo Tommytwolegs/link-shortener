@@ -132,6 +132,13 @@ $firefoxManifest.background = [pscustomobject]@{
         'src/rakuten.js',
         'src/trip.js',
         'src/hotelscom.js',
+        'src/coupang.js',
+        'src/flipkart.js',
+        'src/tokopedia.js',
+        'src/mercari.js',
+        'src/vinted.js',
+        'src/allegro.js',
+        'src/vrbo.js',
         'src/utm.js',
         'src/background.js'
     )

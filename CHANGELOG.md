@@ -4,6 +4,21 @@ All notable changes to Jimothy's Link Shortener. Versions follow
 [Semantic Versioning](https://semver.org/) loosely — minor bumps mark new
 features, patch bumps mark bug-fix-only releases.
 
+## [1.9.0] — unreleased
+
+### Added
+- **7 more sites** (39 total): Coupang (preserves itemId/vendorItemId —
+  the option/seller variant), Flipkart (preserves pid — the exact
+  variant), Tokopedia (denylist strategy + shop blocklist, so accidental
+  path matches can only ever lose known tracking params), Mercari (JP +
+  US forms), Vinted (19 European/US markets), Allegro (PL/CZ/SK/HU),
+  and Vrbo (joins the travel toolbar; handles both chkin/chkout and
+  startDate/endDate param generations).
+- **Popup restructured to world region → site type**: four collapsible
+  region groups (Global, Americas, Asia-Pacific, Europe) with
+  Shopping / Travel / Social & media subheadings inside — built to keep
+  scaling as more sites are added. Group state still persists.
+
 ## [1.8.0] — unreleased
 
 ### Added
