@@ -93,6 +93,11 @@ if (typeof importScripts === 'function') {
     'news.js',
     'google.js',
     'gdrive.js',
+    'bing.js',
+    'duckduckgo.js',
+    'naver.js',
+    'weather.js',
+    'samsung.js',
     'redirect.js',
     'utm.js',
   );
@@ -285,13 +290,21 @@ const ROBLOX_URL_FILTERS = [{ hostSuffix: 'roblox.com' }];
 const FANDOM_URL_FILTERS = [{ hostSuffix: 'fandom.com' }];
 const BILIBILI_URL_FILTERS = [{ hostSuffix: 'bilibili.com' }, { hostEquals: 'b23.tv' }];
 const SHEIN_URL_FILTERS = ['com','co.uk','com.mx','com.br','tw','se','pl'].map((t) => ({ hostSuffix: 'shein.' + t }));
-const NEWS_URL_FILTERS = ['nytimes.com','theguardian.com','washingtonpost.com','bbc.com','bbc.co.uk','cnn.com','dailymail.co.uk','reuters.com','apnews.com','npr.org','foxnews.com','bloomberg.com','wsj.com'].map((h) => ({ hostSuffix: h }));
+const NEWS_URL_FILTERS = ['nytimes.com','theguardian.com','washingtonpost.com','bbc.com','bbc.co.uk','cnn.com','dailymail.co.uk','reuters.com','apnews.com','npr.org','foxnews.com','bloomberg.com','wsj.com','news.yahoo.co.jp'].map((h) => ({ hostSuffix: h }));
 const GOOGLE_URL_FILTERS = [
   { hostEquals: 'www.google.com' }, { hostEquals: 'google.com' },
 ];
 const GDRIVE_URL_FILTERS = [
   { hostEquals: 'docs.google.com' }, { hostEquals: 'drive.google.com' },
 ];
+const BING_URL_FILTERS = [
+  { hostEquals: 'www.bing.com' }, { hostEquals: 'bing.com' },
+  { hostEquals: 'cn.bing.com' },
+];
+const DUCKDUCKGO_URL_FILTERS = [{ hostSuffix: 'duckduckgo.com' }];
+const NAVER_URL_FILTERS = [{ hostSuffix: 'naver.com' }];
+const WEATHER_URL_FILTERS = [{ hostSuffix: 'weather.com' }];
+const SAMSUNG_URL_FILTERS = [{ hostSuffix: 'samsung.com' }];
 
 const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(AGODA_URL_FILTERS).concat(BOOKING_URL_FILTERS)
@@ -329,7 +342,10 @@ const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(NETFLIX_URL_FILTERS).concat(ROBLOX_URL_FILTERS)
   .concat(FANDOM_URL_FILTERS).concat(BILIBILI_URL_FILTERS)
   .concat(SHEIN_URL_FILTERS).concat(NEWS_URL_FILTERS)
-  .concat(GOOGLE_URL_FILTERS).concat(GDRIVE_URL_FILTERS);
+  .concat(GOOGLE_URL_FILTERS).concat(GDRIVE_URL_FILTERS)
+  .concat(BING_URL_FILTERS).concat(DUCKDUCKGO_URL_FILTERS)
+  .concat(NAVER_URL_FILTERS).concat(WEATHER_URL_FILTERS)
+  .concat(SAMSUNG_URL_FILTERS);
 
 // -- Enable/disable state -----------------------------------------------------
 
@@ -774,6 +790,26 @@ function cleanAnyUrl(input, keepParams) {
       match: (h) => self.GdriveLinkShortener.isGdriveHost(h),
       shorten: (u) => self.GdriveLinkShortener.shortenGdriveUrl(u),
     },
+    self.BingLinkShortener && {
+      match: (h) => self.BingLinkShortener.isBingHost(h),
+      shorten: (u) => self.BingLinkShortener.shortenBingUrl(u),
+    },
+    self.DuckduckgoLinkShortener && {
+      match: (h) => self.DuckduckgoLinkShortener.isDuckduckgoHost(h),
+      shorten: (u) => self.DuckduckgoLinkShortener.shortenDuckduckgoUrl(u),
+    },
+    self.NaverLinkShortener && {
+      match: (h) => self.NaverLinkShortener.isNaverHost(h),
+      shorten: (u) => self.NaverLinkShortener.shortenNaverUrl(u),
+    },
+    self.WeatherLinkShortener && {
+      match: (h) => self.WeatherLinkShortener.isWeatherHost(h),
+      shorten: (u) => self.WeatherLinkShortener.shortenWeatherUrl(u),
+    },
+    self.SamsungLinkShortener && {
+      match: (h) => self.SamsungLinkShortener.isSamsungHost(h),
+      shorten: (u) => self.SamsungLinkShortener.shortenSamsungUrl(u),
+    },
   ].filter(Boolean);
 
   let working = input;
@@ -961,6 +997,11 @@ const HOST_CHECKS = [
   ['NewsLinkShortener', 'isNewsHost'],
   ['GoogleLinkShortener', 'isGoogleHost'],
   ['GdriveLinkShortener', 'isGdriveHost'],
+  ['BingLinkShortener', 'isBingHost'],
+  ['DuckduckgoLinkShortener', 'isDuckduckgoHost'],
+  ['NaverLinkShortener', 'isNaverHost'],
+  ['WeatherLinkShortener', 'isWeatherHost'],
+  ['SamsungLinkShortener', 'isSamsungHost'],
 ];
 
 function isHandledHost(hostname) {

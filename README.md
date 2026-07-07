@@ -12,24 +12,33 @@ in place as you browse; right-click any link or page and choose "Copy
 clean URL"; or press Ctrl+Shift+L (Cmd+Shift+L on Mac) to copy a clean
 URL of the current page. The toolbar popup also previews the current
 page's cleaned URL with a one-click copy button, and has a filter box
-for finding a site among the 119 toggles.
+for finding a site among the 125 toggles.
 
 ## Supported sites
 
-One hundred twenty-one (119 toggles), organized by world region and type in the popup:
+One hundred twenty-seven (125 toggles), organized by world region and type in the popup:
 
-- **Global** — Shopping: Amazon, eBay, Etsy, AliExpress, Temu, Wayfair ·
+- **Global** — Search & productivity: Google Search, Google Drive/Docs,
+  Bing, DuckDuckGo, Weather.com ·
+  Shopping: Amazon, eBay, Etsy, AliExpress, Temu, Wayfair, SHEIN,
+  Samsung ·
   Travel: Booking.com, Expedia, Airbnb, Agoda, Trip.com, Hotels.com,
   Vrbo, Tripadvisor ·
   Social: Facebook, Instagram, Threads, LinkedIn, Twitter/X, TikTok,
   Reddit, Bluesky, Pinterest · Media & entertainment: YouTube, Spotify,
   Twitch, SoundCloud, Apple Music, Steam, IMDb, Goodreads, Wikipedia,
-  Stack Overflow, GitHub, Medium, Quora, Substack, Bandcamp, Letterboxd
+  Stack Overflow, GitHub, Medium, Quora, Substack, Bandcamp,
+  Letterboxd, Netflix, Roblox, Fandom, Bilibili
 - **Americas** — Shopping: Walmart, Target, Mercado Libre, Best Buy
 - **Asia-Pacific** — Shopping: Shopee, Lazada, Tokopedia, Coupang,
-  Flipkart, Mercari, Rakuten, Meesho, Carousell, Taobao/Tmall, JD.com
+  Flipkart, Mercari, Rakuten, Meesho, Carousell, Taobao/Tmall, JD.com ·
+  Search & portals: Naver
 - **Europe** — Shopping: Vinted, Allegro, Leboncoin, OLX, Wallapop,
   Marktplaats, Kleinanzeigen, Zalando
+- **News outlets (52, each with its own toggle)** — grouped Americas /
+  Europe / Asia-Pacific / Middle East & Africa / Global agencies in the
+  popup; includes the major dailies, broadcasters, and wire services of
+  every region plus Japan's biggest news portal
 
 Plus an opt-in **Universal tracking strip** mode that strips well-known
 tracking parameters (`utm_*`, `gclid`, `fbclid`, `mc_cid`, `igshid`,
@@ -182,7 +191,7 @@ script registration described above.
 
 ## Tests
 
-2744 unit tests across 72 modules, runnable with plain Node. From the
+2902 unit tests across 77 modules, runnable with plain Node. From the
 repo root:
 
 ```

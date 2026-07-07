@@ -63,7 +63,15 @@ were collapsed on 2026-06-12; they were never submitted anywhere).
   clean URL of the current page. Registered via the `commands` manifest
   key (no new permissions); rebindable in the browser's extension
   shortcut settings.
-- **Site filter in the popup** — a search box above the 119 toggles
+- **Six more sites (127 total)** — two more of the world's search
+  engines (one major, one privacy-focused: q and functional filters
+  survive, entry-point/telemetry junk dies), Korea's everything-portal
+  (search/blog/cafe/news; legacy query-functional forms like
+  blogId=/logNo= are why it's a strict denylist), the leading weather
+  site (partner + Coremetrics campaign junk), a major consumer
+  electronics brand's store (cid/ppc/click-ids; modelCode survives),
+  and Japan's biggest news portal as news outlet #52.
+- **Site filter in the popup** — a search box above the 125 toggles
   live-filters rows by name, auto-expanding matching groups and hiding
   empty ones. Clearing (or Esc) restores the previous open/closed
   arrangement without persisting the temporary state.

@@ -8,6 +8,18 @@ const {
 } = require(path.join('..', 'src', 'news.js'));
 
 const CASES = [
+  // Yahoo! News Japan
+  { name: 'yahoojp: source share attribution stripped',
+    input: 'https://news.yahoo.co.jp/articles/0123456789abcdef0123456789abcdef01234567?source=sns',
+    expected: 'https://news.yahoo.co.jp/articles/0123456789abcdef0123456789abcdef01234567' },
+  { name: 'yahoojp: article already clean',
+    input: 'https://news.yahoo.co.jp/articles/0123456789abcdef0123456789abcdef01234567',
+    expected: 'https://news.yahoo.co.jp/articles/0123456789abcdef0123456789abcdef01234567',
+    expectedNeeds: false },
+  { name: 'yahoojp: pickup + page param survives (functional)',
+    input: 'https://news.yahoo.co.jp/articles/0123456789abcdef0123456789abcdef01234567?page=2&utm_source=x',
+    expected: 'https://news.yahoo.co.jp/articles/0123456789abcdef0123456789abcdef01234567?page=2' },
+
   { name: 'NYT smid stripped',
     input: 'https://www.nytimes.com/2026/06/12/technology/article.html?smid=url-share&smtyp=cur',
     expected: 'https://www.nytimes.com/2026/06/12/technology/article.html' },
@@ -140,9 +152,9 @@ check('storageKeyFor: bbc.co.uk', storageKeyFor('www.bbc.co.uk'), 'enabledNewsBb
 check('storageKeyFor: scmp', storageKeyFor('www.scmp.com'), 'enabledNewsScmp');
 check('storageKeyFor: aljazeera', storageKeyFor('www.aljazeera.com'), 'enabledNewsAljazeera');
 check('storageKeyFor: non-news null', storageKeyFor('example.com'), null);
-check('outlet count', OUTLETS.length, 51);
+check('outlet count', OUTLETS.length, 52);
 // every outlet has a unique key
-check('unique keys', new Set(OUTLETS.map(o=>o.key)).size, 51);
+check('unique keys', new Set(OUTLETS.map(o=>o.key)).size, 52);
 check('shorten on garbage', shortenNewsUrl('not a url'), null);
 check('needs on garbage', needsShortening('not a url'), false);
 // Mutation guard:

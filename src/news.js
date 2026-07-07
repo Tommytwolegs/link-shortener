@@ -62,6 +62,7 @@
     { host: /(?:^|\.)asahi\.com$/i, key: 'enabledNewsAsahi', strip: ['iref'], prefixes: [] },
     { host: /(?:^|\.)nikkei\.com$/i, key: 'enabledNewsNikkei', strip: ['i_cid', 'n_cid'], prefixes: [] },
     { host: /(?:^|\.)nhk\.or\.jp$/i, key: 'enabledNewsNhk', strip: [], prefixes: [] },
+    { host: /(?:^|\.)news\.yahoo\.co\.jp$/i, key: 'enabledNewsYahoojp', strip: ['source'], prefixes: [] },
     { host: /(?:^|\.)scmp\.com$/i, key: 'enabledNewsScmp', strip: ['module', 'pgtype'], prefixes: [] },
     { host: /(?:^|\.)straitstimes\.com$/i, key: 'enabledNewsStraitstimes', strip: [], prefixes: [] },
     { host: /(?:^|\.)channelnewsasia\.com$/i, key: 'enabledNewsCna', strip: ['cid'], prefixes: [] },

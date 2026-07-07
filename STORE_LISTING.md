@@ -30,7 +30,7 @@ A link shortener that actually shortens links.
 
 None of this replacing a link with a short link nonsense. No redirect service, no link wrapper, nothing that hides where a link goes. Your link stays your link — same page, same site — just without the hundreds of characters of tracking IDs, session tokens, and search breadcrumbs stuffed onto the end. The address-bar URL is rewritten in place, so the link you copy to share is the clean canonical form.
 
-The sites it covers add up to more than a quarter of all visits on the web — over a hundred billion page visits every month, including eleven of the world's twenty most-visited sites. If someone sent you a long, junk-covered link today, odds are it came from a page this extension cleans.
+The sites it covers add up to more than a quarter of all visits on the web — over a hundred billion page visits every month, including twelve of the world's twenty most-visited sites. If someone sent you a long, junk-covered link today, odds are it came from a page this extension cleans.
 
 WHAT GETS CLEANED
 
@@ -56,7 +56,7 @@ No analytics, no telemetry, no network requests of any kind. The only thing stor
 
 OPEN SOURCE
 
-Plain, dependency-free JavaScript with 2,744 unit tests: https://github.com/Tommytwolegs/link-shortener
+Plain, dependency-free JavaScript with 2,902 unit tests: https://github.com/Tommytwolegs/link-shortener
 
 ---
 
@@ -111,7 +111,7 @@ v1.8.0 — the everywhere release.
 * Copy a clean link faster: the popup now previews the current page's cleaned URL with a one-click copy button, and a keyboard shortcut (Ctrl+Shift+L, rebindable) copies a clean URL of the current page from anywhere.
 * This update requests access to the newly supported sites; as always the extension makes zero network requests and collects nothing.
 
-Reminder for the v1.8.0 AMO notes: 121 sites (119 toggles) / 332 host permissions / 2,744 tests; the extension is unchanged architecturally — every module is a pure URL function.
+Reminder for the v1.8.0 AMO notes: 127 sites (125 toggles) / 345 host permissions / 2,902 tests; the extension is unchanged architecturally — every module is a pure URL function.
 
 Older draft notes below were written while this work was tagged 1.9–1.11 during development; they're folded into the single 1.8.0 submission above.
 

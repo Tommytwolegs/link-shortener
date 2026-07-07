@@ -105,6 +105,11 @@
     self.NewsLinkShortener ||
     self.GoogleLinkShortener ||
     self.GdriveLinkShortener ||
+    self.BingLinkShortener ||
+    self.DuckduckgoLinkShortener ||
+    self.NaverLinkShortener ||
+    self.WeatherLinkShortener ||
+    self.SamsungLinkShortener ||
     null;
 
   // Per-site storage key, taken from the active module. Modules that cover

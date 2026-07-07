@@ -368,7 +368,20 @@
     "*://www.google.com/*",
     "*://google.com/*",
     "*://docs.google.com/*",
-    "*://drive.google.com/*"
+    "*://drive.google.com/*",
+    "*://www.bing.com/*",
+    "*://bing.com/*",
+    "*://cn.bing.com/*",
+    "*://duckduckgo.com/*",
+    "*://html.duckduckgo.com/*",
+    "*://lite.duckduckgo.com/*",
+    "*://*.naver.com/*",
+    "*://naver.com/*",
+    "*://*.weather.com/*",
+    "*://weather.com/*",
+    "*://*.samsung.com/*",
+    "*://samsung.com/*",
+    "*://news.yahoo.co.jp/*"
   ],
   "optional_host_permissions": [
     "*://*/*"
@@ -1357,6 +1370,7 @@
     },
     {
       "matches": [
+        "*://news.yahoo.co.jp/*",
         "*://*.nytimes.com/*",
         "*://*.washingtonpost.com/*",
         "*://*.wsj.com/*",
@@ -1424,6 +1438,68 @@
       ],
       "js": [
         "src/google.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://www.bing.com/*",
+        "*://bing.com/*",
+        "*://cn.bing.com/*"
+      ],
+      "js": [
+        "src/bing.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://duckduckgo.com/*",
+        "*://html.duckduckgo.com/*",
+        "*://lite.duckduckgo.com/*"
+      ],
+      "js": [
+        "src/duckduckgo.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.naver.com/*",
+        "*://naver.com/*"
+      ],
+      "js": [
+        "src/naver.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.weather.com/*",
+        "*://weather.com/*"
+      ],
+      "js": [
+        "src/weather.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.samsung.com/*",
+        "*://samsung.com/*"
+      ],
+      "js": [
+        "src/samsung.js",
         "src/social-content.js"
       ],
       "run_at": "document_start",

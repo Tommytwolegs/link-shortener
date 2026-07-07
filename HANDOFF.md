@@ -34,7 +34,7 @@ CI, and a meaningful round of bug fixes for SPA-state preservation. See
 
 ---
 
-## Supported sites (121 — 119 toggles)
+## Supported sites (127 — 125 toggles)
 
 Each has a dedicated pure-function URL module under `src/`. The popup
 groups them into Shopping / Travel / Social & media:
@@ -263,7 +263,7 @@ page (default OFF). See `utm.js` below.
 ### Popup
 
 - `src/popup.html` / `popup.js` / `popup.css` — toolbar popup. Master
-  toggle, 119 per-site toggles (121 sites; Facebook+Instagram share
+  toggle, 125 per-site toggles (127 sites; Facebook+Instagram share
   one, the 51 news outlets share a module but toggle individually)
   organized by WORLD REGION → SITE TYPE: collapsible Global / Americas /
   Asia-Pacific / Europe `<details>` groups, each with Shopping / Travel /
@@ -308,7 +308,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **2,744 total assertions across 72 test files, all passing.** Run with:
+  **2,902 total assertions across 77 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -773,7 +773,7 @@ These came up but aren't built. Ranked by ROI:
 ```
 link-shortener/
 ├── .github/workflows/test.yml      — CI: parse-check + run all tests on push/PR
-├── manifest.json                   — Chrome-canonical manifest (332 host_permissions, 70 content_scripts)
+├── manifest.json                   — Chrome-canonical manifest (345 host_permissions, 75 content_scripts)
 ├── package.sh                      — macOS/Linux build script
 ├── package.ps1                     — Windows PowerShell build script
 ├── package_lf.sh                   — (older, retained for reference)
@@ -802,7 +802,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 72 test files, 2,744 assertions
+├── tests/                          — 77 test files, 2,902 assertions
 └── dist/                           — built zip + xpi packages
 ```
 
