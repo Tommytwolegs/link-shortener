@@ -9,7 +9,7 @@ No analytics. No telemetry. No remote calls.
 
 ## Supported sites
 
-Sixty-three, organized by world region and type in the popup:
+Eighty-one (67 toggles), organized by world region and type in the popup:
 
 - **Global** — Shopping: Amazon, eBay, Etsy, AliExpress, Temu, Wayfair ·
   Travel: Booking.com, Expedia, Airbnb, Agoda, Trip.com, Hotels.com,
@@ -175,7 +175,7 @@ script registration described above.
 
 ## Tests
 
-2427 unit tests across 63 modules, runnable with plain Node. From the
+2565 unit tests across 69 modules, runnable with plain Node. From the
 repo root:
 
 ```

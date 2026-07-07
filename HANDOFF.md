@@ -1,10 +1,11 @@
 # Jimothy's Link Shortener — Handoff
 
 Context document for picking up work on a new machine (or in a new Claude
-session). Last updated 2026-06-12 at v1.11.0 (researched-batch round:
-63 sites; v1.7.0 is submitted and in review at both stores — do NOT touch
-the 1.7.0 packages while that's pending. v1.8.0 through v1.11.0 are
-tagged but unsubmitted; when 1.7.0 clears, submit the NEWEST version).
+session). Last updated 2026-06-12. **VERSIONING NOTE: the next store
+submission is v1.8.0** — it contains ALL work since v1.7.0 (the interim
+dev tags 1.8–1.11 were collapsed into one v1.8.0 tag on 2026-06-12;
+nothing between 1.7.0 and 1.8.0 was ever submitted). v1.7.0 is in review
+at both stores — do NOT touch its packages while that's pending.
 
 ---
 
@@ -33,7 +34,7 @@ CI, and a meaningful round of bug fixes for SPA-state preservation. See
 
 ---
 
-## Supported sites (63)
+## Supported sites (81 — 67 toggles)
 
 Each has a dedicated pure-function URL module under `src/`. The popup
 groups them into Shopping / Travel / Social & media:
@@ -279,7 +280,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **2,427 total assertions across 63 test files, all passing.** Run with:
+  **2,565 total assertions across 69 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -320,7 +321,7 @@ The Firefox xpi injects four things into the manifest:
 1. `browser_specific_settings.gecko.id` (`link-shortener@tommytwolegs.github.io`)
 2. `gecko.strict_min_version` (`121.0` — first Firefox with full MV3 SW support)
 3. `gecko.data_collection_permissions.required = ["none"]` (AMO requirement)
-4. `background.scripts` array (64 entries — Mozilla linter requires a
+4. `background.scripts` array (70 entries — Mozilla linter requires a
    fallback alongside `service_worker`; order matters since `background.js`
    uses `self.*LinkShortener` globals at top level)
 
@@ -724,7 +725,7 @@ These came up but aren't built. Ranked by ROI:
 ```
 link-shortener/
 ├── .github/workflows/test.yml      — CI: parse-check + run all tests on push/PR
-├── manifest.json                   — Chrome-canonical manifest (264 host_permissions, 62 content_scripts)
+├── manifest.json                   — Chrome-canonical manifest (289 host_permissions, 68 content_scripts)
 ├── package.sh                      — macOS/Linux build script
 ├── package.ps1                     — Windows PowerShell build script
 ├── package_lf.sh                   — (older, retained for reference)
@@ -753,7 +754,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 63 test files, 2,427 assertions
+├── tests/                          — 69 test files, 2,565 assertions
 └── dist/                           — built zip + xpi packages
 ```
 

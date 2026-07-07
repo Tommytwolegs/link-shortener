@@ -52,7 +52,7 @@ No analytics, no telemetry, no network requests of any kind. The only thing stor
 
 OPEN SOURCE
 
-Plain, dependency-free JavaScript with 2,427 unit tests: https://github.com/Tommytwolegs/link-shortener
+Plain, dependency-free JavaScript with 2,565 unit tests: https://github.com/Tommytwolegs/link-shortener
 
 ---
 
@@ -97,16 +97,27 @@ Privacy policy URL: https://github.com/Tommytwolegs/link-shortener/blob/main/PRI
 
 ## Chrome Web Store "What's new in this version?" (release notes)
 
-### v1.11.0 (unreleased — submit the newest version once v1.7.0 clears review)
+### v1.8.0 (THE next submission, once v1.7.0 clears review — all interim dev versions folded in)
 
-v1.11.0 — the everywhere release.
+v1.8.0 — the everywhere release.
+
+* Dozens of new sites supported (eighty-plus total, up from twenty-four): international marketplaces and classifieds across Asia, Europe, and Latin America; more travel booking sites; streaming, gaming, music, film, books, and Q&A platforms; plus a news pack covering thirteen major outlets.
+* Functional state always survives cleanup: variant and size selections, playlist and queue context, video timestamps, answer pagination, private-server invites, and paywall gift links all keep working. Only tracking clutter is removed.
+* The popup is organized by world region — Global, Americas, Asia-Pacific, Europe — with site-type subheadings, and remembers which sections you keep open.
+* This update requests access to the newly supported sites; as always the extension makes zero network requests and collects nothing.
+
+Reminder for the v1.8.0 AMO notes: ~81 sites (67 toggles) / 289 host permissions / 2,565 tests; the extension is unchanged architecturally — every module is a pure URL function.
+
+Older draft notes below were written while this work was tagged 1.9–1.11 during development; they're folded into the single 1.8.0 submission above.
+
+#### (dev notes, folded in)
 
 * Fifteen more sites supported (sixty-three total): major home-goods and electronics retailers, independent music and film-diary platforms, the world's biggest travel-review site, and the leading marketplaces and classifieds of France, Germany, Spain, the Netherlands, Poland, India, China, and Southeast Asia.
 * As always, functional state survives: variant and size selections, item identity, and review pagination are preserved while share tokens and click-path attribution are stripped.
 
 Reminder for the v1.11.0 AMO notes: 63 sites / 264 host permissions / 2,427 tests; 15 new modules (wayfair, bestbuy, bandcamp, letterboxd, tripadvisor, meesho, carousell, taobao, jd, leboncoin, olx, wallapop, marktplaats, kleinanzeigen, zalando).
 
-### v1.10.0 (superseded before submission — never shipped)
+#### (dev notes, folded in — formerly 1.10.0)
 
 v1.10.0 — media & entertainment expansion.
 
@@ -116,7 +127,7 @@ v1.10.0 — media & entertainment expansion.
 
 Reminder for the v1.10.0 AMO notes: 47 sites / 205 host permissions / 2,163 tests; new modules steam, imdb, stackoverflow, wikipedia, goodreads, soundcloud, applemusic, twitch.
 
-### v1.9.0 (superseded before submission — never shipped)
+#### (dev notes, folded in — formerly 1.9.0)
 
 v1.9.0 — regional expansion, round two.
 
@@ -126,7 +137,7 @@ v1.9.0 — regional expansion, round two.
 
 Reminder for the v1.9.0 AMO notes: 39 sites / 192 host permissions / 1,935 tests; new modules coupang, flipkart, tokopedia, mercari, vinted, allegro, vrbo (vrbo uses the travel toolbar).
 
-### v1.8.0 (superseded by 1.9.0 before submission — never shipped)
+#### (dev notes, folded in — formerly 1.8.0-dev)
 
 v1.8.0 — international expansion.
 

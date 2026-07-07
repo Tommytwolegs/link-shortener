@@ -34,6 +34,7 @@
     { key: 'enabledAliexpress', group: 'global' },
     { key: 'enabledTemu', group: 'global' },
     { key: 'enabledWayfair', group: 'global' },
+    { key: 'enabledShein', group: 'global' },
     { key: 'enabledBooking', group: 'global' },
     { key: 'enabledExpedia', group: 'global' },
     { key: 'enabledAirbnb', group: 'global' },
@@ -66,6 +67,11 @@
     { key: 'enabledSubstack', group: 'global' },
     { key: 'enabledBandcamp', group: 'global' },
     { key: 'enabledLetterboxd', group: 'global' },
+    { key: 'enabledNetflix', group: 'global' },
+    { key: 'enabledRoblox', group: 'global' },
+    { key: 'enabledBilibili', group: 'global' },
+    { key: 'enabledFandom', group: 'global' },
+    { key: 'enabledNews', group: 'global' },
     { key: 'enabledWalmart', group: 'americas' },
     { key: 'enabledTarget', group: 'americas' },
     { key: 'enabledMercadolibre', group: 'americas' },
@@ -142,6 +148,8 @@
     if (raw === 'Taobao') return 'Taobao/Tmall';
     if (raw === 'Jd') return 'JD.com';
     if (raw === 'Olx') return 'OLX';
+    if (raw === 'Shein') return 'SHEIN';
+    if (raw === 'News') return 'News outlets';
     return raw;
   }
 

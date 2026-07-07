@@ -12,7 +12,8 @@
 // Vinted, Allegro, Steam, IMDb, Stack Overflow, Wikipedia, Goodreads,
 // SoundCloud, Apple Music, Twitch, Wayfair, Best Buy, Bandcamp,
 // Letterboxd, Tripadvisor, Meesho, Carousell, Taobao/Tmall, JD,
-// Leboncoin, OLX, Wallapop, Marktplaats, Kleinanzeigen, Zalando.
+// Leboncoin, OLX, Wallapop, Marktplaats, Kleinanzeigen, Zalando, Netflix,
+// Roblox, Fandom, Bilibili, SHEIN, and the 13-outlet news pack.
 // (Amazon and the seven travel sites have their own scripts.)
 //
 // Why no in-page anchor rewriting (unlike Amazon's content.js): on social/
@@ -95,6 +96,12 @@
     self.MarktplaatsLinkShortener ||
     self.KleinanzeigenLinkShortener ||
     self.ZalandoLinkShortener ||
+    self.NetflixLinkShortener ||
+    self.RobloxLinkShortener ||
+    self.FandomLinkShortener ||
+    self.BilibiliLinkShortener ||
+    self.SheinLinkShortener ||
+    self.NewsLinkShortener ||
     null;
 
   // Per-site storage key, taken from the active module. Falls back to

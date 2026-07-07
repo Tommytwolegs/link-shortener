@@ -162,6 +162,12 @@ $firefoxManifest.background = [pscustomobject]@{
         'src/marktplaats.js',
         'src/kleinanzeigen.js',
         'src/zalando.js',
+        'src/netflix.js',
+        'src/roblox.js',
+        'src/fandom.js',
+        'src/bilibili.js',
+        'src/shein.js',
+        'src/news.js',
         'src/utm.js',
         'src/background.js'
     )

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Jimothy's Link Shortener",
   "short_name": "Link Shortener",
-  "version": "1.11.0",
+  "version": "1.8.0",
   "description": "Cleans long URLs on shopping, travel, and social sites — strips tracking and gives you a clean shareable link.",
   "author": "Thomas Powers",
   "homepage_url": "https://github.com/Tommytwolegs/link-shortener",
@@ -291,7 +291,32 @@
     "*://*.zalando.fi/*",
     "*://*.zalando.no/*",
     "*://*.zalando.cz/*",
-    "*://*.zalando.ie/*"
+    "*://*.zalando.ie/*",
+    "*://*.netflix.com/*",
+    "*://*.roblox.com/*",
+    "*://*.fandom.com/*",
+    "*://*.bilibili.com/*",
+    "*://b23.tv/*",
+    "*://*.shein.com/*",
+    "*://*.shein.co.uk/*",
+    "*://*.shein.com.mx/*",
+    "*://*.shein.com.br/*",
+    "*://*.shein.tw/*",
+    "*://*.shein.se/*",
+    "*://*.shein.pl/*",
+    "*://*.nytimes.com/*",
+    "*://*.theguardian.com/*",
+    "*://*.washingtonpost.com/*",
+    "*://*.bbc.com/*",
+    "*://*.bbc.co.uk/*",
+    "*://*.cnn.com/*",
+    "*://*.dailymail.co.uk/*",
+    "*://*.reuters.com/*",
+    "*://*.apnews.com/*",
+    "*://*.npr.org/*",
+    "*://*.foxnews.com/*",
+    "*://*.bloomberg.com/*",
+    "*://*.wsj.com/*"
   ],
   "optional_host_permissions": [
     "*://*/*"
@@ -1211,6 +1236,91 @@
       ],
       "js": [
         "src/zalando.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.netflix.com/*"
+      ],
+      "js": [
+        "src/netflix.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.roblox.com/*"
+      ],
+      "js": [
+        "src/roblox.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.fandom.com/*"
+      ],
+      "js": [
+        "src/fandom.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.bilibili.com/*",
+        "*://b23.tv/*"
+      ],
+      "js": [
+        "src/bilibili.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.shein.com/*",
+        "*://*.shein.co.uk/*",
+        "*://*.shein.com.mx/*",
+        "*://*.shein.com.br/*",
+        "*://*.shein.tw/*",
+        "*://*.shein.se/*",
+        "*://*.shein.pl/*"
+      ],
+      "js": [
+        "src/shein.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.nytimes.com/*",
+        "*://*.theguardian.com/*",
+        "*://*.washingtonpost.com/*",
+        "*://*.bbc.com/*",
+        "*://*.bbc.co.uk/*",
+        "*://*.cnn.com/*",
+        "*://*.dailymail.co.uk/*",
+        "*://*.reuters.com/*",
+        "*://*.apnews.com/*",
+        "*://*.npr.org/*",
+        "*://*.foxnews.com/*",
+        "*://*.bloomberg.com/*",
+        "*://*.wsj.com/*"
+      ],
+      "js": [
+        "src/news.js",
         "src/social-content.js"
       ],
       "run_at": "document_start",

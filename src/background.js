@@ -85,6 +85,12 @@ if (typeof importScripts === 'function') {
     'marktplaats.js',
     'kleinanzeigen.js',
     'zalando.js',
+    'netflix.js',
+    'roblox.js',
+    'fandom.js',
+    'bilibili.js',
+    'shein.js',
+    'news.js',
     'utm.js',
   );
 }
@@ -271,6 +277,13 @@ const MARKTPLAATS_URL_FILTERS = [{ hostSuffix: 'marktplaats.nl' }];
 const KLEINANZEIGEN_URL_FILTERS = [{ hostSuffix: 'kleinanzeigen.de' }];
 const ZALANDO_URL_FILTERS = ['de','fr','it','es','nl','pl','co.uk','at','ch','be','se','dk','fi','no','cz','ie'].map((t) => ({ hostSuffix: 'zalando.' + t }));
 
+const NETFLIX_URL_FILTERS = [{ hostSuffix: 'netflix.com' }];
+const ROBLOX_URL_FILTERS = [{ hostSuffix: 'roblox.com' }];
+const FANDOM_URL_FILTERS = [{ hostSuffix: 'fandom.com' }];
+const BILIBILI_URL_FILTERS = [{ hostSuffix: 'bilibili.com' }, { hostEquals: 'b23.tv' }];
+const SHEIN_URL_FILTERS = ['com','co.uk','com.mx','com.br','tw','se','pl'].map((t) => ({ hostSuffix: 'shein.' + t }));
+const NEWS_URL_FILTERS = ['nytimes.com','theguardian.com','washingtonpost.com','bbc.com','bbc.co.uk','cnn.com','dailymail.co.uk','reuters.com','apnews.com','npr.org','foxnews.com','bloomberg.com','wsj.com'].map((h) => ({ hostSuffix: h }));
+
 const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(AGODA_URL_FILTERS).concat(BOOKING_URL_FILTERS)
   .concat(EXPEDIA_URL_FILTERS).concat(AIRBNB_URL_FILTERS)
@@ -303,7 +316,10 @@ const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(JD_URL_FILTERS).concat(LEBONCOIN_URL_FILTERS)
   .concat(OLX_URL_FILTERS).concat(WALLAPOP_URL_FILTERS)
   .concat(MARKTPLAATS_URL_FILTERS).concat(KLEINANZEIGEN_URL_FILTERS)
-  .concat(ZALANDO_URL_FILTERS);
+  .concat(ZALANDO_URL_FILTERS)
+  .concat(NETFLIX_URL_FILTERS).concat(ROBLOX_URL_FILTERS)
+  .concat(FANDOM_URL_FILTERS).concat(BILIBILI_URL_FILTERS)
+  .concat(SHEIN_URL_FILTERS).concat(NEWS_URL_FILTERS);
 
 // -- Enable/disable state -----------------------------------------------------
 
@@ -709,6 +725,30 @@ function cleanAnyUrl(input, keepParams) {
       match: (h) => self.ZalandoLinkShortener.isZalandoHost(h),
       shorten: (u) => self.ZalandoLinkShortener.shortenZalandoUrl(u),
     },
+    self.NetflixLinkShortener && {
+      match: (h) => self.NetflixLinkShortener.isNetflixHost(h),
+      shorten: (u) => self.NetflixLinkShortener.shortenNetflixUrl(u),
+    },
+    self.RobloxLinkShortener && {
+      match: (h) => self.RobloxLinkShortener.isRobloxHost(h),
+      shorten: (u) => self.RobloxLinkShortener.shortenRobloxUrl(u),
+    },
+    self.FandomLinkShortener && {
+      match: (h) => self.FandomLinkShortener.isFandomHost(h),
+      shorten: (u) => self.FandomLinkShortener.shortenFandomUrl(u),
+    },
+    self.BilibiliLinkShortener && {
+      match: (h) => self.BilibiliLinkShortener.isBilibiliHost(h),
+      shorten: (u) => self.BilibiliLinkShortener.shortenBilibiliUrl(u),
+    },
+    self.SheinLinkShortener && {
+      match: (h) => self.SheinLinkShortener.isSheinHost(h),
+      shorten: (u) => self.SheinLinkShortener.shortenSheinUrl(u),
+    },
+    self.NewsLinkShortener && {
+      match: (h) => self.NewsLinkShortener.isNewsHost(h),
+      shorten: (u) => self.NewsLinkShortener.shortenNewsUrl(u),
+    },
   ].filter(Boolean);
 
   let working = input;
@@ -846,6 +886,12 @@ const HOST_CHECKS = [
   ['MarktplaatsLinkShortener', 'isMarktplaatsHost'],
   ['KleinanzeigenLinkShortener', 'isKleinanzeigenHost'],
   ['ZalandoLinkShortener', 'isZalandoHost'],
+  ['NetflixLinkShortener', 'isNetflixHost'],
+  ['RobloxLinkShortener', 'isRobloxHost'],
+  ['FandomLinkShortener', 'isFandomHost'],
+  ['BilibiliLinkShortener', 'isBilibiliHost'],
+  ['SheinLinkShortener', 'isSheinHost'],
+  ['NewsLinkShortener', 'isNewsHost'],
 ];
 
 function isHandledHost(hostname) {

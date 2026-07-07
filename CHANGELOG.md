@@ -4,7 +4,26 @@ All notable changes to Jimothy's Link Shortener. Versions follow
 [Semantic Versioning](https://semver.org/) loosely — minor bumps mark new
 features, patch bumps mark bug-fix-only releases.
 
-## [1.11.0] — unreleased
+## [1.8.0] — unreleased
+
+**This is one consolidated release.** Everything below down to the v1.7.0
+entry ships together as v1.8.0 (the interim development tags 1.8–1.11
+were collapsed on 2026-06-12; they were never submitted anywhere).
+
+### Added — streaming, gaming, wikis, and news (final round)
+- **Netflix** (strips the trkid share tracker on /title/ and /watch/),
+  **Roblox** (preserves ?privateServerLinkCode= — it's an invite),
+  **Fandom** (the Wikipedia treatment: denylist, section anchors sacred),
+  **Bilibili** (+ b23.tv short links; preserves ?t= timestamp and ?p=
+  part number; strips the infamous share-junk avalanche), **SHEIN**
+  (strips src_*/mallCode junk).
+- **News pack** — one module, one toggle, 13 outlets: strips each
+  outlet's share attribution (smid, CMP, itid, at_*, cid, ito, taid,
+  intcmp, cmpid/sref, mod/reflink, utm_*) while PRESERVING gift/paywall
+  tokens (NYT unlocked_article_code, Bloomberg accessToken, WSJ st) —
+  guaranteed by the denylist design.
+
+### Formerly tagged v1.11.0 during development
 
 ### Added
 - **15 more sites** (63 total): Wayfair (preserves ?piid= variant ids),
@@ -18,7 +37,7 @@ features, patch bumps mark bug-fix-only releases.
 - Popup regional groups grow accordingly: Europe goes from 2 to 8
   shopping sites; Americas gains Best Buy; Asia-Pacific gains four.
 
-## [1.10.0] — unreleased
+### Formerly tagged v1.10.0 during development
 
 ### Added
 - **8 media & entertainment sites** (47 total): Steam (strips the snr
@@ -46,7 +65,7 @@ audit before release:
 - Twitch: `?collection=` VOD queue context preserved (the Twitch analog
   of Spotify's `?context=`).
 
-## [1.9.0] — unreleased
+### Formerly tagged v1.9.0 during development
 
 ### Added
 - **7 more sites** (39 total): Coupang (preserves itemId/vendorItemId —
@@ -61,9 +80,9 @@ audit before release:
   Shopping / Travel / Social & media subheadings inside — built to keep
   scaling as more sites are added. Group state still persists.
 
-## [1.8.0] — unreleased
+### Formerly tagged v1.8.0-dev during development
 
-### Added
+#### Added
 - **8 new international sites** (32 total), in a new "International
   shopping" popup group plus two travel additions:
   - **Shopee** (12 regional TLDs + shp.ee short links) — slug and
