@@ -643,10 +643,57 @@ These came up but aren't built. Ranked by ROI:
   for modals (likely React-internal); hash preservation is in place
   regardless. Worth a quick manual click-through someday.
 
-- **More sites someday:** Walmart Canada French paths, AliExpress,
-  Temu, Best Buy, IMDb (`?ref_=`), Goodreads, Stack Overflow
-  (`?so_medium=`), npm (`?activeTab=`). All carry tracking or
-  state-bearing params with natural canonical forms.
+- **Next-batch candidates — RESEARCHED, build-ready (2026-06-12).**
+  URL models verified via web/live research where marked ✓; the rest are
+  from stable documented shapes. Region/type = popup placement.
+
+  Global/Shopping:
+  - **Wayfair** (com/ca/co.uk/de) — `/pdp/<slug>-<sku>.html`; KEEP
+    `piid` (comma-separated variant ids); strip the rest.
+  - **Best Buy** (com/ca) — `/site/<slug>/<sku>.p`; skuId duplicates the
+    path sku (safe to strip); strip ref/loc/extStoreId/irclickid.
+    Note `intl=nosplash` bypasses the country splash — consider keeping.
+
+  Global/Media:
+  - **Bandcamp** — `<artist>.bandcamp.com/album|track/<slug>` (wildcard
+    subdomains like Substack; custom domains out of scope). Strip
+    `from=`, `search_item_id/type`, `search_sig`.
+  - **Letterboxd** — `/film/<slug>/`, `/<user>/film/<slug>/` (review),
+    `/<user>/list/<slug>/`. Near-zero junk; strip-all; very low risk.
+  - **Tripadvisor** (com + ~10 regional TLDs) — `/Hotel_Review-g<geo>-
+    d<id>-Reviews-<slug>.html` (+Restaurant_/Attraction_). Pagination
+    lives IN the path (`-or10-`) so keep path verbatim; DENYLIST query
+    strip (m, supag, taml, gclid) recommended.
+
+  APAC/Shopping:
+  - **Meesho** ✓ — `/<slug>/p/<id>`, share short form `/s/p/<id>`,
+    catalog `/<slug>/pl/<id>` (alphanumeric ids). Strip-all.
+  - **Carousell** (sg/com.hk/com.my/ph/tw/com) — `/p/<slug>-<id>/`;
+    strip `t-id`, `t-referrer_*`.
+  - **Taobao/Tmall** — `item.taobao.com/item.htm?id=` +
+    `detail.tmall.com/item.htm?id=` — identity lives in the QUERY:
+    requiredParams id, KEEP id + skuId (variant); strip spm/scm/
+    ali_refid/ali_trackid/ut_sk. Diaspora-only audience caveat.
+  - **JD.com** — `item.jd.com/<sku>.html`; strip-all.
+
+  Europe (would grow the group from 2 to ~8):
+  - **Leboncoin** ✓ — modern `/ad/<category>/<id>` + legacy
+    `/<category>/<id>.htm`. Strip-all.
+  - **OLX** ✓ (pl/ro/bg/ua/pt/kz) — `/d/oferta/<slug>-CID<cat>-
+    ID<alnum>.html`; strip `reason`, `bs`.
+  - **Wallapop** (es.wallapop.com) — `/item/<slug>-<id>`. Strip-all.
+  - **Marktplaats** (nl) — `/v/<cat>/<subcat>/m<id>-<slug>`; strip
+    `correlationId`, utm.
+  - **kleinanzeigen.de** — `/s-anzeige/<slug>/<id>-<cat>-<loc>`.
+    Strip-all.
+  - **Zalando** (~15 TLDs) — `/<slug>-<article-sku>.html`; KEEP `size`
+    (preselects size — variant class); strip wmc/cd_*/opc.
+
+  Build recipe per site is unchanged: module + tests + manifest hosts +
+  content_script + background (importScripts/filters/HOST_CHECKS/
+  cleanAnyUrl) + dispatcher chain + popup row + both package-script
+  arrays + docs. Remember the Chrome permission-prompt cost of each new
+  host batch — prefer one consolidated release.
 
 - **Stripped-count badge on the toolbar icon.** Visible feedback that
   the Universal strip is doing something (e.g. "3" badge after stripping
