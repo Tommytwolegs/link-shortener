@@ -35,6 +35,12 @@ were collapsed on 2026-06-12; they were never submitted anywhere).
   attribution, ts, and notably ouid= (the sharing user's account id);
   PRESERVES resourcekey= (access breaks without it), gid= (sheet tab),
   and #heading anchors.
+- **Host-scoped fallback cleanup on LinkedIn and Twitter/X** — paths
+  that match no recognized permalink form (news stories, profile links
+  shared from the feed) still get the site's own tracking params
+  stripped (lipi/trk/trackingId..., ?s=&t=/ref_src) while functional
+  params like search keywords survive. LinkedIn News /news/story/ is
+  now also a recognized form.
 - **Redirector unwrapping in the right-click menu** — "Copy clean URL"
   on a link wrapped by Gmail/Google (/url?q=), Facebook (l.php?u=),
   Reddit (out.reddit.com), or YouTube (/redirect) now copies the real

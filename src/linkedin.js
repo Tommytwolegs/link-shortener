@@ -10,6 +10,7 @@
 //   /feed/update/urn:li:share:<id>/             → share URN form
 //   /pulse/<slug-with-id>/                      → Pulse / newsletter article
 //   /jobs/view/<numeric id>/                    → job listing
+//   /news/story/<slug>-<id>/                    → LinkedIn News stories
 //   /jobs/search/                               → job search results. Keeps
 //        currentJobId (the selected job), keywords, geoId, f_TPR (time
 //        filter), distance — the params that define what the recipient
@@ -23,6 +24,15 @@
 //
 // Tracking parameters that get stripped: trackingId, refId, lipi,
 // originalSubdomain, midToken, midSig, trk, trkInfo, utm_*, eBP, etc.
+//
+// FALLBACK: on linkedin.com paths that match NO recognized form (news
+// surfaces we haven't enumerated, profile links shared from the feed,
+// company pages, ...), a host-scoped denylist still strips LinkedIn's
+// own tracking params — lipi, trk, trackingId, refId, midToken, midSig,
+// eBP, originalSubdomain, trkInfo, licu, miniProfileUrn,
+// original_referer — while leaving everything else (keywords, filters)
+// untouched. This is what keeps "Copy clean URL" useful on the long
+// tail of LinkedIn pages.
 //
 // One exception: /feed/update/* deep-links to a specific comment via
 // ?commentUrn=urn:li:comment:(activity:...). Without it, the URL still
@@ -56,9 +66,18 @@
     { regex: /^\/feed\/update\/urn:li:[^/]+:\d+\/?$/, keepParams: ['commentUrn', 'replyUrn'] },
     { regex: /^\/pulse\/[^/?#]+\/?$/, keepParams: [] },
     { regex: /^\/jobs\/view\/\d+\/?$/, keepParams: [] },
+    { regex: /^\/news\/story\/[^/?#]+\/?$/, keepParams: [] },
     { regex: /^\/jobs\/search\/?$/, keepParams: ['currentJobId', 'keywords', 'geoId', 'f_TPR', 'distance'] },
     { regex: /^\/events\/\d+\/?$/, keepParams: [] },
   ];
+
+  // Host-scoped tracking params, stripped on ANY linkedin.com path that
+  // doesn't match a recognized form above. Lowercase; matched
+  // case-insensitively.
+  const FALLBACK_STRIP = new Set([
+    'lipi', 'trk', 'trkinfo', 'trackingid', 'refid', 'midtoken', 'midsig',
+    'ebp', 'originalsubdomain', 'licu', 'miniprofileurn', 'original_referer',
+  ]);
 
   function specFor(pathname) {
     for (const p of POST_PATTERNS) {
@@ -83,16 +102,24 @@
     try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
     if (!isLinkedinHost(url.hostname)) return null;
     const spec = specFor(url.pathname);
-    if (!spec) return null;
-    const params = new URLSearchParams();
-    for (const k of spec.keepParams) {
-      const v = url.searchParams.get(k);
-      if (v !== null && v !== '') params.set(k, v);
+    if (spec) {
+      const params = new URLSearchParams();
+      for (const k of spec.keepParams) {
+        const v = url.searchParams.get(k);
+        if (v !== null && v !== '') params.set(k, v);
+      }
+      const q = params.toString();
+      const query = q ? '?' + q : '';
+      const hash = url.hash || '';
+      return `${url.protocol}//${url.host}${url.pathname}${query}${hash}`;
     }
-    const q = params.toString();
-    const query = q ? '?' + q : '';
-    const hash = url.hash || '';
-    return `${url.protocol}//${url.host}${url.pathname}${query}${hash}`;
+    // Unrecognized LinkedIn path — fallback denylist (clone; never mutate).
+    const clone = new URL(url.href);
+    for (const name of Array.from(clone.searchParams.keys())) {
+      if (FALLBACK_STRIP.has(name.toLowerCase())) clone.searchParams.delete(name);
+    }
+    const hash = clone.hash || '';
+    return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;
   }
 
   function needsShortening(input) {
@@ -111,6 +138,7 @@
     shortenUrl: shortenLinkedinUrl,
     needsShortening,
     STORAGE_KEY: 'enabledLinkedin',
+    FALLBACK_STRIP,
     LINKEDIN_HOST_REGEX,
     POST_PATTERNS,
   };

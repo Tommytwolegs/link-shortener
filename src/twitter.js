@@ -14,9 +14,10 @@
 //   /<user>/communities/<id>      → community pages
 //   /i/lists/<id>                 → list pages
 //
-// Profile pages (/<user>) and search (/search?q=) are intentionally NOT
-// recognized — those URLs are usually shared with intent (e.g. ?f=live for
-// search filters), and we'd risk stripping the user's intent.
+// Profile pages (/<user>) and search (/search?q=) are NOT recognized as
+// post forms — but a host-scoped FALLBACK denylist still strips the share
+// junk X appends everywhere (?s=21&t=<blob>, ref_src, ref_url, mx, cxt)
+// while leaving functional params (?q=, ?f=live) untouched.
 //
 // The URL hash is preserved — Twitter doesn't use hashes for tracking.
 //
@@ -53,6 +54,10 @@
     return POST_PATTERNS.some((p) => p.test(pathname));
   }
 
+  // Host-scoped share junk, stripped on ANY twitter/x path that isn't a
+  // recognized post form. Lowercase; matched case-insensitively.
+  const FALLBACK_STRIP = new Set(['s', 't', 'ref_src', 'ref_url', 'mx', 'cxt']);
+
   function isPostUrl(input) {
     let url;
     try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
@@ -64,9 +69,17 @@
     let url;
     try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
     if (!isTwitterHost(url.hostname)) return null;
-    if (!isPostPath(url.pathname)) return null;
-    const hash = url.hash || '';
-    return `${url.protocol}//${url.host}${url.pathname}${hash}`;
+    if (isPostPath(url.pathname)) {
+      const hash = url.hash || '';
+      return `${url.protocol}//${url.host}${url.pathname}${hash}`;
+    }
+    // Unrecognized path — fallback denylist (clone; never mutate).
+    const clone = new URL(url.href);
+    for (const name of Array.from(clone.searchParams.keys())) {
+      if (FALLBACK_STRIP.has(name.toLowerCase())) clone.searchParams.delete(name);
+    }
+    const hash = clone.hash || '';
+    return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;
   }
 
   function needsShortening(input) {
@@ -85,6 +98,7 @@
     shortenUrl: shortenTwitterUrl,
     needsShortening,
     STORAGE_KEY: 'enabledTwitter',
+    FALLBACK_STRIP,
     TWITTER_HOST_REGEX,
     X_HOST_REGEX,
     POST_PATTERNS,

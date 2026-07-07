@@ -287,7 +287,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **2,700 total assertions across 72 test files, all passing.** Run with:
+  **2,710 total assertions across 72 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -604,6 +604,14 @@ Full per-version detail in `CHANGELOG.md`.
   work and the per-site toggles silently did nothing for those sites.
   See "Round 4" of v1.7.0 history above.
 
+- **Host-scoped fallback denylists.** linkedin.js and twitter.js strip
+  their site's own tracking params (lipi/trk/trackingId/... and
+  ?s=&t=/ref_src) even on paths that match NO recognized permalink form
+  — found via live smoke test when "Copy clean URL" left ?lipi= on a
+  /news/story/ link. Pattern: specFor() miss → clone URL → delete
+  FALLBACK_STRIP params → rebuild. Extend to other modules as gaps are
+  reported; keep fallback lists strictly to documented per-site junk.
+
 - **Hash preservation.** Every per-site module preserves
   `location.hash`. Don't drop it — Amazon uses `#customerReviews`,
   Booking uses `#tab-reviews`, etc. Test coverage exists for this on
@@ -761,7 +769,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 72 test files, 2,700 assertions
+├── tests/                          — 72 test files, 2,710 assertions
 └── dist/                           — built zip + xpi packages
 ```
 
