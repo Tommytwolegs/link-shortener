@@ -27,6 +27,15 @@
       "128": "icons/icon128.png"
     }
   },
+  "commands": {
+    "copy-clean-url": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L"
+      },
+      "description": "Copy a clean URL of the current page"
+    }
+  },
   "host_permissions": [
     "*://*.amazon.com/*",
     "*://*.amazon.co.uk/*",

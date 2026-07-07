@@ -357,3 +357,89 @@ footer a:hover {
   letter-spacing: 0.06em;
   opacity: 0.55;
 }
+
+/* -- Current page: clean-URL preview + copy button --------------------------- */
+
+.current-page {
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.current-url {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.current-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.current-note {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.current-note.dirty {
+  color: var(--accent-deep);
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  .current-note.dirty { color: var(--accent); }
+}
+
+.btn-copy {
+  border: 1px solid var(--accent-deep);
+  background: var(--accent);
+  color: #1b2a4e;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-copy:hover { filter: brightness(1.05); }
+.btn-copy:active { filter: brightness(0.95); }
+
+.btn-copy.copied {
+  background: transparent;
+  color: var(--accent-deep);
+}
+
+@media (prefers-color-scheme: dark) {
+  .btn-copy.copied { color: var(--accent); }
+}
+
+/* -- Site filter --------------------------------------------------------------- */
+
+.site-filter {
+  width: 100%;
+  margin: 0 0 8px;
+  padding: 6px 8px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+}
+
+.site-filter:focus { border-color: var(--accent); }
+
+.filter-hidden { display: none !important; }
+
+/* Sub-headings ("Shopping", "Travel"...) orphan when their rows are
+   filtered out; hide them all while a filter query is active. */
+.site-toggles.filtering .group-subhead { display: none; }

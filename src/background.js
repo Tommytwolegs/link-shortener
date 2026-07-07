@@ -796,50 +796,92 @@ function cleanAnyUrl(input, keepParams) {
   return working;
 }
 
+// Shared by the context menu, the keyboard shortcut, and (via onMessage)
+// the popup: clean `sourceUrl` and copy the result to the clipboard of tab
+// `tabId` through an injected script. `activeTab` is granted by any of
+// those user gestures. The user's "always keep these parameters" list is
+// read fresh on every call — if this gesture is what woke the service
+// worker, a module-level cache would still be empty here. (Skip-domains is
+// intentionally not honored: an explicit copy gesture means the user wants
+// the cleanest possible URL even on hosts they've allowlisted.)
+function copyCleanUrlToTab(tabId, sourceUrl) {
+  chrome.storage.sync.get({ utmStripKeepParams: [] }, (items) => {
+    const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
+    const cleaned = cleanAnyUrl(sourceUrl, keepParams);
+    chrome.scripting.executeScript({
+      target: { tabId },
+      func: (text) => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).catch(() => {
+            // Clipboard API may be blocked in some frames; fall back to
+            // an offscreen textarea + execCommand.
+            legacyCopy(text);
+          });
+        } else {
+          legacyCopy(text);
+        }
+        function legacyCopy(t) {
+          const ta = document.createElement('textarea');
+          ta.value = t;
+          ta.style.position = 'fixed';
+          ta.style.top = '-1000px';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          try { document.execCommand('copy'); } catch (_e) {}
+          ta.remove();
+        }
+      },
+      args: [cleaned],
+    }, () => void chrome.runtime.lastError);
+  });
+}
+
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId !== CONTEXT_MENU_ID) return;
   const sourceUrl = info.linkUrl || info.pageUrl;
   if (!sourceUrl) return;
   if (!tab || tab.id == null) return;
-  // Read the user's "always keep these parameters" list fresh on every
-  // click. If this click is what woke the service worker, a module-level
-  // cache would still be empty at this point — reading storage inside the
-  // handler avoids that race. (Skip-domains is intentionally not honored
-  // here: the context menu is an explicit user gesture, so the cleanest
-  // possible URL is what they want even on hosts they've allowlisted.)
-  chrome.storage.sync.get({ utmStripKeepParams: [] }, (items) => {
-  const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
-  const cleaned = cleanAnyUrl(sourceUrl, keepParams);
-  // Inject a tiny function into the active tab that writes to the clipboard.
-  // `activeTab` permission grants us temporary access on user gesture.
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: (text) => {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).catch(() => {
-          // Clipboard API may be blocked in some frames; fall back to
-          // an offscreen textarea + execCommand.
-          legacyCopy(text);
-        });
-      } else {
-        legacyCopy(text);
+  copyCleanUrlToTab(tab.id, sourceUrl);
+});
+
+// -- Keyboard shortcut: "copy-clean-url" --------------------------------------
+// Registered under `commands` in the manifest; default Ctrl+Shift+L
+// (Cmd+Shift+L on Mac). Chrome passes the active tab as the second
+// argument; some Firefox versions don't, so fall back to querying it.
+// Non-http(s) pages (chrome://, about:) are ignored — nothing to clean
+// and executeScript would fail there anyway.
+if (chrome.commands && chrome.commands.onCommand) {
+  chrome.commands.onCommand.addListener((command, tab) => {
+    if (command !== 'copy-clean-url') return;
+    const run = (t) => {
+      if (t && t.id != null && t.url && /^https?:/i.test(t.url)) {
+        copyCleanUrlToTab(t.id, t.url);
       }
-      function legacyCopy(t) {
-        const ta = document.createElement('textarea');
-        ta.value = t;
-        ta.style.position = 'fixed';
-        ta.style.top = '-1000px';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.focus();
-        ta.select();
-        try { document.execCommand('copy'); } catch (_e) {}
-        ta.remove();
-      }
-    },
-    args: [cleaned],
-  }, () => void chrome.runtime.lastError);
+    };
+    if (tab && tab.id != null) {
+      run(tab);
+      return;
+    }
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      void chrome.runtime.lastError;
+      run(tabs && tabs[0]);
+    });
   });
+}
+
+// -- Popup message API ---------------------------------------------------------
+// The popup asks the background to clean the current tab's URL so its
+// preview + copy button reuse the exact pipeline as the context menu and
+// keyboard shortcut (redirect unwrapping -> per-site shortener -> UTM strip).
+chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  if (!msg || msg.type !== 'clean-url' || typeof msg.url !== 'string') return undefined;
+  chrome.storage.sync.get({ utmStripKeepParams: [] }, (items) => {
+    const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
+    sendResponse({ cleaned: cleanAnyUrl(msg.url, keepParams) });
+  });
+  return true; // keep the message channel open for the async sendResponse
 });
 
 // -- SPA-navigation fallback --------------------------------------------------

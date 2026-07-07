@@ -422,9 +422,12 @@
     document.querySelectorAll('details.site-group[data-group]'),
   );
   let restoringGroups = true;
+  // While a filter query is active we force-open matching groups; those
+  // programmatic toggles must not be persisted as the user's preference.
+  let filtering = false;
 
   function saveGroupState() {
-    if (restoringGroups) return;
+    if (restoringGroups || filtering) return;
     const state = {};
     for (const el of groupEls) state[el.dataset.group] = el.open;
     chrome.storage.sync.set({ popupOpenGroups: state });
@@ -459,4 +462,141 @@
       }
     });
   }
+
+  // -- Current page: clean-URL preview + copy button --------------------------
+  // Asks the background (which has every URL module loaded) to clean the
+  // active tab's URL through the same pipeline as the context menu and the
+  // keyboard shortcut. Hidden entirely on non-http(s) pages.
+  (function initCurrentPage() {
+    const section = document.getElementById('current-page');
+    const urlEl = document.getElementById('current-url');
+    const noteEl = document.getElementById('current-note');
+    const btn = document.getElementById('copy-clean');
+    if (!section || !urlEl || !noteEl || !btn || !chrome.tabs) return;
+
+    function paramCount(u) {
+      try { return Array.from(new URL(u).searchParams.keys()).length; } catch (_e) { return 0; }
+    }
+
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      void chrome.runtime.lastError;
+      const tab = tabs && tabs[0];
+      const original = tab && tab.url;
+      if (!original || !/^https?:/i.test(original)) return;
+      chrome.runtime.sendMessage({ type: 'clean-url', url: original }, (resp) => {
+        void chrome.runtime.lastError;
+        const cleaned = (resp && resp.cleaned) || original;
+        urlEl.textContent = cleaned;
+        urlEl.title = cleaned;
+        if (cleaned === original) {
+          noteEl.textContent = 'Already clean';
+          noteEl.classList.remove('dirty');
+        } else {
+          const removed = paramCount(original) - paramCount(cleaned);
+          noteEl.textContent = removed > 0
+            ? 'Removes ' + removed + ' tracking param' + (removed === 1 ? '' : 's')
+            : 'Shortens this URL';
+          noteEl.classList.add('dirty');
+        }
+        section.hidden = false;
+
+        btn.addEventListener('click', () => {
+          const done = () => {
+            btn.textContent = 'Copied \u2713';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.textContent = 'Copy clean URL';
+              btn.classList.remove('copied');
+            }, 1400);
+          };
+          function legacyCopy(t) {
+            const ta = document.createElement('textarea');
+            ta.value = t;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            try { document.execCommand('copy'); } catch (_e) {}
+            ta.remove();
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(cleaned).then(done, () => { legacyCopy(cleaned); done(); });
+          } else {
+            legacyCopy(cleaned);
+            done();
+          }
+        });
+      });
+    });
+  })();
+
+  // -- Site filter --------------------------------------------------------------
+  // Live-filters the per-site toggle rows by label text. Groups with matches
+  // are force-opened (without persisting that state — see `filtering`);
+  // groups with none are hidden. Clearing the query restores the user's
+  // pre-filter open/closed arrangement. Esc clears.
+  (function initSiteFilter() {
+    const input = document.getElementById('site-filter');
+    if (!input) return;
+    const rows = [];
+    for (const k of SITE_KEYS) {
+      const el = siteEls[k];
+      if (!el) continue;
+      const row = el.closest('label.switch');
+      if (!row) continue;
+      const labelEl = row.querySelector('.switch-label');
+      rows.push({
+        row,
+        text: ((labelEl && labelEl.textContent) || '').toLowerCase(),
+        group: el.dataset.group,
+      });
+    }
+    let preFilterOpen = null;
+
+    function applyFilter() {
+      const q = input.value.trim().toLowerCase();
+      if (!q) {
+        siteTogglesEl.classList.remove('filtering');
+        for (const r of rows) r.row.classList.remove('filter-hidden');
+        for (const el of groupEls) {
+          el.classList.remove('filter-hidden');
+          if (preFilterOpen && Object.prototype.hasOwnProperty.call(preFilterOpen, el.dataset.group)) {
+            el.open = preFilterOpen[el.dataset.group];
+          }
+        }
+        preFilterOpen = null;
+        // Restoration fires 'toggle' on a queued task; lift the save
+        // suppression after those land (same trick as the initial restore).
+        setTimeout(() => { if (!input.value.trim()) filtering = false; }, 50);
+        return;
+      }
+      if (preFilterOpen === null) {
+        preFilterOpen = {};
+        for (const el of groupEls) preFilterOpen[el.dataset.group] = el.open;
+      }
+      filtering = true;
+      siteTogglesEl.classList.add('filtering');
+      const groupHits = {};
+      for (const r of rows) {
+        const hit = r.text.indexOf(q) !== -1;
+        r.row.classList.toggle('filter-hidden', !hit);
+        if (hit) groupHits[r.group] = (groupHits[r.group] || 0) + 1;
+      }
+      for (const el of groupEls) {
+        const hits = groupHits[el.dataset.group] || 0;
+        el.classList.toggle('filter-hidden', hits === 0);
+        if (hits > 0) el.open = true;
+      }
+    }
+
+    input.addEventListener('input', applyFilter);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && input.value) {
+        input.value = '';
+        applyFilter();
+        e.stopPropagation();
+      }
+    });
+  })();
 })();

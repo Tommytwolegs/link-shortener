@@ -7,6 +7,13 @@ form.
 
 No analytics. No telemetry. No remote calls.
 
+Three ways to get a clean link: URLs on supported sites are rewritten
+in place as you browse; right-click any link or page and choose "Copy
+clean URL"; or press Ctrl+Shift+L (Cmd+Shift+L on Mac) to copy a clean
+URL of the current page. The toolbar popup also previews the current
+page's cleaned URL with a one-click copy button, and has a filter box
+for finding a site among the 119 toggles.
+
 ## Supported sites
 
 One hundred twenty-one (119 toggles), organized by world region and type in the popup:

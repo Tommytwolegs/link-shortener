@@ -35,18 +35,35 @@ were collapsed on 2026-06-12; they were never submitted anywhere).
   attribution, ts, and notably ouid= (the sharing user's account id);
   PRESERVES resourcekey= (access breaks without it), gid= (sheet tab),
   and #heading anchors.
-- **Host-scoped fallback cleanup on LinkedIn and Twitter/X** — paths
-  that match no recognized permalink form (news stories, profile links
-  shared from the feed) still get the site's own tracking params
-  stripped (lipi/trk/trackingId..., ?s=&t=/ref_src) while functional
-  params like search keywords survive. LinkedIn News /news/story/ is
-  now also a recognized form.
+- **Host-scoped fallback cleanup on 16 major modules** — paths that
+  match no recognized permalink form (search results, profiles,
+  category pages, news stories shared from feeds) still get the site's
+  own tracking params stripped while functional params like search
+  keywords survive. Covers LinkedIn (lipi/trk/...), Twitter/X
+  (?s=&t=/ref_src), Amazon (ref/crid/sprefix — non-retail subdomains
+  like AWS are left untouched), YouTube (si), Facebook (mibextid),
+  TikTok, eBay (_trkparms), Etsy, Reddit (share_id), Steam (snr),
+  Spotify, Pinterest, Medium, Shopee, Walmart, and Target (searchTerm
+  survives). LinkedIn News /news/story/ is now also a recognized form.
 - **Redirector unwrapping in the right-click menu** — "Copy clean URL"
   on a link wrapped by Gmail/Google (/url?q=), Facebook (l.php?u=),
   Reddit (out.reddit.com), or YouTube (/redirect) now copies the real
   destination, cleaned by whichever site module matches it. Works
   everywhere, needs no new permissions, capped at 3 hops, http(s)
   targets only.
+- **Copy clean URL from the popup** — the popup now previews the
+  current page's cleaned URL (with a "Removes N tracking params" note)
+  and copies it in one click. Uses the same pipeline as the context
+  menu via a background message, so redirect unwrapping and per-site
+  rules apply identically. Hidden on non-http(s) pages.
+- **Keyboard shortcut** — Ctrl+Shift+L (Cmd+Shift+L on Mac) copies a
+  clean URL of the current page. Registered via the `commands` manifest
+  key (no new permissions); rebindable in the browser's extension
+  shortcut settings.
+- **Site filter in the popup** — a search box above the 119 toggles
+  live-filters rows by name, auto-expanding matching groups and hiding
+  empty ones. Clearing (or Esc) restores the previous open/closed
+  arrangement without persisting the temporary state.
 
 ### Formerly tagged v1.11.0 during development
 

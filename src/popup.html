@@ -28,6 +28,14 @@
     </div>
   </header>
 
+  <section class="current-page" id="current-page" hidden>
+    <p class="current-url" id="current-url"></p>
+    <div class="current-actions">
+      <span class="current-note" id="current-note"></span>
+      <button type="button" id="copy-clean" class="btn-copy">Copy clean URL</button>
+    </div>
+  </section>
+
   <section class="toggle-row">
     <label class="switch" for="enabled">
       <span class="switch-label">Shorten All Links</span>
@@ -67,6 +75,9 @@
 
   <section class="site-toggles" id="site-toggles">
     <p class="site-toggles-heading">Per site</p>
+    <input type="search" id="site-filter" class="site-filter"
+           placeholder="Filter sites&#8230;" autocomplete="off" spellcheck="false"
+           aria-label="Filter site toggles" />
 
     <details class="site-group" data-group="global" open>
       <summary>
@@ -984,6 +995,9 @@
        use "Copy link address" on Amazon to get the clean form directly.
        The "Universal tracking strip" toggle (off by default) strips
        common trackers like utm_* from URLs on every site you visit.</p>
+    <p>Tip: Ctrl+Shift+L (&#8984;&#8679;L on Mac) copies a clean URL of the
+       current page. Rebind it in your browser's extension shortcut
+       settings.</p>
   </section>
 
   <footer>

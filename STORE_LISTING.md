@@ -38,7 +38,7 @@ HOW IT WORKS
 
 Land on a supported page and the address-bar URL is rewritten to its canonical short form in place — no reload, no flicker. On the largest supported shopping site, in-page product links are rewritten too, so right-click → Copy link address also gives the clean form.
 
-Right-click any link (or any page) and choose "Copy clean URL" to clean it on the spot — this works on every site, because the universal tracking-parameter stripper kicks in as a fallback.
+Right-click any link (or any page) and choose "Copy clean URL" to clean it on the spot — this works on every site, because the universal tracking-parameter stripper kicks in as a fallback. The toolbar popup shows the current page's cleaned link with a one-click copy button, and a keyboard shortcut (Ctrl+Shift+L by default) does the same without opening anything.
 
 On hotel and rental listing pages, a small floating widget offers one-click copy buttons: the bare listing URL, or the listing with your selected dates included. It hides itself automatically on small screens.
 
@@ -103,7 +103,8 @@ v1.8.0 — the everywhere release.
 
 * Dozens of new sites supported (eighty-plus total, up from twenty-four): international marketplaces and classifieds across Asia, Europe, and Latin America; more travel booking sites; streaming, gaming, music, film, books, and Q&A platforms; plus a news pack covering more than fifty outlets across every region — each with its own toggle.
 * Functional state always survives cleanup: variant and size selections, playlist and queue context, video timestamps, answer pagination, private-server invites, and paywall gift links all keep working. Only tracking clutter is removed.
-* The popup is organized by world region — Global, Americas, Asia-Pacific, Europe — with site-type subheadings, and remembers which sections you keep open.
+* The popup is organized by world region — Global, Americas, Asia-Pacific, Europe — with site-type subheadings, a filter box for finding a site quickly, and remembers which sections you keep open.
+* Copy a clean link faster: the popup now previews the current page's cleaned URL with a one-click copy button, and a keyboard shortcut (Ctrl+Shift+L, rebindable) copies a clean URL of the current page from anywhere.
 * This update requests access to the newly supported sites; as always the extension makes zero network requests and collects nothing.
 
 Reminder for the v1.8.0 AMO notes: 121 sites (119 toggles) / 332 host permissions / 2,736 tests; the extension is unchanged architecturally — every module is a pure URL function.

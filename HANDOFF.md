@@ -248,11 +248,23 @@ page (default OFF). See `utm.js` below.
   - The menu itself is (re)created via `removeAll` + `create` on BOTH
     `onInstalled` and `onStartup` — Firefox event pages don't reliably
     persist menus across browser restarts; Chrome doesn't mind.
+  - **Keyboard shortcut**: `commands.copy-clean-url` in the manifest
+    (default Ctrl+Shift+L / Cmd+Shift+L). `chrome.commands.onCommand`
+    calls the same `copyCleanUrlToTab()` helper as the context menu.
+    Chrome passes the active tab as the handler's 2nd arg; a
+    `tabs.query` fallback covers Firefox versions that don't.
+    Non-http(s) pages are ignored.
+  - **Popup message API**: `chrome.runtime.onMessage` answers
+    `{type:'clean-url', url}` with `{cleaned}` by running
+    `cleanAnyUrl()` — the popup's preview/copy button reuses the exact
+    context-menu pipeline. The handler `return true`s to keep the
+    channel open for the async storage read.
 
 ### Popup
 
 - `src/popup.html` / `popup.js` / `popup.css` — toolbar popup. Master
-  toggle, 46 per-site toggles (47 sites; Facebook+Instagram share one)
+  toggle, 119 per-site toggles (121 sites; Facebook+Instagram share
+  one, the 51 news outlets share a module but toggle individually)
   organized by WORLD REGION → SITE TYPE: collapsible Global / Americas /
   Asia-Pacific / Europe `<details>` groups, each with Shopping / Travel /
   Social / Media & entertainment subheadings (`.group-subhead`), PLUS a
@@ -269,6 +281,15 @@ page (default OFF). See `utm.js` below.
   permission via `chrome.permissions.request` when the user flips the UTM
   toggle on; if denied, the checkbox reverts and storage is not written.
   Respects `prefers-reduced-motion` and `prefers-color-scheme`.
+  Two v1.8.0 additions: (1) a **current-page section** under the header
+  previews the active tab's cleaned URL (via the background's
+  `clean-url` message) with a params-removed note and a one-click copy
+  button ("Copied ✓" feedback; execCommand fallback); hidden on
+  non-http(s) pages. (2) a **filter box** above the toggles
+  live-filters rows by label text, force-opening matching groups and
+  hiding empty ones — a `filtering` flag suppresses `saveGroupState()`
+  so the temporary open/closed churn is never persisted; clearing or
+  Esc restores the user's pre-filter arrangement.
 
 ### Options page (advanced settings)
 
