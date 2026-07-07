@@ -10,7 +10,9 @@
 // Substack, Bluesky, GitHub, Medium, Quora, Shopee, Lazada, AliExpress,
 // Temu, Mercado Libre, Rakuten, Coupang, Flipkart, Tokopedia, Mercari,
 // Vinted, Allegro, Steam, IMDb, Stack Overflow, Wikipedia, Goodreads,
-// SoundCloud, Apple Music, Twitch.
+// SoundCloud, Apple Music, Twitch, Wayfair, Best Buy, Bandcamp,
+// Letterboxd, Tripadvisor, Meesho, Carousell, Taobao/Tmall, JD,
+// Leboncoin, OLX, Wallapop, Marktplaats, Kleinanzeigen, Zalando.
 // (Amazon and the seven travel sites have their own scripts.)
 //
 // Why no in-page anchor rewriting (unlike Amazon's content.js): on social/
@@ -78,6 +80,21 @@
     self.SoundcloudLinkShortener ||
     self.AppleMusicLinkShortener ||
     self.TwitchLinkShortener ||
+    self.WayfairLinkShortener ||
+    self.BestbuyLinkShortener ||
+    self.BandcampLinkShortener ||
+    self.LetterboxdLinkShortener ||
+    self.TripadvisorLinkShortener ||
+    self.MeeshoLinkShortener ||
+    self.CarousellLinkShortener ||
+    self.TaobaoLinkShortener ||
+    self.JdLinkShortener ||
+    self.LeboncoinLinkShortener ||
+    self.OlxLinkShortener ||
+    self.WallapopLinkShortener ||
+    self.MarktplaatsLinkShortener ||
+    self.KleinanzeigenLinkShortener ||
+    self.ZalandoLinkShortener ||
     null;
 
   // Per-site storage key, taken from the active module. Falls back to

@@ -4,6 +4,20 @@ All notable changes to Jimothy's Link Shortener. Versions follow
 [Semantic Versioning](https://semver.org/) loosely — minor bumps mark new
 features, patch bumps mark bug-fix-only releases.
 
+## [1.11.0] — unreleased
+
+### Added
+- **15 more sites** (63 total): Wayfair (preserves ?piid= variant ids),
+  Best Buy (preserves ?intl=nosplash), Bandcamp (wildcard artist
+  subdomains), Letterboxd, Tripadvisor (pagination lives in the PATH —
+  kept verbatim; denylist query strip), Meesho (incl. the /s/p/ share
+  short form — URL model verified), Carousell, Taobao/Tmall (identity
+  lives in the QUERY — keeps ?id= + ?skuId=), JD.com, Leboncoin (modern
+  /ad/ + legacy .htm forms — verified), OLX (6 country TLDs — verified),
+  Wallapop, Marktplaats, Kleinanzeigen, Zalando (preserves ?size=).
+- Popup regional groups grow accordingly: Europe goes from 2 to 8
+  shopping sites; Americas gains Best Buy; Asia-Pacific gains four.
+
 ## [1.10.0] — unreleased
 
 ### Added

@@ -1,10 +1,10 @@
 # Jimothy's Link Shortener — Handoff
 
 Context document for picking up work on a new machine (or in a new Claude
-session). Last updated 2026-06-12 at v1.10.0 (media round; v1.7.0 is
-submitted and in review at both stores — do NOT touch the 1.7.0 packages
-while that's pending. v1.8.0/v1.9.0/v1.10.0 are tagged but unsubmitted;
-when 1.7.0 clears, submit the NEWEST version).
+session). Last updated 2026-06-12 at v1.11.0 (researched-batch round:
+63 sites; v1.7.0 is submitted and in review at both stores — do NOT touch
+the 1.7.0 packages while that's pending. v1.8.0 through v1.11.0 are
+tagged but unsubmitted; when 1.7.0 clears, submit the NEWEST version).
 
 ---
 
@@ -33,7 +33,7 @@ CI, and a meaningful round of bug fixes for SPA-state preservation. See
 
 ---
 
-## Supported sites (47)
+## Supported sites (63)
 
 Each has a dedicated pure-function URL module under `src/`. The popup
 groups them into Shopping / Travel / Social & media:
@@ -279,7 +279,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **2,163 total assertions across 48 test files, all passing.** Run with:
+  **2,415 total assertions across 63 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -320,7 +320,7 @@ The Firefox xpi injects four things into the manifest:
 1. `browser_specific_settings.gecko.id` (`link-shortener@tommytwolegs.github.io`)
 2. `gecko.strict_min_version` (`121.0` — first Firefox with full MV3 SW support)
 3. `gecko.data_collection_permissions.required = ["none"]` (AMO requirement)
-4. `background.scripts` array (49 entries — Mozilla linter requires a
+4. `background.scripts` array (64 entries — Mozilla linter requires a
    fallback alongside `service_worker`; order matters since `background.js`
    uses `self.*LinkShortener` globals at top level)
 
@@ -402,6 +402,18 @@ Reddit and LinkedIn modules refactored from "flat list of regexes" to
 
 Test count: **1,045 → 1,276 (+231)** across **18 → 20 files**. 19 sites
 + universal stripper, 31 source files (was 28).
+
+**v1.11.0 round — the researched batch (2026-06-12).** All 15 sites from
+the research pass built in one go: Wayfair (piid), Best Buy (intl),
+Bandcamp, Letterboxd, Tripadvisor (denylist; pagination in path), Meesho,
+Carousell, Taobao/Tmall (query-identity like Trip.com — keeps id+skuId,
+one toggle for both hosts), JD.com (item.jd.com only), Leboncoin (modern
++ legacy forms), OLX (6 TLDs), Wallapop, Marktplaats, Kleinanzeigen,
+Zalando (size). Europe popup group 2→8, Americas +Best Buy, APAC +4,
+Global +4. Tests: 2,163 → 2,415 across 63 files. Manifest: 264 hosts,
+62 content scripts, 64-entry Firefox background.scripts. Site bullets
+for this batch live in the research spec (this file, wishlist section
+of the 2026-06-12 revision) — kept terse here.
 
 **v1.10.0 round — media & entertainment (2026-06-12).** Eight sites:
 Steam, IMDb, Stack Overflow (+SE network — the first PATH-rewriting
@@ -712,7 +724,7 @@ These came up but aren't built. Ranked by ROI:
 ```
 link-shortener/
 ├── .github/workflows/test.yml      — CI: parse-check + run all tests on push/PR
-├── manifest.json                   — Chrome-canonical manifest (205 host_permissions, 47 content_scripts)
+├── manifest.json                   — Chrome-canonical manifest (264 host_permissions, 62 content_scripts)
 ├── package.sh                      — macOS/Linux build script
 ├── package.ps1                     — Windows PowerShell build script
 ├── package_lf.sh                   — (older, retained for reference)
@@ -741,7 +753,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 48 test files, 2,163 assertions
+├── tests/                          — 63 test files, 2,415 assertions
 └── dist/                           — built zip + xpi packages
 ```
 

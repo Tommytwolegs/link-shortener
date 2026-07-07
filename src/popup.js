@@ -33,6 +33,7 @@
     { key: 'enabledEtsy', group: 'global' },
     { key: 'enabledAliexpress', group: 'global' },
     { key: 'enabledTemu', group: 'global' },
+    { key: 'enabledWayfair', group: 'global' },
     { key: 'enabledBooking', group: 'global' },
     { key: 'enabledExpedia', group: 'global' },
     { key: 'enabledAirbnb', group: 'global' },
@@ -40,6 +41,7 @@
     { key: 'enabledTrip', group: 'global' },
     { key: 'enabledHotelscom', group: 'global' },
     { key: 'enabledVrbo', group: 'global' },
+    { key: 'enabledTripadvisor', group: 'global' },
     { key: 'enabledSocial', group: 'global' },
     { key: 'enabledThreads', group: 'global' },
     { key: 'enabledLinkedin', group: 'global' },
@@ -62,9 +64,12 @@
     { key: 'enabledMedium', group: 'global' },
     { key: 'enabledQuora', group: 'global' },
     { key: 'enabledSubstack', group: 'global' },
+    { key: 'enabledBandcamp', group: 'global' },
+    { key: 'enabledLetterboxd', group: 'global' },
     { key: 'enabledWalmart', group: 'americas' },
     { key: 'enabledTarget', group: 'americas' },
     { key: 'enabledMercadolibre', group: 'americas' },
+    { key: 'enabledBestbuy', group: 'americas' },
     { key: 'enabledShopee', group: 'apac' },
     { key: 'enabledLazada', group: 'apac' },
     { key: 'enabledTokopedia', group: 'apac' },
@@ -72,8 +77,18 @@
     { key: 'enabledFlipkart', group: 'apac' },
     { key: 'enabledMercari', group: 'apac' },
     { key: 'enabledRakuten', group: 'apac' },
+    { key: 'enabledMeesho', group: 'apac' },
+    { key: 'enabledCarousell', group: 'apac' },
+    { key: 'enabledTaobao', group: 'apac' },
+    { key: 'enabledJd', group: 'apac' },
     { key: 'enabledVinted', group: 'europe' },
     { key: 'enabledAllegro', group: 'europe' },
+    { key: 'enabledLeboncoin', group: 'europe' },
+    { key: 'enabledOlx', group: 'europe' },
+    { key: 'enabledWallapop', group: 'europe' },
+    { key: 'enabledMarktplaats', group: 'europe' },
+    { key: 'enabledKleinanzeigen', group: 'europe' },
+    { key: 'enabledZalando', group: 'europe' },
   ];
   const SITE_KEYS = SITES.map((s) => s.key);
 
@@ -123,6 +138,10 @@
     if (raw === 'Stackoverflow') return 'Stack Overflow';
     if (raw === 'Soundcloud') return 'SoundCloud';
     if (raw === 'AppleMusic') return 'Apple Music';
+    if (raw === 'Bestbuy') return 'Best Buy';
+    if (raw === 'Taobao') return 'Taobao/Tmall';
+    if (raw === 'Jd') return 'JD.com';
+    if (raw === 'Olx') return 'OLX';
     return raw;
   }
 

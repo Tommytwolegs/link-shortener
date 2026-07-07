@@ -70,6 +70,21 @@ if (typeof importScripts === 'function') {
     'soundcloud.js',
     'applemusic.js',
     'twitch.js',
+    'wayfair.js',
+    'bestbuy.js',
+    'bandcamp.js',
+    'letterboxd.js',
+    'tripadvisor.js',
+    'meesho.js',
+    'carousell.js',
+    'taobao.js',
+    'jd.js',
+    'leboncoin.js',
+    'olx.js',
+    'wallapop.js',
+    'marktplaats.js',
+    'kleinanzeigen.js',
+    'zalando.js',
     'utm.js',
   );
 }
@@ -240,6 +255,22 @@ const APPLEMUSIC_URL_FILTERS = [
 ];
 const TWITCH_URL_FILTERS = [{ hostSuffix: 'twitch.tv' }];
 
+const WAYFAIR_URL_FILTERS = ['com','ca','co.uk','de'].map((t) => ({ hostSuffix: 'wayfair.' + t }));
+const BESTBUY_URL_FILTERS = [{ hostSuffix: 'bestbuy.com' }, { hostSuffix: 'bestbuy.ca' }];
+const BANDCAMP_URL_FILTERS = [{ hostSuffix: 'bandcamp.com' }];
+const LETTERBOXD_URL_FILTERS = [{ hostSuffix: 'letterboxd.com' }];
+const TRIPADVISOR_URL_FILTERS = ['com','co.uk','ca','com.au','fr','de','it','es','in','nl','ie','com.sg','com.my','com.br','com.mx'].map((t) => ({ hostSuffix: 'tripadvisor.' + t }));
+const MEESHO_URL_FILTERS = [{ hostSuffix: 'meesho.com' }];
+const CAROUSELL_URL_FILTERS = ['com','sg','com.hk','com.my','ph','tw'].map((t) => ({ hostSuffix: 'carousell.' + t }));
+const TAOBAO_URL_FILTERS = [{ hostSuffix: 'taobao.com' }, { hostSuffix: 'tmall.com' }];
+const JD_URL_FILTERS = [{ hostEquals: 'item.jd.com' }];
+const LEBONCOIN_URL_FILTERS = [{ hostSuffix: 'leboncoin.fr' }];
+const OLX_URL_FILTERS = ['pl','ro','bg','ua','pt','kz'].map((t) => ({ hostSuffix: 'olx.' + t }));
+const WALLAPOP_URL_FILTERS = [{ hostSuffix: 'wallapop.com' }];
+const MARKTPLAATS_URL_FILTERS = [{ hostSuffix: 'marktplaats.nl' }];
+const KLEINANZEIGEN_URL_FILTERS = [{ hostSuffix: 'kleinanzeigen.de' }];
+const ZALANDO_URL_FILTERS = ['de','fr','it','es','nl','pl','co.uk','at','ch','be','se','dk','fi','no','cz','ie'].map((t) => ({ hostSuffix: 'zalando.' + t }));
+
 const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(AGODA_URL_FILTERS).concat(BOOKING_URL_FILTERS)
   .concat(EXPEDIA_URL_FILTERS).concat(AIRBNB_URL_FILTERS)
@@ -264,7 +295,15 @@ const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(STEAM_URL_FILTERS).concat(IMDB_URL_FILTERS)
   .concat(STACKOVERFLOW_URL_FILTERS).concat(WIKIPEDIA_URL_FILTERS)
   .concat(GOODREADS_URL_FILTERS).concat(SOUNDCLOUD_URL_FILTERS)
-  .concat(APPLEMUSIC_URL_FILTERS).concat(TWITCH_URL_FILTERS);
+  .concat(APPLEMUSIC_URL_FILTERS).concat(TWITCH_URL_FILTERS)
+  .concat(WAYFAIR_URL_FILTERS).concat(BESTBUY_URL_FILTERS)
+  .concat(BANDCAMP_URL_FILTERS).concat(LETTERBOXD_URL_FILTERS)
+  .concat(TRIPADVISOR_URL_FILTERS).concat(MEESHO_URL_FILTERS)
+  .concat(CAROUSELL_URL_FILTERS).concat(TAOBAO_URL_FILTERS)
+  .concat(JD_URL_FILTERS).concat(LEBONCOIN_URL_FILTERS)
+  .concat(OLX_URL_FILTERS).concat(WALLAPOP_URL_FILTERS)
+  .concat(MARKTPLAATS_URL_FILTERS).concat(KLEINANZEIGEN_URL_FILTERS)
+  .concat(ZALANDO_URL_FILTERS);
 
 // -- Enable/disable state -----------------------------------------------------
 
@@ -610,6 +649,66 @@ function cleanAnyUrl(input, keepParams) {
       match: (h) => self.TwitchLinkShortener.isTwitchHost(h),
       shorten: (u) => self.TwitchLinkShortener.shortenTwitchUrl(u),
     },
+    self.WayfairLinkShortener && {
+      match: (h) => self.WayfairLinkShortener.isWayfairHost(h),
+      shorten: (u) => self.WayfairLinkShortener.shortenWayfairUrl(u),
+    },
+    self.BestbuyLinkShortener && {
+      match: (h) => self.BestbuyLinkShortener.isBestbuyHost(h),
+      shorten: (u) => self.BestbuyLinkShortener.shortenBestbuyUrl(u),
+    },
+    self.BandcampLinkShortener && {
+      match: (h) => self.BandcampLinkShortener.isBandcampHost(h),
+      shorten: (u) => self.BandcampLinkShortener.shortenBandcampUrl(u),
+    },
+    self.LetterboxdLinkShortener && {
+      match: (h) => self.LetterboxdLinkShortener.isLetterboxdHost(h),
+      shorten: (u) => self.LetterboxdLinkShortener.shortenLetterboxdUrl(u),
+    },
+    self.TripadvisorLinkShortener && {
+      match: (h) => self.TripadvisorLinkShortener.isTripadvisorHost(h),
+      shorten: (u) => self.TripadvisorLinkShortener.shortenTripadvisorUrl(u),
+    },
+    self.MeeshoLinkShortener && {
+      match: (h) => self.MeeshoLinkShortener.isMeeshoHost(h),
+      shorten: (u) => self.MeeshoLinkShortener.shortenMeeshoUrl(u),
+    },
+    self.CarousellLinkShortener && {
+      match: (h) => self.CarousellLinkShortener.isCarousellHost(h),
+      shorten: (u) => self.CarousellLinkShortener.shortenCarousellUrl(u),
+    },
+    self.TaobaoLinkShortener && {
+      match: (h) => self.TaobaoLinkShortener.isTaobaoHost(h),
+      shorten: (u) => self.TaobaoLinkShortener.shortenTaobaoUrl(u),
+    },
+    self.JdLinkShortener && {
+      match: (h) => self.JdLinkShortener.isJdHost(h),
+      shorten: (u) => self.JdLinkShortener.shortenJdUrl(u),
+    },
+    self.LeboncoinLinkShortener && {
+      match: (h) => self.LeboncoinLinkShortener.isLeboncoinHost(h),
+      shorten: (u) => self.LeboncoinLinkShortener.shortenLeboncoinUrl(u),
+    },
+    self.OlxLinkShortener && {
+      match: (h) => self.OlxLinkShortener.isOlxHost(h),
+      shorten: (u) => self.OlxLinkShortener.shortenOlxUrl(u),
+    },
+    self.WallapopLinkShortener && {
+      match: (h) => self.WallapopLinkShortener.isWallapopHost(h),
+      shorten: (u) => self.WallapopLinkShortener.shortenWallapopUrl(u),
+    },
+    self.MarktplaatsLinkShortener && {
+      match: (h) => self.MarktplaatsLinkShortener.isMarktplaatsHost(h),
+      shorten: (u) => self.MarktplaatsLinkShortener.shortenMarktplaatsUrl(u),
+    },
+    self.KleinanzeigenLinkShortener && {
+      match: (h) => self.KleinanzeigenLinkShortener.isKleinanzeigenHost(h),
+      shorten: (u) => self.KleinanzeigenLinkShortener.shortenKleinanzeigenUrl(u),
+    },
+    self.ZalandoLinkShortener && {
+      match: (h) => self.ZalandoLinkShortener.isZalandoHost(h),
+      shorten: (u) => self.ZalandoLinkShortener.shortenZalandoUrl(u),
+    },
   ].filter(Boolean);
 
   let working = input;
@@ -732,6 +831,21 @@ const HOST_CHECKS = [
   ['SoundcloudLinkShortener', 'isSoundcloudHost'],
   ['AppleMusicLinkShortener', 'isAppleMusicHost'],
   ['TwitchLinkShortener', 'isTwitchHost'],
+  ['WayfairLinkShortener', 'isWayfairHost'],
+  ['BestbuyLinkShortener', 'isBestbuyHost'],
+  ['BandcampLinkShortener', 'isBandcampHost'],
+  ['LetterboxdLinkShortener', 'isLetterboxdHost'],
+  ['TripadvisorLinkShortener', 'isTripadvisorHost'],
+  ['MeeshoLinkShortener', 'isMeeshoHost'],
+  ['CarousellLinkShortener', 'isCarousellHost'],
+  ['TaobaoLinkShortener', 'isTaobaoHost'],
+  ['JdLinkShortener', 'isJdHost'],
+  ['LeboncoinLinkShortener', 'isLeboncoinHost'],
+  ['OlxLinkShortener', 'isOlxHost'],
+  ['WallapopLinkShortener', 'isWallapopHost'],
+  ['MarktplaatsLinkShortener', 'isMarktplaatsHost'],
+  ['KleinanzeigenLinkShortener', 'isKleinanzeigenHost'],
+  ['ZalandoLinkShortener', 'isZalandoHost'],
 ];
 
 function isHandledHost(hostname) {

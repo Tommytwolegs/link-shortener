@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Jimothy's Link Shortener",
   "short_name": "Link Shortener",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "Cleans long URLs on shopping, travel, and social sites — strips tracking and gives you a clean shareable link.",
   "author": "Thomas Powers",
   "homepage_url": "https://github.com/Tommytwolegs/link-shortener",
@@ -232,7 +232,66 @@
     "*://*.soundcloud.com/*",
     "*://music.apple.com/*",
     "*://podcasts.apple.com/*",
-    "*://*.twitch.tv/*"
+    "*://*.twitch.tv/*",
+    "*://*.wayfair.com/*",
+    "*://*.wayfair.ca/*",
+    "*://*.wayfair.co.uk/*",
+    "*://*.wayfair.de/*",
+    "*://*.bestbuy.com/*",
+    "*://*.bestbuy.ca/*",
+    "*://*.bandcamp.com/*",
+    "*://*.letterboxd.com/*",
+    "*://*.tripadvisor.com/*",
+    "*://*.tripadvisor.co.uk/*",
+    "*://*.tripadvisor.ca/*",
+    "*://*.tripadvisor.com.au/*",
+    "*://*.tripadvisor.fr/*",
+    "*://*.tripadvisor.de/*",
+    "*://*.tripadvisor.it/*",
+    "*://*.tripadvisor.es/*",
+    "*://*.tripadvisor.in/*",
+    "*://*.tripadvisor.nl/*",
+    "*://*.tripadvisor.ie/*",
+    "*://*.tripadvisor.com.sg/*",
+    "*://*.tripadvisor.com.my/*",
+    "*://*.tripadvisor.com.br/*",
+    "*://*.tripadvisor.com.mx/*",
+    "*://*.meesho.com/*",
+    "*://*.carousell.com/*",
+    "*://*.carousell.sg/*",
+    "*://*.carousell.com.hk/*",
+    "*://*.carousell.com.my/*",
+    "*://*.carousell.ph/*",
+    "*://*.carousell.tw/*",
+    "*://*.taobao.com/*",
+    "*://*.tmall.com/*",
+    "*://item.jd.com/*",
+    "*://*.leboncoin.fr/*",
+    "*://*.olx.pl/*",
+    "*://*.olx.ro/*",
+    "*://*.olx.bg/*",
+    "*://*.olx.ua/*",
+    "*://*.olx.pt/*",
+    "*://*.olx.kz/*",
+    "*://*.wallapop.com/*",
+    "*://*.marktplaats.nl/*",
+    "*://*.kleinanzeigen.de/*",
+    "*://*.zalando.de/*",
+    "*://*.zalando.fr/*",
+    "*://*.zalando.it/*",
+    "*://*.zalando.es/*",
+    "*://*.zalando.nl/*",
+    "*://*.zalando.pl/*",
+    "*://*.zalando.co.uk/*",
+    "*://*.zalando.at/*",
+    "*://*.zalando.ch/*",
+    "*://*.zalando.be/*",
+    "*://*.zalando.se/*",
+    "*://*.zalando.dk/*",
+    "*://*.zalando.fi/*",
+    "*://*.zalando.no/*",
+    "*://*.zalando.cz/*",
+    "*://*.zalando.ie/*"
   ],
   "optional_host_permissions": [
     "*://*/*"
@@ -943,6 +1002,215 @@
       ],
       "js": [
         "src/twitch.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.wayfair.com/*",
+        "*://*.wayfair.ca/*",
+        "*://*.wayfair.co.uk/*",
+        "*://*.wayfair.de/*"
+      ],
+      "js": [
+        "src/wayfair.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.bestbuy.com/*",
+        "*://*.bestbuy.ca/*"
+      ],
+      "js": [
+        "src/bestbuy.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.bandcamp.com/*"
+      ],
+      "js": [
+        "src/bandcamp.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.letterboxd.com/*"
+      ],
+      "js": [
+        "src/letterboxd.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.tripadvisor.com/*",
+        "*://*.tripadvisor.co.uk/*",
+        "*://*.tripadvisor.ca/*",
+        "*://*.tripadvisor.com.au/*",
+        "*://*.tripadvisor.fr/*",
+        "*://*.tripadvisor.de/*",
+        "*://*.tripadvisor.it/*",
+        "*://*.tripadvisor.es/*",
+        "*://*.tripadvisor.in/*",
+        "*://*.tripadvisor.nl/*",
+        "*://*.tripadvisor.ie/*",
+        "*://*.tripadvisor.com.sg/*",
+        "*://*.tripadvisor.com.my/*",
+        "*://*.tripadvisor.com.br/*",
+        "*://*.tripadvisor.com.mx/*"
+      ],
+      "js": [
+        "src/tripadvisor.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.meesho.com/*"
+      ],
+      "js": [
+        "src/meesho.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.carousell.com/*",
+        "*://*.carousell.sg/*",
+        "*://*.carousell.com.hk/*",
+        "*://*.carousell.com.my/*",
+        "*://*.carousell.ph/*",
+        "*://*.carousell.tw/*"
+      ],
+      "js": [
+        "src/carousell.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.taobao.com/*",
+        "*://*.tmall.com/*"
+      ],
+      "js": [
+        "src/taobao.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://item.jd.com/*"
+      ],
+      "js": [
+        "src/jd.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.leboncoin.fr/*"
+      ],
+      "js": [
+        "src/leboncoin.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.olx.pl/*",
+        "*://*.olx.ro/*",
+        "*://*.olx.bg/*",
+        "*://*.olx.ua/*",
+        "*://*.olx.pt/*",
+        "*://*.olx.kz/*"
+      ],
+      "js": [
+        "src/olx.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.wallapop.com/*"
+      ],
+      "js": [
+        "src/wallapop.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.marktplaats.nl/*"
+      ],
+      "js": [
+        "src/marktplaats.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.kleinanzeigen.de/*"
+      ],
+      "js": [
+        "src/kleinanzeigen.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.zalando.de/*",
+        "*://*.zalando.fr/*",
+        "*://*.zalando.it/*",
+        "*://*.zalando.es/*",
+        "*://*.zalando.nl/*",
+        "*://*.zalando.pl/*",
+        "*://*.zalando.co.uk/*",
+        "*://*.zalando.at/*",
+        "*://*.zalando.ch/*",
+        "*://*.zalando.be/*",
+        "*://*.zalando.se/*",
+        "*://*.zalando.dk/*",
+        "*://*.zalando.fi/*",
+        "*://*.zalando.no/*",
+        "*://*.zalando.cz/*",
+        "*://*.zalando.ie/*"
+      ],
+      "js": [
+        "src/zalando.js",
         "src/social-content.js"
       ],
       "run_at": "document_start",

@@ -30,7 +30,7 @@ Long URLs from shopping, travel, and social sites are stuffed with tracking IDs,
 
 WHAT GETS CLEANED
 
-Nearly fifty popular sites are supported — shopping, travel booking, social media, and entertainment platforms across every world region — each with hand-tuned rules for that site's URL structure. The full list is visible in the extension's popup and on the project page.
+More than sixty popular sites are supported — shopping, travel booking, social media, and entertainment platforms across every world region — each with hand-tuned rules for that site's URL structure. The full list is visible in the extension's popup and on the project page.
 
 The cleanup is careful about what it keeps. Parameters that change what the recipient actually sees survive: product variant selections stay locked, playlist position is kept, comment deep-links still scroll to the right comment, video timestamps survive, and paywall gift links keep working. Only the tracking clutter goes.
 
@@ -52,7 +52,7 @@ No analytics, no telemetry, no network requests of any kind. The only thing stor
 
 OPEN SOURCE
 
-Plain, dependency-free JavaScript with 2,163 unit tests: https://github.com/Tommytwolegs/link-shortener
+Plain, dependency-free JavaScript with 2,415 unit tests: https://github.com/Tommytwolegs/link-shortener
 
 ---
 
@@ -97,7 +97,16 @@ Privacy policy URL: https://github.com/Tommytwolegs/link-shortener/blob/main/PRI
 
 ## Chrome Web Store "What's new in this version?" (release notes)
 
-### v1.10.0 (unreleased — submit the newest version once v1.7.0 clears review)
+### v1.11.0 (unreleased — submit the newest version once v1.7.0 clears review)
+
+v1.11.0 — the everywhere release.
+
+* Fifteen more sites supported (sixty-three total): major home-goods and electronics retailers, independent music and film-diary platforms, the world's biggest travel-review site, and the leading marketplaces and classifieds of France, Germany, Spain, the Netherlands, Poland, India, China, and Southeast Asia.
+* As always, functional state survives: variant and size selections, item identity, and review pagination are preserved while share tokens and click-path attribution are stripped.
+
+Reminder for the v1.11.0 AMO notes: 63 sites / 264 host permissions / 2,415 tests; 15 new modules (wayfair, bestbuy, bandcamp, letterboxd, tripadvisor, meesho, carousell, taobao, jd, leboncoin, olx, wallapop, marktplaats, kleinanzeigen, zalando).
+
+### v1.10.0 (superseded before submission — never shipped)
 
 v1.10.0 — media & entertainment expansion.
 
