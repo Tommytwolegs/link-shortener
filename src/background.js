@@ -91,6 +91,9 @@ if (typeof importScripts === 'function') {
     'bilibili.js',
     'shein.js',
     'news.js',
+    'google.js',
+    'gdrive.js',
+    'redirect.js',
     'utm.js',
   );
 }
@@ -283,6 +286,12 @@ const FANDOM_URL_FILTERS = [{ hostSuffix: 'fandom.com' }];
 const BILIBILI_URL_FILTERS = [{ hostSuffix: 'bilibili.com' }, { hostEquals: 'b23.tv' }];
 const SHEIN_URL_FILTERS = ['com','co.uk','com.mx','com.br','tw','se','pl'].map((t) => ({ hostSuffix: 'shein.' + t }));
 const NEWS_URL_FILTERS = ['nytimes.com','theguardian.com','washingtonpost.com','bbc.com','bbc.co.uk','cnn.com','dailymail.co.uk','reuters.com','apnews.com','npr.org','foxnews.com','bloomberg.com','wsj.com'].map((h) => ({ hostSuffix: h }));
+const GOOGLE_URL_FILTERS = [
+  { hostEquals: 'www.google.com' }, { hostEquals: 'google.com' },
+];
+const GDRIVE_URL_FILTERS = [
+  { hostEquals: 'docs.google.com' }, { hostEquals: 'drive.google.com' },
+];
 
 const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(AGODA_URL_FILTERS).concat(BOOKING_URL_FILTERS)
@@ -319,7 +328,8 @@ const ALL_URL_FILTERS = AMAZON_URL_FILTERS
   .concat(ZALANDO_URL_FILTERS)
   .concat(NETFLIX_URL_FILTERS).concat(ROBLOX_URL_FILTERS)
   .concat(FANDOM_URL_FILTERS).concat(BILIBILI_URL_FILTERS)
-  .concat(SHEIN_URL_FILTERS).concat(NEWS_URL_FILTERS);
+  .concat(SHEIN_URL_FILTERS).concat(NEWS_URL_FILTERS)
+  .concat(GOOGLE_URL_FILTERS).concat(GDRIVE_URL_FILTERS);
 
 // -- Enable/disable state -----------------------------------------------------
 
@@ -469,6 +479,13 @@ chrome.runtime.onStartup.addListener(ensureContextMenu);
 // Try every per-site shortener in turn, then fall back to UTM stripping,
 // then to the original URL. Returns the cleanest form we can produce.
 function cleanAnyUrl(input, keepParams) {
+  // First, unwrap tracking redirectors (Gmail/Google's /url?q=, Facebook's
+  // l.php?u=, Reddit's out.reddit.com, YouTube's /redirect) so the per-site
+  // cleanup below runs against the REAL destination. Context-menu only —
+  // the address bar never sees these URLs.
+  if (self.RedirectUnwrapper) {
+    input = self.RedirectUnwrapper.unwrapRedirects(input);
+  }
   let url;
   try {
     url = new URL(input);
@@ -749,6 +766,14 @@ function cleanAnyUrl(input, keepParams) {
       match: (h) => self.NewsLinkShortener.isNewsHost(h),
       shorten: (u) => self.NewsLinkShortener.shortenNewsUrl(u),
     },
+    self.GoogleLinkShortener && {
+      match: (h) => self.GoogleLinkShortener.isGoogleHost(h),
+      shorten: (u) => self.GoogleLinkShortener.shortenGoogleUrl(u),
+    },
+    self.GdriveLinkShortener && {
+      match: (h) => self.GdriveLinkShortener.isGdriveHost(h),
+      shorten: (u) => self.GdriveLinkShortener.shortenGdriveUrl(u),
+    },
   ].filter(Boolean);
 
   let working = input;
@@ -892,6 +917,8 @@ const HOST_CHECKS = [
   ['BilibiliLinkShortener', 'isBilibiliHost'],
   ['SheinLinkShortener', 'isSheinHost'],
   ['NewsLinkShortener', 'isNewsHost'],
+  ['GoogleLinkShortener', 'isGoogleHost'],
+  ['GdriveLinkShortener', 'isGdriveHost'],
 ];
 
 function isHandledHost(hostname) {

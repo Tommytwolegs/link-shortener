@@ -27,6 +27,21 @@ were collapsed on 2026-06-12; they were never submitted anywhere).
   tokens (NYT unlocked_article_code, Bloomberg accessToken, WSJ st, FT
   shareType/token) — guaranteed by the per-outlet denylist design.
 
+- **Google Search** — cleans shared result URLs down to the query and
+  real filters (mode, language, pagination), stripping ved/ei/sca_esv/
+  gs_* session tracking. Scoped to www.google.com /search only; no other
+  Google property is touched.
+- **Google Drive/Docs/Sheets/Slides/Forms** — strips usp= share
+  attribution, ts, and notably ouid= (the sharing user's account id);
+  PRESERVES resourcekey= (access breaks without it), gid= (sheet tab),
+  and #heading anchors.
+- **Redirector unwrapping in the right-click menu** — "Copy clean URL"
+  on a link wrapped by Gmail/Google (/url?q=), Facebook (l.php?u=),
+  Reddit (out.reddit.com), or YouTube (/redirect) now copies the real
+  destination, cleaned by whichever site module matches it. Works
+  everywhere, needs no new permissions, capped at 3 hops, http(s)
+  targets only.
+
 ### Formerly tagged v1.11.0 during development
 
 ### Added

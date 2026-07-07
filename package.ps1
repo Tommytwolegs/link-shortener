@@ -168,6 +168,9 @@ $firefoxManifest.background = [pscustomobject]@{
         'src/bilibili.js',
         'src/shein.js',
         'src/news.js',
+        'src/google.js',
+        'src/gdrive.js',
+        'src/redirect.js',
         'src/utm.js',
         'src/background.js'
     )

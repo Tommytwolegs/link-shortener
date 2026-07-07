@@ -28,6 +28,8 @@
   // Per-site toggle metadata. `group` matches the data-group attribute on the
   // checkbox in popup.html and the group-count-<id> element ID.
   const SITES = [
+    { key: 'enabledGoogle', group: 'global' },
+    { key: 'enabledGdrive', group: 'global' },
     { key: 'enabledAmazon', group: 'global' },
     { key: 'enabledEbay', group: 'global' },
     { key: 'enabledEtsy', group: 'global' },
@@ -178,6 +180,8 @@
   };
 
   const SITE_LABELS = {
+    Google: 'Google Search',
+    Gdrive: 'Google Drive/Docs',
     NewsNyt: 'New York Times',
     NewsWapo: 'Washington Post',
     NewsWsj: 'Wall Street Journal',

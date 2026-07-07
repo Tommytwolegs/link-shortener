@@ -355,7 +355,11 @@
     "*://*.arabnews.com/*",
     "*://*.news24.com/*",
     "*://*.reuters.com/*",
-    "*://*.apnews.com/*"
+    "*://*.apnews.com/*",
+    "*://www.google.com/*",
+    "*://google.com/*",
+    "*://docs.google.com/*",
+    "*://drive.google.com/*"
   ],
   "optional_host_permissions": [
     "*://*/*"
@@ -1399,6 +1403,30 @@
       ],
       "js": [
         "src/news.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://www.google.com/*",
+        "*://google.com/*"
+      ],
+      "js": [
+        "src/google.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://docs.google.com/*",
+        "*://drive.google.com/*"
+      ],
+      "js": [
+        "src/gdrive.js",
         "src/social-content.js"
       ],
       "run_at": "document_start",

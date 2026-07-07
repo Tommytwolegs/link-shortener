@@ -13,7 +13,8 @@
 // SoundCloud, Apple Music, Twitch, Wayfair, Best Buy, Bandcamp,
 // Letterboxd, Tripadvisor, Meesho, Carousell, Taobao/Tmall, JD,
 // Leboncoin, OLX, Wallapop, Marktplaats, Kleinanzeigen, Zalando, Netflix,
-// Roblox, Fandom, Bilibili, SHEIN, and the 13-outlet news pack.
+// Roblox, Fandom, Bilibili, SHEIN, the 51-outlet news pack, Google
+// Search, and Google Drive/Docs.
 // (Amazon and the seven travel sites have their own scripts.)
 //
 // Why no in-page anchor rewriting (unlike Amazon's content.js): on social/
@@ -102,6 +103,8 @@
     self.BilibiliLinkShortener ||
     self.SheinLinkShortener ||
     self.NewsLinkShortener ||
+    self.GoogleLinkShortener ||
+    self.GdriveLinkShortener ||
     null;
 
   // Per-site storage key, taken from the active module. Modules that cover
