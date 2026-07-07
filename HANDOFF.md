@@ -287,7 +287,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **2,694 total assertions across 72 test files, all passing.** Run with:
+  **2,700 total assertions across 72 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -761,7 +761,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 72 test files, 2,694 assertions
+├── tests/                          — 72 test files, 2,700 assertions
 └── dist/                           — built zip + xpi packages
 ```
 

@@ -52,7 +52,7 @@ No analytics, no telemetry, no network requests of any kind. The only thing stor
 
 OPEN SOURCE
 
-Plain, dependency-free JavaScript with 2,694 unit tests: https://github.com/Tommytwolegs/link-shortener
+Plain, dependency-free JavaScript with 2,700 unit tests: https://github.com/Tommytwolegs/link-shortener
 
 ---
 
@@ -106,7 +106,7 @@ v1.8.0 — the everywhere release.
 * The popup is organized by world region — Global, Americas, Asia-Pacific, Europe — with site-type subheadings, and remembers which sections you keep open.
 * This update requests access to the newly supported sites; as always the extension makes zero network requests and collects nothing.
 
-Reminder for the v1.8.0 AMO notes: 121 sites (119 toggles) / 332 host permissions / 2,694 tests; the extension is unchanged architecturally — every module is a pure URL function.
+Reminder for the v1.8.0 AMO notes: 121 sites (119 toggles) / 332 host permissions / 2,700 tests; the extension is unchanged architecturally — every module is a pure URL function.
 
 Older draft notes below were written while this work was tagged 1.9–1.11 during development; they're folded into the single 1.8.0 submission above.
 

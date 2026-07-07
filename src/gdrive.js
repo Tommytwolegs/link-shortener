@@ -15,8 +15,10 @@
 //
 // PRESERVED: `resourcekey` (REQUIRED for access to many pre-2021 shared
 // files — stripping it breaks the link entirely), `gid` (sheet-tab
-// selector), `range`, and on published sheets `single`/`widget`/`headers`.
-// The hash is preserved (#gid=..., #heading=h.abc).
+// selector), `range`, `disco` (comment-thread deep links — the URL a
+// "comment" notification email opens), `tab` (document-tab deep links,
+// t.<id>), and on published sheets `single`/`widget`/`headers`.
+// The hash is preserved (#gid=..., #heading=h.abc, #fvid=...).
 //
 // Hosts: docs.google.com and drive.google.com exactly — no other Google
 // property is ever touched.
@@ -38,7 +40,7 @@
   const FORMS = [
     // Editor docs (document/spreadsheets/presentation/forms) — /d/<id>/...
     { pattern: /^\/(?:document|spreadsheets|presentation|forms)\/d\/[^/]+(?:\/(?:edit|view|preview|copy|htmlview))?\/?$/,
-      keepParams: ['resourcekey', 'gid', 'range'] },
+      keepParams: ['resourcekey', 'gid', 'range', 'disco', 'tab'] },
     // Published docs — /d/e/<id>/pub|pubhtml|viewform
     { pattern: /^\/(?:document|spreadsheets|presentation)\/d\/e\/[^/]+\/(?:pub|pubhtml)\/?$/,
       keepParams: ['resourcekey', 'gid', 'single', 'widget', 'headers'] },
