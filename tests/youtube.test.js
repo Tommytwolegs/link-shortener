@@ -7,6 +7,9 @@ const {
 } = require(path.join('..', 'src', 'youtube.js'));
 
 const CASES = [
+  { name: 'channel share: si stripped via fallback',
+    input: 'https://www.youtube.com/@somechannel?si=AbCdEf123',
+    expected: 'https://www.youtube.com/@somechannel' },
   // /watch
   { name: 'watch: si stripped',
     input: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&si=trackingblob',
@@ -31,7 +34,7 @@ const CASES = [
     expected: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
   { name: 'watch: no v= → null',
     input: 'https://www.youtube.com/watch?si=X',
-    expected: null },
+    expected: 'https://www.youtube.com/watch' },
   { name: 'watch: hash preserved alongside cleaned params',
     input: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&si=X#fragment',
     expected: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ#fragment' },
@@ -95,18 +98,21 @@ const CASES = [
     expected: 'https://www.youtube.com/playlist?list=PLabc123' },
   { name: 'playlist: no list= → null',
     input: 'https://www.youtube.com/playlist?si=X',
-    expected: null },
+    expected: 'https://www.youtube.com/playlist' },
 
   // Non-post pages
   { name: 'channel home → null',
     input: 'https://www.youtube.com/@somebody',
-    expected: null },
+    expected: 'https://www.youtube.com/@somebody',
+    expectedNeeds: false },
   { name: 'home page → null',
     input: 'https://www.youtube.com/',
-    expected: null },
+    expected: 'https://www.youtube.com/',
+    expectedNeeds: false },
   { name: 'search → null',
     input: 'https://www.youtube.com/results?search_query=hello',
-    expected: null },
+    expected: 'https://www.youtube.com/results?search_query=hello',
+    expectedNeeds: false },
 
   // Non-YouTube
   { name: 'google.com → null',

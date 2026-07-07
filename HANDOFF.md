@@ -287,7 +287,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **2,710 total assertions across 72 test files, all passing.** Run with:
+  **2,736 total assertions across 72 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -604,13 +604,21 @@ Full per-version detail in `CHANGELOG.md`.
   work and the per-site toggles silently did nothing for those sites.
   See "Round 4" of v1.7.0 history above.
 
-- **Host-scoped fallback denylists.** linkedin.js and twitter.js strip
-  their site's own tracking params (lipi/trk/trackingId/... and
-  ?s=&t=/ref_src) even on paths that match NO recognized permalink form
-  — found via live smoke test when "Copy clean URL" left ?lipi= on a
-  /news/story/ link. Pattern: specFor() miss → clone URL → delete
-  FALLBACK_STRIP params → rebuild. Extend to other modules as gaps are
-  reported; keep fallback lists strictly to documented per-site junk.
+- **Host-scoped fallback denylists — now in 16 modules.** On any
+  matched-host path that fits NO recognized permalink form, the module
+  strips its site's own documented junk params (denylist) instead of
+  returning null. Found via live smoke test when "Copy clean URL" left
+  ?lipi= on a LinkedIn /news/story/ link. Pattern: form miss →
+  fallbackClean(url) → clone URL → delete FALLBACK_STRIP params (+
+  FALLBACK_PREFIXES) → rebuild. Covered: linkedin, twitter, asin,
+  youtube, facebook, tiktok, ebay, etsy, reddit, steam, spotify,
+  pinterest, medium, shopee, walmart, target. Gotchas learned: target's
+  fallback must NOT strip searchTerm (functional on /s pages); asin's
+  fallback returns null for non-retail subdomains (aws., console.,
+  sellercentral., music., ...) so AWS links stay untouched; asin.js has
+  NO shortenUrl alias — call shortenAmazonUrl. Keep fallback lists
+  strictly to documented per-site junk; extend to more modules as gaps
+  are reported.
 
 - **Hash preservation.** Every per-site module preserves
   `location.hash`. Don't drop it — Amazon uses `#customerReviews`,
@@ -769,7 +777,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 72 test files, 2,710 assertions
+├── tests/                          — 72 test files, 2,736 assertions
 └── dist/                           — built zip + xpi packages
 ```
 

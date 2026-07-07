@@ -7,6 +7,9 @@ const {
 } = require(path.join('..', 'src', 'shopee.js'));
 
 const CASES = [
+  { name: 'shop page: smtt stripped via fallback',
+    input: 'https://shopee.sg/someshop?smtt=0.1&sp_atk=xyz',
+    expected: 'https://shopee.sg/someshop' },
 
   { name: 'slug form already clean',
     input: 'https://shopee.sg/Wireless-Mouse-Ergonomic-i.12345678.987654321',
@@ -36,13 +39,16 @@ const CASES = [
     expected: 'https://shopee.sg/Item-i.1.2#reviews' },
   { name: 'search page → null',
     input: 'https://shopee.sg/search?keyword=mouse',
-    expected: null },
+    expected: 'https://shopee.sg/search?keyword=mouse',
+    expectedNeeds: false },
   { name: 'shop page → null',
     input: 'https://shopee.sg/someshop',
-    expected: null },
+    expected: 'https://shopee.sg/someshop',
+    expectedNeeds: false },
   { name: 'home → null',
     input: 'https://shopee.sg/',
-    expected: null },
+    expected: 'https://shopee.sg/',
+    expectedNeeds: false },
   { name: 'lookalike host → null',
     input: 'https://notshopee.sg/Item-i.1.2',
     expected: null },

@@ -7,6 +7,9 @@ const {
 } = require(path.join('..', 'src', 'spotify.js'));
 
 const CASES = [
+  { name: 'user playlist (old form): si stripped via fallback',
+    input: 'https://open.spotify.com/user/spotify/playlist/37i9dQ?si=AbC123',
+    expected: 'https://open.spotify.com/user/spotify/playlist/37i9dQ' },
   // /embed/ player forms
   { name: 'embed track: utm_source=generator stripped, theme kept',
     input: 'https://open.spotify.com/embed/track/4uLU6hMCjMI75M1A2tKUQC?utm_source=generator&theme=0',
@@ -97,10 +100,12 @@ const CASES = [
     expectedNeeds: false },
   { name: 'home → null',
     input: 'https://open.spotify.com/',
-    expected: null },
+    expected: 'https://open.spotify.com/',
+    expectedNeeds: false },
   { name: 'search → null',
     input: 'https://open.spotify.com/search/song',
-    expected: null },
+    expected: 'https://open.spotify.com/search/song',
+    expectedNeeds: false },
   { name: 'non-Spotify → null',
     input: 'https://www.spotify.com/track/abc123',
     expected: null },

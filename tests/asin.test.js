@@ -14,6 +14,9 @@ const {
 } = require(path.join('..', 'src', 'asin.js'));
 
 const CASES = [
+  { name: 'amazon search: k survives, crid/sprefix/qid/ref die (fallback)',
+    input: 'https://www.amazon.com/s?k=cast+iron&crid=ABC123&sprefix=cast%2Caps%2C123&qid=1700000&ref=nb_sb_noss',
+    expected: 'https://www.amazon.com/s?k=cast+iron' },
   { name: 'US: slug + /dp/ASIN with ref and query params',
     input: 'https://www.amazon.com/Some-Product-Title/dp/B08N5WRWNW/ref=sr_1_3?keywords=foo&qid=1234&sr=8-3',
     expected: 'https://www.amazon.com/dp/B08N5WRWNW' },
@@ -118,15 +121,17 @@ const CASES = [
   { name: 'Non-Amazon URL returns null',
     input: 'https://www.google.com/search?q=B08N5WRWNW',
     expected: null },
-  { name: 'Amazon homepage returns null',
+  { name: 'Amazon homepage: passthrough via fallback',
     input: 'https://www.amazon.com/',
-    expected: null },
-  { name: 'Amazon search returns null',
+    expected: 'https://www.amazon.com/',
+    expectedNeeds: false },
+  { name: 'Amazon search: k survives, ref dies via fallback',
     input: 'https://www.amazon.com/s?k=hello&ref=nb_sb_noss',
-    expected: null },
-  { name: 'Amazon cart returns null',
+    expected: 'https://www.amazon.com/s?k=hello' },
+  { name: 'Amazon cart: passthrough via fallback',
     input: 'https://www.amazon.com/gp/cart/view.html',
-    expected: null },
+    expected: 'https://www.amazon.com/gp/cart/view.html',
+    expectedNeeds: false },
   { name: 'amazon-aws.com is rejected',
     input: 'https://amazon-aws.com/dp/B08N5WRWNW',
     expected: null },
@@ -164,9 +169,10 @@ const CASES = [
     expected: 'https://www.amazon.com/product-reviews/B08N5WRWNW?filterByStar=five_star#cm_cr-review_list',
     expectedNeeds: false },
 
-  { name: 'Lowercase ASIN intentionally NOT matched',
+  { name: 'Lowercase ASIN: not a product form, passthrough via fallback',
     input: 'https://www.amazon.com/dp/b08n5wrwnw',
-    expected: null },
+    expected: 'https://www.amazon.com/dp/b08n5wrwnw',
+    expectedNeeds: false },
 
   // ----- Sponsored / wrapper URLs always go to /dp/ — sponsored-product
   // clickthroughs land on the product page.
@@ -185,12 +191,13 @@ const CASES = [
   { name: 'DE: /sspa/click preserves .de storefront',
     input: 'https://www.amazon.de/sspa/click?url=%2FSlug%2Fdp%2FB0B57CV483',
     expected: 'https://www.amazon.de/dp/B0B57CV483' },
-  { name: 'Wrapper: url param present but not an Amazon product → null',
+  { name: 'Wrapper with non-product target: url param survives fallback',
     input: 'https://www.amazon.com/sspa/click?url=%2Fs%3Fk%3Dhello',
-    expected: null },
-  { name: 'Wrapper: no url param → null',
+    expected: 'https://www.amazon.com/sspa/click?url=%2Fs%3Fk%3Dhello',
+    expectedNeeds: false },
+  { name: 'Wrapper without target: ie + spc junk stripped via fallback',
     input: 'https://www.amazon.com/sspa/click?ie=UTF8&spc=abc',
-    expected: null },
+    expected: 'https://www.amazon.com/sspa/click' },
 ];
 
 let passed = 0;

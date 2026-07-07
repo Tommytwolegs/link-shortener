@@ -53,11 +53,30 @@
     return isListingPath(url.pathname);
   }
 
+
+  // Host-scoped tracking params, stripped on ANY matched-host path that
+  // doesn't fit a recognized form above (search pages, profiles, shop
+  // pages...). Denylist: functional params always survive.
+  const FALLBACK_STRIP = new Set(['ref', 'frs', 'pro', 'crt', 'sts', 'plkey', 'click_key', 'click_sum', 'rec_type']);
+  const FALLBACK_PREFIXES = [];
+
+  function fallbackClean(url) {
+    const clone = new URL(url.href);
+    for (const name of Array.from(clone.searchParams.keys())) {
+      const lower = name.toLowerCase();
+      if (FALLBACK_STRIP.has(lower) || FALLBACK_PREFIXES.some((p) => lower.startsWith(p))) {
+        clone.searchParams.delete(name);
+      }
+    }
+    const hash = clone.hash || '';
+    return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;
+  }
+
   function shortenEtsyUrl(input) {
     let url;
     try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
     if (!isEtsyHost(url.hostname)) return null;
-    if (!isListingPath(url.pathname)) return null;
+    if (!isListingPath(url.pathname)) return fallbackClean(url);
     // The path itself (with optional locale prefix and slug) is canonical;
     // we just strip the query and keep the hash. We don't reorder /locale/
     // out because Etsy renders that locale's translation by default and

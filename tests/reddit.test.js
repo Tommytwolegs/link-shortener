@@ -7,6 +7,9 @@ const {
 } = require(path.join('..', 'src', 'reddit.js'));
 
 const CASES = [
+  { name: 'unmatched path: share_id stripped via fallback',
+    input: 'https://www.reddit.com/r/pics/wiki/index?share_id=abc123',
+    expected: 'https://www.reddit.com/r/pics/wiki/index' },
   // ----- User-profile front pages (keep sort/timeframe).
   { name: 'user profile: share junk stripped',
     input: 'https://www.reddit.com/user/spez/?utm_source=share&utm_medium=web2x',
@@ -94,7 +97,8 @@ const CASES = [
     expectedNeeds: false },
   { name: 'home → null',
     input: 'https://www.reddit.com/',
-    expected: null },
+    expected: 'https://www.reddit.com/',
+    expectedNeeds: false },
   { name: 'user profile now recognized (front page, no params)',
     input: 'https://www.reddit.com/user/janedoe/',
     expected: 'https://www.reddit.com/user/janedoe/',

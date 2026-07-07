@@ -66,12 +66,31 @@
   //         color/size combination on a listing with variations).
   const KEEP_PARAMS = new Set(['var']);
 
+
+  // Host-scoped tracking params, stripped on ANY matched-host path that
+  // doesn't fit a recognized form above (search pages, profiles, shop
+  // pages...). Denylist: functional params always survive.
+  const FALLBACK_STRIP = new Set(['_trkparms', '_trksid', 'mkcid', 'mkevt', 'mkrid', 'campid', 'customid', 'toolid', 'siteid', 'ssspo', 'sssrc', 'ssuid', 'widget_ver', 'media', 'mkpid', 'amdata']);
+  const FALLBACK_PREFIXES = [];
+
+  function fallbackClean(url) {
+    const clone = new URL(url.href);
+    for (const name of Array.from(clone.searchParams.keys())) {
+      const lower = name.toLowerCase();
+      if (FALLBACK_STRIP.has(lower) || FALLBACK_PREFIXES.some((p) => lower.startsWith(p))) {
+        clone.searchParams.delete(name);
+      }
+    }
+    const hash = clone.hash || '';
+    return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;
+  }
+
   function shortenEbayUrl(input) {
     let url;
     try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
     if (!isEbayHost(url.hostname)) return null;
     const id = extractItemId(url.pathname);
-    if (!id) return null;
+    if (!id) return fallbackClean(url);
 
     const hash = url.hash || '';
     const params = new URLSearchParams();

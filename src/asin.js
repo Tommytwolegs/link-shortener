@@ -260,6 +260,31 @@
   // That matters because the content script uses `history.replaceState`,
   // which throws SecurityError on cross-origin URLs.
   // Returns null if the input isn't a recognized Amazon URL.
+
+  // Host-scoped tracking params, stripped on ANY matched-host path that
+  // doesn't fit a recognized form above (search pages, profiles, shop
+  // pages...). Denylist: functional params always survive.
+  const FALLBACK_STRIP = new Set(['ref', 'ref_', 'crid', 'sprefix', 'qid', 'sr', 'dib', 'dib_tag', 'content-id', 'linkcode', 'tag', 'linkid', 'ascsubtag', 'creative', 'creativeasin', 'camp', 'ie', 'spc']);
+  const FALLBACK_PREFIXES = ['pd_rd_', 'pf_rd_'];
+
+  // Non-retail Amazon subdomains (AWS console, seller tools, music...) are
+  // not shopping surfaces — leave their links completely untouched.
+  const NON_RETAIL_SUBDOMAIN =
+    /^(?:aws|console|sellercentral|advertising|developer|music|s3|docs|status|health)\./i;
+
+  function fallbackClean(url) {
+    if (NON_RETAIL_SUBDOMAIN.test(url.hostname)) return null;
+    const clone = new URL(url.href);
+    for (const name of Array.from(clone.searchParams.keys())) {
+      const lower = name.toLowerCase();
+      if (FALLBACK_STRIP.has(lower) || FALLBACK_PREFIXES.some((p) => lower.startsWith(p))) {
+        clone.searchParams.delete(name);
+      }
+    }
+    const hash = clone.hash || '';
+    return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;
+  }
+
   function shortenAmazonUrl(input, options) {
     let url;
     try {
@@ -269,7 +294,7 @@
     }
     if (!isAmazonHost(url.hostname)) return null;
     const matched = matchUrlFormWithWrapper(url.pathname, url.search);
-    if (!matched) return null;
+    if (!matched) return fallbackClean(url);
     const { asin, form } = matched;
 
     const slug = options && options.slug ? options.slug : null;

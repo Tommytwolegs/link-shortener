@@ -7,6 +7,9 @@ const {
 } = require(path.join('..', 'src', 'etsy.js'));
 
 const CASES = [
+  { name: 'search: q survives, ref dies (fallback)',
+    input: 'https://www.etsy.com/search?q=mug&ref=pagination&page=2',
+    expected: 'https://www.etsy.com/search?q=mug&page=2' },
   // Canonical
   { name: 'listing with slug already clean',
     input: 'https://www.etsy.com/listing/1234567890/some-handmade-thing',
@@ -53,16 +56,20 @@ const CASES = [
   // Non-listing pages
   { name: 'shop page → null',
     input: 'https://www.etsy.com/shop/somebody',
-    expected: null },
+    expected: 'https://www.etsy.com/shop/somebody',
+    expectedNeeds: false },
   { name: 'search → null',
     input: 'https://www.etsy.com/search?q=mug',
-    expected: null },
+    expected: 'https://www.etsy.com/search?q=mug',
+    expectedNeeds: false },
   { name: 'home → null',
     input: 'https://www.etsy.com/',
-    expected: null },
+    expected: 'https://www.etsy.com/',
+    expectedNeeds: false },
   { name: 'category → null',
     input: 'https://www.etsy.com/c/home-and-living',
-    expected: null },
+    expected: 'https://www.etsy.com/c/home-and-living',
+    expectedNeeds: false },
 
   // Non-Etsy
   { name: 'non-Etsy → null',
@@ -73,7 +80,8 @@ const CASES = [
     expected: null },
   { name: 'non-numeric id → null',
     input: 'https://www.etsy.com/listing/notanumber/cool-mug',
-    expected: null },
+    expected: 'https://www.etsy.com/listing/notanumber/cool-mug',
+    expectedNeeds: false },
 ];
 
 let passed = 0, failed = 0;

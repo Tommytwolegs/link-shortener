@@ -76,11 +76,30 @@
   // recipient can read. Preserved on every story form.
   const KEEP_PARAMS = ['sk'];
 
+
+  // Host-scoped tracking params, stripped on ANY matched-host path that
+  // doesn't fit a recognized form above (search pages, profiles, shop
+  // pages...). Denylist: functional params always survive.
+  const FALLBACK_STRIP = new Set(['source']);
+  const FALLBACK_PREFIXES = [];
+
+  function fallbackClean(url) {
+    const clone = new URL(url.href);
+    for (const name of Array.from(clone.searchParams.keys())) {
+      const lower = name.toLowerCase();
+      if (FALLBACK_STRIP.has(lower) || FALLBACK_PREFIXES.some((p) => lower.startsWith(p))) {
+        clone.searchParams.delete(name);
+      }
+    }
+    const hash = clone.hash || '';
+    return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;
+  }
+
   function shortenMediumUrl(input) {
     let url;
     try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
     if (!isMediumHost(url.hostname)) return null;
-    if (!isPostPath(url.hostname, url.pathname)) return null;
+    if (!isPostPath(url.hostname, url.pathname)) return fallbackClean(url);
 
     const params = new URLSearchParams();
     for (const k of KEEP_PARAMS) {

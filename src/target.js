@@ -66,7 +66,20 @@
     // mutate the caller's object (and break needsShortening's comparison).
     try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
     if (!isTargetHost(url.hostname)) return null;
-    if (!isProductPath(url.pathname)) return null;
+    if (!isProductPath(url.pathname)) {
+      // Non-product paths get a REDUCED strip: searchTerm is attribution
+      // junk on product pages but IS the query on /s search pages.
+      const clone = new URL(url.href);
+      for (const name of Array.from(clone.searchParams.keys())) {
+        const lower = name.toLowerCase();
+        if (lower !== 'searchterm' && TRACKING_PARAMS.has(lower)) {
+          clone.searchParams.delete(name);
+        }
+      }
+      const h2 = clone.hash || '';
+      return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${h2}`;
+    }
+
     const names = Array.from(url.searchParams.keys());
     for (const name of names) {
       if (TRACKING_PARAMS.has(name.toLowerCase())) {

@@ -71,7 +71,9 @@
     // mutate the caller's object (and break needsShortening's comparison).
     try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
     if (!isWalmartHost(url.hostname)) return null;
-    if (!isProductPath(url.pathname)) return null;
+    // Denylist module: apply the same strip on ANY host path (search,
+    // category, cart) — functional params always survive.
+
     // Strip Walmart-specific tracking params; leave anything else alone
     // (the universal-strip toggle handles utm_/gclid/etc.).
     const names = Array.from(url.searchParams.keys());

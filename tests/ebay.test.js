@@ -7,6 +7,9 @@ const {
 } = require(path.join('..', 'src', 'ebay.js'));
 
 const CASES = [
+  { name: 'search: _nkw survives, _trkparms dies (fallback)',
+    input: 'https://www.ebay.com/sch/i.html?_nkw=camera&_trksid=p2334524.m570&_trkparms=abc',
+    expected: 'https://www.ebay.com/sch/i.html?_nkw=camera' },
   // Bare canonical form
   { name: 'bare /itm/<id> already clean',
     input: 'https://www.ebay.com/itm/123456789012',
@@ -71,16 +74,20 @@ const CASES = [
   // Non-item pages
   { name: 'search page → null',
     input: 'https://www.ebay.com/sch/i.html?_nkw=widget',
-    expected: null },
+    expected: 'https://www.ebay.com/sch/i.html?_nkw=widget',
+    expectedNeeds: false },
   { name: 'category → null',
     input: 'https://www.ebay.com/b/Electronics/123/bn_456',
-    expected: null },
+    expected: 'https://www.ebay.com/b/Electronics/123/bn_456',
+    expectedNeeds: false },
   { name: 'seller page → null',
     input: 'https://www.ebay.com/usr/somebody',
-    expected: null },
+    expected: 'https://www.ebay.com/usr/somebody',
+    expectedNeeds: false },
   { name: 'home → null',
     input: 'https://www.ebay.com/',
-    expected: null },
+    expected: 'https://www.ebay.com/',
+    expectedNeeds: false },
   // Non-eBay
   { name: 'non-eBay → null',
     input: 'https://www.google.com/itm/Cool/123456789012',
@@ -88,7 +95,8 @@ const CASES = [
   // Non-numeric id falls through
   { name: 'non-numeric id → null',
     input: 'https://www.ebay.com/itm/Cool-Thing/notanumber',
-    expected: null },
+    expected: 'https://www.ebay.com/itm/Cool-Thing/notanumber',
+    expectedNeeds: false },
 ];
 
 let passed = 0, failed = 0;

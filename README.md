@@ -175,7 +175,7 @@ script registration described above.
 
 ## Tests
 
-2710 unit tests across 72 modules, runnable with plain Node. From the
+2736 unit tests across 72 modules, runnable with plain Node. From the
 repo root:
 
 ```

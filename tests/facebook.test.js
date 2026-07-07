@@ -11,6 +11,9 @@ const {
 } = require(path.join('..', 'src', 'facebook.js'));
 
 const CASES = [
+  { name: 'shared link junk: mibextid + __cft__ stripped via fallback',
+    input: 'https://www.facebook.com/somepage?mibextid=Nif5oz&__cft__[0]=AZXbig&__tn__=-UC',
+    expected: 'https://www.facebook.com/somepage' },
   // /<user>/posts/<id>
   { name: 'posts: pfbid with mibextid stripped',
     input: 'https://www.facebook.com/jane.doe/posts/pfbid0XYZabc?mibextid=ZbWKwL',
@@ -60,7 +63,8 @@ const CASES = [
     expected: 'https://www.facebook.com/jane.doe/photos/pcb.123/456' },
   { name: 'photos: index page (one segment) → null',
     input: 'https://www.facebook.com/jane.doe/photos/',
-    expected: null },
+    expected: 'https://www.facebook.com/jane.doe/photos/',
+    expectedNeeds: false },
 
   // /share/<kind>/<id>
   { name: 'share/p: cleans tracking',
@@ -88,7 +92,8 @@ const CASES = [
     expected: 'https://www.facebook.com/groups/12345/permalink/67890/' },
   { name: 'group permalink: non-numeric id → null',
     input: 'https://www.facebook.com/groups/12345/permalink/about/',
-    expected: null },
+    expected: 'https://www.facebook.com/groups/12345/permalink/about/',
+    expectedNeeds: false },
 
   // /events/<id>
   { name: 'events: tracking stripped',
@@ -96,10 +101,12 @@ const CASES = [
     expected: 'https://www.facebook.com/events/1234567890/' },
   { name: 'events: navigational /events/upcoming → null',
     input: 'https://www.facebook.com/events/upcoming?utm_source=foo',
-    expected: null },
+    expected: 'https://www.facebook.com/events/upcoming?utm_source=foo',
+    expectedNeeds: false },
   { name: 'events: navigational /events/discovery → null',
     input: 'https://www.facebook.com/events/discovery',
-    expected: null },
+    expected: 'https://www.facebook.com/events/discovery',
+    expectedNeeds: false },
 
   // /marketplace/item/<id>
   { name: 'marketplace: tracking stripped',
@@ -110,7 +117,8 @@ const CASES = [
     expected: 'https://www.facebook.com/marketplace/item/12345/#description' },
   { name: 'marketplace: category page → null',
     input: 'https://www.facebook.com/marketplace/category/vehicles',
-    expected: null },
+    expected: 'https://www.facebook.com/marketplace/category/vehicles',
+    expectedNeeds: false },
 
   // /watch
   { name: 'watch: keeps v=, drops everything else',
@@ -118,7 +126,8 @@ const CASES = [
     expected: 'https://www.facebook.com/watch?v=1234567890' },
   { name: 'watch: no v param → not a recognized post',
     input: 'https://www.facebook.com/watch/?ref=sharing',
-    expected: null },
+    expected: 'https://www.facebook.com/watch/?ref=sharing',
+    expectedNeeds: false },
 
   // /photo.php
   { name: 'photo.php: keeps fbid + set',
@@ -145,16 +154,20 @@ const CASES = [
   // Non-post pages on facebook.com
   { name: 'feed/home page → null',
     input: 'https://www.facebook.com/',
-    expected: null },
+    expected: 'https://www.facebook.com/',
+    expectedNeeds: false },
   { name: 'profile page → null',
     input: 'https://www.facebook.com/jane.doe',
-    expected: null },
+    expected: 'https://www.facebook.com/jane.doe',
+    expectedNeeds: false },
   { name: 'profile with trailing slash → null',
     input: 'https://www.facebook.com/jane.doe/',
-    expected: null },
+    expected: 'https://www.facebook.com/jane.doe/',
+    expectedNeeds: false },
   { name: 'login → null',
     input: 'https://www.facebook.com/login.php?next=https%3A%2F%2Fwww.facebook.com',
-    expected: null },
+    expected: 'https://www.facebook.com/login.php?next=https%3A%2F%2Fwww.facebook.com',
+    expectedNeeds: false },
 
   // Non-Facebook hosts
   { name: 'google.com → null',

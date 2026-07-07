@@ -78,12 +78,31 @@
     return isPostPath(url.pathname);
   }
 
+
+  // Host-scoped tracking params, stripped on ANY matched-host path that
+  // doesn't fit a recognized form above (search pages, profiles, shop
+  // pages...). Denylist: functional params always survive.
+  const FALLBACK_STRIP = new Set(['si', 'nd']);
+  const FALLBACK_PREFIXES = [];
+
+  function fallbackClean(url) {
+    const clone = new URL(url.href);
+    for (const name of Array.from(clone.searchParams.keys())) {
+      const lower = name.toLowerCase();
+      if (FALLBACK_STRIP.has(lower) || FALLBACK_PREFIXES.some((p) => lower.startsWith(p))) {
+        clone.searchParams.delete(name);
+      }
+    }
+    const hash = clone.hash || '';
+    return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;
+  }
+
   function shortenSpotifyUrl(input) {
     let url;
     try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
     if (!isSpotifyHost(url.hostname)) return null;
     const form = formFor(url.pathname);
-    if (!form) return null;
+    if (!form) return fallbackClean(url);
 
     const hash = url.hash || '';
     let query = '';

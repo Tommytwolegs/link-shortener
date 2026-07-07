@@ -124,6 +124,25 @@
   }
 
   // Build the clean form. Returns null if `input` isn't a Facebook post URL.
+
+  // Host-scoped tracking params, stripped on ANY matched-host path that
+  // doesn't fit a recognized form above (search pages, profiles, shop
+  // pages...). Denylist: functional params always survive.
+  const FALLBACK_STRIP = new Set(['mibextid', 'sfnsn', 'extid', 'rdid', '__tn__', 'wtsid']);
+  const FALLBACK_PREFIXES = ['__cft__'];
+
+  function fallbackClean(url) {
+    const clone = new URL(url.href);
+    for (const name of Array.from(clone.searchParams.keys())) {
+      const lower = name.toLowerCase();
+      if (FALLBACK_STRIP.has(lower) || FALLBACK_PREFIXES.some((p) => lower.startsWith(p))) {
+        clone.searchParams.delete(name);
+      }
+    }
+    const hash = clone.hash || '';
+    return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;
+  }
+
   function shortenFacebookUrl(input) {
     let url;
     try {
@@ -133,7 +152,7 @@
     }
     if (!isFacebookHost(url.hostname)) return null;
     const spec = postSpecFor(url.hostname, url.pathname, url.searchParams);
-    if (!spec) return null;
+    if (!spec) return fallbackClean(url);
 
     const allowed = spec.allowedParams;
     let newSearch = '';

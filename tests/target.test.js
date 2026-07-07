@@ -63,16 +63,20 @@ const CASES = [
   // Not a product
   { name: 'category page → null',
     input: 'https://www.target.com/c/electronics/-/N-12345',
-    expected: null },
+    expected: 'https://www.target.com/c/electronics/-/N-12345',
+    expectedNeeds: false },
   { name: '/+/ collection page → null',
     input: 'https://www.target.com/+/some-collection',
-    expected: null },
+    expected: 'https://www.target.com/+/some-collection',
+    expectedNeeds: false },
   { name: 'home page → null',
     input: 'https://www.target.com/',
-    expected: null },
-  { name: 'search page → null',
-    input: 'https://www.target.com/s?searchTerm=foo',
-    expected: null },
+    expected: 'https://www.target.com/',
+    expectedNeeds: false },
+  { name: 'search page: searchTerm SURVIVES the reduced fallback',
+    input: 'https://www.target.com/s?searchTerm=foo&lnk=snav',
+    expected: 'https://www.target.com/s?searchTerm=foo',
+    expectedNeeds: true },
 
   // Non-Target
   { name: 'non-Target → null',
@@ -83,10 +87,12 @@ const CASES = [
     expected: null },
   { name: 'malformed tcin (no digits) → null',
     input: 'https://www.target.com/p/foo/-/A-notanumber',
-    expected: null },
+    expected: 'https://www.target.com/p/foo/-/A-notanumber',
+    expectedNeeds: false },
   { name: 'malformed tcin (missing A-) → null',
     input: 'https://www.target.com/p/foo/-/12345678',
-    expected: null },
+    expected: 'https://www.target.com/p/foo/-/12345678',
+    expectedNeeds: false },
 ];
 
 let passed = 0, failed = 0;

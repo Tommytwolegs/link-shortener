@@ -7,6 +7,9 @@ const {
 } = require(path.join('..', 'src', 'walmart.js'));
 
 const CASES = [
+  { name: 'search: q survives, athcpid dies (fallback)',
+    input: 'https://www.walmart.com/search?q=mug&athcpid=abc123',
+    expected: 'https://www.walmart.com/search?q=mug' },
   // Canonical
   { name: 'product with slug + id already clean',
     input: 'https://www.walmart.com/ip/Some-Product/123456789',
@@ -64,16 +67,20 @@ const CASES = [
   // Not a product
   { name: 'category page → null',
     input: 'https://www.walmart.com/browse/electronics/12345',
-    expected: null },
+    expected: 'https://www.walmart.com/browse/electronics/12345',
+    expectedNeeds: false },
   { name: 'search page → null',
     input: 'https://www.walmart.com/search?q=foo',
-    expected: null },
+    expected: 'https://www.walmart.com/search?q=foo',
+    expectedNeeds: false },
   { name: 'seller page → null',
     input: 'https://www.walmart.com/seller/12345',
-    expected: null },
+    expected: 'https://www.walmart.com/seller/12345',
+    expectedNeeds: false },
   { name: 'home page → null',
     input: 'https://www.walmart.com/',
-    expected: null },
+    expected: 'https://www.walmart.com/',
+    expectedNeeds: false },
 
   // Non-Walmart
   { name: 'non-Walmart → null',
@@ -84,10 +91,12 @@ const CASES = [
     expected: null },
   { name: 'non-numeric id → null',
     input: 'https://www.walmart.com/ip/Cool-Mug/notanumber',
-    expected: null },
+    expected: 'https://www.walmart.com/ip/Cool-Mug/notanumber',
+    expectedNeeds: false },
   { name: 'too-short id (< 4 digits) → null',
     input: 'https://www.walmart.com/ip/Cool-Mug/123',
-    expected: null },
+    expected: 'https://www.walmart.com/ip/Cool-Mug/123',
+    expectedNeeds: false },
 ];
 
 let passed = 0, failed = 0;

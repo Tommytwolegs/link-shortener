@@ -7,6 +7,9 @@ const {
 } = require(path.join('..', 'src', 'pinterest.js'));
 
 const CASES = [
+  { name: 'profile: invite_code stripped via fallback',
+    input: 'https://www.pinterest.com/janedoe/?invite_code=abc123&sender=987',
+    expected: 'https://www.pinterest.com/janedoe/' },
   { name: 'pin: utm stripped',
     input: 'https://www.pinterest.com/pin/1234567890123456789/?utm_source=share&utm_medium=copy_link',
     expected: 'https://www.pinterest.com/pin/1234567890123456789/' },
@@ -49,19 +52,24 @@ const CASES = [
   // Non-pin pages
   { name: 'board page → null',
     input: 'https://www.pinterest.com/janedoe/cool-board/',
-    expected: null },
+    expected: 'https://www.pinterest.com/janedoe/cool-board/',
+    expectedNeeds: false },
   { name: 'profile → null',
     input: 'https://www.pinterest.com/janedoe/',
-    expected: null },
+    expected: 'https://www.pinterest.com/janedoe/',
+    expectedNeeds: false },
   { name: 'search → null',
     input: 'https://www.pinterest.com/search/pins/?q=mug',
-    expected: null },
+    expected: 'https://www.pinterest.com/search/pins/?q=mug',
+    expectedNeeds: false },
   { name: 'home → null',
     input: 'https://www.pinterest.com/',
-    expected: null },
+    expected: 'https://www.pinterest.com/',
+    expectedNeeds: false },
   { name: 'non-numeric pin id → null',
     input: 'https://www.pinterest.com/pin/notanumber/',
-    expected: null },
+    expected: 'https://www.pinterest.com/pin/notanumber/',
+    expectedNeeds: false },
 
   // Non-Pinterest
   { name: 'non-Pinterest → null',

@@ -7,6 +7,9 @@ const {
 } = require(path.join('..', 'src', 'steam.js'));
 
 const CASES = [
+  { name: 'store search: term survives, snr dies (fallback)',
+    input: 'https://store.steampowered.com/search/?term=rpg&snr=1_4_4__12',
+    expected: 'https://store.steampowered.com/search/?term=rpg' },
 
   { name: 'app with slug already clean',
     input: 'https://store.steampowered.com/app/1091500/Cyberpunk_2077/',
@@ -35,7 +38,8 @@ const CASES = [
     expected: 'https://store.steampowered.com/app/570/Dota_2/?l=japanese' },
   { name: 'search → null',
     input: 'https://store.steampowered.com/search/?term=rpg',
-    expected: null },
+    expected: 'https://store.steampowered.com/search/?term=rpg',
+    expectedNeeds: false },
   { name: 'steamcommunity → null (out of scope)',
     input: 'https://steamcommunity.com/app/570',
     expected: null },
