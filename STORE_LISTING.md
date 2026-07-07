@@ -105,7 +105,7 @@ Privacy policy URL: https://github.com/Tommytwolegs/link-shortener/blob/main/PRI
 
 v1.8.0 — the everywhere release.
 
-* Dozens of new sites supported (eighty-plus total, up from twenty-four): international marketplaces and classifieds across Asia, Europe, and Latin America; more travel booking sites; streaming, gaming, music, film, books, and Q&A platforms; plus a news pack covering more than fifty outlets across every region — each with its own toggle.
+* A hundred-plus new sites supported (127 total, up from twenty-four): major search engines, cloud documents, international marketplaces and classifieds across Asia, Europe, and Latin America; more travel booking sites; streaming, gaming, music, film, books, weather, and Q&A platforms; plus a news pack covering more than fifty outlets across every region — each with its own toggle.
 * Functional state always survives cleanup: variant and size selections, playlist and queue context, video timestamps, answer pagination, private-server invites, and paywall gift links all keep working. Only tracking clutter is removed.
 * The popup is organized by world region — Global, Americas, Asia-Pacific, Europe — with site-type subheadings, a filter box for finding a site quickly, and remembers which sections you keep open.
 * Copy a clean link faster: the popup now previews the current page's cleaned URL with a one-click copy button, and a keyboard shortcut (Ctrl+Shift+L, rebindable) copies a clean URL of the current page from anywhere.
