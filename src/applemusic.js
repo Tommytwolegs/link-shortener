@@ -12,8 +12,11 @@
 //   music.apple.com/<cc>/artist/<slug>/<id>      → strip all
 //   podcasts.apple.com/<cc>/podcast/<slug>/id<n> → keeps ?i= (episode id)
 //
-// Tracking stripped: at, ct (affiliate/campaign tokens), itsct, itscg,
-// app, ls, uo, mt, lId, cId, sr, src — everything except `i`.
+// Two params PRESERVED: `i` (see above) and `l` — the display-language
+// override (?l=en-US on a foreign storefront); stripping it would flip
+// the page language on refresh. Tracking stripped: at, ct
+// (affiliate/campaign tokens), itsct, itscg, app, ls, uo, mt, lId, cId,
+// sr, src — everything else.
 //
 // The URL hash is preserved.
 //
@@ -34,12 +37,12 @@
   }
 
   const FORMS = [
-    { pattern: /^\/[a-z]{2}\/album\/[^/?#]+\/\d+\/?$/i, keepParams: ['i'] },
-    { pattern: /^\/[a-z]{2}\/podcast\/[^/?#]+\/id\d+\/?$/i, keepParams: ['i'] },
-    { pattern: /^\/[a-z]{2}\/song\/[^/?#]+\/\d+\/?$/i, keepParams: [] },
-    { pattern: /^\/[a-z]{2}\/playlist\/[^/?#]+\/pl\.[^/?#]+\/?$/i, keepParams: [] },
-    { pattern: /^\/[a-z]{2}\/artist\/[^/?#]+\/\d+\/?$/i, keepParams: [] },
-    { pattern: /^\/[a-z]{2}\/music-video\/[^/?#]+\/\d+\/?$/i, keepParams: [] },
+    { pattern: /^\/[a-z]{2}\/album\/[^/?#]+\/\d+\/?$/i, keepParams: ['i', 'l'] },
+    { pattern: /^\/[a-z]{2}\/podcast\/[^/?#]+\/id\d+\/?$/i, keepParams: ['i', 'l'] },
+    { pattern: /^\/[a-z]{2}\/song\/[^/?#]+\/\d+\/?$/i, keepParams: ['l'] },
+    { pattern: /^\/[a-z]{2}\/playlist\/[^/?#]+\/pl\.[^/?#]+\/?$/i, keepParams: ['l'] },
+    { pattern: /^\/[a-z]{2}\/artist\/[^/?#]+\/\d+\/?$/i, keepParams: ['l'] },
+    { pattern: /^\/[a-z]{2}\/music-video\/[^/?#]+\/\d+\/?$/i, keepParams: ['l'] },
   ];
 
   function formFor(pathname) {

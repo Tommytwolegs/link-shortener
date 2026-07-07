@@ -5,6 +5,8 @@
 // Recognized forms:
 //
 //   /videos/<id>                 → VOD. Keeps ?t= (timestamp, e.g. t=1h2m3s)
+//                                    and ?collection= (queue context — the
+//                                    Twitch analog of Spotify's ?context=)
 //   /<channel>/clip/<slug>       → clip (channel-scoped form)
 //   clips.twitch.tv/<slug>       → clip (short host form)
 //
@@ -36,7 +38,7 @@
   }
 
   const FORMS = [
-    { pattern: /^\/videos\/\d+\/?$/, keepParams: ['t'] },
+    { pattern: /^\/videos\/\d+\/?$/, keepParams: ['t', 'collection'] },
     { pattern: /^\/[^/?#]+\/clip\/[^/?#]+\/?$/, keepParams: [] },
   ];
   const CLIP_SHORT_PATH = /^\/[^/?#]+\/?$/;

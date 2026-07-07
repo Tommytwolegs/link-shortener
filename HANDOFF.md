@@ -279,7 +279,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **2,151 total assertions across 48 test files, all passing.** Run with:
+  **2,163 total assertions across 48 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -409,7 +409,7 @@ module: share-link attribution user-id segments removed), Wikipedia
 (wprov app-share junk), Goodreads, SoundCloud (si token; keeps ?in=
 context), Apple Music/Podcasts (keeps ?i=), Twitch (keeps ?t=). Global
 popup group split into Social + Media & entertainment subheads. Tests:
-1,935 → 2,151 across 48 files. Manifest: 205 hosts, 47 content scripts,
+1,935 → 2,163 across 48 files. Manifest: 205 hosts, 47 content scripts,
 49-entry Firefox background.scripts.
 
 **v1.9.0 round — more international sites + region popup (2026-06-12).**
@@ -694,7 +694,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 48 test files, 2,151 assertions
+├── tests/                          — 48 test files, 2,163 assertions
 └── dist/                           — built zip + xpi packages
 ```
 

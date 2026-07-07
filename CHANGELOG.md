@@ -21,6 +21,17 @@ features, patch bumps mark bug-fix-only releases.
 - **Global group now has separate "Social" and "Media & entertainment"
   subheadings** — 33 toggles under Global stay navigable.
 
+### Fixed — UX pass (2026-06-12)
+User-visible state that cleanup was stripping, caught in an annoyance
+audit before release:
+- Stack Overflow: `?page=` (big questions paginate answers) and
+  `?answertab=`/`?tab=` sort state now survive — refreshing page 2 no
+  longer snaps you to page 1.
+- Steam: `?l=` display-language override preserved.
+- Apple Music/Podcasts: `?l=` display-language override preserved.
+- Twitch: `?collection=` VOD queue context preserved (the Twitch analog
+  of Spotify's `?context=`).
+
 ## [1.9.0] — unreleased
 
 ### Added

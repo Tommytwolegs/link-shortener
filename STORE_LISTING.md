@@ -52,7 +52,7 @@ No analytics, no telemetry, no network requests of any kind. The only thing stor
 
 OPEN SOURCE
 
-Plain, dependency-free JavaScript with 1,545 unit tests: https://github.com/Tommytwolegs/link-shortener
+Plain, dependency-free JavaScript with 2,163 unit tests: https://github.com/Tommytwolegs/link-shortener
 
 ---
 
@@ -105,7 +105,7 @@ v1.10.0 — media & entertainment expansion.
 * Functional state survives as always: video timestamps, track deep-links within albums, and playlist context are preserved; share tokens, click-path breadcrumbs, and affiliate tags are stripped. On one Q&A network, the share button embeds the sharer's user id in the link path itself — that's now removed too.
 * The Global category now has separate Social and Media & entertainment sections.
 
-Reminder for the v1.10.0 AMO notes: 47 sites / 205 host permissions / 2,151 tests; new modules steam, imdb, stackoverflow, wikipedia, goodreads, soundcloud, applemusic, twitch.
+Reminder for the v1.10.0 AMO notes: 47 sites / 205 host permissions / 2,163 tests; new modules steam, imdb, stackoverflow, wikipedia, goodreads, soundcloud, applemusic, twitch.
 
 ### v1.9.0 (superseded before submission — never shipped)
 

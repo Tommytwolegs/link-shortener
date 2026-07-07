@@ -13,9 +13,12 @@
 //
 //   /questions/<id>/<slug>       → strip query junk, keep hash
 //
-// Tracking stripped: noredirect, r, so_medium, so_source, cb, utm_* —
-// everything. Hash preserved — answer anchors (#12345678) and comment
-// anchors (#comment123_456) are how deep links work here.
+// On question pages, `page` (big questions paginate their answers),
+// `answertab`, and `tab` (answer-sort state) are PRESERVED — stripping
+// ?page=2 would snap a reader back to page 1 on refresh/share. Tracking
+// stripped: noredirect, r, so_medium, so_source, cb, utm_* — everything
+// else. Hash preserved — answer anchors (#12345678) and comment anchors
+// (#comment123_456) are how deep links work here.
 //
 // Hosts: stackoverflow.com, stackexchange.com (any site subdomain),
 // superuser.com, serverfault.com, askubuntu.com.
@@ -41,17 +44,21 @@
   // Long form: path is already canonical.
   const QUESTION_REGEX = /^\/questions\/\d+\/[^/?#]+\/?$/;
 
-  function canonicalPath(pathname) {
+  // Answer pagination + sort state on question pages — user-visible state,
+  // never stripped.
+  const QUESTION_KEEP = ['page', 'answertab', 'tab'];
+
+  function canonicalFor(pathname) {
     let m = SHARE_Q_REGEX.exec(pathname);
-    if (m) return '/q/' + m[1];
+    if (m) return { path: '/q/' + m[1], keepParams: [] };
     m = SHARE_A_REGEX.exec(pathname);
-    if (m) return '/a/' + m[1];
-    if (QUESTION_REGEX.test(pathname)) return pathname;
+    if (m) return { path: '/a/' + m[1], keepParams: [] };
+    if (QUESTION_REGEX.test(pathname)) return { path: pathname, keepParams: QUESTION_KEEP };
     return null;
   }
 
   function isPostPath(pathname) {
-    return canonicalPath(pathname) !== null;
+    return canonicalFor(pathname) !== null;
   }
 
   function isPostUrl(input) {
@@ -65,10 +72,17 @@
     let url;
     try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
     if (!isStackoverflowHost(url.hostname)) return null;
-    const path = canonicalPath(url.pathname);
-    if (path === null) return null;
+    const form = canonicalFor(url.pathname);
+    if (form === null) return null;
+    const params = new URLSearchParams();
+    for (const k of form.keepParams) {
+      const v = url.searchParams.get(k);
+      if (v !== null && v !== '') params.set(k, v);
+    }
+    const q = params.toString();
+    const query = q ? '?' + q : '';
     const hash = url.hash || '';
-    return `${url.protocol}//${url.host}${path}${hash}`;
+    return `${url.protocol}//${url.host}${form.path}${query}${hash}`;
   }
 
   function needsShortening(input) {
