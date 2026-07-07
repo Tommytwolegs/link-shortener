@@ -12,14 +12,15 @@ No analytics. No telemetry. No remote calls.
 Forty-seven, organized by world region and type in the popup:
 
 - **Global** — Shopping: Amazon, eBay, Etsy, AliExpress, Temu ·
-  Travel: Booking.com, Expedia, Airbnb, Trip.com, Hotels.com, Vrbo ·
+  Travel: Booking.com, Expedia, Airbnb, Agoda, Trip.com, Hotels.com,
+  Vrbo ·
   Social: Facebook, Instagram, Threads, LinkedIn, Twitter/X, TikTok,
   Reddit, Bluesky, Pinterest · Media & entertainment: YouTube, Spotify,
   Twitch, SoundCloud, Apple Music, Steam, IMDb, Goodreads, Wikipedia,
   Stack Overflow, GitHub, Medium, Quora, Substack
 - **Americas** — Shopping: Walmart, Target, Mercado Libre
 - **Asia-Pacific** — Shopping: Shopee, Lazada, Tokopedia, Coupang,
-  Flipkart, Mercari, Rakuten · Travel: Agoda
+  Flipkart, Mercari, Rakuten
 - **Europe** — Shopping: Vinted, Allegro
 
 Plus an opt-in **Universal tracking strip** mode that strips well-known

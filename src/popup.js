@@ -36,6 +36,7 @@
     { key: 'enabledBooking', group: 'global' },
     { key: 'enabledExpedia', group: 'global' },
     { key: 'enabledAirbnb', group: 'global' },
+    { key: 'enabledAgoda', group: 'global' },
     { key: 'enabledTrip', group: 'global' },
     { key: 'enabledHotelscom', group: 'global' },
     { key: 'enabledVrbo', group: 'global' },
@@ -71,7 +72,6 @@
     { key: 'enabledFlipkart', group: 'apac' },
     { key: 'enabledMercari', group: 'apac' },
     { key: 'enabledRakuten', group: 'apac' },
-    { key: 'enabledAgoda', group: 'apac' },
     { key: 'enabledVinted', group: 'europe' },
     { key: 'enabledAllegro', group: 'europe' },
   ];
