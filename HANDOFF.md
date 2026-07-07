@@ -279,7 +279,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **2,415 total assertions across 63 test files, all passing.** Run with:
+  **2,427 total assertions across 63 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -410,7 +410,7 @@ Carousell, Taobao/Tmall (query-identity like Trip.com — keeps id+skuId,
 one toggle for both hosts), JD.com (item.jd.com only), Leboncoin (modern
 + legacy forms), OLX (6 TLDs), Wallapop, Marktplaats, Kleinanzeigen,
 Zalando (size). Europe popup group 2→8, Americas +Best Buy, APAC +4,
-Global +4. Tests: 2,163 → 2,415 across 63 files. Manifest: 264 hosts,
+Global +4. Tests: 2,163 → 2,427 across 63 files. Manifest: 264 hosts,
 62 content scripts, 64-entry Firefox background.scripts. Site bullets
 for this batch live in the research spec (this file, wishlist section
 of the 2026-06-12 revision) — kept terse here.
@@ -753,7 +753,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 63 test files, 2,415 assertions
+├── tests/                          — 63 test files, 2,427 assertions
 └── dist/                           — built zip + xpi packages
 ```
 

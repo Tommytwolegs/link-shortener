@@ -2,7 +2,9 @@
 // ----------------------------------------------------------------------------
 // Pure functions for cleaning Wayfair product URLs. Address-bar-only.
 //
-//   /pdp/<slug>-<sku>.html   → product page
+//   /pdp/<slug>-<sku>.html              → product page
+//   /<category>/pdp/<slug>-<sku>.html   → the usual form in the wild
+//                                         (furniture/, lighting/, rugs/ ...)
 //
 // KEEPS `piid` — comma-separated variant option ids (fabric/size/color);
 // stripping it snaps a shared link back to the default variant. Strips
@@ -24,7 +26,7 @@
   }
 
   const POST_PATTERNS = [
-    /^\/pdp\/[^/?#]+\.html\/?$/i,
+    /^(?:\/[^/]+)?\/pdp\/[^/?#]+\.html\/?$/i,
   ];
 
   function isPostPath(pathname) {

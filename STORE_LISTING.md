@@ -52,7 +52,7 @@ No analytics, no telemetry, no network requests of any kind. The only thing stor
 
 OPEN SOURCE
 
-Plain, dependency-free JavaScript with 2,415 unit tests: https://github.com/Tommytwolegs/link-shortener
+Plain, dependency-free JavaScript with 2,427 unit tests: https://github.com/Tommytwolegs/link-shortener
 
 ---
 
@@ -104,7 +104,7 @@ v1.11.0 — the everywhere release.
 * Fifteen more sites supported (sixty-three total): major home-goods and electronics retailers, independent music and film-diary platforms, the world's biggest travel-review site, and the leading marketplaces and classifieds of France, Germany, Spain, the Netherlands, Poland, India, China, and Southeast Asia.
 * As always, functional state survives: variant and size selections, item identity, and review pagination are preserved while share tokens and click-path attribution are stripped.
 
-Reminder for the v1.11.0 AMO notes: 63 sites / 264 host permissions / 2,415 tests; 15 new modules (wayfair, bestbuy, bandcamp, letterboxd, tripadvisor, meesho, carousell, taobao, jd, leboncoin, olx, wallapop, marktplaats, kleinanzeigen, zalando).
+Reminder for the v1.11.0 AMO notes: 63 sites / 264 host permissions / 2,427 tests; 15 new modules (wayfair, bestbuy, bandcamp, letterboxd, tripadvisor, meesho, carousell, taobao, jd, leboncoin, olx, wallapop, marktplaats, kleinanzeigen, zalando).
 
 ### v1.10.0 (superseded before submission — never shipped)
 

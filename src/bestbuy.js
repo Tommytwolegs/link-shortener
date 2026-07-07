@@ -2,7 +2,9 @@
 // ----------------------------------------------------------------------------
 // Pure functions for cleaning Best Buy product URLs. Address-bar-only.
 //
-//   /site/<slug>/<sku>.p     → product page
+//   /site/<slug>/<sku>.p                 → US product page
+//   /en-ca/product/<slug>/<sku>          → Canada (also /fr-ca/, and the
+//   /en-ca/product/<sku>                   slugless variant) — verified
 //
 // KEEPS `intl` (nosplash — bypasses the country-picker splash; user
 // intent). `skuId` duplicates the sku already in the path, so it and the
@@ -24,7 +26,8 @@
   }
 
   const POST_PATTERNS = [
-    /^\/site\/[^/]+\/\d+\.p\/?$/i,
+    /^\/site\/(?:[^/]+\/)+\d+\.p\/?$/i,
+    /^\/(?:en|fr)-ca\/product\/(?:[^/]+\/)?\d+\/?$/i,
   ];
 
   function isPostPath(pathname) {

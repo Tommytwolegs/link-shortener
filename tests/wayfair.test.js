@@ -9,6 +9,15 @@ const {
 const VALID_HOST = 'www.wayfair.com';
 
 const CASES = [
+  { name: 'category-prefixed pdp (the common form) cleaned',
+    input: 'https://www.wayfair.com/furniture/pdp/mercury-row-convertible-sofa-w005404809.html?piid=812%2C813&refid=abc&placement=2',
+    expected: 'https://www.wayfair.com/furniture/pdp/mercury-row-convertible-sofa-w005404809.html?piid=812%2C813' },
+  { name: 'lighting category prefix cleaned',
+    input: 'https://www.wayfair.com/lighting/pdp/three-posts-lamp-w1.html?categoryid=4',
+    expected: 'https://www.wayfair.com/lighting/pdp/three-posts-lamp-w1.html' },
+  { name: 'two category segments → null (only one allowed)',
+    input: 'https://www.wayfair.com/a/b/pdp/x-w1.html',
+    expected: null },
   { name: 'pdp already clean',
     input: 'https://www.wayfair.com/pdp/three-posts-sofa-w005644269.html',
     expected: 'https://www.wayfair.com/pdp/three-posts-sofa-w005644269.html',
