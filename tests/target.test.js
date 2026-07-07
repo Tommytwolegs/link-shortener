@@ -7,6 +7,11 @@ const {
 } = require(path.join('..', 'src', 'target.js'));
 
 const CASES = [
+  // Universal click junk stripped host-wide; searchTerm still survives on /s
+  { name: 'search: utm_* + gclid stripped, searchTerm survives',
+    input: 'https://www.target.com/s?searchTerm=lamp&utm_source=fb&gclid=abc',
+    expected: 'https://www.target.com/s?searchTerm=lamp' },
+
   // Canonical
   { name: 'product with slug + tcin already clean',
     input: 'https://www.target.com/p/some-product/-/A-89898989',

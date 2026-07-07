@@ -56,7 +56,7 @@
 
   // Host-scoped share junk, stripped on ANY twitter/x path that isn't a
   // recognized post form. Lowercase; matched case-insensitively.
-  const FALLBACK_STRIP = new Set(['s', 't', 'ref_src', 'ref_url', 'mx', 'cxt']);
+  const FALLBACK_STRIP = new Set(['s', 't', 'ref_src', 'ref_url', 'mx', 'cxt', 'fbclid', 'gclid']);
 
   function isPostUrl(input) {
     let url;
@@ -76,7 +76,10 @@
     // Unrecognized path — fallback denylist (clone; never mutate).
     const clone = new URL(url.href);
     for (const name of Array.from(clone.searchParams.keys())) {
-      if (FALLBACK_STRIP.has(name.toLowerCase())) clone.searchParams.delete(name);
+      const lower = name.toLowerCase();
+      if (FALLBACK_STRIP.has(lower) || lower.startsWith('utm_')) {
+        clone.searchParams.delete(name);
+      }
     }
     const hash = clone.hash || '';
     return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;

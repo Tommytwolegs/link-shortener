@@ -53,12 +53,17 @@
     return isProductPath(url.pathname);
   }
 
-  // Target-specific tracking parameters. Universal strip handles utm_/gclid/etc.
+  // Target-specific tracking parameters, plus universal click junk
+  // (fbclid/gclid exact; utm_* by prefix) so default-config users get
+  // clean URLs without the universal-strip toggle.
   const TRACKING_PARAMS = new Set([
     'lnk', 'clkid', 'ref', 'linkid',
     'searchterm', 'afid', 'cpng', 'ci_src', 'ci_sku',
     'lookup', 'pi', 'sgo',
+    'fbclid', 'gclid',
   ]);
+
+  const TRACKING_PREFIXES = ['utm_'];
 
   function shortenTargetUrl(input) {
     let url;
@@ -72,7 +77,8 @@
       const clone = new URL(url.href);
       for (const name of Array.from(clone.searchParams.keys())) {
         const lower = name.toLowerCase();
-        if (lower !== 'searchterm' && TRACKING_PARAMS.has(lower)) {
+        if ((lower !== 'searchterm' && TRACKING_PARAMS.has(lower))
+            || TRACKING_PREFIXES.some((p) => lower.startsWith(p))) {
           clone.searchParams.delete(name);
         }
       }
@@ -82,7 +88,8 @@
 
     const names = Array.from(url.searchParams.keys());
     for (const name of names) {
-      if (TRACKING_PARAMS.has(name.toLowerCase())) {
+      const lower = name.toLowerCase();
+      if (TRACKING_PARAMS.has(lower) || TRACKING_PREFIXES.some((p) => lower.startsWith(p))) {
         url.searchParams.delete(name);
       }
     }

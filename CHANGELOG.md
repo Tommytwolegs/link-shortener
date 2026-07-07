@@ -45,6 +45,9 @@ were collapsed on 2026-06-12; they were never submitted anywhere).
   TikTok, eBay (_trkparms), Etsy, Reddit (share_id), Steam (snr),
   Spotify, Pinterest, Medium, Shopee, Walmart, and Target (searchTerm
   survives). LinkedIn News /news/story/ is now also a recognized form.
+  All 16 also strip the universal click junk — utm_* (prefix), fbclid,
+  gclid — so default-config users (universal strip off) get clean URLs
+  on these paths too, matching the established denylist modules.
 - **Redirector unwrapping in the right-click menu** — "Copy clean URL"
   on a link wrapped by Gmail/Google (/url?q=), Facebook (l.php?u=),
   Reddit (out.reddit.com), or YouTube (/redirect) now copies the real

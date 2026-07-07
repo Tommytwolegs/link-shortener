@@ -57,8 +57,8 @@
   // Host-scoped tracking params, stripped on ANY matched-host path that
   // doesn't fit a recognized form above (search pages, profiles, shop
   // pages...). Denylist: functional params always survive.
-  const FALLBACK_STRIP = new Set(['sp_atk', 'xptdk', 'publish_id', 'from_meta', 'smtt', 'share_channel']);
-  const FALLBACK_PREFIXES = [];
+  const FALLBACK_STRIP = new Set(['sp_atk', 'xptdk', 'publish_id', 'from_meta', 'smtt', 'share_channel', 'fbclid', 'gclid']);
+  const FALLBACK_PREFIXES = ['utm_'];
 
   function fallbackClean(url) {
     const clone = new URL(url.href);

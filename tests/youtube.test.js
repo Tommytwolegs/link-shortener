@@ -7,6 +7,11 @@ const {
 } = require(path.join('..', 'src', 'youtube.js'));
 
 const CASES = [
+  // Universal click junk on fallback paths (utm_* prefix, fbclid, gclid)
+  { name: 'channel: utm_* + fbclid stripped via fallback',
+    input: 'https://www.youtube.com/@somechannel?utm_source=share&fbclid=IwAR123&si=abc',
+    expected: 'https://www.youtube.com/@somechannel' },
+
   { name: 'channel share: si stripped via fallback',
     input: 'https://www.youtube.com/@somechannel?si=AbCdEf123',
     expected: 'https://www.youtube.com/@somechannel' },

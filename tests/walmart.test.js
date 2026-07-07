@@ -7,6 +7,11 @@ const {
 } = require(path.join('..', 'src', 'walmart.js'));
 
 const CASES = [
+  // Universal click junk stripped host-wide (default config, no universal strip)
+  { name: 'search: utm_* + fbclid stripped, q survives',
+    input: 'https://www.walmart.com/search?q=mixer&utm_campaign=social&fbclid=IwAR9',
+    expected: 'https://www.walmart.com/search?q=mixer' },
+
   { name: 'search: q survives, athcpid dies (fallback)',
     input: 'https://www.walmart.com/search?q=mug&athcpid=abc123',
     expected: 'https://www.walmart.com/search?q=mug' },

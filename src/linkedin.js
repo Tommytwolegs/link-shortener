@@ -76,7 +76,7 @@
   // case-insensitively.
   const FALLBACK_STRIP = new Set([
     'lipi', 'trk', 'trkinfo', 'trackingid', 'refid', 'midtoken', 'midsig',
-    'ebp', 'originalsubdomain', 'licu', 'miniprofileurn', 'original_referer',
+    'ebp', 'originalsubdomain', 'licu', 'miniprofileurn', 'original_referer',, 'fbclid', 'gclid',
   ]);
 
   function specFor(pathname) {
@@ -116,7 +116,10 @@
     // Unrecognized LinkedIn path — fallback denylist (clone; never mutate).
     const clone = new URL(url.href);
     for (const name of Array.from(clone.searchParams.keys())) {
-      if (FALLBACK_STRIP.has(name.toLowerCase())) clone.searchParams.delete(name);
+      const lower = name.toLowerCase();
+      if (FALLBACK_STRIP.has(lower) || lower.startsWith('utm_')) {
+        clone.searchParams.delete(name);
+      }
     }
     const hash = clone.hash || '';
     return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;

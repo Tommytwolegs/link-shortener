@@ -7,6 +7,11 @@ const {
 } = require(path.join('..', 'src', 'linkedin.js'));
 
 const CASES = [
+  // Universal click junk on fallback paths
+  { name: 'company page: utm_* + gclid stripped via fallback',
+    input: 'https://www.linkedin.com/company/somecorp/?utm_source=news&gclid=xyz',
+    expected: 'https://www.linkedin.com/company/somecorp/' },
+
   // /jobs/search/ — functional search state kept, tracking stripped
   { name: 'jobs search: functional params kept, tracking stripped',
     input: 'https://www.linkedin.com/jobs/search/?currentJobId=3987654321&keywords=software%20engineer&geoId=103644278&refId=abc&trackingId=def&origin=JOB_SEARCH_PAGE',

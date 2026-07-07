@@ -308,7 +308,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **2,736 total assertions across 72 test files, all passing.** Run with:
+  **2,744 total assertions across 72 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -637,9 +637,13 @@ Full per-version detail in `CHANGELOG.md`.
   fallback must NOT strip searchTerm (functional on /s pages); asin's
   fallback returns null for non-retail subdomains (aws., console.,
   sellercentral., music., ...) so AWS links stay untouched; asin.js has
-  NO shortenUrl alias — call shortenAmazonUrl. Keep fallback lists
-  strictly to documented per-site junk; extend to more modules as gaps
-  are reported.
+  NO shortenUrl alias — call shortenAmazonUrl. All 16 fallbacks (and
+  walmart/target's host-wide denylists) also strip the universal click
+  junk utm_* (prefix), fbclid, and gclid — default-config users have
+  the universal-strip toggle OFF, so per-site modules are their only
+  cleanup; matching the news.js/tokopedia/wikipedia precedent. Keep
+  the rest of each fallback list strictly to documented per-site junk;
+  extend to more modules as gaps are reported.
 
 - **Hash preservation.** Every per-site module preserves
   `location.hash`. Don't drop it — Amazon uses `#customerReviews`,
@@ -798,7 +802,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 72 test files, 2,736 assertions
+├── tests/                          — 72 test files, 2,744 assertions
 └── dist/                           — built zip + xpi packages
 ```
 

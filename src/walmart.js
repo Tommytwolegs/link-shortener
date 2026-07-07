@@ -53,8 +53,8 @@
   }
 
   // Tracking parameters specific to Walmart. The universal-strip module
-  // catches utm_/gclid/fbclid/etc., so we just need the Walmart-specific
-  // ones here. (Listed as exact-match — Walmart's "ath" prefix family is
+  // catches the rest; utm_*/fbclid/gclid are ALSO stripped here so
+  // default-config users (universal strip off) get clean URLs too. (Listed as exact-match — Walmart's "ath" prefix family is
   // small enough to enumerate and prefix-matching would risk false
   // positives on hypothetical functional params.)
   const TRACKING_PARAMS = new Set([
@@ -63,7 +63,11 @@
     'from', 'wmlspartner', 'selectedsellerid',
     'adsredirect', 'sourceid', 'sid', 'oid', 'veh',
     'irgwc', 'sharedid', 'clickid',
+    'fbclid', 'gclid',
   ]);
+
+  // Prefix-matched junk: utm_* (utm_source, utm_medium, ...).
+  const TRACKING_PREFIXES = ['utm_'];
 
   function shortenWalmartUrl(input) {
     let url;
@@ -74,11 +78,12 @@
     // Denylist module: apply the same strip on ANY host path (search,
     // category, cart) — functional params always survive.
 
-    // Strip Walmart-specific tracking params; leave anything else alone
-    // (the universal-strip toggle handles utm_/gclid/etc.).
+    // Strip Walmart-specific tracking params + universal click junk
+    // (utm_*, fbclid, gclid); leave anything else alone.
     const names = Array.from(url.searchParams.keys());
     for (const name of names) {
-      if (TRACKING_PARAMS.has(name.toLowerCase())) {
+      const lower = name.toLowerCase();
+      if (TRACKING_PARAMS.has(lower) || TRACKING_PREFIXES.some((p) => lower.startsWith(p))) {
         url.searchParams.delete(name);
       }
     }

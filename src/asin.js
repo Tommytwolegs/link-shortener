@@ -264,8 +264,8 @@
   // Host-scoped tracking params, stripped on ANY matched-host path that
   // doesn't fit a recognized form above (search pages, profiles, shop
   // pages...). Denylist: functional params always survive.
-  const FALLBACK_STRIP = new Set(['ref', 'ref_', 'crid', 'sprefix', 'qid', 'sr', 'dib', 'dib_tag', 'content-id', 'linkcode', 'tag', 'linkid', 'ascsubtag', 'creative', 'creativeasin', 'camp', 'ie', 'spc']);
-  const FALLBACK_PREFIXES = ['pd_rd_', 'pf_rd_'];
+  const FALLBACK_STRIP = new Set(['ref', 'ref_', 'crid', 'sprefix', 'qid', 'sr', 'dib', 'dib_tag', 'content-id', 'linkcode', 'tag', 'linkid', 'ascsubtag', 'creative', 'creativeasin', 'camp', 'ie', 'spc', 'fbclid', 'gclid']);
+  const FALLBACK_PREFIXES = ['pd_rd_', 'pf_rd_', 'utm_'];
 
   // Non-retail Amazon subdomains (AWS console, seller tools, music...) are
   // not shopping surfaces — leave their links completely untouched.
