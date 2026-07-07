@@ -26,7 +26,7 @@ English
 
 ## Description (detailed — up to 16,000 chars)
 
-The Link Shortener that actually shortens links.
+A link shortener that actually shortens links.
 
 None of this replacing a link with a short link nonsense. No redirect service, no link wrapper, nothing that hides where a link goes. Your link stays your link — same page, same site — just without the hundreds of characters of tracking IDs, session tokens, and search breadcrumbs stuffed onto the end. The address-bar URL is rewritten in place, so the link you copy to share is the clean canonical form.
 
