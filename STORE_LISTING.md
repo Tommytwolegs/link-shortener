@@ -52,7 +52,7 @@ No analytics, no telemetry, no network requests of any kind. The only thing stor
 
 OPEN SOURCE
 
-Plain, dependency-free JavaScript with 2,565 unit tests: https://github.com/Tommytwolegs/link-shortener
+Plain, dependency-free JavaScript with 2,608 unit tests: https://github.com/Tommytwolegs/link-shortener
 
 ---
 
@@ -101,12 +101,12 @@ Privacy policy URL: https://github.com/Tommytwolegs/link-shortener/blob/main/PRI
 
 v1.8.0 — the everywhere release.
 
-* Dozens of new sites supported (eighty-plus total, up from twenty-four): international marketplaces and classifieds across Asia, Europe, and Latin America; more travel booking sites; streaming, gaming, music, film, books, and Q&A platforms; plus a news pack covering thirteen major outlets.
+* Dozens of new sites supported (eighty-plus total, up from twenty-four): international marketplaces and classifieds across Asia, Europe, and Latin America; more travel booking sites; streaming, gaming, music, film, books, and Q&A platforms; plus a news pack covering more than fifty outlets across every region — each with its own toggle.
 * Functional state always survives cleanup: variant and size selections, playlist and queue context, video timestamps, answer pagination, private-server invites, and paywall gift links all keep working. Only tracking clutter is removed.
 * The popup is organized by world region — Global, Americas, Asia-Pacific, Europe — with site-type subheadings, and remembers which sections you keep open.
 * This update requests access to the newly supported sites; as always the extension makes zero network requests and collects nothing.
 
-Reminder for the v1.8.0 AMO notes: ~81 sites (67 toggles) / 289 host permissions / 2,565 tests; the extension is unchanged architecturally — every module is a pure URL function.
+Reminder for the v1.8.0 AMO notes: 119 sites (117 toggles) / 328 host permissions / 2,608 tests; the extension is unchanged architecturally — every module is a pure URL function.
 
 Older draft notes below were written while this work was tagged 1.9–1.11 during development; they're folded into the single 1.8.0 submission above.
 

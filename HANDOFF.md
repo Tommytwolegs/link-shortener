@@ -34,7 +34,7 @@ CI, and a meaningful round of bug fixes for SPA-state preservation. See
 
 ---
 
-## Supported sites (81 — 67 toggles)
+## Supported sites (119 — 117 toggles)
 
 Each has a dedicated pure-function URL module under `src/`. The popup
 groups them into Shopping / Travel / Social & media:
@@ -180,7 +180,10 @@ page (default OFF). See `utm.js` below.
 
 ### Content-script dispatchers
 
-- `src/social-content.js` — dispatcher used by **all 39** sites that don't
+- `src/social-content.js` — dispatcher. NOTE: modules covering multiple
+  independently-toggleable properties expose `storageKeyFor(hostname)`
+  (currently only news.js — 51 outlets, one toggle each); the dispatcher
+  prefers it over the flat `STORAGE_KEY`. Used by all sites that don't
   have their own dedicated content script (the social/media/shopping
   sites that load social-content.js + their URL module). Detects which
   `*LinkShortener` global is loaded, reads that module's `STORAGE_KEY`,
@@ -252,7 +255,11 @@ page (default OFF). See `utm.js` below.
   toggle, 46 per-site toggles (47 sites; Facebook+Instagram share one)
   organized by WORLD REGION → SITE TYPE: collapsible Global / Americas /
   Asia-Pacific / Europe `<details>` groups, each with Shopping / Travel /
-  Social / Media & entertainment subheadings (`.group-subhead`). Global default-open;
+  Social / Media & entertainment subheadings (`.group-subhead`), PLUS a
+  dedicated "News outlets" group at the bottom (data-group="news") with
+  51 per-outlet toggles under Americas / Europe / Asia-Pacific / Middle
+  East & Africa / Global agencies subheads — so one buggy outlet can be
+  switched off without losing the rest. Global default-open;
   expanded/collapsed state persists via `popupOpenGroups` in
   chrome.storage.sync (keys = data-group values: global/americas/apac/
   europe — old keys from previous layouts are ignored harmlessly). Four feature flags (hide travel popup, include Amazon
@@ -280,7 +287,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **2,565 total assertions across 69 test files, all passing.** Run with:
+  **2,608 total assertions across 69 test files, all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -725,7 +732,7 @@ These came up but aren't built. Ranked by ROI:
 ```
 link-shortener/
 ├── .github/workflows/test.yml      — CI: parse-check + run all tests on push/PR
-├── manifest.json                   — Chrome-canonical manifest (289 host_permissions, 68 content_scripts)
+├── manifest.json                   — Chrome-canonical manifest (328 host_permissions, 68 content_scripts)
 ├── package.sh                      — macOS/Linux build script
 ├── package.ps1                     — Windows PowerShell build script
 ├── package_lf.sh                   — (older, retained for reference)
@@ -754,7 +761,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 69 test files, 2,565 assertions
+├── tests/                          — 69 test files, 2,608 assertions
 └── dist/                           — built zip + xpi packages
 ```
 

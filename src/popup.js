@@ -71,7 +71,6 @@
     { key: 'enabledRoblox', group: 'global' },
     { key: 'enabledBilibili', group: 'global' },
     { key: 'enabledFandom', group: 'global' },
-    { key: 'enabledNews', group: 'global' },
     { key: 'enabledWalmart', group: 'americas' },
     { key: 'enabledTarget', group: 'americas' },
     { key: 'enabledMercadolibre', group: 'americas' },
@@ -95,6 +94,57 @@
     { key: 'enabledMarktplaats', group: 'europe' },
     { key: 'enabledKleinanzeigen', group: 'europe' },
     { key: 'enabledZalando', group: 'europe' },
+    { key: 'enabledNewsNyt', group: 'news' },
+    { key: 'enabledNewsWapo', group: 'news' },
+    { key: 'enabledNewsWsj', group: 'news' },
+    { key: 'enabledNewsBloomberg', group: 'news' },
+    { key: 'enabledNewsCnn', group: 'news' },
+    { key: 'enabledNewsFox', group: 'news' },
+    { key: 'enabledNewsNpr', group: 'news' },
+    { key: 'enabledNewsCbc', group: 'news' },
+    { key: 'enabledNewsGlobemail', group: 'news' },
+    { key: 'enabledNewsGlobo', group: 'news' },
+    { key: 'enabledNewsClarin', group: 'news' },
+    { key: 'enabledNewsInfobae', group: 'news' },
+    { key: 'enabledNewsGuardian', group: 'news' },
+    { key: 'enabledNewsBbc', group: 'news' },
+    { key: 'enabledNewsDailymail', group: 'news' },
+    { key: 'enabledNewsTelegraph', group: 'news' },
+    { key: 'enabledNewsIndependent', group: 'news' },
+    { key: 'enabledNewsFt', group: 'news' },
+    { key: 'enabledNewsEconomist', group: 'news' },
+    { key: 'enabledNewsLemonde', group: 'news' },
+    { key: 'enabledNewsLefigaro', group: 'news' },
+    { key: 'enabledNewsFrance24', group: 'news' },
+    { key: 'enabledNewsEuronews', group: 'news' },
+    { key: 'enabledNewsDw', group: 'news' },
+    { key: 'enabledNewsSpiegel', group: 'news' },
+    { key: 'enabledNewsBild', group: 'news' },
+    { key: 'enabledNewsElpais', group: 'news' },
+    { key: 'enabledNewsElmundo', group: 'news' },
+    { key: 'enabledNewsCorriere', group: 'news' },
+    { key: 'enabledNewsRepubblica', group: 'news' },
+    { key: 'enabledNewsToi', group: 'news' },
+    { key: 'enabledNewsThehindu', group: 'news' },
+    { key: 'enabledNewsNdtv', group: 'news' },
+    { key: 'enabledNewsIndianexpress', group: 'news' },
+    { key: 'enabledNewsAsahi', group: 'news' },
+    { key: 'enabledNewsNikkei', group: 'news' },
+    { key: 'enabledNewsNhk', group: 'news' },
+    { key: 'enabledNewsScmp', group: 'news' },
+    { key: 'enabledNewsStraitstimes', group: 'news' },
+    { key: 'enabledNewsCna', group: 'news' },
+    { key: 'enabledNewsAbcAu', group: 'news' },
+    { key: 'enabledNewsSmh', group: 'news' },
+    { key: 'enabledNewsNewscomau', group: 'news' },
+    { key: 'enabledNewsChosun', group: 'news' },
+    { key: 'enabledNewsAljazeera', group: 'news' },
+    { key: 'enabledNewsTimesofisrael', group: 'news' },
+    { key: 'enabledNewsHaaretz', group: 'news' },
+    { key: 'enabledNewsArabnews', group: 'news' },
+    { key: 'enabledNewsNews24', group: 'news' },
+    { key: 'enabledNewsReuters', group: 'news' },
+    { key: 'enabledNewsAp', group: 'news' },
   ];
   const SITE_KEYS = SITES.map((s) => s.key);
 
@@ -124,10 +174,66 @@
     americas: document.getElementById('group-count-americas'),
     apac: document.getElementById('group-count-apac'),
     europe: document.getElementById('group-count-europe'),
+    news: document.getElementById('group-count-news'),
+  };
+
+  const SITE_LABELS = {
+    NewsNyt: 'New York Times',
+    NewsWapo: 'Washington Post',
+    NewsWsj: 'Wall Street Journal',
+    NewsBloomberg: 'Bloomberg',
+    NewsCnn: 'CNN',
+    NewsFox: 'Fox News',
+    NewsNpr: 'NPR',
+    NewsCbc: 'CBC',
+    NewsGlobemail: 'The Globe and Mail',
+    NewsGlobo: 'Globo',
+    NewsClarin: 'Clarín',
+    NewsInfobae: 'Infobae',
+    NewsGuardian: 'The Guardian',
+    NewsBbc: 'BBC',
+    NewsDailymail: 'Daily Mail',
+    NewsTelegraph: 'The Telegraph',
+    NewsIndependent: 'The Independent',
+    NewsFt: 'Financial Times',
+    NewsEconomist: 'The Economist',
+    NewsLemonde: 'Le Monde',
+    NewsLefigaro: 'Le Figaro',
+    NewsFrance24: 'France 24',
+    NewsEuronews: 'Euronews',
+    NewsDw: 'DW',
+    NewsSpiegel: 'Der Spiegel',
+    NewsBild: 'Bild',
+    NewsElpais: 'El País',
+    NewsElmundo: 'El Mundo',
+    NewsCorriere: 'Corriere della Sera',
+    NewsRepubblica: 'la Repubblica',
+    NewsToi: 'Times of India',
+    NewsThehindu: 'The Hindu',
+    NewsNdtv: 'NDTV',
+    NewsIndianexpress: 'Indian Express',
+    NewsAsahi: 'Asahi Shimbun',
+    NewsNikkei: 'Nikkei',
+    NewsNhk: 'NHK',
+    NewsScmp: 'South China Morning Post',
+    NewsStraitstimes: 'The Straits Times',
+    NewsCna: 'CNA',
+    NewsAbcAu: 'ABC News (AU)',
+    NewsSmh: 'Sydney Morning Herald',
+    NewsNewscomau: 'news.com.au',
+    NewsChosun: 'Chosun Ilbo',
+    NewsAljazeera: 'Al Jazeera',
+    NewsTimesofisrael: 'Times of Israel',
+    NewsHaaretz: 'Haaretz',
+    NewsArabnews: 'Arab News',
+    NewsNews24: 'News24',
+    NewsReuters: 'Reuters',
+    NewsAp: 'Associated Press',
   };
 
   function siteLabelFromKey(key) {
     const raw = key.replace(/^enabled/, '');
+    if (SITE_LABELS[raw]) return SITE_LABELS[raw];
     if (raw === 'Booking') return 'Booking.com';
     if (raw === 'Social') return 'Facebook/Instagram';
     if (raw === 'Youtube') return 'YouTube';
@@ -149,7 +255,6 @@
     if (raw === 'Jd') return 'JD.com';
     if (raw === 'Olx') return 'OLX';
     if (raw === 'Shein') return 'SHEIN';
-    if (raw === 'News') return 'News outlets';
     return raw;
   }
 
@@ -206,8 +311,8 @@
 
   // Update the "N of M" indicators next to each category summary.
   function setGroupCounts(state) {
-    const totals = { global: 0, americas: 0, apac: 0, europe: 0 };
-    const ons = { global: 0, americas: 0, apac: 0, europe: 0 };
+    const totals = { global: 0, americas: 0, apac: 0, europe: 0, news: 0 };
+    const ons = { global: 0, americas: 0, apac: 0, europe: 0, news: 0 };
     for (const s of SITES) {
       totals[s.group] += 1;
       if (state[s.key] !== false) ons[s.group] += 1;

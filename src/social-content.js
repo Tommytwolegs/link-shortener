@@ -104,10 +104,15 @@
     self.NewsLinkShortener ||
     null;
 
-  // Per-site storage key, taken from the active module. Falls back to
-  // `enabledSocial` to preserve the historical key in case someone misuses
-  // an older module without STORAGE_KEY set.
-  const STORAGE_KEY = (M && M.STORAGE_KEY) || 'enabledSocial';
+  // Per-site storage key, taken from the active module. Modules that cover
+  // multiple independently-toggleable properties (the news pack) expose
+  // storageKeyFor(hostname) and get a per-host key; everything else uses
+  // its single STORAGE_KEY. Falls back to `enabledSocial` to preserve the
+  // historical key in case someone misuses an older module without either.
+  const STORAGE_KEY =
+    (M && typeof M.storageKeyFor === 'function' && M.storageKeyFor(location.hostname)) ||
+    (M && M.STORAGE_KEY) ||
+    'enabledSocial';
 
   // Pessimistic defaults so we never rewrite before storage loads.
   let masterEnabled = false;

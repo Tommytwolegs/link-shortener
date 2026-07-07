@@ -17,11 +17,15 @@ were collapsed on 2026-06-12; they were never submitted anywhere).
   **Bilibili** (+ b23.tv short links; preserves ?t= timestamp and ?p=
   part number; strips the infamous share-junk avalanche), **SHEIN**
   (strips src_*/mallCode junk).
-- **News pack** — one module, one toggle, 13 outlets: strips each
-  outlet's share attribution (smid, CMP, itid, at_*, cid, ito, taid,
-  intcmp, cmpid/sref, mod/reflink, utm_*) while PRESERVING gift/paywall
-  tokens (NYT unlocked_article_code, Bloomberg accessToken, WSJ st) —
-  guaranteed by the denylist design.
+- **News pack** — one module, 51 outlets worldwide, EACH with its own
+  toggle in a dedicated collapsible "News outlets" popup group broken
+  down by region (Americas / Europe / Asia-Pacific / Middle East &
+  Africa / Global agencies) — a single misbehaving outlet can be turned
+  off without losing the rest. Strips each outlet's share attribution
+  (smid, CMP, itid, at_*, xtor, ftcamp, maca, sara_ref, module/pgtype,
+  iref, n_cid, traffic_source, utm_*, ...) while PRESERVING gift/paywall
+  tokens (NYT unlocked_article_code, Bloomberg accessToken, WSJ st, FT
+  shareType/token) — guaranteed by the per-outlet denylist design.
 
 ### Formerly tagged v1.11.0 during development
 
