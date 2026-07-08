@@ -12,7 +12,9 @@ Jimothy's Link Shortener
 
 ## Summary (132 chars max)
 
-The link shortener that actually shortens links — strips tracking junk from URLs in place. No redirects. No data collected.
+NOTE: Chrome sources this from manifest.json's `description` field — it ships inside the package. Already set; shown here for reference.
+
+A link shortener that actually shortens links — strips tracking junk from URLs in place. For clean shareable links.
 
 ## Category
 

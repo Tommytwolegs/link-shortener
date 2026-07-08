@@ -3,7 +3,7 @@
   "name": "Jimothy's Link Shortener",
   "short_name": "Link Shortener",
   "version": "1.8.0",
-  "description": "Cleans long URLs on shopping, travel, and social sites — strips tracking and gives you a clean shareable link.",
+  "description": "A link shortener that actually shortens links — strips tracking junk from URLs in place. For clean shareable links.",
   "author": "Thomas Powers",
   "homepage_url": "https://github.com/Tommytwolegs/link-shortener",
   "icons": {
