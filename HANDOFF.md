@@ -34,6 +34,19 @@ CI, and a meaningful round of bug fixes for SPA-state preservation. See
 
 ---
 
+## Queued for the next release (do NOT change before v1.8.0 ships)
+
+- **Bump gecko strict_min_version 121.0 -> 128.0** in package.sh AND
+  package.ps1. Why: optional_host_permissions (the Universal strip's
+  runtime permission) is ignored on Firefox 121-127, so that toggle
+  silently fails there; 128 is an old ESR, exclusion cost ~zero. Kills
+  2 of the 5 standing AMO warnings. NOT changed yet because the
+  v1.8.0 xpi was submitted with 121.0 and must stay reproducible from
+  the v1.8.0 tag. The remaining 3 warnings are by-design/cosmetic
+  (service_worker ignored on Firefox = dual-background setup working;
+  data_collection_permissions ignored below Firefox 140 = metadata
+  only).
+
 ## Supported sites (127 — 125 toggles)
 
 Each has a dedicated pure-function URL module under `src/`. The popup
