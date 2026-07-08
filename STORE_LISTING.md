@@ -184,7 +184,30 @@ v1.7.0 — major release.
 
 ## AMO (Firefox) reviewer notes — paste into "Notes to reviewer"
 
-(2,066 chars — AMO's field caps at ~3,000. This is the version submitted with v1.7.0.)
+### v1.8.0 (2404 chars — AMO's field caps at ~3,000)
+
+Jimothy's Link Shortener v1.8.0.
+
+WHAT IT DOES: Cleans long URLs on a fixed list of 127 sites (shopping/travel/social/media/news/search — full list = manifest host_permissions) by rewriting the address bar via history.replaceState. Right-click "Copy clean URL" menu, a popup copy button, and a commands keyboard shortcut (Ctrl+Shift+L) all share one cleanup pipeline. Opt-in "Universal tracking strip" removes utm_*/gclid/fbclid etc. on any site, only after the user grants an optional host permission.
+
+PERMISSIONS:
+- host_permissions (345 entries): the fixed per-site list — the only sites per-site cleanup touches.
+- optional_host_permissions ["*://*/*"]: NOT requested at install; requested via permissions.request when the user enables the Universal strip toggle. Declining reverts the toggle; permissions.onRemoved disables the feature on revoke.
+- webNavigation: detect SPA navigations. storage: settings sync. scripting: register the strip script after grant + inject clipboard-write for the copy actions. contextMenus/activeTab: the menu item, shortcut, and their clipboard writes without broad host access.
+
+NO NETWORK / NO DATA / NO REMOTE CODE: Zero network requests of any kind; all logic is pure URL string manipulation in src/. data_collection_permissions=["none"]. Only settings persist in storage.sync. No eval/Function; all JS ships in the xpi.
+
+REPRODUCIBLE BUILD: https://github.com/Tommytwolegs/link-shortener (repo root = extension root). Check out tag v1.8.0, run `bash package.sh`; output is dist/link-shortener-1.8.0.xpi. Zero npm deps. 2,902 unit tests: for t in tests/*.test.js; do node "$t"; done
+
+CHANGED FROM v1.7.0: 103 new site modules, incl. a 52-outlet news pack (per-outlet toggles) and major search engines. Gift/paywall tokens and functional params are preserved by design (e.g. NYT unlocked_article_code, Bloomberg accessToken, Drive resourcekey, variant selectors, video timestamps). Redirect unwrapper for google /url, facebook l.php, out.reddit.com, youtube /redirect (context-menu pipeline only; 3-hop cap; http(s) targets only). Host-scoped fallback denylists strip per-site junk on non-permalink paths. Popup: 125 toggles in regional groups, filter box, current-page clean-URL preview via runtime.onMessage.
+
+GECKO: id link-shortener@tommytwolegs.github.io; strict_min_version 121.0; background.scripts fallback provided, URL modules load before background.js.
+
+### AMO summary field (250 max — 247 used)
+
+A link shortener that actually shortens links — strips tracking junk from URLs in place, on 125+ shopping, travel, social, news, and search sites. No redirect services, no data collected, no network requests. Your link stays your link, just clean.
+
+### v1.7.0 (as submitted)
 
 Jimothy's Link Shortener v1.7.0.
 
