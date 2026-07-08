@@ -16,6 +16,12 @@ NOTE: Chrome sources this from manifest.json's `description` field — it ships 
 
 A link shortener that actually shortens links — strips tracking junk from URLs in place. For clean shareable links.
 
+## Promo images (repo promo/ folder; not shipped in the package)
+
+- Small promo tile (440x280): promo/promo-tile-440x280.png
+- Marquee promo tile (1400x560): promo/promo-marquee-1400x560.png
+- Both 24-bit PNG, no alpha, current copy (125+ sites, zero brand names)
+
 ## Category
 
 Productivity
@@ -101,7 +107,11 @@ Privacy policy URL: https://github.com/Tommytwolegs/link-shortener/blob/main/PRI
 
 ---
 
-## Chrome Web Store "What's new in this version?" (release notes)
+## Release notes — FIREFOX (AMO) ONLY
+
+NOTE: the Chrome Web Store has NO release-notes field — Chrome listings
+update silently and the description carries all messaging. The block
+below goes in AMO's "Release notes" field during the Firefox submission.
 
 ### v1.8.0 (THE next submission, once v1.7.0 clears review — all interim dev versions folded in)
 
