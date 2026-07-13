@@ -654,7 +654,9 @@ if (chrome.omnibox) {
   chrome.omnibox.onInputChanged.addListener((text, suggest) => {
     cleanFromOmnibox(text, (cleaned) => {
       if (!cleaned) { suggest([]); return; }
-      suggest([{ content: cleaned, description: 'Clean: <url>' + escapeXml(cleaned) + '</url>' }]);
+      // Plain escaped text — Chrome supports <url>/<match> markup here
+      // but Firefox may render the tags literally, so we use none.
+      suggest([{ content: cleaned, description: 'Clean: ' + escapeXml(cleaned) }]);
     });
   });
 

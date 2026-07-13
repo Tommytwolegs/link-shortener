@@ -154,6 +154,24 @@ check('safelinks wrapping google amp (nested)',
   unwrapRedirects('https://nam12.safelinks.protection.outlook.com/?url=' + encodeURIComponent('https://www.google.com/amp/s/www.example.com/article')),
   'https://www.example.com/article');
 
+
+// --- review fixes ---
+check('amp percent-encoded query decoded',
+  unwrapRedirects('https://www.google.com/amp/s/example.com/article%3fid%3d5'),
+  'https://example.com/article?id=5');
+check('amp encoded query with multiple params',
+  unwrapRedirects('https://www-example-com.cdn.ampproject.org/c/s/www.example.com/story%3Fpage%3D2%26x%3D1'),
+  'https://www.example.com/story?page=2&x=1');
+check('amp encoded query with bad percent kept encoded (no throw)',
+  unwrapRedirects('https://www.google.com/amp/s/example.com/a%3fb%ZZ'),
+  'https://example.com/a%3fb%ZZ');
+check('amp empty host segment rejected',
+  unwrapRedirects('https://www.google.com/amp/s//evil.com/x'),
+  'https://www.google.com/amp/s//evil.com/x');
+check('amp literal query wins over encoded (mixed form unchanged path)',
+  unwrapRedirects('https://www.google.com/amp/s/example.com/a%3fx%3d1?usqp=mq331'),
+  'https://example.com/a%3fx%3d1');
+
 console.log('\n' + passed + ' passed, ' + failed + ' failed (' + (passed + failed) + ' total)');
 if (failed > 0) {
   console.log('\nFailures:');

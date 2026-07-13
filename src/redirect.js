@@ -104,6 +104,21 @@
     let rest = remainder;
     let scheme = 'http://';
     if (/^s\//i.test(rest)) { scheme = 'https://'; rest = rest.slice(2); }
+    // Reject an empty host segment: 'amp/s//evil.com/x' would otherwise
+    // normalize the path's first segment INTO the hostname.
+    if (!rest || rest[0] === '/') return null;
+    // AMP cache links often carry the target's query percent-encoded in
+    // the path ('article%3fid%3d5'). If there's no literal '?', decode
+    // the section after the first %3f so the query works again. On any
+    // decode error the remainder is left exactly as it was.
+    if (rest.indexOf('?') === -1) {
+      const qIdx = rest.search(/%3f/i);
+      if (qIdx !== -1) {
+        try {
+          rest = rest.slice(0, qIdx) + '?' + decodeURIComponent(rest.slice(qIdx + 3));
+        } catch (_e) { /* keep rest unchanged */ }
+      }
+    }
     let t;
     try { t = new URL(scheme + rest); } catch (_e) { return null; }
     for (const name of Array.from(t.searchParams.keys())) {
