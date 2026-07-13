@@ -201,6 +201,7 @@ m["background"] = {
         "src/weather.js",
         "src/samsung.js",
         "src/redirect.js",
+        "src/texturl.js",
         "src/utm.js",
         "src/background.js",
     ],

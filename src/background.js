@@ -99,6 +99,7 @@ if (typeof importScripts === 'function') {
     'weather.js',
     'samsung.js',
     'redirect.js',
+    'texturl.js',
     'utm.js',
   );
 }
@@ -472,6 +473,7 @@ if (chrome.permissions && chrome.permissions.onRemoved) {
 // `*://*/*` in host_permissions.
 
 const CONTEXT_MENU_ID = 'copy-clean-url';
+const SELECTION_MENU_ID = 'copy-clean-url-selection';
 
 // removeAll + create is idempotent and covers both browsers: Chrome
 // persists menus across restarts, Firefox event pages don't reliably —
@@ -485,6 +487,14 @@ function ensureContextMenu() {
       id: CONTEXT_MENU_ID,
       title: 'Copy clean URL',
       contexts: ['link', 'page'],
+    }, () => void chrome.runtime.lastError);
+    // Selected TEXT containing a URL (plain-prose links in emails/docs
+    // that aren't anchor tags). TextUrlExtractor handles schemes-less
+    // domains, surrounding prose, and trailing punctuation.
+    chrome.contextMenus.create({
+      id: SELECTION_MENU_ID,
+      title: 'Copy clean URL from selection',
+      contexts: ['selection'],
     }, () => void chrome.runtime.lastError);
   });
 }
@@ -573,11 +583,19 @@ function copyCleanUrlToTab(tabId, sourceUrl) {
 }
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId !== CONTEXT_MENU_ID) return;
-  const sourceUrl = info.linkUrl || info.pageUrl;
-  if (!sourceUrl) return;
   if (!tab || tab.id == null) return;
-  copyCleanUrlToTab(tab.id, sourceUrl);
+  if (info.menuItemId === CONTEXT_MENU_ID) {
+    const sourceUrl = info.linkUrl || info.pageUrl;
+    if (sourceUrl) copyCleanUrlToTab(tab.id, sourceUrl);
+    return;
+  }
+  if (info.menuItemId === SELECTION_MENU_ID) {
+    const extracted = self.TextUrlExtractor
+      && self.TextUrlExtractor.extractUrlFromText(info.selectionText);
+    if (extracted) copyCleanUrlToTab(tab.id, extracted);
+    // No URL in the selection: quietly do nothing — a notification would
+    // need the notifications permission for a case the user can see.
+  }
 });
 
 // -- Keyboard shortcut: "copy-clean-url" --------------------------------------
@@ -601,6 +619,55 @@ if (chrome.commands && chrome.commands.onCommand) {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       void chrome.runtime.lastError;
       run(tabs && tabs[0]);
+    });
+  });
+}
+
+// -- Omnibox keyword: "clean <url>" --------------------------------------------
+// Type "clean", Tab/Space, then paste a URL: the suggestion shows the
+// cleaned form; Enter navigates to it (per disposition). Clipboard
+// writes aren't possible here — omnibox input is not an activeTab
+// gesture — so navigation IS the feature: you land on the clean URL and
+// the address bar has it. Only http(s) results are navigated.
+if (chrome.omnibox) {
+  const escapeXml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+
+  chrome.omnibox.setDefaultSuggestion({
+    description: 'Clean a URL: paste it after the keyword',
+  });
+
+  function cleanFromOmnibox(text, cb) {
+    const extracted = self.TextUrlExtractor
+      && self.TextUrlExtractor.extractUrlFromText(text);
+    if (!extracted) { cb(null); return; }
+    chrome.storage.sync.get({ utmStripKeepParams: [] }, (items) => {
+      const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
+      const cleaned = cleanAnyUrl(extracted, keepParams);
+      try {
+        const u = new URL(cleaned);
+        cb((u.protocol === 'http:' || u.protocol === 'https:') ? cleaned : null);
+      } catch (_e) { cb(null); }
+    });
+  }
+
+  chrome.omnibox.onInputChanged.addListener((text, suggest) => {
+    cleanFromOmnibox(text, (cleaned) => {
+      if (!cleaned) { suggest([]); return; }
+      suggest([{ content: cleaned, description: 'Clean: <url>' + escapeXml(cleaned) + '</url>' }]);
+    });
+  });
+
+  chrome.omnibox.onInputEntered.addListener((text, disposition) => {
+    cleanFromOmnibox(text, (cleaned) => {
+      if (!cleaned) return;
+      if (disposition === 'newForegroundTab') {
+        chrome.tabs.create({ url: cleaned, active: true });
+      } else if (disposition === 'newBackgroundTab') {
+        chrome.tabs.create({ url: cleaned, active: false });
+      } else {
+        chrome.tabs.update({ url: cleaned });
+      }
     });
   });
 }

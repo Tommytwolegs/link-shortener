@@ -22,6 +22,14 @@ features, patch bumps mark bug-fix-only releases.
   usqp params; #amp_tf-style share fragments) is stripped from the
   recovered URL. Publisher-side /amp/ paths are deliberately untouched
   (canonical form unknowable without a network request).
+- **Selection context menu** — right-click selected TEXT containing a
+  URL (plain-prose links in emails/docs that aren't anchors) and "Copy
+  clean URL from selection" extracts, unwraps, and cleans it. Handles
+  scheme-less domains, surrounding prose, trailing punctuation, and
+  Wikipedia-style parentheses (new texturl.js, unit-tested).
+- **Omnibox keyword** — type "clean", Tab, paste a URL: the suggestion
+  previews the cleaned form and Enter navigates to it. No new
+  permissions (omnibox is a manifest key).
 
 ## [1.8.1] — unreleased
 
