@@ -86,19 +86,21 @@ $firefoxManifest = Get-Content -Raw -Path 'manifest.json' | ConvertFrom-Json
 $firefoxManifest | Add-Member -NotePropertyName 'browser_specific_settings' -NotePropertyValue ([pscustomobject]@{
     gecko = [pscustomobject]@{
         id = 'link-shortener@tommytwolegs.github.io'
-        strict_min_version = '121.0'
+        strict_min_version = '140.0'
         data_collection_permissions = [pscustomobject]@{
             required = @('none')
         }
     }
+    gecko_android = [pscustomobject]@{
+        strict_min_version = '142.0'
+    }
 }) -Force
 
-# Mozilla's add-ons linter requires a `background.scripts` fallback alongside
-# `service_worker`. Order matters — URL modules must precede background.js
-# since background.js uses self.*LinkShortener globals at top level.
-$serviceWorker = $firefoxManifest.background.service_worker
+# Firefox ignores background.service_worker (and AMO warns about it), so
+# the Firefox manifest ships ONLY background.scripts. Order matters — URL
+# modules must precede background.js since background.js uses
+# self.*LinkShortener globals at top level.
 $firefoxManifest.background = [pscustomobject]@{
-    service_worker = $serviceWorker
     scripts = @(
         'src/asin.js',
         'src/agoda.js',

@@ -4,7 +4,30 @@ All notable changes to Jimothy's Link Shortener. Versions follow
 [Semantic Versioning](https://semver.org/) loosely — minor bumps mark new
 features, patch bumps mark bug-fix-only releases.
 
-## [1.8.0] — unreleased
+## [1.8.1] — unreleased
+
+Performance/simplification pass + AMO warning fixes. No behavior changes —
+the cleanup pipeline's output is byte-identical (proven on 1,050 corpus
+inputs before/after).
+
+### Changed
+- **background.js**: the context-menu/shortcut/popup cleanup pipeline's
+  75-entry per-site dispatch table is now generated once per
+  service-worker wake from HOST_CHECKS (previously ~300 lines of
+  hand-written closures rebuilt on EVERY invocation). Verified 1:1
+  against the old mapping; ~290 lines deleted.
+- **social-content.js**: the dispatcher discovers the loaded URL module
+  by namespace scan instead of a hand-maintained 68-line || chain. The
+  "forgot to add the new site to the dispatcher" bug class (shipped
+  once in v1.7.0, silently broke 7 sites' toggles) is structurally
+  gone; ~60 lines deleted.
+- **Firefox package**: gecko strict_min_version 121 -> 140
+  (+ gecko_android 142), and the Firefox manifest no longer carries the
+  Chrome-only background.service_worker key. addons-linter on the xpi:
+  0 errors, 0 warnings, 0 notices (was 0/5/0 — all five v1.8.0 upload
+  warnings cleared). Chrome zip unchanged (keeps service_worker).
+
+## [1.8.0] — frozen as submitted to AMO 2026-07-13
 
 **This is one consolidated release.** Everything below down to the v1.7.0
 entry ships together as v1.8.0 (the interim development tags 1.8–1.11

@@ -99,21 +99,31 @@ import json
 with open("manifest.json") as f:
     m = json.load(f)
 m["browser_specific_settings"] = {
+    # strict_min_version 140: data_collection_permissions (140) and
+    # optional_host_permissions (128) are both understood, silencing the
+    # AMO upload warnings seen on v1.8.0 and guaranteeing the Universal
+    # strip's runtime permission works on every installable version.
+    # 140 is an ESR line; older releases are EOL.
     "gecko": {
         "id": "link-shortener@tommytwolegs.github.io",
-        "strict_min_version": "121.0",
+        "strict_min_version": "140.0",
         # AMO requires every add-on to declare data collection. We collect
         # nothing — the extension makes zero network requests — so "none".
         "data_collection_permissions": {
             "required": ["none"],
         },
     },
+    # Android gained data_collection_permissions in 142.
+    "gecko_android": {
+        "strict_min_version": "142.0",
+    },
 }
-# Mozilla's add-ons linter requires a `background.scripts` fallback alongside
-# `service_worker`. Order matters: URL modules must precede background.js
+# Firefox ignores `background.service_worker` (and warns about it on AMO
+# upload), so the Firefox manifest ships ONLY `background.scripts` — the
+# event-page mode Firefox actually uses. The Chrome zip keeps
+# service_worker. Order matters: URL modules must precede background.js
 # since background.js uses self.*LinkShortener globals at top level.
 m["background"] = {
-    "service_worker": m["background"]["service_worker"],
     "scripts": [
         "src/asin.js",
         "src/agoda.js",

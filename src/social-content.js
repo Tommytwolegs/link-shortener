@@ -42,75 +42,25 @@
   // time because each manifest content_scripts entry only loads its own
   // URL module. The order here doesn't matter for correctness; we just
   // pick the first that's defined.
-  const M =
-    self.FacebookLinkShortener ||
-    self.InstagramLinkShortener ||
-    self.YoutubeLinkShortener ||
-    self.TwitterLinkShortener ||
-    self.TiktokLinkShortener ||
-    self.RedditLinkShortener ||
-    self.SpotifyLinkShortener ||
-    self.LinkedinLinkShortener ||
-    self.EbayLinkShortener ||
-    self.EtsyLinkShortener ||
-    self.ThreadsLinkShortener ||
-    self.PinterestLinkShortener ||
-    self.WalmartLinkShortener ||
-    self.TargetLinkShortener ||
-    self.SubstackLinkShortener ||
-    self.BlueskyLinkShortener ||
-    self.GithubLinkShortener ||
-    self.MediumLinkShortener ||
-    self.QuoraLinkShortener ||
-    self.ShopeeLinkShortener ||
-    self.LazadaLinkShortener ||
-    self.AliexpressLinkShortener ||
-    self.TemuLinkShortener ||
-    self.MercadolibreLinkShortener ||
-    self.RakutenLinkShortener ||
-    self.CoupangLinkShortener ||
-    self.FlipkartLinkShortener ||
-    self.TokopediaLinkShortener ||
-    self.MercariLinkShortener ||
-    self.VintedLinkShortener ||
-    self.AllegroLinkShortener ||
-    self.SteamLinkShortener ||
-    self.ImdbLinkShortener ||
-    self.StackoverflowLinkShortener ||
-    self.WikipediaLinkShortener ||
-    self.GoodreadsLinkShortener ||
-    self.SoundcloudLinkShortener ||
-    self.AppleMusicLinkShortener ||
-    self.TwitchLinkShortener ||
-    self.WayfairLinkShortener ||
-    self.BestbuyLinkShortener ||
-    self.BandcampLinkShortener ||
-    self.LetterboxdLinkShortener ||
-    self.TripadvisorLinkShortener ||
-    self.MeeshoLinkShortener ||
-    self.CarousellLinkShortener ||
-    self.TaobaoLinkShortener ||
-    self.JdLinkShortener ||
-    self.LeboncoinLinkShortener ||
-    self.OlxLinkShortener ||
-    self.WallapopLinkShortener ||
-    self.MarktplaatsLinkShortener ||
-    self.KleinanzeigenLinkShortener ||
-    self.ZalandoLinkShortener ||
-    self.NetflixLinkShortener ||
-    self.RobloxLinkShortener ||
-    self.FandomLinkShortener ||
-    self.BilibiliLinkShortener ||
-    self.SheinLinkShortener ||
-    self.NewsLinkShortener ||
-    self.GoogleLinkShortener ||
-    self.GdriveLinkShortener ||
-    self.BingLinkShortener ||
-    self.DuckduckgoLinkShortener ||
-    self.NaverLinkShortener ||
-    self.WeatherLinkShortener ||
-    self.SamsungLinkShortener ||
-    null;
+  // Find whichever URL module loaded on this host by scanning for the
+  // *LinkShortener namespace. Each content_scripts entry pairs exactly ONE
+  // module with this dispatcher, and the collision audit guarantees every
+  // host is claimed by exactly one module — so at most one namespace can
+  // exist here. Scanning by suffix (instead of the old hand-maintained
+  // 60+ line || chain) means a new site can never silently miss the
+  // dispatcher again — that bug shipped once in v1.7.0 and cost 7 sites
+  // their toggles.
+  let M = null;
+  for (const k of Object.getOwnPropertyNames(self)) {
+    if (k.endsWith('LinkShortener')) {
+      const candidate = self[k];
+      if (candidate && typeof candidate.needsShortening === 'function'
+          && typeof candidate.shortenUrl === 'function') {
+        M = candidate;
+        break;
+      }
+    }
+  }
 
   // Per-site storage key, taken from the active module. Modules that cover
   // multiple independently-toggleable properties (the news pack) expose

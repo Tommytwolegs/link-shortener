@@ -34,18 +34,17 @@ CI, and a meaningful round of bug fixes for SPA-state preservation. See
 
 ---
 
-## Queued for the next release (do NOT change before v1.8.0 ships)
+## Version status
 
-- **Bump gecko strict_min_version 121.0 -> 128.0** in package.sh AND
-  package.ps1. Why: optional_host_permissions (the Universal strip's
-  runtime permission) is ignored on Firefox 121-127, so that toggle
-  silently fails there; 128 is an old ESR, exclusion cost ~zero. Kills
-  2 of the 5 standing AMO warnings. NOT changed yet because the
-  v1.8.0 xpi was submitted with 121.0 and must stay reproducible from
-  the v1.8.0 tag. The remaining 3 warnings are by-design/cosmetic
-  (service_worker ignored on Firefox = dual-background setup working;
-  data_collection_permissions ignored below Firefox 140 = metadata
-  only).
+- **v1.8.0** — FROZEN: submitted to AMO 2026-07-13 with gecko min
+  121.0 and 5 linter warnings; tag v1.8.0 must stay put for
+  reproducible-build verification. Never submitted to Chrome.
+- **v1.8.1** — current: the AMO-warning fixes landed here (gecko min
+  140.0 + gecko_android 142.0; Firefox manifest drops the Chrome-only
+  service_worker key -> addons-linter 0/0/0) plus the dispatch-table
+  and dispatcher simplifications. Chrome goes 1.7.0 -> 1.8.1 directly
+  once 1.7.0 clears review; AMO gets 1.8.1 as an update (or cancel the
+  pending 1.8.0 review and submit 1.8.1 instead).
 
 ## Supported sites (127 — 125 toggles)
 
@@ -631,12 +630,17 @@ Full per-version detail in `CHANGELOG.md`.
      (`shortUrlForBar`). Shareable URLs should be canonical; address-bar
      URLs need to keep SPA state.
 
-- **`social-content.js` dispatcher must list every namespace.** Adding a
-  new site = adding the site's URL module + adding
-  `self.<Site>LinkShortener` to the `M = ... || ... ||` chain in
-  `social-content.js`. We forgot this for 7 sites in the initial v1.7.0
-  work and the per-site toggles silently did nothing for those sites.
-  See "Round 4" of v1.7.0 history above.
+- **`social-content.js` dispatcher is now automatic.** Since v1.8.1 it
+  scans `self` for the `*LinkShortener` namespace (requires the
+  `shortenUrl` alias + `needsShortening`), so adding a new site no
+  longer requires touching the dispatcher — the v1.7.0 "forgot the
+  M-chain, 7 sites' toggles silently dead" bug class is structurally
+  gone. NOTE the alias requirement: a module without `shortenUrl`
+  (like asin.js or the travel modules — which use their own content
+  scripts) would be skipped by the dispatcher by design.
+  Similarly, background.js's cleanAnyUrl dispatch table (SHORTENERS)
+  is generated from HOST_CHECKS — so a new site needs its module in
+  importScripts + a HOST_CHECKS row, and dispatch follows for free.
 
 - **Host-scoped fallback denylists — now in 16 modules.** On any
   matched-host path that fits NO recognized permalink form, the module

@@ -509,311 +509,9 @@ function cleanAnyUrl(input, keepParams) {
     return input;
   }
   const h = url.hostname;
-  const shorteners = [
-    self.AmazonLinkShortener && {
-      match: (h) => self.AmazonLinkShortener.isAmazonHost(h),
-      shorten: (u) => self.AmazonLinkShortener.shortenAmazonUrl(u),
-    },
-    self.AgodaLinkShortener && {
-      match: (h) => self.AgodaLinkShortener.isAgodaHost(h),
-      shorten: (u) => self.AgodaLinkShortener.shortPropertyUrl(u),
-    },
-    self.BookingLinkShortener && {
-      match: (h) => self.BookingLinkShortener.isBookingHost(h),
-      shorten: (u) => self.BookingLinkShortener.shortPropertyUrl(u),
-    },
-    self.ExpediaLinkShortener && {
-      match: (h) => self.ExpediaLinkShortener.isExpediaHost(h),
-      shorten: (u) => self.ExpediaLinkShortener.shortPropertyUrl(u),
-    },
-    self.AirbnbLinkShortener && {
-      match: (h) => self.AirbnbLinkShortener.isAirbnbHost(h),
-      shorten: (u) => self.AirbnbLinkShortener.shortPropertyUrl(u),
-    },
-    self.FacebookLinkShortener && {
-      match: (h) => self.FacebookLinkShortener.isFacebookHost(h),
-      shorten: (u) => self.FacebookLinkShortener.shortenFacebookUrl(u),
-    },
-    self.InstagramLinkShortener && {
-      match: (h) => self.InstagramLinkShortener.isInstagramHost(h),
-      shorten: (u) => self.InstagramLinkShortener.shortenInstagramUrl(u),
-    },
-    self.YoutubeLinkShortener && {
-      match: (h) => self.YoutubeLinkShortener.isYoutubeHost(h),
-      shorten: (u) => self.YoutubeLinkShortener.shortenYoutubeUrl(u),
-    },
-    self.TwitterLinkShortener && {
-      match: (h) => self.TwitterLinkShortener.isTwitterHost(h),
-      shorten: (u) => self.TwitterLinkShortener.shortenTwitterUrl(u),
-    },
-    self.TiktokLinkShortener && {
-      match: (h) => self.TiktokLinkShortener.isTiktokHost(h),
-      shorten: (u) => self.TiktokLinkShortener.shortenTiktokUrl(u),
-    },
-    self.RedditLinkShortener && {
-      match: (h) => self.RedditLinkShortener.isRedditHost(h),
-      shorten: (u) => self.RedditLinkShortener.shortenRedditUrl(u),
-    },
-    self.SpotifyLinkShortener && {
-      match: (h) => self.SpotifyLinkShortener.isSpotifyHost(h),
-      shorten: (u) => self.SpotifyLinkShortener.shortenSpotifyUrl(u),
-    },
-    self.LinkedinLinkShortener && {
-      match: (h) => self.LinkedinLinkShortener.isLinkedinHost(h),
-      shorten: (u) => self.LinkedinLinkShortener.shortenLinkedinUrl(u),
-    },
-    self.EbayLinkShortener && {
-      match: (h) => self.EbayLinkShortener.isEbayHost(h),
-      shorten: (u) => self.EbayLinkShortener.shortenEbayUrl(u),
-    },
-    self.EtsyLinkShortener && {
-      match: (h) => self.EtsyLinkShortener.isEtsyHost(h),
-      shorten: (u) => self.EtsyLinkShortener.shortenEtsyUrl(u),
-    },
-    self.ThreadsLinkShortener && {
-      match: (h) => self.ThreadsLinkShortener.isThreadsHost(h),
-      shorten: (u) => self.ThreadsLinkShortener.shortenThreadsUrl(u),
-    },
-    self.PinterestLinkShortener && {
-      match: (h) => self.PinterestLinkShortener.isPinterestHost(h),
-      shorten: (u) => self.PinterestLinkShortener.shortenPinterestUrl(u),
-    },
-    self.WalmartLinkShortener && {
-      match: (h) => self.WalmartLinkShortener.isWalmartHost(h),
-      shorten: (u) => self.WalmartLinkShortener.shortenWalmartUrl(u),
-    },
-    self.TargetLinkShortener && {
-      match: (h) => self.TargetLinkShortener.isTargetHost(h),
-      shorten: (u) => self.TargetLinkShortener.shortenTargetUrl(u),
-    },
-    self.SubstackLinkShortener && {
-      match: (h) => self.SubstackLinkShortener.isSubstackHost(h),
-      shorten: (u) => self.SubstackLinkShortener.shortenSubstackUrl(u),
-    },
-    self.BlueskyLinkShortener && {
-      match: (h) => self.BlueskyLinkShortener.isBlueskyHost(h),
-      shorten: (u) => self.BlueskyLinkShortener.shortenBlueskyUrl(u),
-    },
-    self.GithubLinkShortener && {
-      match: (h) => self.GithubLinkShortener.isGithubHost(h),
-      shorten: (u) => self.GithubLinkShortener.shortenGithubUrl(u),
-    },
-    self.MediumLinkShortener && {
-      match: (h) => self.MediumLinkShortener.isMediumHost(h),
-      shorten: (u) => self.MediumLinkShortener.shortenMediumUrl(u),
-    },
-    self.QuoraLinkShortener && {
-      match: (h) => self.QuoraLinkShortener.isQuoraHost(h),
-      shorten: (u) => self.QuoraLinkShortener.shortenQuoraUrl(u),
-    },
-    self.ShopeeLinkShortener && {
-      match: (h) => self.ShopeeLinkShortener.isShopeeHost(h),
-      shorten: (u) => self.ShopeeLinkShortener.shortenShopeeUrl(u),
-    },
-    self.LazadaLinkShortener && {
-      match: (h) => self.LazadaLinkShortener.isLazadaHost(h),
-      shorten: (u) => self.LazadaLinkShortener.shortenLazadaUrl(u),
-    },
-    self.AliexpressLinkShortener && {
-      match: (h) => self.AliexpressLinkShortener.isAliexpressHost(h),
-      shorten: (u) => self.AliexpressLinkShortener.shortenAliexpressUrl(u),
-    },
-    self.TemuLinkShortener && {
-      match: (h) => self.TemuLinkShortener.isTemuHost(h),
-      shorten: (u) => self.TemuLinkShortener.shortenTemuUrl(u),
-    },
-    self.MercadolibreLinkShortener && {
-      match: (h) => self.MercadolibreLinkShortener.isMercadolibreHost(h),
-      shorten: (u) => self.MercadolibreLinkShortener.shortenMercadolibreUrl(u),
-    },
-    self.RakutenLinkShortener && {
-      match: (h) => self.RakutenLinkShortener.isRakutenHost(h),
-      shorten: (u) => self.RakutenLinkShortener.shortenRakutenUrl(u),
-    },
-    self.TripLinkShortener && {
-      match: (h) => self.TripLinkShortener.isTripHost(h),
-      shorten: (u) => self.TripLinkShortener.shortPropertyUrl(u),
-    },
-    self.HotelscomLinkShortener && {
-      match: (h) => self.HotelscomLinkShortener.isHotelscomHost(h),
-      shorten: (u) => self.HotelscomLinkShortener.shortPropertyUrl(u),
-    },
-    self.CoupangLinkShortener && {
-      match: (h) => self.CoupangLinkShortener.isCoupangHost(h),
-      shorten: (u) => self.CoupangLinkShortener.shortenCoupangUrl(u),
-    },
-    self.FlipkartLinkShortener && {
-      match: (h) => self.FlipkartLinkShortener.isFlipkartHost(h),
-      shorten: (u) => self.FlipkartLinkShortener.shortenFlipkartUrl(u),
-    },
-    self.TokopediaLinkShortener && {
-      match: (h) => self.TokopediaLinkShortener.isTokopediaHost(h),
-      shorten: (u) => self.TokopediaLinkShortener.shortenTokopediaUrl(u),
-    },
-    self.MercariLinkShortener && {
-      match: (h) => self.MercariLinkShortener.isMercariHost(h),
-      shorten: (u) => self.MercariLinkShortener.shortenMercariUrl(u),
-    },
-    self.VintedLinkShortener && {
-      match: (h) => self.VintedLinkShortener.isVintedHost(h),
-      shorten: (u) => self.VintedLinkShortener.shortenVintedUrl(u),
-    },
-    self.AllegroLinkShortener && {
-      match: (h) => self.AllegroLinkShortener.isAllegroHost(h),
-      shorten: (u) => self.AllegroLinkShortener.shortenAllegroUrl(u),
-    },
-    self.VrboLinkShortener && {
-      match: (h) => self.VrboLinkShortener.isVrboHost(h),
-      shorten: (u) => self.VrboLinkShortener.shortPropertyUrl(u),
-    },
-    self.SteamLinkShortener && {
-      match: (h) => self.SteamLinkShortener.isSteamHost(h),
-      shorten: (u) => self.SteamLinkShortener.shortenSteamUrl(u),
-    },
-    self.ImdbLinkShortener && {
-      match: (h) => self.ImdbLinkShortener.isImdbHost(h),
-      shorten: (u) => self.ImdbLinkShortener.shortenImdbUrl(u),
-    },
-    self.StackoverflowLinkShortener && {
-      match: (h) => self.StackoverflowLinkShortener.isStackoverflowHost(h),
-      shorten: (u) => self.StackoverflowLinkShortener.shortenStackoverflowUrl(u),
-    },
-    self.WikipediaLinkShortener && {
-      match: (h) => self.WikipediaLinkShortener.isWikipediaHost(h),
-      shorten: (u) => self.WikipediaLinkShortener.shortenWikipediaUrl(u),
-    },
-    self.GoodreadsLinkShortener && {
-      match: (h) => self.GoodreadsLinkShortener.isGoodreadsHost(h),
-      shorten: (u) => self.GoodreadsLinkShortener.shortenGoodreadsUrl(u),
-    },
-    self.SoundcloudLinkShortener && {
-      match: (h) => self.SoundcloudLinkShortener.isSoundcloudHost(h),
-      shorten: (u) => self.SoundcloudLinkShortener.shortenSoundcloudUrl(u),
-    },
-    self.AppleMusicLinkShortener && {
-      match: (h) => self.AppleMusicLinkShortener.isAppleMusicHost(h),
-      shorten: (u) => self.AppleMusicLinkShortener.shortenAppleMusicUrl(u),
-    },
-    self.TwitchLinkShortener && {
-      match: (h) => self.TwitchLinkShortener.isTwitchHost(h),
-      shorten: (u) => self.TwitchLinkShortener.shortenTwitchUrl(u),
-    },
-    self.WayfairLinkShortener && {
-      match: (h) => self.WayfairLinkShortener.isWayfairHost(h),
-      shorten: (u) => self.WayfairLinkShortener.shortenWayfairUrl(u),
-    },
-    self.BestbuyLinkShortener && {
-      match: (h) => self.BestbuyLinkShortener.isBestbuyHost(h),
-      shorten: (u) => self.BestbuyLinkShortener.shortenBestbuyUrl(u),
-    },
-    self.BandcampLinkShortener && {
-      match: (h) => self.BandcampLinkShortener.isBandcampHost(h),
-      shorten: (u) => self.BandcampLinkShortener.shortenBandcampUrl(u),
-    },
-    self.LetterboxdLinkShortener && {
-      match: (h) => self.LetterboxdLinkShortener.isLetterboxdHost(h),
-      shorten: (u) => self.LetterboxdLinkShortener.shortenLetterboxdUrl(u),
-    },
-    self.TripadvisorLinkShortener && {
-      match: (h) => self.TripadvisorLinkShortener.isTripadvisorHost(h),
-      shorten: (u) => self.TripadvisorLinkShortener.shortenTripadvisorUrl(u),
-    },
-    self.MeeshoLinkShortener && {
-      match: (h) => self.MeeshoLinkShortener.isMeeshoHost(h),
-      shorten: (u) => self.MeeshoLinkShortener.shortenMeeshoUrl(u),
-    },
-    self.CarousellLinkShortener && {
-      match: (h) => self.CarousellLinkShortener.isCarousellHost(h),
-      shorten: (u) => self.CarousellLinkShortener.shortenCarousellUrl(u),
-    },
-    self.TaobaoLinkShortener && {
-      match: (h) => self.TaobaoLinkShortener.isTaobaoHost(h),
-      shorten: (u) => self.TaobaoLinkShortener.shortenTaobaoUrl(u),
-    },
-    self.JdLinkShortener && {
-      match: (h) => self.JdLinkShortener.isJdHost(h),
-      shorten: (u) => self.JdLinkShortener.shortenJdUrl(u),
-    },
-    self.LeboncoinLinkShortener && {
-      match: (h) => self.LeboncoinLinkShortener.isLeboncoinHost(h),
-      shorten: (u) => self.LeboncoinLinkShortener.shortenLeboncoinUrl(u),
-    },
-    self.OlxLinkShortener && {
-      match: (h) => self.OlxLinkShortener.isOlxHost(h),
-      shorten: (u) => self.OlxLinkShortener.shortenOlxUrl(u),
-    },
-    self.WallapopLinkShortener && {
-      match: (h) => self.WallapopLinkShortener.isWallapopHost(h),
-      shorten: (u) => self.WallapopLinkShortener.shortenWallapopUrl(u),
-    },
-    self.MarktplaatsLinkShortener && {
-      match: (h) => self.MarktplaatsLinkShortener.isMarktplaatsHost(h),
-      shorten: (u) => self.MarktplaatsLinkShortener.shortenMarktplaatsUrl(u),
-    },
-    self.KleinanzeigenLinkShortener && {
-      match: (h) => self.KleinanzeigenLinkShortener.isKleinanzeigenHost(h),
-      shorten: (u) => self.KleinanzeigenLinkShortener.shortenKleinanzeigenUrl(u),
-    },
-    self.ZalandoLinkShortener && {
-      match: (h) => self.ZalandoLinkShortener.isZalandoHost(h),
-      shorten: (u) => self.ZalandoLinkShortener.shortenZalandoUrl(u),
-    },
-    self.NetflixLinkShortener && {
-      match: (h) => self.NetflixLinkShortener.isNetflixHost(h),
-      shorten: (u) => self.NetflixLinkShortener.shortenNetflixUrl(u),
-    },
-    self.RobloxLinkShortener && {
-      match: (h) => self.RobloxLinkShortener.isRobloxHost(h),
-      shorten: (u) => self.RobloxLinkShortener.shortenRobloxUrl(u),
-    },
-    self.FandomLinkShortener && {
-      match: (h) => self.FandomLinkShortener.isFandomHost(h),
-      shorten: (u) => self.FandomLinkShortener.shortenFandomUrl(u),
-    },
-    self.BilibiliLinkShortener && {
-      match: (h) => self.BilibiliLinkShortener.isBilibiliHost(h),
-      shorten: (u) => self.BilibiliLinkShortener.shortenBilibiliUrl(u),
-    },
-    self.SheinLinkShortener && {
-      match: (h) => self.SheinLinkShortener.isSheinHost(h),
-      shorten: (u) => self.SheinLinkShortener.shortenSheinUrl(u),
-    },
-    self.NewsLinkShortener && {
-      match: (h) => self.NewsLinkShortener.isNewsHost(h),
-      shorten: (u) => self.NewsLinkShortener.shortenNewsUrl(u),
-    },
-    self.GoogleLinkShortener && {
-      match: (h) => self.GoogleLinkShortener.isGoogleHost(h),
-      shorten: (u) => self.GoogleLinkShortener.shortenGoogleUrl(u),
-    },
-    self.GdriveLinkShortener && {
-      match: (h) => self.GdriveLinkShortener.isGdriveHost(h),
-      shorten: (u) => self.GdriveLinkShortener.shortenGdriveUrl(u),
-    },
-    self.BingLinkShortener && {
-      match: (h) => self.BingLinkShortener.isBingHost(h),
-      shorten: (u) => self.BingLinkShortener.shortenBingUrl(u),
-    },
-    self.DuckduckgoLinkShortener && {
-      match: (h) => self.DuckduckgoLinkShortener.isDuckduckgoHost(h),
-      shorten: (u) => self.DuckduckgoLinkShortener.shortenDuckduckgoUrl(u),
-    },
-    self.NaverLinkShortener && {
-      match: (h) => self.NaverLinkShortener.isNaverHost(h),
-      shorten: (u) => self.NaverLinkShortener.shortenNaverUrl(u),
-    },
-    self.WeatherLinkShortener && {
-      match: (h) => self.WeatherLinkShortener.isWeatherHost(h),
-      shorten: (u) => self.WeatherLinkShortener.shortenWeatherUrl(u),
-    },
-    self.SamsungLinkShortener && {
-      match: (h) => self.SamsungLinkShortener.isSamsungHost(h),
-      shorten: (u) => self.SamsungLinkShortener.shortenSamsungUrl(u),
-    },
-  ].filter(Boolean);
 
   let working = input;
-  for (const s of shorteners) {
+  for (const s of SHORTENERS) {
     if (!s.match(h)) continue;
     const out = s.shorten(working);
     if (out) {
@@ -1003,6 +701,24 @@ const HOST_CHECKS = [
   ['WeatherLinkShortener', 'isWeatherHost'],
   ['SamsungLinkShortener', 'isSamsungHost'],
 ];
+
+// Per-site dispatch table for cleanAnyUrl (context menu / keyboard shortcut /
+// popup message), generated ONCE per service-worker wake from HOST_CHECKS.
+// Replaces a ~300-line hand-written closure array that was rebuilt on every
+// call; verified 1:1 against it before removal. Resolution rule: every
+// module exports a `shortenUrl` alias except amazon (shortenAmazonUrl) and
+// the seven travel modules (shortPropertyUrl) — exactly the functions the
+// old array named. Host order is immaterial: the collision audit shows
+// every host is claimed by exactly one module. Modules all load before
+// this file (importScripts / manifest scripts order), and cleanAnyUrl only
+// runs from event handlers, so the table is always populated by call time.
+const SHORTENERS = HOST_CHECKS.map(([ns, isHostFn]) => {
+  const api = self[ns];
+  if (!api || typeof api[isHostFn] !== 'function') return null;
+  const shorten = api.shortenUrl || api.shortenAmazonUrl || api.shortPropertyUrl;
+  if (typeof shorten !== 'function') return null;
+  return { match: (h) => api[isHostFn](h), shorten: (u) => shorten(u) };
+}).filter(Boolean);
 
 function isHandledHost(hostname) {
   return HOST_CHECKS.some(([ns, fn]) => {
