@@ -10,6 +10,16 @@ Performance/simplification pass + AMO warning fixes. No behavior changes —
 the cleanup pipeline's output is byte-identical (proven on 1,050 corpus
 inputs before/after).
 
+### Added
+- **Popup polish**: the filter box shows a "No sites match" note instead
+  of a blank area on zero hits, and the keyboard-shortcut tip now reads
+  the REAL binding via commands.getAll — including a "not set" notice
+  when another extension claimed the key (browsers assign nothing on
+  conflict, silently).
+- **CI**: the workflow now builds both packages and runs addons-linter
+  on the xpi, failing on any error OR warning — the package.sh comma
+  bug class and manifest-generation regressions are caught on push.
+
 ### Changed
 - **background.js**: the context-menu/shortcut/popup cleanup pipeline's
   75-entry per-site dispatch table is now generated once per

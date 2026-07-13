@@ -61,3 +61,17 @@ jobs:
           done
           echo
           echo "All $total test files passed."
+
+      - name: Build packages (guards the Firefox manifest generation)
+        run: bash package.sh
+
+      - name: Lint the Firefox package (0 errors, 0 warnings required)
+        run: |
+          set -e
+          XPI=$(ls dist/*.xpi)
+          npx --yes addons-linter "$XPI" | tee /tmp/lint.out
+          # Fail on warnings too -- v1.8.1 reached 0/0/0 and we keep it there.
+          if ! grep -qE "^errors\s+0" /tmp/lint.out || ! grep -qE "^warnings\s+0" /tmp/lint.out; then
+            echo "::error::addons-linter reported errors or warnings"
+            exit 1
+          fi

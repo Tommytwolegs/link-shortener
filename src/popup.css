@@ -443,3 +443,9 @@ footer a:hover {
 /* Sub-headings ("Shopping", "Travel"...) orphan when their rows are
    filtered out; hide them all while a filter query is active. */
 .site-toggles.filtering .group-subhead { display: none; }
+
+.filter-empty {
+  margin: 2px 0 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}

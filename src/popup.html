@@ -78,6 +78,8 @@
     <input type="search" id="site-filter" class="site-filter"
            placeholder="Filter sites&#8230;" autocomplete="off" spellcheck="false"
            aria-label="Filter site toggles" />
+    <p class="filter-empty" id="filter-empty" hidden>No sites match. The full
+       list also lives on the project page.</p>
 
     <details class="site-group" data-group="global" open>
       <summary>
@@ -1038,9 +1040,9 @@
        use "Copy link address" on Amazon to get the clean form directly.
        The "Universal tracking strip" toggle (off by default) strips
        common trackers like utm_* from URLs on every site you visit.</p>
-    <p>Tip: Ctrl+Shift+L (&#8984;&#8679;L on Mac) copies a clean URL of the
-       current page. Rebind it in your browser's extension shortcut
-       settings.</p>
+    <p id="shortcut-tip">Tip: Ctrl+Shift+L (&#8984;&#8679;L on Mac) copies a
+       clean URL of the current page. Rebind it in your browser's extension
+       shortcut settings.</p>
   </section>
 
   <footer>

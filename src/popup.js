@@ -472,6 +472,27 @@
     });
   }
 
+  // -- Keyboard-shortcut tip: show the REAL binding ---------------------------
+  // Browsers silently assign NOTHING when the suggested key conflicts with
+  // another extension; commands.getAll tells us what (if anything) is
+  // actually bound so the tip never lies. Falls back to the static text
+  // when the API is unavailable.
+  (function initShortcutTip() {
+    const el = document.getElementById('shortcut-tip');
+    if (!el || !chrome.commands || !chrome.commands.getAll) return;
+    chrome.commands.getAll((cmds) => {
+      void chrome.runtime.lastError;
+      const cmd = (cmds || []).find((c) => c.name === 'copy-clean-url');
+      if (!cmd) return;
+      el.textContent = cmd.shortcut
+        ? 'Tip: ' + cmd.shortcut + ' copies a clean URL of the current page. '
+          + "Rebind it in your browser's extension shortcut settings."
+        : 'Tip: the copy-clean-URL keyboard shortcut is not set (another '
+          + "extension may have claimed it). Assign one in your browser's "
+          + 'extension shortcut settings.';
+    });
+  })();
+
   // -- Current page: clean-URL preview + copy button --------------------------
   // Asks the background (which has every URL module loaded) to clean the
   // active tab's URL through the same pipeline as the context menu and the
@@ -566,6 +587,8 @@
     function applyFilter() {
       const q = input.value.trim().toLowerCase();
       if (!q) {
+        const emptyEl = document.getElementById('filter-empty');
+        if (emptyEl) emptyEl.hidden = true;
         siteTogglesEl.classList.remove('filtering');
         for (const r of rows) r.row.classList.remove('filter-hidden');
         for (const el of groupEls) {
@@ -592,11 +615,14 @@
         r.row.classList.toggle('filter-hidden', !hit);
         if (hit) groupHits[r.group] = (groupHits[r.group] || 0) + 1;
       }
+      let anyHit = false;
       for (const el of groupEls) {
         const hits = groupHits[el.dataset.group] || 0;
         el.classList.toggle('filter-hidden', hits === 0);
-        if (hits > 0) el.open = true;
+        if (hits > 0) { el.open = true; anyHit = true; }
       }
+      const emptyEl = document.getElementById('filter-empty');
+      if (emptyEl) emptyEl.hidden = anyHit;
     }
 
     input.addEventListener('input', applyFilter);
