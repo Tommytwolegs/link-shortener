@@ -53,7 +53,7 @@ check('google search NOT a redirector',
   null);
 check('garbage passthrough', unwrapRedirects('not a url'), 'not a url'.replace('not a url','not a url'));
 check('unwrapOnce on garbage', unwrapOnce('not a url'), null);
-check('redirector count', REDIRECTORS.length, 12);
+check('redirector count', REDIRECTORS.length, 15);
 
 
 // --- v1.9 unwrap pack ---
@@ -114,6 +114,45 @@ check('href.li raw-query unwrapped',
 check('href.li with non-http garbage passes through (input returned verbatim)',
   unwrapRedirects('https://href.li/?not a url'),
   'https://href.li/?not a url');
+
+
+// --- de-AMP ---
+check('google amp https form',
+  unwrapRedirects('https://www.google.com/amp/s/www.example.com/article?id=5'),
+  'https://www.example.com/article?id=5');
+check('google amp http form (no s/)',
+  unwrapRedirects('https://www.google.com/amp/example.com/story'),
+  'http://example.com/story');
+check('google amp transport junk stripped',
+  unwrapRedirects('https://www.google.com/amp/s/www.example.com/article?id=5&amp_gsa=1&amp_js_v=a9&usqp=mq331AQIUAKwASCAAgM%3D'),
+  'https://www.example.com/article?id=5');
+check('ampproject cdn content form',
+  unwrapRedirects('https://www-example-com.cdn.ampproject.org/c/s/www.example.com/article?x=1'),
+  'https://www.example.com/article?x=1');
+check('ampproject cdn viewer form',
+  unwrapRedirects('https://cdn.ampproject.org/v/s/example.com/page'),
+  'https://example.com/page');
+check('bing amp form',
+  unwrapRedirects('https://www.bing.com/amp/s/example.com/news/item'),
+  'https://example.com/news/item');
+check('amp sharing fragment stripped',
+  unwrapRedirects('https://www.google.com/amp/s/example.com/a#amp_tf=From%20%251%24s&aoh=1234'),
+  'https://example.com/a');
+check('normal google search untouched by amp entry',
+  unwrapOnce('https://www.google.com/search?q=amp'),
+  null);
+check('publisher-side amp path untouched',
+  unwrapRedirects('https://www.example.com/amp/article'),
+  'https://www.example.com/amp/article');
+check('lookalike ampproject host rejected',
+  unwrapRedirects('https://cdn.ampproject.org.evil.com/c/s/example.com/x'),
+  'https://cdn.ampproject.org.evil.com/c/s/example.com/x');
+check('google /amp/ with empty remainder untouched',
+  unwrapRedirects('https://www.google.com/amp/'),
+  'https://www.google.com/amp/');
+check('safelinks wrapping google amp (nested)',
+  unwrapRedirects('https://nam12.safelinks.protection.outlook.com/?url=' + encodeURIComponent('https://www.google.com/amp/s/www.example.com/article')),
+  'https://www.example.com/article');
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed (' + (passed + failed) + ' total)');
 if (failed > 0) {

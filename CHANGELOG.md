@@ -16,6 +16,12 @@ features, patch bumps mark bug-fix-only releases.
   linkfilter (u= and legacy url=), Tumblr t.umblr.com and href.li.
   Same rails as before: http(s) targets only, 3-hop nesting cap,
   passthrough on any decode doubt.
+- **De-AMP** — the same pipeline recovers the real article URL from AMP
+  viewers: google.com/amp/(s/), bing.com/amp/(s/), and
+  *.cdn.ampproject.org /c/ + /v/ forms. AMP transport junk (amp_*,
+  usqp params; #amp_tf-style share fragments) is stripped from the
+  recovered URL. Publisher-side /amp/ paths are deliberately untouched
+  (canonical form unknowable without a network request).
 
 ## [1.8.1] — unreleased
 

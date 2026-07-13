@@ -21,6 +21,15 @@
 //   t.umblr.com/redirect?z=      Tumblr outbound
 //   href.li/?<raw target>        Tumblr-ecosystem wrapper (raw query)
 //
+// De-AMP (same pipeline; target embedded in the PATH):
+//   google.com/amp/s/<host>/<path>          Google AMP viewer
+//   bing.com/amp/s/<host>/<path>            Bing AMP viewer
+//   <pub>.cdn.ampproject.org/c|v/s/<host>/  AMP CDN content/viewer
+// The /s/ segment means https (without it, http). AMP transport junk
+// (amp_*, usqp params; #amp_tf-style fragments) is stripped from the
+// recovered URL. Publisher-side AMP paths (site.com/amp/...) are NOT
+// touched — no way to know the canonical form without fetching.
+//
 // NOT covered on purpose: t.co, bit.ly, a.co and other server-side
 // shorteners — resolving those requires a network request, and this
 // extension makes none.
@@ -75,7 +84,34 @@
     { host: /^(?:www\.)?steamcommunity\.com$/i, path: /^\/linkfilter\/?$/i, params: ['u', 'url'] },
     { host: /^t\.umblr\.com$/i, path: /^\/redirect\/?$/i, params: ['z'] },
     { host: /^(?:www\.)?href\.li$/i, path: /^\/?$/, rawQuery: true },
+    // AMP viewers: target lives in the PATH. fromPath returns the
+    // recovered URL (or null), replacing the params machinery.
+    { host: /^(?:www\.)?google\.com$/i, path: /^\/amp\/.+/,
+      fromPath: (url) => fromAmpRemainder(url.pathname.slice(5) + url.search + url.hash) },
+    { host: /^(?:www\.)?bing\.com$/i, path: /^\/amp\/.+/i,
+      fromPath: (url) => fromAmpRemainder(url.pathname.slice(5) + url.search + url.hash) },
+    { host: /(?:^|\.)cdn\.ampproject\.org$/i, path: /^\/[cv]\/.+/i,
+      fromPath: (url) => fromAmpRemainder(url.pathname.slice(3) + url.search + url.hash) },
   ];
+
+  // Recover the real URL from an AMP viewer path remainder like
+  // "s/www.example.com/article?x=1" (or without the leading "s/" for
+  // plain http). Strips AMP transport params and fragments.
+  const AMP_JUNK_PARAM = /^(?:amp_|usqp$|aoh$|amp$)/i;
+  const AMP_JUNK_HASH = /^#(?:amp_|aoh=|csi=)/i;
+  function fromAmpRemainder(remainder) {
+    if (!remainder) return null;
+    let rest = remainder;
+    let scheme = 'http://';
+    if (/^s\//i.test(rest)) { scheme = 'https://'; rest = rest.slice(2); }
+    let t;
+    try { t = new URL(scheme + rest); } catch (_e) { return null; }
+    for (const name of Array.from(t.searchParams.keys())) {
+      if (AMP_JUNK_PARAM.test(name)) t.searchParams.delete(name);
+    }
+    if (t.hash && AMP_JUNK_HASH.test(t.hash)) t.hash = '';
+    return t.href;
+  }
 
   // Validate a candidate target: must parse, must be http(s).
   function sanitizeTarget(target) {
@@ -96,6 +132,14 @@
       if (r.rawQuery) {
         const t = sanitizeTarget(url.search.slice(1));
         if (t) return t;
+        continue;
+      }
+      if (r.fromPath) {
+        const candidate = r.fromPath(url);
+        if (candidate) {
+          const t = sanitizeTarget(candidate);
+          if (t) return t;
+        }
         continue;
       }
       for (const p of r.params) {
