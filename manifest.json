@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Jimothy's Link Shortener",
   "short_name": "Link Shortener",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "description": "A link shortener that actually shortens links — strips tracking junk from URLs in place. For clean shareable links.",
   "author": "Thomas Powers",
   "homepage_url": "https://github.com/Tommytwolegs/link-shortener",

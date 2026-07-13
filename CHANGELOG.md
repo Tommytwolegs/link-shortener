@@ -4,6 +4,19 @@ All notable changes to Jimothy's Link Shortener. Versions follow
 [Semantic Versioning](https://semver.org/) loosely — minor bumps mark new
 features, patch bumps mark bug-fix-only releases.
 
+## [1.9.0] — in development
+
+### Added
+- **Unwrap pack** — the copy pipeline (context menu / keyboard shortcut /
+  popup button) now unwraps six more tracking redirectors, all with the
+  target embedded in the URL itself (zero network requests, no new
+  permissions): Outlook SafeLinks (every regional subdomain — the
+  corporate-email wrapper), Bing /ck/a result click-wrappers (base64url
+  targets), l.instagram.com, l.messenger.com, Steam community
+  linkfilter (u= and legacy url=), Tumblr t.umblr.com and href.li.
+  Same rails as before: http(s) targets only, 3-hop nesting cap,
+  passthrough on any decode doubt.
+
 ## [1.8.1] — unreleased
 
 Performance/simplification pass + AMO warning fixes. No behavior changes —
