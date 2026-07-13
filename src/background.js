@@ -483,10 +483,15 @@ const SELECTION_MENU_ID = 'copy-clean-url-selection';
 function ensureContextMenu() {
   chrome.contextMenus.removeAll(() => {
     void chrome.runtime.lastError;
+    // documentUrlPatterns: only show the menus where the clipboard
+    // injection can actually run. On restricted pages (chrome://, the
+    // Web Store, the PDF viewer) the item would appear and then fail
+    // with zero feedback — an absent menu is honest, a dead one isn't.
     chrome.contextMenus.create({
       id: CONTEXT_MENU_ID,
       title: 'Copy clean URL',
       contexts: ['link', 'page'],
+      documentUrlPatterns: ['http://*/*', 'https://*/*'],
     }, () => void chrome.runtime.lastError);
     // Selected TEXT containing a URL (plain-prose links in emails/docs
     // that aren't anchor tags). TextUrlExtractor handles schemes-less
@@ -495,6 +500,7 @@ function ensureContextMenu() {
       id: SELECTION_MENU_ID,
       title: 'Copy clean URL from selection',
       contexts: ['selection'],
+      documentUrlPatterns: ['http://*/*', 'https://*/*'],
     }, () => void chrome.runtime.lastError);
   });
 }
@@ -633,9 +639,8 @@ if (chrome.omnibox) {
   const escapeXml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 
-  chrome.omnibox.setDefaultSuggestion({
-    description: 'Clean a URL: paste it after the keyword',
-  });
+  const DEFAULT_HINT = 'Clean a URL: paste it after the keyword';
+  chrome.omnibox.setDefaultSuggestion({ description: DEFAULT_HINT });
 
   function cleanFromOmnibox(text, cb) {
     const extracted = self.TextUrlExtractor
@@ -653,9 +658,22 @@ if (chrome.omnibox) {
 
   chrome.omnibox.onInputChanged.addListener((text, suggest) => {
     cleanFromOmnibox(text, (cleaned) => {
-      if (!cleaned) { suggest([]); return; }
+      if (!cleaned) {
+        // Live feedback instead of a silent dead-end: tell the user why
+        // Enter would do nothing right now.
+        chrome.omnibox.setDefaultSuggestion({
+          description: text.trim()
+            ? 'No URL detected yet - paste a full link'
+            : DEFAULT_HINT,
+        });
+        suggest([]);
+        return;
+      }
       // Plain escaped text — Chrome supports <url>/<match> markup here
       // but Firefox may render the tags literally, so we use none.
+      chrome.omnibox.setDefaultSuggestion({
+        description: 'Press Enter to open: ' + escapeXml(cleaned),
+      });
       suggest([{ content: cleaned, description: 'Clean: ' + escapeXml(cleaned) }]);
     });
   });
