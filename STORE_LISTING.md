@@ -50,7 +50,7 @@ HOW IT WORKS
 
 Land on a supported page and the address-bar URL is rewritten to its canonical short form in place — no reload, no flicker. On the largest supported shopping site, in-page product links are rewritten too, so right-click → Copy link address also gives the clean form.
 
-Right-click any link (or any page) and choose "Copy clean URL" to clean it on the spot — this works on every site, because the universal tracking-parameter stripper kicks in as a fallback. The toolbar popup shows the current page's cleaned link with a one-click copy button, and a keyboard shortcut (Ctrl+Shift+L by default) does the same without opening anything.
+Right-click any link (or any page) and choose "Copy clean URL" to clean it on the spot — this works on every site, because the universal tracking-parameter stripper kicks in as a fallback. It also sees through tracking redirectors: links wrapped by corporate email protection, search-result click-trackers, social outbound wrappers, and AMP viewer pages all copy as their REAL destination — recovered from the link itself, never by making a network request. Works on selected text too (even URLs that aren't clickable links), the toolbar popup shows the current page's cleaned link with a one-click copy button, a keyboard shortcut (Ctrl+Shift+L by default) does the same without opening anything, and typing "clean" in the address bar followed by a pasted URL jumps straight to its clean form.
 
 On hotel and rental listing pages, a small floating widget offers one-click copy buttons: the bare listing URL, or the listing with your selected dates included. It hides itself automatically on small screens.
 
@@ -113,7 +113,17 @@ NOTE: the Chrome Web Store has NO release-notes field — Chrome listings
 update silently and the description carries all messaging. The block
 below goes in AMO's "Release notes" field during the Firefox submission.
 
-### v1.8.0 (THE next submission, once v1.7.0 clears review — all interim dev versions folded in)
+### v1.9.0 (CURRENT submission — includes everything from the 1.8 line below, plus:)
+
+v1.9.0 — the see-through release.
+
+* Copy clean URL now sees through tracking redirectors: links wrapped by corporate email protection, search-engine click-trackers, and social outbound wrappers copy as their real destination — recovered from the link itself, with zero network requests, as always.
+* AMP pages un-AMP: copying an AMP viewer link gives you the real article URL, with AMP transport clutter removed.
+* Works on plain text too: select a URL that isn't a clickable link and right-click for "Copy clean URL from selection".
+* New address-bar keyword: type "clean", press Tab, paste a URL, and jump straight to its clean form.
+* Under the hood: thousands of new automated checks (including a fuzzing suite) guard every release.
+
+### v1.8.0 (folded into 1.9.0 — Chrome never shipped it)
 
 v1.8.0 — the everywhere release.
 
@@ -123,7 +133,7 @@ v1.8.0 — the everywhere release.
 * Copy a clean link faster: the popup now previews the current page's cleaned URL with a one-click copy button, and a keyboard shortcut (Ctrl+Shift+L, rebindable) copies a clean URL of the current page from anywhere.
 * This update requests access to the newly supported sites; as always the extension makes zero network requests and collects nothing.
 
-Reminder for the v1.8.0 AMO notes: 127 sites (125 toggles) / 345 host permissions / 2,902 tests; the extension is unchanged architecturally — every module is a pure URL function.
+Reminder for the v1.9.0 AMO notes: 127 sites (125 toggles) / 345 host permissions / 16,551 checks (2,951 hand-written + 13,600 seeded fuzz); the extension is unchanged architecturally — every module is a pure URL function. New in 1.9: redirector unwrap pack + de-AMP (redirect.js — targets recovered from the URL itself, zero network), selection context menu (texturl.js), omnibox keyword, wiring auditor in CI.
 
 Older draft notes below were written while this work was tagged 1.9–1.11 during development; they're folded into the single 1.8.0 submission above.
 
