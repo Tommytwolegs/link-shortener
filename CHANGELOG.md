@@ -30,6 +30,12 @@ features, patch bumps mark bug-fix-only releases.
 - **Omnibox keyword** — type "clean", Tab, paste a URL: the suggestion
   previews the cleaned form and Enter navigates to it. No new
   permissions (omnibox is a manifest key).
+- **Seeded fuzz suite** — tests/fuzz.test.js generates 200 adversarial
+  URLs per module (unicode, %-encodings, repeated/empty params,
+  userinfo, ports, degenerate queries) from a fixed seed and checks
+  four invariants: never throws, idempotent, no rewrite churn, no
+  URL-object mutation. 13,600 checks, deterministic, <1s, runs in the
+  normal suite so pre-commit and CI both get it.
 
 ## [1.8.1] — unreleased
 
