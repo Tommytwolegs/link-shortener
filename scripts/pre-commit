@@ -44,4 +44,7 @@ for t in tests/*.test.js; do
   fi
 done
 
+echo "pre-commit: wiring audit..."
+node scripts/check-wiring.js
+
 echo "pre-commit: OK"

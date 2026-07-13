@@ -39,7 +39,11 @@ CI, and a meaningful round of bug fixes for SPA-state preservation. See
 - **v1.8.0** — FROZEN: submitted to AMO 2026-07-13 with gecko min
   121.0 and 5 linter warnings; tag v1.8.0 must stay put for
   reproducible-build verification. Never submitted to Chrome.
-- **v1.8.1** — current: the AMO-warning fixes landed here (gecko min
+- **v1.9.0** — in development: unwrap pack (SafeLinks, Bing ck/a,
+  Instagram, Messenger, Steam, Tumblr, href.li), de-AMP, selection
+  context menu + texturl.js, omnibox "clean" keyword, seeded fuzz
+  suite (13,600 checks), scripts/check-wiring.js in pre-commit + CI.
+- **v1.8.1** — frozen candidate: the AMO-warning fixes landed here (gecko min
   140.0 + gecko_android 142.0; Firefox manifest drops the Chrome-only
   service_worker key -> addons-linter 0/0/0) plus the dispatch-table
   and dispatcher simplifications. Chrome goes 1.7.0 -> 1.8.1 directly
@@ -320,7 +324,7 @@ page (default OFF). See `utm.js` below.
 ### Tests
 
 - `tests/<site>.test.js` — dependency-free Node tests for each URL module.
-  **2,902 total assertions across 77 test files, all passing.** Run with:
+  **2,951 hand-written assertions across 79 test files plus 13,600 seeded fuzz checks (16,551 total), all passing.** Run with:
   ```bash
   for f in tests/*.test.js; do node "$f"; done
   ```
@@ -819,7 +823,7 @@ link-shortener/
 │   ├── utm.js                      — pure UTM stripper
 │   └── utm-content.js              — dynamic content script for UTM strip
 ├── scripts/pre-commit              — local hook mirroring CI (install: cp into .git/hooks/)
-├── tests/                          — 77 test files, 2,902 assertions
+├── tests/                          — 79 test files (incl. seeded fuzz)
 └── dist/                           — built zip + xpi packages
 ```
 

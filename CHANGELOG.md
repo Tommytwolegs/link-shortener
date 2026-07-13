@@ -30,6 +30,13 @@ features, patch bumps mark bug-fix-only releases.
 - **Omnibox keyword** — type "clean", Tab, paste a URL: the suggestion
   previews the cleaned form and Enter navigates to it. No new
   permissions (omnibox is a manifest key).
+- **Wiring auditor** — scripts/check-wiring.js treats the modules as
+  the registry and validates all 9 registration surfaces (importScripts,
+  both package arrays, HOST_CHECKS, shorten resolution, popup toggles
+  both directions, news outlet keys, content-script + host-permission
+  coverage for every test hostname, cross-module host collisions).
+  Runs in pre-commit and CI; the whole "forgot to wire the new site"
+  bug class now fails loudly before it can ship.
 - **Seeded fuzz suite** — tests/fuzz.test.js generates 200 adversarial
   URLs per module (unicode, %-encodings, repeated/empty params,
   userinfo, ports, degenerate queries) from a fixed seed and checks

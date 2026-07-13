@@ -62,6 +62,9 @@ jobs:
           echo
           echo "All $total test files passed."
 
+      - name: Wiring audit (modules x 9 registration surfaces)
+        run: node scripts/check-wiring.js
+
       - name: Build packages (guards the Firefox manifest generation)
         run: bash package.sh
 
