@@ -116,6 +116,53 @@ much junk their share buttons actually add.
 
 ---
 
+## 3. Second batch of ideas (added after first pass)
+
+**Live "try it" demo on jimothylinks.com.** The URL modules are
+dependency-free IIFEs, so the landing page can load the REAL cleaning code
+and offer a "paste your ugliest link" box that cleans it live in the
+visitor's browser. Try-before-install, zero backend, and it doubles as a
+shareable web tool. Same trick enables a batch cleaner page: paste a whole
+newsletter draft, every URL inside gets cleaned. Probably the highest
+marketing value per hour of work on this list.
+
+**"This link didn't clean right" reporter.** A context-menu item that opens
+a prefilled GitHub issue (URL + expected vs got) in a new tab. User-initiated,
+so the zero-network rule holds. Turns users into the coverage-gap radar and
+feeds the site pipeline forever.
+
+**Local stats + brag card.** Count links cleaned and characters removed
+(stored locally, never transmitted). Popup shows "12,483 characters of junk
+removed this month" and can render a shareable image card via canvas.
+This resurrects the declined badge-counter idea in a form that markets
+itself.
+
+**Safari / iOS port.** Safari supports web extensions on Mac AND iPhone, and
+iMessage is where junk links circulate most. Cost: Xcode conversion, a Mac
+build step, Apple developer account (USD 99/yr), some API differences to
+audit (event page model, storage.sync limits). Biggest reach unlock left.
+
+**Privacy-search + academic packs.** Ecosia, Startpage, Brave Search, Kagi:
+tiny modules, and their users are exactly this extension's audience. Academic:
+PubMed (heavy junk), Google Scholar, ResearchGate; arXiv and doi.org are
+already clean. Niche but very sticky users who write blog posts.
+
+**Optional text-fragment stripping.** #:~:text= highlight fragments are kept
+today (functional), but they reveal what the sharer highlighted, which some
+consider a privacy leak. An off-by-default toggle "strip highlight
+fragments" serves the privacy-maximalist crowd cheaply.
+
+**Enterprise angle riding SafeLinks.** The Outlook SafeLinks fixer is an IT
+department feature. Adding a managed-storage schema (storage.managed) lets
+admins pre-configure toggles by policy and deploy via Chrome Enterprise /
+group policy. Small code, opens a distribution channel no competitor here
+occupies.
+
+**AMO "Recommended" application.** Firefox's curated program is a major
+install driver and this extension's profile (zero permissions creep, zero
+data, readable source, big test suite) is exactly what their curators want.
+Process work, not code. Research the current application path.
+
 ## Open questions for Tommy
 
 1. Flights: aggregators-first scope OK? Airlines-direct only as marketing
