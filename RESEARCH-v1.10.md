@@ -163,6 +163,46 @@ install driver and this extension's profile (zero permissions creep, zero
 data, readable source, big test suite) is exactly what their curators want.
 Process work, not code. Research the current application path.
 
+## 4. Work tools pack (Tommy's NetSuite find)
+
+Tommy's example, from his own browser:
+
+    https://3356652.app.netsuite.com/app/common/item/item.nl?id=86757
+      &siaT=1783620245509&siaWhc=%2Fapp%2F...&siaPs=0&siaPfx=&siaQ=23005MAL&siaNv=gs
+
+Dissection: id= is the record and must stay. The sia* family is
+"search in app" breadcrumb state (siaT timestamp, siaQ the search query
+the user typed, siaWhc where-came-from, siaPs/siaPfx/siaNv nav state);
+the record loads fine with just id=. whence= is another back-navigation
+breadcrumb, also strippable. So the clean form is:
+
+    https://3356652.app.netsuite.com/app/common/item/item.nl?id=86757
+
+Module shape: host /(?:^|\.)app\.netsuite\.com$/ (accounts are
+subdomains, wildcard host permission *://*.app.netsuite.com/*),
+denylist = sia prefix + whence. KEEP e=T (edit mode is functional) and
+everything else. VERIFY sia is exclusively the search-breadcrumb prefix,
+and run the auth-flow battery (login/SSO pages on the same host).
+
+Note the audience shift: these are logged-in tools, so cleaned links only
+work for colleagues with access. That is exactly who they get shared with
+(Slack, Teams, tickets), so the value is real. It also feeds the
+enterprise angle from section 3.
+
+Other B2B systems with the same disease, all VERIFY:
+- Jira + Confluence: atlOrigin= on every shared link is pure share
+  tracking. Huge volume. jira.atlassian.net wildcard would be
+  *://*.atlassian.net/*.
+- Notion: ?pvs= on shared pages is junk; the page id in the path is
+  functional.
+- Loom: loom.com/share/<id>?sid= where sid is share tracking.
+- Figma: file key + node-id are functional; check t= and other extras.
+- Salesforce Lightning: /lightning/r/<obj>/<id>/view paths are already
+  clean; check what their share buttons append.
+- ServiceNow, Zendesk agent links, HubSpot, Airtable, Miro: unresearched.
+- DO NOT touch: Zoom/Teams meeting links (pwd= and context params are
+  functional), SharePoint/OneDrive share links (the token IS the access).
+
 ## Open questions for Tommy
 
 1. Flights: aggregators-first scope OK? Airlines-direct only as marketing

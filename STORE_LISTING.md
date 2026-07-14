@@ -36,7 +36,7 @@ English
 
 A link shortener that actually shortens links.
 
-None of this replacing a link with a short link nonsense. No redirect service, no link wrapper, nothing that hides where a link goes. Your link stays your link — same page, same site — just without the hundreds of characters of tracking IDs, session tokens, and search breadcrumbs stuffed onto the end. The address-bar URL is rewritten in place, so the link you copy to share is the clean canonical form.
+Not replacing a link with a short link that could go anywhere. No redirect service, no link wrapper, nothing that hides where a link goes. Your link stays your link — same page, same site — just without the hundreds of characters of tracking IDs, session tokens, and search breadcrumbs stuffed onto the end. The address-bar URL is rewritten in place, so the link you copy to share is the clean canonical form.
 
 The sites it covers add up to more than a quarter of all visits on the web — over a hundred billion page visits every month, including twelve of the world's twenty most-visited sites. If someone sent you a long, junk-covered link today, odds are it came from a page this extension cleans.
 
