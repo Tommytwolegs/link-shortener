@@ -64,7 +64,7 @@ No analytics, no telemetry, no network requests of any kind. The only thing stor
 
 OPEN SOURCE
 
-Plain, dependency-free JavaScript with 2,902 unit tests: https://github.com/Tommytwolegs/link-shortener
+Plain, dependency-free JavaScript with over 16,000 automated checks: https://github.com/Tommytwolegs/link-shortener
 
 ---
 
