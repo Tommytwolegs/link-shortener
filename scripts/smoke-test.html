@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Jimothy's Link Shortener — v1.9 smoke test</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #0f1419;
+         color: #e7eaef; max-width: 880px; margin: 24px auto; padding: 0 16px; line-height: 1.5; }
+  h1 { color: #ff9900; font-size: 22px; }
+  h2 { color: #ff9900; font-size: 16px; margin-top: 28px; border-bottom: 1px solid #2a323c; padding-bottom: 4px; }
+  .case { margin: 14px 0; padding: 10px 12px; background: #1a2027; border-radius: 8px; }
+  .case a { color: #7cc4ff; word-break: break-all; }
+  .expect { color: #98a2b3; font-size: 13px; margin-top: 6px; word-break: break-all; }
+  .expect b { color: #6ee7a0; }
+  code { background: #0f1419; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  .plain { word-break: break-all; color: #e7eaef; }
+</style>
+</head>
+<body>
+<h1>v1.9 smoke test</h1>
+<p>For each link: <b>right-click → “Copy clean URL”</b>, paste somewhere, compare
+   with the expected result. For the plain-text section, <b>select the text</b>,
+   then right-click → “Copy clean URL from selection”.</p>
+
+<h2>1 — Redirector unwrapping (right-click the links)</h2>
+
+<div class="case">
+  <a href="https://nam12.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB08N5WRWNW%3Ftag%3Dnewsletter-20&data=05%7C02%7Cuser%40corp.com%7Cabcdef&sdata=AbCdEfGh&reserved=0">Outlook SafeLinks → Amazon affiliate link</a>
+  <div class="expect">Expect: <b>https://www.amazon.com/dp/B08N5WRWNW</b> (unwrapped AND de-affiliated)</div>
+</div>
+
+<div class="case">
+  <a href="https://www.bing.com/ck/a?!&&p=deadbeefcafe&ptn=3&ver=2&hsh=4&fclid=0123&u=a1aHR0cHM6Ly93d3cuYW1hem9uLmNvbS9kcC9CMDhONVdSV05XP3RhZz1hZmZpbGlhdGUtMjA&ntb=1">Bing /ck/a click-wrapper (base64 target)</a>
+  <div class="expect">Expect: <b>https://www.amazon.com/dp/B08N5WRWNW</b></div>
+</div>
+
+<div class="case">
+  <a href="https://l.instagram.com/?u=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DdQw4w9WgXcQ%26si%3DAbCdEf123&e=AT0xYzk2">Instagram outbound wrapper → YouTube with si=</a>
+  <div class="expect">Expect: <b>https://www.youtube.com/watch?v=dQw4w9WgXcQ</b> (unwrapped, si= stripped, v= kept)</div>
+</div>
+
+<div class="case">
+  <a href="https://steamcommunity.com/linkfilter/?u=https%3A%2F%2Fwww.reddit.com%2Fr%2Fgaming%2Fcomments%2Fabc123%2Fsome_post%2F%3Fshare_id%3Dxyz">Steam linkfilter → Reddit with share_id</a>
+  <div class="expect">Expect: <b>https://www.reddit.com/r/gaming/comments/abc123/some_post/</b></div>
+</div>
+
+<h2>2 — De-AMP (right-click the links)</h2>
+
+<div class="case">
+  <a href="https://www.google.com/amp/s/www.nbcnews.com/news/amp/rcna12345?usqp=mq331AQIUAKwASCAAgM%3D&amp_js_v=a9">Google AMP viewer link</a>
+  <div class="expect">Expect: <b>https://www.nbcnews.com/news/amp/rcna12345</b> (AMP transport junk gone)</div>
+</div>
+
+<div class="case">
+  <a href="https://www.google.com/amp/s/example.com/article%3fid%3d5%26page%3d2">AMP with percent-encoded query</a>
+  <div class="expect">Expect: <b>https://example.com/article?id=5&amp;page=2</b> (query decoded)</div>
+</div>
+
+<h2>3 — Plain-text URLs (SELECT the text, then right-click)</h2>
+
+<div class="case">
+  <span class="plain">Check out https://www.ebay.com/itm/123456789012?mkcid=16&mkevt=1&campid=5338&toolid=10001 before it sells.</span>
+  <div class="expect">Expect: <b>https://www.ebay.com/itm/123456789012</b> (URL found mid-sentence, junk stripped, trailing prose ignored)</div>
+</div>
+
+<div class="case">
+  <span class="plain">www.etsy.com/listing/1234567890/handmade-thing?ref=shop_home_active_1&frs=1</span>
+  <div class="expect">Expect: <b>https://www.etsy.com/listing/1234567890/handmade-thing</b> (scheme-less text gets https://)</div>
+</div>
+
+<div class="case">
+  <span class="plain">(see https://en.wikipedia.org/wiki/Bracket_(mathematics))</span>
+  <div class="expect">Expect: <b>https://en.wikipedia.org/wiki/Bracket_(mathematics)</b> (sentence paren trimmed, Wikipedia's kept)</div>
+</div>
+
+<h2>4 — Affiliate + per-site cleanup (right-click the links)</h2>
+
+<div class="case">
+  <a href="https://www.amazon.com/Some-Product-Name/dp/B08N5WRWNW/ref=sr_1_3?tag=blogger-20&linkCode=ogi&th=1&psc=1&crid=ABC&sprefix=some%2Caps%2C123">Amazon affiliate link with variant selection</a>
+  <div class="expect">Expect: <b>https://www.amazon.com/dp/B08N5WRWNW?th=1&amp;psc=1</b> (tag/linkCode/crid dead, th/psc ALIVE — variant stays locked)</div>
+</div>
+
+<div class="case">
+  <a href="https://www.walmart.com/ip/Some-Item/123456789?athcpid=abc&wmlspartner=xyz&utm_campaign=social&fbclid=IwAR123">Walmart with campaign junk</a>
+  <div class="expect">Expect: <b>https://www.walmart.com/ip/Some-Item/123456789</b></div>
+</div>
+
+<h2>5 — Address bar, popup, shortcut, omnibox (no links needed)</h2>
+<ol>
+  <li><b>Address bar:</b> open <code>https://www.youtube.com/watch?v=dQw4w9WgXcQ&si=AbCdEf123</code> — the
+      <code>si=</code> should vanish from the address bar in place, no reload.</li>
+  <li><b>Popup:</b> on that page, click the toolbar icon — preview should show the clean URL and
+      “Already clean” (you arrived pre-cleaned). Click <b>Copy clean URL</b> → “Copied ✓”.</li>
+  <li><b>Filter box:</b> type <code>ebay</code> — one row remains, its group auto-opens. Press
+      <b>Esc</b> — full list and your open/closed groups come back. Type <code>zzz</code> — “No sites match”.</li>
+  <li><b>Shortcut:</b> press <b>Ctrl+Shift+L</b> on any normal page, paste — clean URL. The popup’s
+      tip line should show the shortcut Chrome actually assigned (or “not set” if another
+      extension owns it — check <code>chrome://extensions/shortcuts</code>).</li>
+  <li><b>Omnibox:</b> in the address bar type <code>clean</code>, press <b>Tab</b>, type <code>hello</code> —
+      hint says “No URL detected yet”. Now paste
+      <code>https://www.youtube.com/watch?v=dQw4w9WgXcQ&si=AbCdEf123</code> — suggestion previews the
+      clean form; <b>Enter</b> navigates to it.</li>
+  <li><b>Restricted pages:</b> on <code>chrome://extensions</code>, right-click — the “Copy clean URL”
+      items should NOT appear at all (that’s intentional).</li>
+</ol>
+
+<p style="color:#98a2b3;font-size:13px">This page is dev-only; it is not shipped in the store
+packages. Crafted links point at real sites but were never served by the wrappers they imitate —
+that's fine, the unwrapper never touches the network.</p>
+</body>
+</html>
