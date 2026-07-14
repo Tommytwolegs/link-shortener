@@ -628,9 +628,14 @@
     input.addEventListener('input', applyFilter);
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && input.value) {
+        // preventDefault is what stops Chrome from closing the whole
+        // popup on Esc (stopPropagation alone doesn't touch browser
+        // defaults). With text present, Esc means "clear the filter";
+        // with the box already empty, Esc closes the popup as usual.
+        e.preventDefault();
+        e.stopPropagation();
         input.value = '';
         applyFilter();
-        e.stopPropagation();
       }
     });
   })();
