@@ -192,6 +192,60 @@ v1.7.0 — major release.
 
 ---
 
+## AMO (Firefox) description — site-by-site version, brand names allowed
+
+(AMO permits brand names; Chrome's keyword-spam filter does not. No em dashes by request. 6339 chars.)
+
+A link shortener that actually shortens links. No redirect services, no link wrappers, nothing that hides where a link goes. Your link stays your link, just without the hundreds of characters of tracking IDs, session tokens, and attribution breadcrumbs stuffed onto the end.
+
+The extension covers 127 sites with hand-tuned rules for each site's URL structure, plus copy tools that clean any link anywhere. Together the supported sites account for more than a quarter of all web visits, including twelve of the world's twenty most-visited sites.
+
+AMAZON: AUTOMATIC
+Land on a product page and the address bar is rewritten to the shortest shareable form, amazon.com/dp/<product-id>. Every product link on the page is rewritten too, so right-click and Copy link address gives the clean URL without opening the product first. Sponsored-result wrappers and slredirect redirectors are unwrapped, and affiliate tags (tag=, linkCode=, ascsubtag=) are stripped. Functional parameters survive: th= and psc= keep your selected variant locked. Optional "Include Amazon item name" keeps the readable product slug in the URL. Works on 21 regional domains; a page on amazon.de stays on amazon.de.
+
+TRAVEL SITES: AUTOMATIC PLUS ONE-CLICK
+Booking.com, Expedia, Airbnb, Agoda, Trip.com, Hotels.com, Vrbo, and Tripadvisor. The address bar is cleaned automatically: tracking, session, search-id, and impression params are stripped, leaving the listing plus your dates and occupancy. On listing pages a small floating toolbar offers two copy buttons: Share Property (bare listing URL) and With Dates (check-in and check-out preserved). A "Hide travel popup" toggle suppresses the widget while the address-bar cleanup keeps running.
+
+SOCIAL NETWORKS: AUTOMATIC
+Facebook and Instagram (posts, reels, stories, photos, groups, fb.watch and mobile forms; mibextid, __cft__, igsh and friends all stripped), Threads, LinkedIn (including the lipi= and trk= trackers on every page type), Twitter/X (tweets clean to /<user>/status/<id>; twitter.com, x.com, and mobile all match), TikTok (some of the heaviest tracking payloads on the internet, all gone, including vm. and vt. short links), Reddit (comments, the newer /s/ share form, redd.it short links; old.reddit and np.reddit preserved as-is), Bluesky, and Pinterest.
+
+VIDEO, MUSIC, GAMING, BOOKS, AND MORE: AUTOMATIC
+YouTube keeps just the video ID and your timestamp; si=, pp=, feature= and the rest are gone (youtu.be, Shorts, and music.youtube included). Spotify share links lose their si= blob across tracks, albums, playlists, artists, and podcasts. Also covered: Twitch, SoundCloud, Apple Music, Steam, IMDb, Netflix, Roblox (private-server invite links keep working), Bilibili, Fandom, Wikipedia, Goodreads, Letterboxd, Bandcamp, Stack Overflow (share links lose the referring user id), GitHub, Medium (Friend Link gift tokens preserved), Quora, and Substack.
+
+SHOPPING AND CLASSIFIEDS WORLDWIDE: AUTOMATIC
+eBay, Etsy, AliExpress, Temu, SHEIN, Walmart, Target, Best Buy, Wayfair, Samsung, and Mercado Libre, plus the leading marketplaces of Asia and Europe: Shopee, Lazada, Tokopedia, Coupang, Flipkart, Mercari, Rakuten, Meesho, Carousell, Taobao/Tmall, JD.com, Vinted, Allegro, Leboncoin, OLX, Wallapop, Marktplaats, Kleinanzeigen, and Zalando. Variant, size, and quantity selections always survive the cleanup.
+
+NEWS: 52 OUTLETS, EACH WITH ITS OWN TOGGLE
+From the New York Times, the Guardian, BBC, and Reuters to Le Monde, Der Spiegel, El Pais, Asahi Shimbun, the Times of India, and Yahoo News Japan. Share attribution (smid, CMP, itid, xtor, and dozens more) is stripped while paywall gift tokens are preserved, so a gifted article stays gifted. Every outlet has its own toggle: if one ever misbehaves you can switch off just that one.
+
+SEARCH AND DOCS: AUTOMATIC
+Google Search results lose ved=, ei=, and the session-tracking family while your query, filters, language, and pagination survive. Same treatment for Bing (FORM=, cvid, and friends) and DuckDuckGo (the t= source tag). Naver search, blogs, and news are cleaned with Korea-specific rules. Google Drive and Docs share links lose usp= and the sharing account id while resourcekey= and tab anchors keep working. Weather.com partner attribution is stripped too.
+
+SEES THROUGH REDIRECTORS AND AMP
+The copy tools recover the real destination from tracking wrappers: Outlook SafeLinks (corporate email), Gmail and Google Docs link wrappers, Bing result click-trackers, Facebook, Messenger, and Instagram outbound wrappers, Reddit and YouTube redirects, Steam link filters, and Tumblr wrappers. AMP viewer links resolve to the real article with AMP clutter removed. Everything is recovered from the link itself: the extension never makes a network request.
+
+SIX WAYS TO GET A CLEAN LINK
+1. Automatic: the address bar rewrites in place on supported sites. No reload, no flicker.
+2. Right-click any link or page: "Copy clean URL".
+3. Right-click selected text: "Copy clean URL from selection" finds the URL even when it is not a clickable link.
+4. The toolbar popup previews the current page's clean URL with a one-click copy button.
+5. A keyboard shortcut (Ctrl+Shift+L by default, rebindable).
+6. Address bar keyword: type "clean", press Tab, paste a URL, and jump straight to its clean form.
+
+CONTROLS
+A master toggle with a visible OFF badge. Individual toggles for all supported sites, organized in collapsible regional groups with a filter box to find any site instantly. An opt-in Universal tracking strip (off by default) extends cleanup to every site you visit; Firefox asks for the wider permission the first time you enable it, and you can revoke it at any time. An Advanced page lets you skip chosen domains or always keep chosen parameters. Preferences sync through your Firefox account.
+
+ZERO DATA COLLECTION
+No analytics, no telemetry, no network requests of any kind. The extension stores your toggle settings and nothing else. Nothing ever leaves your browser.
+
+FAST AND TRANSPARENT
+URL rewrites use history.replaceState, so pages never reload. The travel toolbar lives in a closed Shadow DOM so host-site CSS cannot touch it. Plain, dependency-free JavaScript with no build step: what is in the package is the source.
+
+OPEN SOURCE
+Full source code and more than 16,000 automated checks: https://github.com/Tommytwolegs/link-shortener
+
+---
+
 ## AMO (Firefox) reviewer notes — paste into "Notes to reviewer"
 
 ### v1.9.0 (2885 chars — CURRENT submission)
