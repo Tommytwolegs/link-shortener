@@ -194,6 +194,26 @@ v1.7.0 — major release.
 
 ## AMO (Firefox) reviewer notes — paste into "Notes to reviewer"
 
+### v1.9.0 (2885 chars — CURRENT submission)
+
+Jimothy's Link Shortener v1.9.0.
+
+WHAT IT DOES: Cleans long URLs on a fixed list of 127 sites (shopping/travel/social/media/news/search — full list = manifest host_permissions) by rewriting the address bar via history.replaceState. A shared copy pipeline (context menu, selection context menu, popup button, commands shortcut Ctrl+Shift+L, omnibox keyword "clean") unwraps tracking redirectors and cleans the result. Opt-in "Universal tracking strip" works on any site only after the user grants the optional host permission at runtime.
+
+CHANGED FROM v1.8.0 (the previously submitted version):
+- Firefox manifest no longer carries the Chrome-only background.service_worker key (event-page scripts only), and gecko strict_min_version is 140.0 with gecko_android 142.0 — this clears all five validation warnings from the 1.8.0 upload (linter now reports 0 errors / 0 warnings / 0 notices).
+- Redirector unwrapping in the copy pipeline: google /url, l./lm.facebook, l.messenger, l.instagram, out.reddit, youtube /redirect, Outlook SafeLinks (*.safelinks.protection.outlook.com), Bing /ck/a (u= is "a1"+base64url(target), decoded locally via atob/TextDecoder), steamcommunity linkfilter, t.umblr, href.li. Targets are recovered FROM THE URL ITSELF — zero network requests, http(s) targets only, 3-hop nesting cap.
+- De-AMP in the same pipeline: google/bing /amp/ viewers and *.cdn.ampproject.org /c|v/ forms recover the real article URL; safe publisher-side AMP markers (trailing /amp segment, .amp/.amp.html suffixes, amp/outputType=amp params) also stripped. String transforms only — no navigation interception.
+- New: selection context menu ("Copy clean URL from selection", src/texturl.js extracts an http(s) URL from selected text) and omnibox keyword "clean" (Enter navigates via tabs.update/create — no clipboard access from omnibox). Context menus use documentUrlPatterns http(s) so they never appear where script injection can't run.
+
+PERMISSIONS: unchanged from 1.8.0 — no new permissions (omnibox is a manifest key, not a permission). host_permissions (345 entries) = the fixed site list; optional_host_permissions ["*://*/*"] requested only when the user enables the Universal strip toggle (declining reverts it; permissions.onRemoved disables on revoke).
+
+NO NETWORK / NO DATA / NO REMOTE CODE: zero network requests of any kind; all logic is pure URL string manipulation in src/. data_collection_permissions=["none"]. No eval/Function; all JS ships in the xpi.
+
+REPRODUCIBLE BUILD: https://github.com/Tommytwolegs/link-shortener (repo root = extension root). Check out tag v1.9.0, run `bash package.sh`; output is dist/link-shortener-1.9.0.xpi. Zero npm deps. 16,567 automated checks: for t in tests/*.test.js; do node "$t"; done
+
+GECKO: id link-shortener@tommytwolegs.github.io; strict_min_version 140.0; background.scripts event page, URL modules load before background.js.
+
 ### v1.8.0 (2404 chars — AMO's field caps at ~3,000)
 
 Jimothy's Link Shortener v1.8.0.
