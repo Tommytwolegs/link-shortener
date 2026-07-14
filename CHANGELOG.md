@@ -20,8 +20,12 @@ features, patch bumps mark bug-fix-only releases.
   viewers: google.com/amp/(s/), bing.com/amp/(s/), and
   *.cdn.ampproject.org /c/ + /v/ forms. AMP transport junk (amp_*,
   usqp params; #amp_tf-style share fragments) is stripped from the
-  recovered URL. Publisher-side /amp/ paths are deliberately untouched
-  (canonical form unknowable without a network request).
+  recovered URL. Publisher-side AMP markers are stripped where no
+  guessing is involved: trailing /amp segments (WordPress), .amp /
+  .amp.html suffixes, and amp / amp=1 / outputType=amp params.
+  MID-path /amp/ segments and amp. subdomains stay — canonical
+  recovery for those varies by publisher and a broken link is worse
+  than an AMP one.
 - **Selection context menu** — right-click selected TEXT containing a
   URL (plain-prose links in emails/docs that aren't anchors) and "Copy
   clean URL from selection" extracts, unwraps, and cleans it. Handles

@@ -48,7 +48,13 @@
 
 <div class="case">
   <a href="https://www.google.com/amp/s/www.nbcnews.com/news/amp/rcna12345?usqp=mq331AQIUAKwASCAAgM%3D&amp_js_v=a9">Google AMP viewer link</a>
-  <div class="expect">Expect: <b>https://www.nbcnews.com/news/amp/rcna12345</b> (AMP transport junk gone)</div>
+  <div class="expect">Expect: <b>https://www.nbcnews.com/news/amp/rcna12345</b> (viewer wrapper + transport junk gone;
+  the remaining /amp/ is NBC's own path structure — mid-path segments are kept on purpose, stripping them risks broken links)</div>
+</div>
+
+<div class="case">
+  <a href="https://www.google.com/amp/s/someblog.example/2024/01/great-post/amp/?usqp=mq331AQIUAKwASCAAgM%3D">AMP viewer wrapping a WordPress-style /amp/ page</a>
+  <div class="expect">Expect: <b>https://someblog.example/2024/01/great-post</b> (viewer AND the publisher's trailing /amp/ both gone)</div>
 </div>
 
 <div class="case">

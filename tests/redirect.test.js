@@ -172,6 +172,42 @@ check('amp literal query wins over encoded (mixed form unchanged path)',
   unwrapRedirects('https://www.google.com/amp/s/example.com/a%3fx%3d1?usqp=mq331'),
   'https://example.com/a%3fx%3d1');
 
+
+// --- publisher-side AMP markers (safe subset) ---
+check('trailing /amp/ trimmed (WordPress)',
+  unwrapRedirects('https://someblog.com/2024/01/my-post/amp/'),
+  'https://someblog.com/2024/01/my-post');
+check('trailing /amp trimmed',
+  unwrapRedirects('https://someblog.com/2024/01/my-post/amp'),
+  'https://someblog.com/2024/01/my-post');
+check('.amp suffix trimmed',
+  unwrapRedirects('https://www.bbc.com/news/world-us-canada-123456.amp'),
+  'https://www.bbc.com/news/world-us-canada-123456');
+check('.amp.html suffix -> .html',
+  unwrapRedirects('https://example.com/story.amp.html'),
+  'https://example.com/story.html');
+check('amp=1 param stripped, others kept',
+  unwrapRedirects('https://example.com/article?amp=1&id=5'),
+  'https://example.com/article?id=5');
+check('outputType=amp stripped',
+  unwrapRedirects('https://www.washingtonpost.com/politics/2026/story/?outputType=amp'),
+  'https://www.washingtonpost.com/politics/2026/story/');
+check('outputType=json NOT stripped',
+  unwrapRedirects('https://example.com/api?outputType=json'),
+  'https://example.com/api?outputType=json');
+check('bare /amp path untouched',
+  unwrapRedirects('https://amp.dev/amp'),
+  'https://amp.dev/amp');
+check('mid-path /amp/ untouched by design',
+  unwrapRedirects('https://www.nbcnews.com/news/amp/rcna12345'),
+  'https://www.nbcnews.com/news/amp/rcna12345');
+check('amp inside words untouched',
+  unwrapRedirects('https://example.com/lampshade/campfire?champ=1'),
+  'https://example.com/lampshade/campfire?champ=1');
+check('viewer wrapper + publisher amp trimmed together',
+  unwrapRedirects('https://www.google.com/amp/s/someblog.com/2024/01/my-post/amp/'),
+  'https://someblog.com/2024/01/my-post');
+
 console.log('\n' + passed + ' passed, ' + failed + ' failed (' + (passed + failed) + ' total)');
 if (failed > 0) {
   console.log('\nFailures:');

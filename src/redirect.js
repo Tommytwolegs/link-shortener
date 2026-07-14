@@ -27,8 +27,15 @@
 //   <pub>.cdn.ampproject.org/c|v/s/<host>/  AMP CDN content/viewer
 // The /s/ segment means https (without it, http). AMP transport junk
 // (amp_*, usqp params; #amp_tf-style fragments) is stripped from the
-// recovered URL. Publisher-side AMP paths (site.com/amp/...) are NOT
-// touched — no way to know the canonical form without fetching.
+// recovered URL.
+//
+// Publisher-side AMP markers are stripped ONLY where no guessing is
+// involved: a trailing /amp path segment (the WordPress pattern),
+// .amp / .amp.html filename suffixes, and amp / amp=1 / outputType=amp
+// query params. MID-path /amp/ segments (nbcnews.com/news/amp/<id>)
+// and amp. subdomains are left alone — canonical recovery for those
+// varies by publisher and stripping risks a broken link, which is
+// worse than an AMP one.
 //
 // NOT covered on purpose: t.co, bit.ly, a.co and other server-side
 // shorteners — resolving those requires a network request, and this
@@ -128,6 +135,35 @@
     return t.href;
   }
 
+  // Strip publisher-side AMP markers that are safe without guessing.
+  // Runs on the final unwrapped URL (and on directly-copied publisher
+  // links that never had a wrapper). Idempotent; returns input on doubt.
+  function stripPublisherAmp(input) {
+    let url;
+    try { url = new URL(input); } catch (_e) { return input; }
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return input;
+    let changed = false;
+    // trailing /amp or /amp/ — only with at least one other segment
+    const m = url.pathname.match(/^(\/.+?)\/amp\/?$/i);
+    if (m && m[1] !== '') { url.pathname = m[1]; changed = true; }
+    // .amp.html / .amp filename suffixes
+    if (/\.amp\.html$/i.test(url.pathname)) { url.pathname = url.pathname.replace(/\.amp\.html$/i, '.html'); changed = true; }
+    else if (/\.amp$/i.test(url.pathname)) { url.pathname = url.pathname.replace(/\.amp$/i, ''); changed = true; }
+    // amp-marker query params (value-checked where the name is generic)
+    for (const name of Array.from(url.searchParams.keys())) {
+      const v = (url.searchParams.get(name) || '').toLowerCase();
+      const n = name.toLowerCase();
+      if ((n === 'amp' && (v === '' || v === '1' || v === 'true'))
+          || ((n === 'outputtype' || n === 'output') && v === 'amp')) {
+        url.searchParams.delete(name);
+        changed = true;
+      }
+    }
+    if (!changed) return input;
+    const q = url.search;
+    return `${url.protocol}//${url.host}${url.pathname}${q}${url.hash || ''}`;
+  }
+
   // Validate a candidate target: must parse, must be http(s).
   function sanitizeTarget(target) {
     let t;
@@ -171,8 +207,9 @@
     return null;
   }
 
-  // Unwrap up to 3 nested layers. Returns the innermost target, or the
-  // input unchanged when it isn't a redirector.
+  // Unwrap up to 3 nested layers, then strip safe publisher-AMP markers
+  // from whatever emerged. Returns the input unchanged when it isn't a
+  // redirector and carries no AMP markers.
   function unwrapRedirects(input) {
     let current = typeof input === 'string' ? input : input.href;
     for (let i = 0; i < 3; i++) {
@@ -180,12 +217,13 @@
       if (next === null) break;
       current = next;
     }
-    return current;
+    return stripPublisherAmp(current);
   }
 
   const api = {
     unwrapOnce,
     unwrapRedirects,
+    stripPublisherAmp,
     REDIRECTORS,
   };
   global.RedirectUnwrapper = api;
