@@ -70,7 +70,39 @@
     return url.href;
   }
 
-  const api = { extractUrlFromText };
+  // -- Bulk mode: clean EVERY http(s) URL inside a blob of text ------------
+  // Used by the bulk paste-cleaner page. `cleanFn` is the full cleanup
+  // pipeline (redirect unwrap -> per-site shortener -> UTM strip) supplied
+  // by the caller, so this module stays free of cross-module dependencies.
+  // Trailing prose punctuation is treated as prose (kept, not cleaned),
+  // matching the single-URL extraction rules above.
+  const SCHEME_RE_ALL = /https?:\/\/[^\s<>"']+/gi;
+
+  function cleanAllUrlsInText(text, cleanFn) {
+    if (!text || typeof text !== 'string' || typeof cleanFn !== 'function') {
+      return { text: text || '', found: 0, changed: 0, saved: 0 };
+    }
+    let found = 0;
+    let changed = 0;
+    let saved = 0;
+    const out = text.replace(SCHEME_RE_ALL, (raw) => {
+      const url = trimTrailingProse(raw);
+      const tail = raw.slice(url.length);
+      let parsed;
+      try { parsed = new URL(url); } catch (_e) { return raw; }
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return raw;
+      found += 1;
+      let cleaned = null;
+      try { cleaned = cleanFn(url); } catch (_e) { return raw; }
+      if (!cleaned || typeof cleaned !== 'string' || cleaned === url) return raw;
+      changed += 1;
+      saved += Math.max(0, url.length - cleaned.length);
+      return cleaned + tail;
+    });
+    return { text: out, found, changed, saved };
+  }
+
+  const api = { extractUrlFromText, cleanAllUrlsInText };
   global.TextUrlExtractor = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

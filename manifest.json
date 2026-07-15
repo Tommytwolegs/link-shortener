@@ -1,11 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Jimothy's Link Shortener",
+  "name": "Rather's Link Shortener",
   "short_name": "Link Shortener",
-  "version": "1.9.0",
-  "description": "A link shortener that actually shortens links — strips tracking junk from URLs in place. For clean shareable links.",
+  "version": "1.10.0",
+  "description": "__MSG_extDesc__",
+  "default_locale": "en",
   "author": "Thomas Powers",
-  "homepage_url": "https://github.com/Tommytwolegs/link-shortener",
+  "homepage_url": "https://ratherlinks.com",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -19,7 +20,7 @@
     "activeTab"
   ],
   "action": {
-    "default_title": "Link Shortener",
+    "default_title": "Rather's Link Shortener",
     "default_popup": "src/popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
@@ -384,7 +385,157 @@
     "*://weather.com/*",
     "*://*.samsung.com/*",
     "*://samsung.com/*",
-    "*://news.yahoo.co.jp/*"
+    "*://news.yahoo.co.jp/*",
+    "*://*.kayak.com/*",
+    "*://*.kayak.co.uk/*",
+    "*://*.kayak.de/*",
+    "*://*.kayak.fr/*",
+    "*://*.kayak.es/*",
+    "*://*.kayak.it/*",
+    "*://*.kayak.nl/*",
+    "*://*.kayak.ca/*",
+    "*://*.kayak.com.au/*",
+    "*://*.kayak.co.in/*",
+    "*://*.kayak.com.br/*",
+    "*://*.kayak.com.mx/*",
+    "*://*.skyscanner.net/*",
+    "*://*.skyscanner.com/*",
+    "*://*.skyscanner.co.uk/*",
+    "*://*.skyscanner.de/*",
+    "*://*.skyscanner.fr/*",
+    "*://*.skyscanner.es/*",
+    "*://*.skyscanner.it/*",
+    "*://*.skyscanner.nl/*",
+    "*://*.skyscanner.co.in/*",
+    "*://*.skyscanner.com.au/*",
+    "*://*.skyscanner.jp/*",
+    "*://*.skyscanner.ca/*",
+    "*://*.skyscanner.com.mx/*",
+    "*://*.skyscanner.com.br/*",
+    "*://*.flightaware.com/*",
+    "*://*.flightradar24.com/*",
+    "*://*.fr24.com/*",
+    "*://*.delta.com/*",
+    "*://*.united.com/*",
+    "*://*.aa.com/*",
+    "*://*.southwest.com/*",
+    "*://*.jetblue.com/*",
+    "*://*.alaskaair.com/*",
+    "*://*.ryanair.com/*",
+    "*://*.easyjet.com/*",
+    "*://*.lufthansa.com/*",
+    "*://*.britishairways.com/*",
+    "*://*.emirates.com/*",
+    "*://*.qatarairways.com/*",
+    "*://*.app.netsuite.com/*",
+    "*://*.atlassian.net/*",
+    "*://*.notion.so/*",
+    "*://*.notion.site/*",
+    "*://*.loom.com/*",
+    "*://*.figma.com/*",
+    "*://*.primevideo.com/*",
+    "*://*.ecosia.org/*",
+    "*://ecosia.org/*",
+    "*://*.startpage.com/*",
+    "*://startpage.com/*",
+    "*://search.brave.com/*",
+    "*://*.kagi.com/*",
+    "*://kagi.com/*",
+    "*://pubmed.ncbi.nlm.nih.gov/*",
+    "*://scholar.google.com/*",
+    "*://*.researchgate.net/*",
+    "*://researchgate.net/*",
+    "*://*.yelp.com/*",
+    "*://*.yelp.ca/*",
+    "*://*.yelp.co.uk/*",
+    "*://*.yelp.de/*",
+    "*://*.yelp.fr/*",
+    "*://*.yelp.it/*",
+    "*://*.yelp.es/*",
+    "*://*.yelp.ie/*",
+    "*://*.yelp.com.au/*",
+    "*://play.google.com/*",
+    "*://apps.apple.com/*",
+    "*://*.ups.com/*",
+    "*://*.fedex.com/*",
+    "*://*.usps.com/*",
+    "*://*.dhl.com/*",
+    "*://*.dhl.de/*",
+    "*://*.kickstarter.com/*",
+    "*://*.gofundme.com/*",
+    "*://*.patreon.com/*",
+    "*://*.meetup.com/*",
+    "*://*.allrecipes.com/*",
+    "*://*.seriouseats.com/*",
+    "*://*.foodnetwork.com/*",
+    "*://*.bbcgoodfood.com/*",
+    "*://*.costco.com/*",
+    "*://*.costco.ca/*",
+    "*://*.homedepot.com/*",
+    "*://*.homedepot.ca/*",
+    "*://*.lowes.com/*",
+    "*://*.ikea.com/*",
+    "*://*.nike.com/*",
+    "*://*.adidas.com/*",
+    "*://*.adidas.de/*",
+    "*://*.adidas.co.uk/*",
+    "*://*.epicgames.com/*",
+    "*://*.gog.com/*",
+    "*://*.humblebundle.com/*",
+    "*://*.itch.io/*",
+    "*://*.accuweather.com/*",
+    "*://*.wunderground.com/*",
+    "*://*.espn.com/*",
+    "*://*.flashscore.com/*",
+    "*://*.sofascore.com/*",
+    "*://*.zhihu.com/*",
+    "*://*.weibo.com/*",
+    "*://*.myshopify.com/*",
+    "*://*.godaddy.com/*",
+    "*://*.producthunt.com/*",
+    "*://*.change.org/*",
+    "*://*.eventbrite.com/*",
+    "*://*.eventbrite.co.uk/*",
+    "*://*.eventbrite.ca/*",
+    "*://*.eventbrite.com.au/*",
+    "*://*.eventbrite.de/*",
+    "*://*.eventbrite.fr/*",
+    "*://*.eventbrite.es/*",
+    "*://*.eventbrite.it/*",
+    "*://*.eventbrite.nl/*",
+    "*://*.eventbrite.ie/*",
+    "*://search.yahoo.co.jp/*",
+    "*://*.nicovideo.jp/*",
+    "*://*.daum.net/*",
+    "*://*.gmarket.co.kr/*",
+    "*://*.11st.co.kr/*",
+    "*://*.myntra.com/*",
+    "*://*.zomato.com/*",
+    "*://*.swiggy.com/*",
+    "*://*.bol.com/*",
+    "*://*.otto.de/*",
+    "*://*.mediamarkt.de/*",
+    "*://*.mediamarkt.at/*",
+    "*://*.mediamarkt.es/*",
+    "*://*.mediamarkt.nl/*",
+    "*://*.cdiscount.com/*",
+    "*://*.fnac.com/*",
+    "*://*.trendyol.com/*",
+    "*://*.hepsiburada.com/*",
+    "*://*.noon.com/*",
+    "*://*.jumia.com.ng/*",
+    "*://*.jumia.co.ke/*",
+    "*://*.jumia.com.eg/*",
+    "*://*.jumia.ma/*",
+    "*://*.daraz.pk/*",
+    "*://*.daraz.lk/*",
+    "*://*.daraz.com.bd/*",
+    "*://*.daraz.com.np/*",
+    "*://*.americanas.com.br/*",
+    "*://*.magazineluiza.com.br/*",
+    "*://*.wildberries.ru/*",
+    "*://*.ozon.ru/*",
+    "*://*.avito.ru/*"
   ],
   "optional_host_permissions": [
     "*://*/*"
@@ -1515,6 +1666,906 @@
       ],
       "js": [
         "src/gdrive.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.kayak.com/*",
+        "*://*.kayak.co.uk/*",
+        "*://*.kayak.de/*",
+        "*://*.kayak.fr/*",
+        "*://*.kayak.es/*",
+        "*://*.kayak.it/*",
+        "*://*.kayak.nl/*",
+        "*://*.kayak.ca/*",
+        "*://*.kayak.com.au/*",
+        "*://*.kayak.co.in/*",
+        "*://*.kayak.com.br/*",
+        "*://*.kayak.com.mx/*"
+      ],
+      "js": [
+        "src/kayak.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.skyscanner.net/*",
+        "*://*.skyscanner.com/*",
+        "*://*.skyscanner.co.uk/*",
+        "*://*.skyscanner.de/*",
+        "*://*.skyscanner.fr/*",
+        "*://*.skyscanner.es/*",
+        "*://*.skyscanner.it/*",
+        "*://*.skyscanner.nl/*",
+        "*://*.skyscanner.co.in/*",
+        "*://*.skyscanner.com.au/*",
+        "*://*.skyscanner.jp/*",
+        "*://*.skyscanner.ca/*",
+        "*://*.skyscanner.com.mx/*",
+        "*://*.skyscanner.com.br/*"
+      ],
+      "js": [
+        "src/skyscanner.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.flightaware.com/*"
+      ],
+      "js": [
+        "src/flightaware.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.flightradar24.com/*",
+        "*://*.fr24.com/*"
+      ],
+      "js": [
+        "src/flightradar24.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.delta.com/*",
+        "*://*.united.com/*",
+        "*://*.aa.com/*",
+        "*://*.southwest.com/*",
+        "*://*.jetblue.com/*",
+        "*://*.alaskaair.com/*",
+        "*://*.ryanair.com/*",
+        "*://*.easyjet.com/*",
+        "*://*.lufthansa.com/*",
+        "*://*.britishairways.com/*",
+        "*://*.emirates.com/*",
+        "*://*.qatarairways.com/*"
+      ],
+      "js": [
+        "src/airlines.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.app.netsuite.com/*"
+      ],
+      "js": [
+        "src/netsuite.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.atlassian.net/*"
+      ],
+      "js": [
+        "src/atlassian.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.notion.so/*",
+        "*://*.notion.site/*"
+      ],
+      "js": [
+        "src/notion.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.loom.com/*"
+      ],
+      "js": [
+        "src/loom.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.figma.com/*"
+      ],
+      "js": [
+        "src/figma.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.primevideo.com/*"
+      ],
+      "js": [
+        "src/primevideo.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.ecosia.org/*",
+        "*://ecosia.org/*"
+      ],
+      "js": [
+        "src/ecosia.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.startpage.com/*",
+        "*://startpage.com/*"
+      ],
+      "js": [
+        "src/startpage.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://search.brave.com/*"
+      ],
+      "js": [
+        "src/bravesearch.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.kagi.com/*",
+        "*://kagi.com/*"
+      ],
+      "js": [
+        "src/kagi.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://pubmed.ncbi.nlm.nih.gov/*"
+      ],
+      "js": [
+        "src/pubmed.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://scholar.google.com/*"
+      ],
+      "js": [
+        "src/scholar.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.researchgate.net/*",
+        "*://researchgate.net/*"
+      ],
+      "js": [
+        "src/researchgate.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.yelp.com/*",
+        "*://*.yelp.ca/*",
+        "*://*.yelp.co.uk/*",
+        "*://*.yelp.de/*",
+        "*://*.yelp.fr/*",
+        "*://*.yelp.it/*",
+        "*://*.yelp.es/*",
+        "*://*.yelp.ie/*",
+        "*://*.yelp.com.au/*"
+      ],
+      "js": [
+        "src/yelp.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://play.google.com/*"
+      ],
+      "js": [
+        "src/playstore.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://apps.apple.com/*"
+      ],
+      "js": [
+        "src/appstore.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.ups.com/*",
+        "*://*.fedex.com/*",
+        "*://*.usps.com/*",
+        "*://*.dhl.com/*",
+        "*://*.dhl.de/*"
+      ],
+      "js": [
+        "src/parcels.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.kickstarter.com/*"
+      ],
+      "js": [
+        "src/kickstarter.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.gofundme.com/*"
+      ],
+      "js": [
+        "src/gofundme.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.patreon.com/*"
+      ],
+      "js": [
+        "src/patreon.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.meetup.com/*"
+      ],
+      "js": [
+        "src/meetup.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.allrecipes.com/*"
+      ],
+      "js": [
+        "src/allrecipes.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.seriouseats.com/*"
+      ],
+      "js": [
+        "src/seriouseats.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.foodnetwork.com/*"
+      ],
+      "js": [
+        "src/foodnetwork.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.bbcgoodfood.com/*"
+      ],
+      "js": [
+        "src/bbcgoodfood.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.costco.com/*",
+        "*://*.costco.ca/*"
+      ],
+      "js": [
+        "src/costco.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.homedepot.com/*",
+        "*://*.homedepot.ca/*"
+      ],
+      "js": [
+        "src/homedepot.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.lowes.com/*"
+      ],
+      "js": [
+        "src/lowes.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.ikea.com/*"
+      ],
+      "js": [
+        "src/ikea.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.nike.com/*"
+      ],
+      "js": [
+        "src/nike.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.adidas.com/*",
+        "*://*.adidas.de/*",
+        "*://*.adidas.co.uk/*"
+      ],
+      "js": [
+        "src/adidas.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.epicgames.com/*"
+      ],
+      "js": [
+        "src/epic.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.gog.com/*"
+      ],
+      "js": [
+        "src/gog.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.humblebundle.com/*"
+      ],
+      "js": [
+        "src/humble.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.itch.io/*"
+      ],
+      "js": [
+        "src/itchio.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.accuweather.com/*"
+      ],
+      "js": [
+        "src/accuweather.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.wunderground.com/*"
+      ],
+      "js": [
+        "src/wunderground.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.espn.com/*"
+      ],
+      "js": [
+        "src/espn.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.flashscore.com/*"
+      ],
+      "js": [
+        "src/flashscore.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.sofascore.com/*"
+      ],
+      "js": [
+        "src/sofascore.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.zhihu.com/*"
+      ],
+      "js": [
+        "src/zhihu.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.weibo.com/*"
+      ],
+      "js": [
+        "src/weibo.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.myshopify.com/*"
+      ],
+      "js": [
+        "src/shopify.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.godaddy.com/*"
+      ],
+      "js": [
+        "src/godaddy.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.producthunt.com/*"
+      ],
+      "js": [
+        "src/producthunt.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.change.org/*"
+      ],
+      "js": [
+        "src/changeorg.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.eventbrite.com/*",
+        "*://*.eventbrite.co.uk/*",
+        "*://*.eventbrite.ca/*",
+        "*://*.eventbrite.com.au/*",
+        "*://*.eventbrite.de/*",
+        "*://*.eventbrite.fr/*",
+        "*://*.eventbrite.es/*",
+        "*://*.eventbrite.it/*",
+        "*://*.eventbrite.nl/*",
+        "*://*.eventbrite.ie/*"
+      ],
+      "js": [
+        "src/eventbrite.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://search.yahoo.co.jp/*"
+      ],
+      "js": [
+        "src/yahoojp.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.nicovideo.jp/*"
+      ],
+      "js": [
+        "src/niconico.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.daum.net/*"
+      ],
+      "js": [
+        "src/daum.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.gmarket.co.kr/*"
+      ],
+      "js": [
+        "src/gmarket.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.11st.co.kr/*"
+      ],
+      "js": [
+        "src/elevenst.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.myntra.com/*"
+      ],
+      "js": [
+        "src/myntra.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.zomato.com/*"
+      ],
+      "js": [
+        "src/zomato.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.swiggy.com/*"
+      ],
+      "js": [
+        "src/swiggy.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.bol.com/*"
+      ],
+      "js": [
+        "src/bol.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.otto.de/*"
+      ],
+      "js": [
+        "src/otto.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.mediamarkt.de/*",
+        "*://*.mediamarkt.at/*",
+        "*://*.mediamarkt.es/*",
+        "*://*.mediamarkt.nl/*"
+      ],
+      "js": [
+        "src/mediamarkt.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.cdiscount.com/*"
+      ],
+      "js": [
+        "src/cdiscount.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.fnac.com/*"
+      ],
+      "js": [
+        "src/fnac.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.trendyol.com/*"
+      ],
+      "js": [
+        "src/trendyol.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.hepsiburada.com/*"
+      ],
+      "js": [
+        "src/hepsiburada.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.noon.com/*"
+      ],
+      "js": [
+        "src/noon.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.jumia.com.ng/*",
+        "*://*.jumia.co.ke/*",
+        "*://*.jumia.com.eg/*",
+        "*://*.jumia.ma/*"
+      ],
+      "js": [
+        "src/jumia.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.daraz.pk/*",
+        "*://*.daraz.lk/*",
+        "*://*.daraz.com.bd/*",
+        "*://*.daraz.com.np/*"
+      ],
+      "js": [
+        "src/daraz.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.americanas.com.br/*"
+      ],
+      "js": [
+        "src/americanas.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.magazineluiza.com.br/*"
+      ],
+      "js": [
+        "src/magalu.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.wildberries.ru/*"
+      ],
+      "js": [
+        "src/wildberries.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.ozon.ru/*"
+      ],
+      "js": [
+        "src/ozon.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.avito.ru/*"
+      ],
+      "js": [
+        "src/avito.js",
         "src/social-content.js"
       ],
       "run_at": "document_start",

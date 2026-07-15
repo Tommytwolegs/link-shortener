@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="bulkTitle">Bulk link cleaner</title>
+  <link rel="stylesheet" href="options.css" />
+  <link rel="stylesheet" href="bulk.css" />
+</head>
+<body>
+  <header class="hero">
+    <h1 data-i18n="bulkTitle">Bulk link cleaner</h1>
+    <p class="subtitle" data-i18n="bulkSubtitle">Paste anything. Every link inside is cleaned and unwrapped, right here on your device.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <p class="hint" data-i18n="bulkHint">
+        Works on whole emails, documents, or lists of links. Each URL runs
+        through the same pipeline as the right-click menu: tracking
+        redirectors are unwrapped, per-site rules apply, and universal
+        trackers are stripped. The text around your links is untouched, and
+        nothing is sent anywhere.
+      </p>
+      <textarea id="bulk-in" rows="12" spellcheck="false"
+                data-i18n-placeholder="bulkPlaceholder"
+                placeholder="Paste text with links here"></textarea>
+      <div class="actions">
+        <button id="bulk-clean" type="button" class="primary" data-i18n="bulkClean">Clean links</button>
+        <button id="bulk-copy" type="button" class="secondary" data-i18n="bulkCopy" disabled>Copy result</button>
+        <span class="saved-indicator" id="bulk-status" aria-live="polite"></span>
+      </div>
+      <textarea id="bulk-out" rows="12" spellcheck="false" readonly hidden></textarea>
+    </section>
+  </main>
+
+  <script src="i18n.js"></script>
+  <script src="bulk.js"></script>
+</body>
+</html>

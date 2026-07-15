@@ -93,10 +93,17 @@
     try {
       const slug = slugForAddressBar();
       const opts = slug ? { slug } : undefined;
-      if (!needsShortening(location.href, opts)) return false;
-      const short = shortenAmazonUrl(location.href, opts);
-      if (!short || short === location.href) return false;
+      const before = location.href;
+      if (!needsShortening(before, opts)) return false;
+      const short = shortenAmazonUrl(before, opts);
+      if (!short || short === before) return false;
       history.replaceState(history.state, '', short);
+      try {
+        chrome.runtime.sendMessage(
+          { type: 'url-rewritten', original: before, cleaned: short, site: 'enabledAmazon' },
+          () => void chrome.runtime.lastError,
+        );
+      } catch (_e) { /* extension context invalidated; ignore */ }
       return true;
     } catch (e) {
       console.debug('[Amazon Link Shortener] could not rewrite URL:', e);

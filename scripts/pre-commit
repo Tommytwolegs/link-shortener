@@ -1,5 +1,5 @@
 #!/bin/sh
-# Pre-commit hook for Jimothy's Link Shortener.
+# Pre-commit hook for Rather Link Shortener.
 #
 # Mirrors the checks in .github/workflows/test.yml so problems are caught
 # BEFORE they're committed, not after they're pushed:

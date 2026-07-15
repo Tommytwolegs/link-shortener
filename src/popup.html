@@ -32,1010 +32,130 @@
     <p class="current-url" id="current-url"></p>
     <div class="current-actions">
       <span class="current-note" id="current-note"></span>
-      <button type="button" id="copy-clean" class="btn-copy">Copy clean URL</button>
+      <span class="current-btns">
+        <button type="button" id="qr-btn" class="btn-icon" title="Show QR code"
+                aria-label="Show QR code" data-i18n-title="qrShow" hidden>
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M1 1h6v6H1V1zm2 2v2h2V3H3zm6-2h6v6H9V1zm2 2v2h2V3h-2zM1 9h6v6H1V9zm2 2v2h2v-2H3zm10-2h2v2h-2V9zM9 9h2v2H9V9zm2 2h2v2h-2v-2zm-2 2h2v2H9v-2zm4 0h2v2h-2v-2z"/>
+          </svg>
+        </button>
+        <button type="button" id="copy-clean" class="btn-copy" data-i18n="copyCleanUrl">Copy clean URL</button>
+        <button type="button" id="copy-more" class="btn-more" title="More copy formats"
+                aria-label="More copy formats" data-i18n-title="copyMore">&#9662;</button>
+      </span>
     </div>
+    <div class="copy-menu" id="copy-menu" hidden>
+      <button type="button" data-fmt="md" data-i18n="copyAsMd">Copy as Markdown</button>
+      <button type="button" data-fmt="html" data-i18n="copyAsHtml">Copy as HTML link</button>
+      <button type="button" data-fmt="titleurl" data-i18n="copyAsTitle">Copy as title + URL</button>
+      <button type="button" data-fmt="original" id="copy-original" data-i18n="copyOriginal" hidden>Copy original URL</button>
+      <button type="button" data-action="report" class="menu-report" data-i18n="reportCleanup">Report: this didn't clean right</button>
+    </div>
+    <details class="removed-details" id="removed-details" hidden>
+      <summary id="removed-summary">What was removed</summary>
+      <div class="removed-chips" id="removed-chips"></div>
+    </details>
+    <div class="qr-box" id="qr-box" hidden></div>
   </section>
 
   <section class="toggle-row">
     <label class="switch" for="enabled">
-      <span class="switch-label">Shorten All Links</span>
+      <span class="switch-label" data-i18n="labelMaster">Shorten All Links</span>
       <span class="switch-control">
         <input type="checkbox" id="enabled" />
         <span class="slider" aria-hidden="true"></span>
       </span>
     </label>
 
-    <label class="switch switch-secondary" for="hideTravelPopup">
-      <span class="switch-label">Hide travel popup</span>
-      <span class="switch-control">
-        <input type="checkbox" id="hideTravelPopup" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
 
-    <label class="switch switch-secondary" for="includeAmazonTitle">
-      <span class="switch-label">Include Amazon item name</span>
-      <span class="switch-control">
-        <input type="checkbox" id="includeAmazonTitle" />
-        <span class="slider" aria-hidden="true"></span>
-      </span>
-    </label>
 
     <label class="switch switch-secondary" for="enabledUtmStrip">
-      <span class="switch-label" title="Strips utm_*, gclid, fbclid, etc. from every URL on every site. Asks for broader permission the first time you turn it on.">
-        Universal tracking strip
-        <span class="badge-new" aria-label="new">NEW</span>
+      <span class="switch-label">
+        <span data-i18n="labelUtmStrip">Universal tracking strip</span>
+        <span class="help-dot" tabindex="0"
+              data-tip="Strips utm_*, gclid, fbclid, etc. from every URL on every site. Asks for the broader permission when you turn it on, and hands it back when you turn it off."
+              aria-label="Strips utm_*, gclid, fbclid, etc. from every URL on every site. Asks for the broader permission when you turn it on, and hands it back when you turn it off."
+              data-i18n-tip="tipUtmStrip">?</span>
       </span>
       <span class="switch-control">
         <input type="checkbox" id="enabledUtmStrip" />
         <span class="slider" aria-hidden="true"></span>
       </span>
     </label>
+
+    <label class="switch switch-secondary" for="enabledRedirectSkip">
+      <span class="switch-label">
+        <span data-i18n="labelRedirectSkip">Skip redirect pages</span>
+        <span class="help-dot" tabindex="0"
+              data-tip="When you click a link wrapped by a click-tracker, social outbound wrapper, affiliate wrapper, or AMP viewer, go straight to the real destination. The target is read from the link itself, never fetched. Corporate SafeLinks are deliberately not skipped."
+              aria-label="When you click a link wrapped by a click-tracker, social outbound wrapper, affiliate wrapper, or AMP viewer, go straight to the real destination. The target is read from the link itself, never fetched. Corporate SafeLinks are deliberately not skipped."
+              data-i18n-tip="tipRedirectSkip">?</span>
+        <span class="badge-new" aria-label="new" data-i18n="badgeNew">NEW</span>
+      </span>
+      <span class="switch-control">
+        <input type="checkbox" id="enabledRedirectSkip" />
+        <span class="slider" aria-hidden="true"></span>
+      </span>
+    </label>
   </section>
 
   <section class="site-toggles" id="site-toggles">
-    <p class="site-toggles-heading">Per site</p>
+    <p class="site-toggles-heading" data-i18n="perSite">Per site</p>
     <input type="search" id="site-filter" class="site-filter"
            placeholder="Filter sites&#8230;" autocomplete="off" spellcheck="false"
+           data-i18n-placeholder="filterPlaceholder"
            aria-label="Filter site toggles" />
-    <p class="filter-empty" id="filter-empty" hidden>No sites match. The full
+    <p class="filter-empty" id="filter-empty" hidden data-i18n="filterEmpty">No sites match. The full
        list also lives on the project page.</p>
 
-    <details class="site-group" data-group="global" open>
+    <details class="site-group" data-group="global">
       <summary>
-        <span class="group-name">Global</span>
+        <span class="group-name" data-i18n="groupGlobal">Global</span>
         <span class="group-count" id="group-count-global"></span>
       </summary>
 
-      <p class="group-subhead">Search &amp; productivity</p>
-      <label class="switch switch-sm" for="enabledGoogle">
-        <span class="switch-label">Google Search</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledGoogle" data-site="Google" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledGdrive">
-        <span class="switch-label">Google Drive/Docs</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledGdrive" data-site="Gdrive" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledBing">
-        <span class="switch-label">Bing</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledBing" data-site="Bing" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledDuckduckgo">
-        <span class="switch-label">DuckDuckGo</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledDuckduckgo" data-site="Duckduckgo" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledWeather">
-        <span class="switch-label">Weather.com</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledWeather" data-site="Weather" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <p class="group-subhead">Shopping</p>
-      <label class="switch switch-sm" for="enabledAmazon">
-        <span class="switch-label">Amazon</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledAmazon" data-site="Amazon" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledEbay">
-        <span class="switch-label">eBay</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledEbay" data-site="Ebay" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledEtsy">
-        <span class="switch-label">Etsy</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledEtsy" data-site="Etsy" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledAliexpress">
-        <span class="switch-label">AliExpress</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledAliexpress" data-site="Aliexpress" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledTemu">
-        <span class="switch-label">Temu</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledTemu" data-site="Temu" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledWayfair">
-        <span class="switch-label">Wayfair</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledWayfair" data-site="Wayfair" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledShein">
-        <span class="switch-label">SHEIN</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledShein" data-site="Shein" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledSamsung">
-        <span class="switch-label">Samsung</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledSamsung" data-site="Samsung" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <p class="group-subhead">Travel</p>
-      <label class="switch switch-sm" for="enabledBooking">
-        <span class="switch-label">Booking.com</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledBooking" data-site="Booking" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledExpedia">
-        <span class="switch-label">Expedia</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledExpedia" data-site="Expedia" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledAirbnb">
-        <span class="switch-label">Airbnb</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledAirbnb" data-site="Airbnb" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledAgoda">
-        <span class="switch-label">Agoda</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledAgoda" data-site="Agoda" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledTrip">
-        <span class="switch-label">Trip.com</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledTrip" data-site="Trip" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledHotelscom">
-        <span class="switch-label">Hotels.com</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledHotelscom" data-site="Hotelscom" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledVrbo">
-        <span class="switch-label">Vrbo</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledVrbo" data-site="Vrbo" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledTripadvisor">
-        <span class="switch-label">Tripadvisor</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledTripadvisor" data-site="Tripadvisor" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <p class="group-subhead">Social</p>
-      <label class="switch switch-sm" for="enabledSocial">
-        <span class="switch-label">Facebook/Instagram</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledSocial" data-site="Social" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledThreads">
-        <span class="switch-label">Threads</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledThreads" data-site="Threads" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledLinkedin">
-        <span class="switch-label">LinkedIn</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledLinkedin" data-site="Linkedin" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledTwitter">
-        <span class="switch-label">Twitter/X</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledTwitter" data-site="Twitter" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledTiktok">
-        <span class="switch-label">TikTok</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledTiktok" data-site="Tiktok" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledReddit">
-        <span class="switch-label">Reddit</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledReddit" data-site="Reddit" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledBluesky">
-        <span class="switch-label">Bluesky</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledBluesky" data-site="Bluesky" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledPinterest">
-        <span class="switch-label">Pinterest</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledPinterest" data-site="Pinterest" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <p class="group-subhead">Media &amp; entertainment</p>
-      <label class="switch switch-sm" for="enabledYoutube">
-        <span class="switch-label">YouTube</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledYoutube" data-site="Youtube" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledSpotify">
-        <span class="switch-label">Spotify</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledSpotify" data-site="Spotify" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledTwitch">
-        <span class="switch-label">Twitch</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledTwitch" data-site="Twitch" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledSoundcloud">
-        <span class="switch-label">SoundCloud</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledSoundcloud" data-site="Soundcloud" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledAppleMusic">
-        <span class="switch-label">Apple Music</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledAppleMusic" data-site="AppleMusic" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledSteam">
-        <span class="switch-label">Steam</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledSteam" data-site="Steam" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledImdb">
-        <span class="switch-label">IMDb</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledImdb" data-site="Imdb" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledGoodreads">
-        <span class="switch-label">Goodreads</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledGoodreads" data-site="Goodreads" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledWikipedia">
-        <span class="switch-label">Wikipedia</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledWikipedia" data-site="Wikipedia" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledStackoverflow">
-        <span class="switch-label">Stack Overflow</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledStackoverflow" data-site="Stackoverflow" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledGithub">
-        <span class="switch-label">GitHub</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledGithub" data-site="Github" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledMedium">
-        <span class="switch-label">Medium</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledMedium" data-site="Medium" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledQuora">
-        <span class="switch-label">Quora</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledQuora" data-site="Quora" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledSubstack">
-        <span class="switch-label">Substack</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledSubstack" data-site="Substack" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledBandcamp">
-        <span class="switch-label">Bandcamp</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledBandcamp" data-site="Bandcamp" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledLetterboxd">
-        <span class="switch-label">Letterboxd</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledLetterboxd" data-site="Letterboxd" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledNetflix">
-        <span class="switch-label">Netflix</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNetflix" data-site="Netflix" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledRoblox">
-        <span class="switch-label">Roblox</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledRoblox" data-site="Roblox" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledBilibili">
-        <span class="switch-label">Bilibili</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledBilibili" data-site="Bilibili" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledFandom">
-        <span class="switch-label">Fandom</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledFandom" data-site="Fandom" data-group="global" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
+      <div class="group-body"></div>
     </details>
 
     <details class="site-group" data-group="americas">
       <summary>
-        <span class="group-name">Americas</span>
+        <span class="group-name" data-i18n="groupAmericas">Americas</span>
         <span class="group-count" id="group-count-americas"></span>
       </summary>
 
-      <p class="group-subhead">Shopping</p>
-      <label class="switch switch-sm" for="enabledWalmart">
-        <span class="switch-label">Walmart</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledWalmart" data-site="Walmart" data-group="americas" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledTarget">
-        <span class="switch-label">Target</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledTarget" data-site="Target" data-group="americas" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledMercadolibre">
-        <span class="switch-label">Mercado Libre</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledMercadolibre" data-site="Mercadolibre" data-group="americas" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledBestbuy">
-        <span class="switch-label">Best Buy</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledBestbuy" data-site="Bestbuy" data-group="americas" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
+      <div class="group-body"></div>
     </details>
 
     <details class="site-group" data-group="apac">
       <summary>
-        <span class="group-name">Asia-Pacific</span>
+        <span class="group-name" data-i18n="groupApac">Asia-Pacific</span>
         <span class="group-count" id="group-count-apac"></span>
       </summary>
 
-      <p class="group-subhead">Shopping</p>
-      <label class="switch switch-sm" for="enabledShopee">
-        <span class="switch-label">Shopee</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledShopee" data-site="Shopee" data-group="apac" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledLazada">
-        <span class="switch-label">Lazada</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledLazada" data-site="Lazada" data-group="apac" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledTokopedia">
-        <span class="switch-label">Tokopedia</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledTokopedia" data-site="Tokopedia" data-group="apac" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledCoupang">
-        <span class="switch-label">Coupang</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledCoupang" data-site="Coupang" data-group="apac" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledFlipkart">
-        <span class="switch-label">Flipkart</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledFlipkart" data-site="Flipkart" data-group="apac" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledMercari">
-        <span class="switch-label">Mercari</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledMercari" data-site="Mercari" data-group="apac" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledRakuten">
-        <span class="switch-label">Rakuten</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledRakuten" data-site="Rakuten" data-group="apac" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledMeesho">
-        <span class="switch-label">Meesho</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledMeesho" data-site="Meesho" data-group="apac" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledCarousell">
-        <span class="switch-label">Carousell</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledCarousell" data-site="Carousell" data-group="apac" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledTaobao">
-        <span class="switch-label">Taobao/Tmall</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledTaobao" data-site="Taobao" data-group="apac" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledJd">
-        <span class="switch-label">JD.com</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledJd" data-site="Jd" data-group="apac" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <p class="group-subhead">Search &amp; portals</p>
-      <label class="switch switch-sm" for="enabledNaver">
-        <span class="switch-label">Naver</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNaver" data-site="Naver" data-group="apac" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
+      <div class="group-body"></div>
     </details>
 
     <details class="site-group" data-group="europe">
       <summary>
-        <span class="group-name">Europe</span>
+        <span class="group-name" data-i18n="groupEurope">Europe</span>
         <span class="group-count" id="group-count-europe"></span>
       </summary>
 
-      <p class="group-subhead">Shopping</p>
-      <label class="switch switch-sm" for="enabledVinted">
-        <span class="switch-label">Vinted</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledVinted" data-site="Vinted" data-group="europe" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledAllegro">
-        <span class="switch-label">Allegro</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledAllegro" data-site="Allegro" data-group="europe" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledLeboncoin">
-        <span class="switch-label">Leboncoin</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledLeboncoin" data-site="Leboncoin" data-group="europe" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledOlx">
-        <span class="switch-label">OLX</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledOlx" data-site="Olx" data-group="europe" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledWallapop">
-        <span class="switch-label">Wallapop</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledWallapop" data-site="Wallapop" data-group="europe" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledMarktplaats">
-        <span class="switch-label">Marktplaats</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledMarktplaats" data-site="Marktplaats" data-group="europe" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledKleinanzeigen">
-        <span class="switch-label">Kleinanzeigen</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledKleinanzeigen" data-site="Kleinanzeigen" data-group="europe" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-
-      <label class="switch switch-sm" for="enabledZalando">
-        <span class="switch-label">Zalando</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledZalando" data-site="Zalando" data-group="europe" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
+      <div class="group-body"></div>
     </details>
 
     <details class="site-group" data-group="news">
       <summary>
-        <span class="group-name">News outlets</span>
+        <span class="group-name" data-i18n="groupNews">News outlets</span>
         <span class="group-count" id="group-count-news"></span>
       </summary>
 
-      <p class="group-subhead">Americas</p>
-      <label class="switch switch-sm" for="enabledNewsNyt">
-        <span class="switch-label">New York Times</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsNyt" data-site="NewsNyt" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsWapo">
-        <span class="switch-label">Washington Post</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsWapo" data-site="NewsWapo" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsWsj">
-        <span class="switch-label">Wall Street Journal</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsWsj" data-site="NewsWsj" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsBloomberg">
-        <span class="switch-label">Bloomberg</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsBloomberg" data-site="NewsBloomberg" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsCnn">
-        <span class="switch-label">CNN</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsCnn" data-site="NewsCnn" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsFox">
-        <span class="switch-label">Fox News</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsFox" data-site="NewsFox" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsNpr">
-        <span class="switch-label">NPR</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsNpr" data-site="NewsNpr" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsCbc">
-        <span class="switch-label">CBC</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsCbc" data-site="NewsCbc" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsGlobemail">
-        <span class="switch-label">The Globe and Mail</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsGlobemail" data-site="NewsGlobemail" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsGlobo">
-        <span class="switch-label">Globo</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsGlobo" data-site="NewsGlobo" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsClarin">
-        <span class="switch-label">Clarín</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsClarin" data-site="NewsClarin" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsInfobae">
-        <span class="switch-label">Infobae</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsInfobae" data-site="NewsInfobae" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <p class="group-subhead">Europe</p>
-      <label class="switch switch-sm" for="enabledNewsGuardian">
-        <span class="switch-label">The Guardian</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsGuardian" data-site="NewsGuardian" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsBbc">
-        <span class="switch-label">BBC</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsBbc" data-site="NewsBbc" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsDailymail">
-        <span class="switch-label">Daily Mail</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsDailymail" data-site="NewsDailymail" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsTelegraph">
-        <span class="switch-label">The Telegraph</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsTelegraph" data-site="NewsTelegraph" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsIndependent">
-        <span class="switch-label">The Independent</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsIndependent" data-site="NewsIndependent" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsFt">
-        <span class="switch-label">Financial Times</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsFt" data-site="NewsFt" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsEconomist">
-        <span class="switch-label">The Economist</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsEconomist" data-site="NewsEconomist" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsLemonde">
-        <span class="switch-label">Le Monde</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsLemonde" data-site="NewsLemonde" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsLefigaro">
-        <span class="switch-label">Le Figaro</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsLefigaro" data-site="NewsLefigaro" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsFrance24">
-        <span class="switch-label">France 24</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsFrance24" data-site="NewsFrance24" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsEuronews">
-        <span class="switch-label">Euronews</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsEuronews" data-site="NewsEuronews" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsDw">
-        <span class="switch-label">DW</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsDw" data-site="NewsDw" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsSpiegel">
-        <span class="switch-label">Der Spiegel</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsSpiegel" data-site="NewsSpiegel" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsBild">
-        <span class="switch-label">Bild</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsBild" data-site="NewsBild" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsElpais">
-        <span class="switch-label">El País</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsElpais" data-site="NewsElpais" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsElmundo">
-        <span class="switch-label">El Mundo</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsElmundo" data-site="NewsElmundo" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsCorriere">
-        <span class="switch-label">Corriere della Sera</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsCorriere" data-site="NewsCorriere" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsRepubblica">
-        <span class="switch-label">la Repubblica</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsRepubblica" data-site="NewsRepubblica" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <p class="group-subhead">Asia-Pacific</p>
-      <label class="switch switch-sm" for="enabledNewsToi">
-        <span class="switch-label">Times of India</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsToi" data-site="NewsToi" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsThehindu">
-        <span class="switch-label">The Hindu</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsThehindu" data-site="NewsThehindu" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsNdtv">
-        <span class="switch-label">NDTV</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsNdtv" data-site="NewsNdtv" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsIndianexpress">
-        <span class="switch-label">Indian Express</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsIndianexpress" data-site="NewsIndianexpress" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsAsahi">
-        <span class="switch-label">Asahi Shimbun</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsAsahi" data-site="NewsAsahi" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsNikkei">
-        <span class="switch-label">Nikkei</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsNikkei" data-site="NewsNikkei" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsNhk">
-        <span class="switch-label">NHK</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsNhk" data-site="NewsNhk" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsYahoojp">
-        <span class="switch-label">Yahoo! News Japan</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsYahoojp" data-site="NewsYahoojp" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsScmp">
-        <span class="switch-label">South China Morning Post</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsScmp" data-site="NewsScmp" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsStraitstimes">
-        <span class="switch-label">The Straits Times</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsStraitstimes" data-site="NewsStraitstimes" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsCna">
-        <span class="switch-label">CNA</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsCna" data-site="NewsCna" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsAbcAu">
-        <span class="switch-label">ABC News (AU)</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsAbcAu" data-site="NewsAbcAu" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsSmh">
-        <span class="switch-label">Sydney Morning Herald</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsSmh" data-site="NewsSmh" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsNewscomau">
-        <span class="switch-label">news.com.au</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsNewscomau" data-site="NewsNewscomau" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsChosun">
-        <span class="switch-label">Chosun Ilbo</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsChosun" data-site="NewsChosun" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <p class="group-subhead">Middle East &amp; Africa</p>
-      <label class="switch switch-sm" for="enabledNewsAljazeera">
-        <span class="switch-label">Al Jazeera</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsAljazeera" data-site="NewsAljazeera" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsTimesofisrael">
-        <span class="switch-label">Times of Israel</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsTimesofisrael" data-site="NewsTimesofisrael" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsHaaretz">
-        <span class="switch-label">Haaretz</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsHaaretz" data-site="NewsHaaretz" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsArabnews">
-        <span class="switch-label">Arab News</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsArabnews" data-site="NewsArabnews" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsNews24">
-        <span class="switch-label">News24</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsNews24" data-site="NewsNews24" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <p class="group-subhead">Global agencies</p>
-      <label class="switch switch-sm" for="enabledNewsReuters">
-        <span class="switch-label">Reuters</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsReuters" data-site="NewsReuters" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
-      <label class="switch switch-sm" for="enabledNewsAp">
-        <span class="switch-label">Associated Press</span>
-        <span class="switch-control switch-control-sm">
-          <input type="checkbox" id="enabledNewsAp" data-site="NewsAp" data-group="news" />
-          <span class="slider" aria-hidden="true"></span>
-        </span>
-      </label>
+      <div class="group-body"></div>
     </details>
   </section>
 
   <section class="info">
-    <p>Long URLs on supported sites are rewritten in place. Right-click any
+    <p data-i18n="infoMain">Long URLs on supported sites are rewritten in place. Right-click any
        link or page and choose "Copy clean URL" for a one-off cleanup, or
        use "Copy link address" on Amazon to get the clean form directly.
        The "Universal tracking strip" toggle (off by default) strips
@@ -1043,20 +163,26 @@
     <p id="shortcut-tip">Tip: Ctrl+Shift+L (&#8984;&#8679;L on Mac) copies a
        clean URL of the current page. Rebind it in your browser's extension
        shortcut settings.</p>
-    <p>Selected a URL as text? Right-click it for "Copy clean URL from
+    <p data-i18n-html="infoSelection">Selected a URL as text? Right-click it for "Copy clean URL from
        selection". Or in the address bar, type <em>clean</em>, press Tab,
        and paste a URL to jump to its clean form.</p>
   </section>
 
+  <p class="stats-line" id="stats-line" hidden></p>
+
   <footer>
     <span id="version"></span>
     <span class="footer-links">
-      <a href="#" id="open-options">Advanced</a>
+      <a href="#" id="open-options" data-i18n="footerAdvanced">Advanced</a>
       <span class="footer-sep">·</span>
-      <a href="https://github.com/Tommytwolegs/link-shortener/issues" target="_blank" rel="noopener noreferrer">Report an issue</a>
+      <a href="#" id="open-bulk" data-i18n="footerBulk">Bulk cleaner</a>
+      <span class="footer-sep">·</span>
+      <a href="https://github.com/Tommytwolegs/link-shortener/issues" target="_blank" rel="noopener noreferrer" data-i18n="footerReport">Report an issue</a>
     </span>
   </footer>
 
+  <script src="i18n.js"></script>
+  <script src="qr.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

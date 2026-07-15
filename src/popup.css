@@ -449,3 +449,205 @@ footer a:hover {
   font-size: 12px;
   color: var(--text-muted);
 }
+
+/* -- Current-page extras: format menu, removed-chips, QR, stats ---------- */
+
+.current-btns {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-more,
+.btn-icon {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 3px 7px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.btn-icon svg {
+  width: 13px;
+  height: 13px;
+  display: block;
+}
+
+.btn-more:hover,
+.btn-icon:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.copy-menu[hidden] {
+  /* The flex display below would otherwise defeat the hidden attribute
+     and leave the format menu permanently expanded. */
+  display: none;
+}
+
+.copy-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 4px;
+}
+
+.copy-menu button {
+  border: 0;
+  background: none;
+  color: var(--text);
+  text-align: left;
+  font-size: 12px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.copy-menu button:hover {
+  background: var(--bg);
+  color: var(--accent-deep);
+}
+
+.removed-details {
+  margin-top: 6px;
+}
+
+.removed-details summary {
+  cursor: pointer;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.removed-details summary:hover {
+  color: var(--text);
+}
+
+.removed-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.chip {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 8px;
+  color: var(--text-muted);
+  text-decoration: line-through;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chip .chip-k {
+  color: var(--accent-deep);
+  font-weight: 600;
+}
+
+.chip.chip-keep {
+  text-decoration: none;
+  font-style: italic;
+}
+
+.qr-box {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.qr-box svg {
+  width: 176px;
+  height: 176px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.stats-line {
+  margin: 6px 14px 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.copy-menu .menu-report {
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 5px 5px;
+  margin-top: 2px;
+  color: var(--text-muted);
+}
+
+/* Popup-open cost: only lay out the toggle rows that are actually on
+   screen. Closed groups already render nothing; this covers the open
+   ones (the Global group alone has 100+ rows). */
+.site-group .switch {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 30px;
+}
+
+/* -- Help dots: visible "there's an explanation here" affordance ---------- */
+
+.help-dot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin-left: 6px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: help;
+  user-select: none;
+  flex: none;
+}
+
+.help-dot:hover,
+.help-dot:focus-visible {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+/* Instant tooltip bubble (native title= has a fixed ~1s hover delay). */
+.help-dot::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 224px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  padding: 8px 10px;
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.1s ease 0.05s, visibility 0s linear 0.05s;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.help-dot:hover::after,
+.help-dot:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+}

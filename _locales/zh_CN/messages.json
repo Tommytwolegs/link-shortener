@@ -1,0 +1,338 @@
+{
+  "extDesc": {
+    "message": "真正缩短链接的工具:就地清除 URL 中的跟踪垃圾,让链接干净、便于分享。"
+  },
+  "menuCopyClean": {
+    "message": "复制干净的 URL"
+  },
+  "menuCopyCleanSelection": {
+    "message": "从选中文本复制干净的 URL"
+  },
+  "copyCleanUrl": {
+    "message": "复制干净的 URL"
+  },
+  "copied": {
+    "message": "已复制 ✓"
+  },
+  "copyMore": {
+    "message": "更多复制格式"
+  },
+  "qrShow": {
+    "message": "显示二维码"
+  },
+  "copyAsMd": {
+    "message": "复制为 Markdown"
+  },
+  "copyAsHtml": {
+    "message": "复制为 HTML 链接"
+  },
+  "copyAsTitle": {
+    "message": "复制为标题 + URL"
+  },
+  "copyOriginal": {
+    "message": "复制原始 URL"
+  },
+  "alreadyClean": {
+    "message": "已经很干净"
+  },
+  "removesParamOne": {
+    "message": "移除 1 个跟踪参数"
+  },
+  "removesParams": {
+    "message": "移除 $1 个跟踪参数"
+  },
+  "shortensUrl": {
+    "message": "缩短此 URL"
+  },
+  "whatRemoved": {
+    "message": "移除了什么($1)"
+  },
+  "chipUnwrapped": {
+    "message": "解包自:"
+  },
+  "chipPath": {
+    "message": "路径:"
+  },
+  "statsLine": {
+    "message": "本设备已清理 $1 个 URL · 移除 $2 个垃圾字符"
+  },
+  "statusOff": {
+    "message": "已关闭:链接保持原样"
+  },
+  "statusOnNothing": {
+    "message": "已开启:但未启用任何站点"
+  },
+  "statusOneSiteOnly": {
+    "message": "仅 $1"
+  },
+  "statusNSites": {
+    "message": "$1 个站点"
+  },
+  "statusEverywhereUniversal": {
+    "message": "在<em>所有网站</em>开启 + 通用清理"
+  },
+  "statusOnSitesUniversal": {
+    "message": "已开启:$1 + 通用清理"
+  },
+  "statusOnUniversalOnly": {
+    "message": "已开启:仅通用清理"
+  },
+  "statusAllSites": {
+    "message": "在<em>全部</em>站点开启"
+  },
+  "statusOnSites": {
+    "message": "已开启:$1"
+  },
+  "groupCount": {
+    "message": "$2 个中 $1 个开启"
+  },
+  "labelMaster": {
+    "message": "缩短所有链接"
+  },
+  "labelHideTravel": {
+    "message": "隐藏旅行小组件"
+  },
+  "labelAmazonTitle": {
+    "message": "包含亚马逊商品名"
+  },
+  "labelUtmStrip": {
+    "message": "通用跟踪清理"
+  },
+  "labelRedirectSkip": {
+    "message": "跳过重定向页面"
+  },
+  "badgeNew": {
+    "message": "新"
+  },
+  "tipUtmStrip": {
+    "message": "从所有网站的所有 URL 中清除 utm_*、gclid、fbclid 等。开启时请求更广泛的权限,关闭时归还该权限。"
+  },
+  "tipRedirectSkip": {
+    "message": "点击被点击跟踪器、社交外链包装、联盟链接包装或 AMP 查看器包裹的链接时,直接前往真实目的地。目的地从链接本身读取,绝不联网获取。企业 SafeLinks 有意不跳过。"
+  },
+  "perSite": {
+    "message": "按站点"
+  },
+  "filterPlaceholder": {
+    "message": "筛选站点…"
+  },
+  "filterEmpty": {
+    "message": "没有匹配的站点。完整列表也在项目页面上。"
+  },
+  "groupGlobal": {
+    "message": "全球"
+  },
+  "groupAmericas": {
+    "message": "美洲"
+  },
+  "groupApac": {
+    "message": "亚太"
+  },
+  "groupEurope": {
+    "message": "欧洲"
+  },
+  "groupNews": {
+    "message": "新闻媒体"
+  },
+  "subSearchProd": {
+    "message": "搜索与效率"
+  },
+  "subAcademic": {
+    "message": "学术"
+  },
+  "subShopping": {
+    "message": "购物"
+  },
+  "subLocal": {
+    "message": "本地生活"
+  },
+  "subTravel": {
+    "message": "旅行"
+  },
+  "subFlights": {
+    "message": "航班"
+  },
+  "subSocial": {
+    "message": "社交"
+  },
+  "subMedia": {
+    "message": "媒体与娱乐"
+  },
+  "subWorkTools": {
+    "message": "办公工具"
+  },
+  "subAppStores": {
+    "message": "应用商店"
+  },
+  "subParcels": {
+    "message": "包裹追踪"
+  },
+  "subCommunity": {
+    "message": "社区与活动"
+  },
+  "subFood": {
+    "message": "美食与菜谱"
+  },
+  "subSports": {
+    "message": "体育"
+  },
+  "subSearchPortals": {
+    "message": "搜索与门户"
+  },
+  "newsAmericas": {
+    "message": "美洲"
+  },
+  "newsEurope": {
+    "message": "欧洲"
+  },
+  "newsApac": {
+    "message": "亚太"
+  },
+  "newsMea": {
+    "message": "中东与非洲"
+  },
+  "newsAgencies": {
+    "message": "国际通讯社"
+  },
+  "infoMain": {
+    "message": "支持站点上的长 URL 会在地址栏中就地改写。右键点击链接或页面并选择“复制干净的 URL”可做一次性清理;在亚马逊上,“复制链接地址”直接得到干净形式。“通用跟踪清理”开关(默认关闭)会在所有网站上清除 utm_* 等常见跟踪参数。"
+  },
+  "infoSelection": {
+    "message": "选中了文本形式的 URL?右键选择“从选中文本复制干净的 URL”。或在地址栏输入 <em>clean</em>,按 Tab,粘贴 URL 即可跳转到它的干净形式。"
+  },
+  "tipShortcut": {
+    "message": "提示:$1 可复制当前页面的干净 URL。可在浏览器的扩展快捷键设置中重新绑定。"
+  },
+  "tipShortcutUnset": {
+    "message": "提示:复制快捷键尚未设置(可能被其他扩展占用)。请在浏览器快捷键设置中指定一个。"
+  },
+  "footerAdvanced": {
+    "message": "高级"
+  },
+  "footerBulk": {
+    "message": "批量清理"
+  },
+  "footerReport": {
+    "message": "反馈问题"
+  },
+  "optTitle": {
+    "message": "高级设置"
+  },
+  "optSubtitle": {
+    "message": "微调通用清理、查看本地统计并备份设置。"
+  },
+  "optStripTitle": {
+    "message": "通用跟踪清理"
+  },
+  "optStripIntro": {
+    "message": "以下设置仅在<strong>通用跟踪清理</strong>开关开启时生效。按站点清理(亚马逊、eBay 等)不受影响。"
+  },
+  "optSkipTitle": {
+    "message": "跳过这些域名"
+  },
+  "optKeepTitle": {
+    "message": "始终保留这些参数"
+  },
+  "optSave": {
+    "message": "保存"
+  },
+  "optReset": {
+    "message": "恢复默认"
+  },
+  "optSaved": {
+    "message": "已保存"
+  },
+  "optStripOn": {
+    "message": "通用跟踪清理已开启。"
+  },
+  "optStripOff": {
+    "message": "通用跟踪清理已关闭。在弹窗中开启开关后,以下设置才会生效。"
+  },
+  "optAboutTitle": {
+    "message": "关于"
+  },
+  "statsTitle": {
+    "message": "统计"
+  },
+  "statsHint": {
+    "message": "仅在此浏览器配置文件中本地统计。统计数据绝不同步,也绝不离开您的设备,与本扩展的其他部分一样。"
+  },
+  "statsUrls": {
+    "message": "已清理的 URL"
+  },
+  "statsChars": {
+    "message": "已移除字符数"
+  },
+  "statsCopies": {
+    "message": "复制操作"
+  },
+  "statsSkips": {
+    "message": "已跳过的重定向"
+  },
+  "statsBulk": {
+    "message": "批量清理的链接"
+  },
+  "statsSince": {
+    "message": "统计开始于"
+  },
+  "statsTopSites": {
+    "message": "清理最多的站点"
+  },
+  "statsReset": {
+    "message": "重置统计"
+  },
+  "backupTitle": {
+    "message": "备份"
+  },
+  "backupHint": {
+    "message": "将所有设置(开关、跳过的域名、保留的参数)导出为 JSON 文件,或导入之前导出的文件。迁移到没有同步账号的配置文件时很有用。"
+  },
+  "backupExport": {
+    "message": "导出设置"
+  },
+  "backupImport": {
+    "message": "导入设置"
+  },
+  "backupExported": {
+    "message": "已导出"
+  },
+  "backupImported": {
+    "message": "已导入 $1 项设置"
+  },
+  "backupInvalid": {
+    "message": "不是有效的设置文件"
+  },
+  "bulkTitle": {
+    "message": "批量链接清理器"
+  },
+  "bulkSubtitle": {
+    "message": "粘贴任何内容。里面的每个链接都会在您的设备上被清理并解包。"
+  },
+  "bulkHint": {
+    "message": "适用于整封邮件、文档或链接列表。每个 URL 都经过与右键菜单相同的流程:解包跟踪重定向、应用站点规则、清除通用跟踪参数。链接周围的文字保持不变,不会向任何地方发送任何内容。"
+  },
+  "bulkPlaceholder": {
+    "message": "在此粘贴包含链接的文本"
+  },
+  "bulkClean": {
+    "message": "清理链接"
+  },
+  "bulkCopy": {
+    "message": "复制结果"
+  },
+  "bulkStatus": {
+    "message": "已清理 $1/$2 个链接,移除 $3 个字符"
+  },
+  "bulkEmpty": {
+    "message": "还没有可清理的内容"
+  },
+  "bulkError": {
+    "message": "出了点问题,请重试"
+  },
+  "reportCleanup": {
+    "message": "反馈：没有正确清理"
+  },
+  "optGeneralTitle": {
+    "message": "常规"
+  }
+}

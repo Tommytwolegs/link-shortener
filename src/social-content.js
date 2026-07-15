@@ -80,14 +80,29 @@
 
   function isOn() { return masterEnabled && siteEnabled && !!M; }
 
+  // Fire-and-forget: tell the background a rewrite happened so the popup
+  // can show what was removed (and offer the original), and the local
+  // stats can tick. Never throws into the caller -- mid-navigation the
+  // extension context can be invalidated.
+  function reportRewrite(original, cleaned) {
+    try {
+      chrome.runtime.sendMessage(
+        { type: 'url-rewritten', original, cleaned, site: STORAGE_KEY },
+        () => void chrome.runtime.lastError,
+      );
+    } catch (_e) { /* context gone; nothing to do */ }
+  }
+
   function cleanCurrentUrl() {
     if (!isOn()) return false;
     try {
-      if (!M.needsShortening(location.href)) return false;
-      const short = M.shortenUrl(location.href);
-      if (!short || short === location.href) return false;
+      const before = location.href;
+      if (!M.needsShortening(before)) return false;
+      const short = M.shortenUrl(before);
+      if (!short || short === before) return false;
       history.replaceState(history.state, '', short);
       lastHref = short;
+      reportRewrite(before, short);
       return true;
     } catch (e) {
       console.debug('[Link Shortener] could not rewrite URL:', e);

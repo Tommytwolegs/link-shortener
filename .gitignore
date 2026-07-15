@@ -13,3 +13,28 @@ Thumbs.db
 # Node (in case you ever add tooling)
 node_modules/
 npm-debug.log*
+
+# Raw screenshot captures + their redacted intermediates: the raws still
+# contain the account name and personal browser chrome, and they are only
+# inputs to scripts/make-screenshots.py. The COMPOSED, redacted results in
+# promo/screenshots/ are what ship.
+promo/raw/*.png
+
+# Python bytecode (scripts/ are run directly, never imported in prod)
+__pycache__/
+*.pyc
+
+# --- Internal / store-only assets: kept on disk, NOT shared on GitHub ---
+# The public repo ships only what builds and runs the extension, plus
+# README, LICENSE, PRIVACY, and CHANGELOG. Everything below stays local.
+/HANDOFF.md
+/RESEARCH-v1.10.md
+/SMOKE-TEST-v1.10.md
+/STORE_LISTING.md
+/promo/
+/screenshots/
+/scripts/find-redactions.py
+/scripts/make-promo.py
+/scripts/make-screenshots.py
+/scripts/make-store-screenshot.ps1
+/scripts/smoke-test.html

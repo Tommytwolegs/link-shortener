@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Jimothy's Link Shortener** does not collect, store, transmit, sell, or share any personal data.
+**Rather's Link Shortener** does not collect, store, transmit, sell, or share any personal data.
 
 ## What the extension does
 

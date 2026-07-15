@@ -1,0 +1,338 @@
+{
+  "extDesc": {
+    "message": "A link shortener that actually shortens links. Strips tracking junk from URLs in place. For clean shareable links."
+  },
+  "menuCopyClean": {
+    "message": "Copy clean URL"
+  },
+  "menuCopyCleanSelection": {
+    "message": "Copy clean URL from selection"
+  },
+  "copyCleanUrl": {
+    "message": "Copy clean URL"
+  },
+  "copied": {
+    "message": "Copied ✓"
+  },
+  "copyMore": {
+    "message": "More copy formats"
+  },
+  "qrShow": {
+    "message": "Show QR code"
+  },
+  "copyAsMd": {
+    "message": "Copy as Markdown"
+  },
+  "copyAsHtml": {
+    "message": "Copy as HTML link"
+  },
+  "copyAsTitle": {
+    "message": "Copy as title + URL"
+  },
+  "copyOriginal": {
+    "message": "Copy original URL"
+  },
+  "alreadyClean": {
+    "message": "Already clean"
+  },
+  "removesParamOne": {
+    "message": "Removes 1 tracking param"
+  },
+  "removesParams": {
+    "message": "Removes $1 tracking params"
+  },
+  "shortensUrl": {
+    "message": "Shortens this URL"
+  },
+  "whatRemoved": {
+    "message": "What was removed ($1)"
+  },
+  "chipUnwrapped": {
+    "message": "unwrapped:"
+  },
+  "chipPath": {
+    "message": "path:"
+  },
+  "statsLine": {
+    "message": "$1 URLs cleaned on this device · $2 characters of junk removed"
+  },
+  "statusOff": {
+    "message": "Off -- links left as-is"
+  },
+  "statusOnNothing": {
+    "message": "On -- but nothing enabled"
+  },
+  "statusOneSiteOnly": {
+    "message": "$1 only"
+  },
+  "statusNSites": {
+    "message": "$1 sites"
+  },
+  "statusEverywhereUniversal": {
+    "message": "On <em>everywhere</em> + universal"
+  },
+  "statusOnSitesUniversal": {
+    "message": "On -- $1 + universal"
+  },
+  "statusOnUniversalOnly": {
+    "message": "On -- universal only"
+  },
+  "statusAllSites": {
+    "message": "On <em>all</em> sites"
+  },
+  "statusOnSites": {
+    "message": "On -- $1"
+  },
+  "groupCount": {
+    "message": "$1 of $2 on"
+  },
+  "labelMaster": {
+    "message": "Shorten All Links"
+  },
+  "labelHideTravel": {
+    "message": "Hide travel popup"
+  },
+  "labelAmazonTitle": {
+    "message": "Include Amazon item name"
+  },
+  "labelUtmStrip": {
+    "message": "Universal tracking strip"
+  },
+  "labelRedirectSkip": {
+    "message": "Skip redirect pages"
+  },
+  "badgeNew": {
+    "message": "NEW"
+  },
+  "tipUtmStrip": {
+    "message": "Strips utm_*, gclid, fbclid, etc. from every URL on every site. Asks for the broader permission when you turn it on, and hands it back when you turn it off."
+  },
+  "tipRedirectSkip": {
+    "message": "When you click a link wrapped by a click-tracker, social outbound wrapper, affiliate wrapper, or AMP viewer, go straight to the real destination. The target is read from the link itself, never fetched. Corporate SafeLinks are deliberately not skipped."
+  },
+  "perSite": {
+    "message": "Per site"
+  },
+  "filterPlaceholder": {
+    "message": "Filter sites…"
+  },
+  "filterEmpty": {
+    "message": "No sites match. The full list also lives on the project page."
+  },
+  "groupGlobal": {
+    "message": "Global"
+  },
+  "groupAmericas": {
+    "message": "Americas"
+  },
+  "groupApac": {
+    "message": "Asia-Pacific"
+  },
+  "groupEurope": {
+    "message": "Europe"
+  },
+  "groupNews": {
+    "message": "News outlets"
+  },
+  "subSearchProd": {
+    "message": "Search & productivity"
+  },
+  "subAcademic": {
+    "message": "Academic"
+  },
+  "subShopping": {
+    "message": "Shopping"
+  },
+  "subLocal": {
+    "message": "Local"
+  },
+  "subTravel": {
+    "message": "Travel"
+  },
+  "subFlights": {
+    "message": "Flights"
+  },
+  "subSocial": {
+    "message": "Social"
+  },
+  "subMedia": {
+    "message": "Media & entertainment"
+  },
+  "subWorkTools": {
+    "message": "Work tools"
+  },
+  "subAppStores": {
+    "message": "App stores"
+  },
+  "subParcels": {
+    "message": "Package tracking"
+  },
+  "subCommunity": {
+    "message": "Community & events"
+  },
+  "subFood": {
+    "message": "Food & recipes"
+  },
+  "subSports": {
+    "message": "Sports"
+  },
+  "subSearchPortals": {
+    "message": "Search & portals"
+  },
+  "newsAmericas": {
+    "message": "Americas"
+  },
+  "newsEurope": {
+    "message": "Europe"
+  },
+  "newsApac": {
+    "message": "Asia-Pacific"
+  },
+  "newsMea": {
+    "message": "Middle East & Africa"
+  },
+  "newsAgencies": {
+    "message": "Global agencies"
+  },
+  "infoMain": {
+    "message": "Long URLs on supported sites are rewritten in place. Right-click any link or page and choose \"Copy clean URL\" for a one-off cleanup, or use \"Copy link address\" on Amazon to get the clean form directly. The \"Universal tracking strip\" toggle (off by default) strips common trackers like utm_* from URLs on every site you visit."
+  },
+  "infoSelection": {
+    "message": "Selected a URL as text? Right-click it for \"Copy clean URL from selection\". Or in the address bar, type <em>clean</em>, press Tab, and paste a URL to jump to its clean form."
+  },
+  "tipShortcut": {
+    "message": "Tip: $1 copies a clean URL of the current page. Rebind it in your browser's extension shortcut settings."
+  },
+  "tipShortcutUnset": {
+    "message": "Tip: the copy-clean-URL keyboard shortcut is not set (another extension may have claimed it). Assign one in your browser's extension shortcut settings."
+  },
+  "footerAdvanced": {
+    "message": "Advanced"
+  },
+  "footerBulk": {
+    "message": "Bulk cleaner"
+  },
+  "footerReport": {
+    "message": "Report an issue"
+  },
+  "optTitle": {
+    "message": "Advanced settings"
+  },
+  "optSubtitle": {
+    "message": "Fine-tune the Universal tracking strip, check your local stats, and back up your settings."
+  },
+  "optStripTitle": {
+    "message": "Universal tracking strip"
+  },
+  "optStripIntro": {
+    "message": "These settings only matter when the <strong>Universal tracking strip</strong> toggle is on. Per-site cleanup (Amazon, eBay, etc.) is unaffected."
+  },
+  "optSkipTitle": {
+    "message": "Skip these domains"
+  },
+  "optKeepTitle": {
+    "message": "Always keep these parameters"
+  },
+  "optSave": {
+    "message": "Save"
+  },
+  "optReset": {
+    "message": "Reset to defaults"
+  },
+  "optSaved": {
+    "message": "Saved"
+  },
+  "optStripOn": {
+    "message": "Universal tracking strip is ON."
+  },
+  "optStripOff": {
+    "message": "Universal tracking strip is OFF. Settings below take effect once you enable the toggle in the toolbar popup."
+  },
+  "optAboutTitle": {
+    "message": "About"
+  },
+  "statsTitle": {
+    "message": "Stats"
+  },
+  "statsHint": {
+    "message": "Counted locally in this browser profile only. Stats are never synced and never leave your device, like everything else in this extension."
+  },
+  "statsUrls": {
+    "message": "URLs cleaned"
+  },
+  "statsChars": {
+    "message": "Characters removed"
+  },
+  "statsCopies": {
+    "message": "Copy actions"
+  },
+  "statsSkips": {
+    "message": "Redirect pages skipped"
+  },
+  "statsBulk": {
+    "message": "Bulk-cleaned links"
+  },
+  "statsSince": {
+    "message": "Counting since"
+  },
+  "statsTopSites": {
+    "message": "Most-cleaned sites"
+  },
+  "statsReset": {
+    "message": "Reset stats"
+  },
+  "backupTitle": {
+    "message": "Backup"
+  },
+  "backupHint": {
+    "message": "Export every setting (toggles, skip domains, kept parameters) as a JSON file, or import one exported earlier. Useful when moving to a browser profile that doesn't share your sync account."
+  },
+  "backupExport": {
+    "message": "Export settings"
+  },
+  "backupImport": {
+    "message": "Import settings"
+  },
+  "backupExported": {
+    "message": "Exported"
+  },
+  "backupImported": {
+    "message": "Imported $1 settings"
+  },
+  "backupInvalid": {
+    "message": "Not a valid settings file"
+  },
+  "bulkTitle": {
+    "message": "Bulk link cleaner"
+  },
+  "bulkSubtitle": {
+    "message": "Paste anything. Every link inside is cleaned and unwrapped, right here on your device."
+  },
+  "bulkHint": {
+    "message": "Works on whole emails, documents, or lists of links. Each URL runs through the same pipeline as the right-click menu: tracking redirectors are unwrapped, per-site rules apply, and universal trackers are stripped. The text around your links is untouched, and nothing is sent anywhere."
+  },
+  "bulkPlaceholder": {
+    "message": "Paste text with links here"
+  },
+  "bulkClean": {
+    "message": "Clean links"
+  },
+  "bulkCopy": {
+    "message": "Copy result"
+  },
+  "bulkStatus": {
+    "message": "Cleaned $1 of $2 links, removed $3 characters"
+  },
+  "bulkEmpty": {
+    "message": "Nothing to clean yet"
+  },
+  "bulkError": {
+    "message": "Something went wrong; try again"
+  },
+  "reportCleanup": {
+    "message": "Report: this didn’t clean right"
+  },
+  "optGeneralTitle": {
+    "message": "General"
+  }
+}

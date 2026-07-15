@@ -1,0 +1,338 @@
+{
+  "extDesc": {
+    "message": "Un raccourcisseur qui raccourcit vraiment : supprime les traqueurs des URL, sur place. Pour des liens propres à partager."
+  },
+  "menuCopyClean": {
+    "message": "Copier l'URL propre"
+  },
+  "menuCopyCleanSelection": {
+    "message": "Copier l'URL propre depuis la sélection"
+  },
+  "copyCleanUrl": {
+    "message": "Copier l'URL propre"
+  },
+  "copied": {
+    "message": "Copié ✓"
+  },
+  "copyMore": {
+    "message": "Autres formats de copie"
+  },
+  "qrShow": {
+    "message": "Afficher le code QR"
+  },
+  "copyAsMd": {
+    "message": "Copier en Markdown"
+  },
+  "copyAsHtml": {
+    "message": "Copier en lien HTML"
+  },
+  "copyAsTitle": {
+    "message": "Copier titre + URL"
+  },
+  "copyOriginal": {
+    "message": "Copier l'URL d'origine"
+  },
+  "alreadyClean": {
+    "message": "Déjà propre"
+  },
+  "removesParamOne": {
+    "message": "Supprime 1 paramètre de suivi"
+  },
+  "removesParams": {
+    "message": "Supprime $1 paramètres de suivi"
+  },
+  "shortensUrl": {
+    "message": "Raccourcit cette URL"
+  },
+  "whatRemoved": {
+    "message": "Ce qui a été supprimé ($1)"
+  },
+  "chipUnwrapped": {
+    "message": "déballé :"
+  },
+  "chipPath": {
+    "message": "chemin :"
+  },
+  "statsLine": {
+    "message": "$1 URL nettoyées sur cet appareil · $2 caractères de suivi supprimés"
+  },
+  "statusOff": {
+    "message": "Désactivé -- liens laissés tels quels"
+  },
+  "statusOnNothing": {
+    "message": "Activé -- mais rien n'est coché"
+  },
+  "statusOneSiteOnly": {
+    "message": "$1 uniquement"
+  },
+  "statusNSites": {
+    "message": "$1 sites"
+  },
+  "statusEverywhereUniversal": {
+    "message": "Activé <em>partout</em> + universel"
+  },
+  "statusOnSitesUniversal": {
+    "message": "Activé -- $1 + universel"
+  },
+  "statusOnUniversalOnly": {
+    "message": "Activé -- universel seul"
+  },
+  "statusAllSites": {
+    "message": "Activé sur <em>tous</em> les sites"
+  },
+  "statusOnSites": {
+    "message": "Activé -- $1"
+  },
+  "groupCount": {
+    "message": "$1 sur $2 actifs"
+  },
+  "labelMaster": {
+    "message": "Raccourcir tous les liens"
+  },
+  "labelHideTravel": {
+    "message": "Masquer le widget voyage"
+  },
+  "labelAmazonTitle": {
+    "message": "Inclure le nom de l'article Amazon"
+  },
+  "labelUtmStrip": {
+    "message": "Filtre de suivi universel"
+  },
+  "labelRedirectSkip": {
+    "message": "Sauter les pages de redirection"
+  },
+  "badgeNew": {
+    "message": "NOUVEAU"
+  },
+  "tipUtmStrip": {
+    "message": "Supprime utm_*, gclid, fbclid, etc. de chaque URL sur chaque site. Demande la permission élargie à l'activation et la rend à la désactivation."
+  },
+  "tipRedirectSkip": {
+    "message": "Quand vous cliquez sur un lien enveloppé par un traqueur de clics, un wrapper social ou affilié, ou une visionneuse AMP, vous allez droit à la vraie destination. La cible est lue dans le lien lui-même, jamais téléchargée. Les SafeLinks d'entreprise ne sont volontairement pas sautés."
+  },
+  "perSite": {
+    "message": "Par site"
+  },
+  "filterPlaceholder": {
+    "message": "Filtrer les sites…"
+  },
+  "filterEmpty": {
+    "message": "Aucun site ne correspond. La liste complète est aussi sur la page du projet."
+  },
+  "groupGlobal": {
+    "message": "Mondial"
+  },
+  "groupAmericas": {
+    "message": "Amériques"
+  },
+  "groupApac": {
+    "message": "Asie-Pacifique"
+  },
+  "groupEurope": {
+    "message": "Europe"
+  },
+  "groupNews": {
+    "message": "Médias d'actualité"
+  },
+  "subSearchProd": {
+    "message": "Recherche & productivité"
+  },
+  "subAcademic": {
+    "message": "Recherche académique"
+  },
+  "subShopping": {
+    "message": "Shopping"
+  },
+  "subLocal": {
+    "message": "Local"
+  },
+  "subTravel": {
+    "message": "Voyages"
+  },
+  "subFlights": {
+    "message": "Vols"
+  },
+  "subSocial": {
+    "message": "Réseaux sociaux"
+  },
+  "subMedia": {
+    "message": "Médias & divertissement"
+  },
+  "subWorkTools": {
+    "message": "Outils de travail"
+  },
+  "subAppStores": {
+    "message": "Boutiques d'applications"
+  },
+  "subParcels": {
+    "message": "Suivi de colis"
+  },
+  "subCommunity": {
+    "message": "Communauté & événements"
+  },
+  "subFood": {
+    "message": "Cuisine & recettes"
+  },
+  "subSports": {
+    "message": "Sport"
+  },
+  "subSearchPortals": {
+    "message": "Recherche & portails"
+  },
+  "newsAmericas": {
+    "message": "Amériques"
+  },
+  "newsEurope": {
+    "message": "Europe"
+  },
+  "newsApac": {
+    "message": "Asie-Pacifique"
+  },
+  "newsMea": {
+    "message": "Moyen-Orient & Afrique"
+  },
+  "newsAgencies": {
+    "message": "Agences mondiales"
+  },
+  "infoMain": {
+    "message": "Les URL longues des sites pris en charge sont réécrites sur place. Clic droit sur un lien ou une page puis « Copier l'URL propre » pour un nettoyage ponctuel, ou « Copier l'adresse du lien » sur Amazon pour obtenir directement la forme propre. L'option « Filtre de suivi universel » (désactivée par défaut) retire les traqueurs courants comme utm_* sur tous les sites."
+  },
+  "infoSelection": {
+    "message": "Une URL sélectionnée comme texte ? Clic droit pour « Copier l'URL propre depuis la sélection ». Ou dans la barre d'adresse, tapez <em>clean</em>, appuyez sur Tab et collez une URL pour sauter à sa forme propre."
+  },
+  "tipShortcut": {
+    "message": "Astuce : $1 copie une URL propre de la page actuelle. Modifiable dans les raccourcis d'extensions du navigateur."
+  },
+  "tipShortcutUnset": {
+    "message": "Astuce : le raccourci clavier de copie n'est pas défini (une autre extension l'a peut-être réclamé). Attribuez-en un dans les raccourcis du navigateur."
+  },
+  "footerAdvanced": {
+    "message": "Avancé"
+  },
+  "footerBulk": {
+    "message": "Nettoyage en masse"
+  },
+  "footerReport": {
+    "message": "Signaler un problème"
+  },
+  "optTitle": {
+    "message": "Réglages avancés"
+  },
+  "optSubtitle": {
+    "message": "Affinez le filtre universel, consultez vos statistiques locales et sauvegardez vos réglages."
+  },
+  "optStripTitle": {
+    "message": "Filtre de suivi universel"
+  },
+  "optStripIntro": {
+    "message": "Ces réglages ne comptent que lorsque le <strong>filtre de suivi universel</strong> est activé. Le nettoyage par site (Amazon, eBay, etc.) n'est pas concerné."
+  },
+  "optSkipTitle": {
+    "message": "Ignorer ces domaines"
+  },
+  "optKeepTitle": {
+    "message": "Toujours conserver ces paramètres"
+  },
+  "optSave": {
+    "message": "Enregistrer"
+  },
+  "optReset": {
+    "message": "Rétablir les valeurs par défaut"
+  },
+  "optSaved": {
+    "message": "Enregistré"
+  },
+  "optStripOn": {
+    "message": "Le filtre de suivi universel est ACTIVÉ."
+  },
+  "optStripOff": {
+    "message": "Le filtre de suivi universel est DÉSACTIVÉ. Les réglages ci-dessous prendront effet une fois l'option activée dans le popup."
+  },
+  "optAboutTitle": {
+    "message": "À propos"
+  },
+  "statsTitle": {
+    "message": "Statistiques"
+  },
+  "statsHint": {
+    "message": "Comptées uniquement dans ce profil de navigateur. Les statistiques ne sont jamais synchronisées et ne quittent jamais votre appareil, comme tout le reste de cette extension."
+  },
+  "statsUrls": {
+    "message": "URL nettoyées"
+  },
+  "statsChars": {
+    "message": "Caractères supprimés"
+  },
+  "statsCopies": {
+    "message": "Copies effectuées"
+  },
+  "statsSkips": {
+    "message": "Redirections sautées"
+  },
+  "statsBulk": {
+    "message": "Liens nettoyés en masse"
+  },
+  "statsSince": {
+    "message": "Compté depuis"
+  },
+  "statsTopSites": {
+    "message": "Sites les plus nettoyés"
+  },
+  "statsReset": {
+    "message": "Réinitialiser les statistiques"
+  },
+  "backupTitle": {
+    "message": "Sauvegarde"
+  },
+  "backupHint": {
+    "message": "Exportez tous les réglages (interrupteurs, domaines ignorés, paramètres conservés) en fichier JSON, ou importez une sauvegarde. Utile pour passer à un profil sans compte de synchronisation partagé."
+  },
+  "backupExport": {
+    "message": "Exporter les réglages"
+  },
+  "backupImport": {
+    "message": "Importer les réglages"
+  },
+  "backupExported": {
+    "message": "Exporté"
+  },
+  "backupImported": {
+    "message": "$1 réglages importés"
+  },
+  "backupInvalid": {
+    "message": "Fichier de réglages non valide"
+  },
+  "bulkTitle": {
+    "message": "Nettoyeur de liens en masse"
+  },
+  "bulkSubtitle": {
+    "message": "Collez n'importe quoi. Chaque lien est nettoyé et déballé, directement sur votre appareil."
+  },
+  "bulkHint": {
+    "message": "Fonctionne avec des e-mails entiers, des documents ou des listes de liens. Chaque URL passe par la même chaîne que le menu contextuel : redirections de suivi déballées, règles par site appliquées, traqueurs universels retirés. Le texte autour des liens reste intact, et rien n'est envoyé nulle part."
+  },
+  "bulkPlaceholder": {
+    "message": "Collez ici du texte avec des liens"
+  },
+  "bulkClean": {
+    "message": "Nettoyer les liens"
+  },
+  "bulkCopy": {
+    "message": "Copier le résultat"
+  },
+  "bulkStatus": {
+    "message": "$1 liens nettoyés sur $2, $3 caractères supprimés"
+  },
+  "bulkEmpty": {
+    "message": "Rien à nettoyer pour l'instant"
+  },
+  "bulkError": {
+    "message": "Un problème est survenu ; réessayez"
+  },
+  "reportCleanup": {
+    "message": "Signaler : mal nettoyé"
+  },
+  "optGeneralTitle": {
+    "message": "Général"
+  }
+}

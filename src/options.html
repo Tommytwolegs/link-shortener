@@ -8,14 +8,26 @@
 </head>
 <body>
   <header class="hero">
-    <h1>Advanced settings</h1>
-    <p class="subtitle">Fine-tune the Universal tracking strip.</p>
+    <h1 data-i18n="optTitle">Advanced settings</h1>
+    <p class="subtitle" data-i18n="optSubtitle">Fine-tune the Universal tracking strip, check your local stats, and back up your settings.</p>
   </header>
 
   <main>
+    <section class="card" id="general-section">
+      <h2 data-i18n="optGeneralTitle">General</h2>
+      <label class="pref-row">
+        <input type="checkbox" id="hideTravelPopup" />
+        <span data-i18n="labelHideTravel">Hide travel popup</span>
+      </label>
+      <label class="pref-row">
+        <input type="checkbox" id="includeAmazonTitle" />
+        <span data-i18n="labelAmazonTitle">Include Amazon item name</span>
+      </label>
+    </section>
+
     <section class="card" id="strip-section">
-      <h2>Universal tracking strip</h2>
-      <p class="card-intro">
+      <h2 data-i18n="optStripTitle">Universal tracking strip</h2>
+      <p class="card-intro" data-i18n-html="optStripIntro">
         These settings only matter when the <strong>Universal tracking strip</strong>
         toggle is on. Per-site cleanup (Amazon, eBay, etc.) is unaffected.
       </p>
@@ -25,7 +37,7 @@
              "Currently ON". -->
       </div>
 
-      <h3>Skip these domains</h3>
+      <h3 data-i18n="optSkipTitle">Skip these domains</h3>
       <p class="hint">
         Hostnames you list here are ignored by the Universal tracking strip —
         no params will be removed on these sites. Per-site cleanup still runs.
@@ -39,7 +51,7 @@
                 spellcheck="false"
                 placeholder=".example.com&#10;internal.corp&#10;localhost"></textarea>
 
-      <h3>Always keep these parameters</h3>
+      <h3 data-i18n="optKeepTitle">Always keep these parameters</h3>
       <p class="hint">
         Names listed here are <em>never</em> stripped, even when the Universal
         tracking strip would otherwise remove them. Matching is
@@ -52,16 +64,54 @@
                 placeholder="utm_source&#10;mc_eid"></textarea>
 
       <div class="actions">
-        <button id="save" type="button" class="primary">Save</button>
-        <button id="reset" type="button" class="secondary">Reset to defaults</button>
+        <button id="save" type="button" class="primary" data-i18n="optSave">Save</button>
+        <button id="reset" type="button" class="secondary" data-i18n="optReset">Reset to defaults</button>
         <span class="saved-indicator" id="saved-indicator" aria-live="polite"></span>
       </div>
     </section>
 
+    <section class="card" id="stats-section">
+      <h2 data-i18n="statsTitle">Stats</h2>
+      <p class="hint" data-i18n="statsHint">
+        Counted locally in this browser profile only. Stats are never synced
+        and never leave your device, like everything else in this extension.
+      </p>
+      <dl class="stats-grid" id="stats-grid">
+        <dt data-i18n="statsUrls">URLs cleaned</dt><dd id="stat-urls">0</dd>
+        <dt data-i18n="statsChars">Characters removed</dt><dd id="stat-chars">0</dd>
+        <dt data-i18n="statsCopies">Copy actions</dt><dd id="stat-copies">0</dd>
+        <dt data-i18n="statsSkips">Redirect pages skipped</dt><dd id="stat-skips">0</dd>
+        <dt data-i18n="statsBulk">Bulk-cleaned links</dt><dd id="stat-bulk">0</dd>
+        <dt data-i18n="statsSince">Counting since</dt><dd id="stat-since">-</dd>
+      </dl>
+      <div class="top-sites" id="top-sites" hidden>
+        <h3 data-i18n="statsTopSites">Most-cleaned sites</h3>
+        <ol id="top-sites-list"></ol>
+      </div>
+      <div class="actions">
+        <button id="stats-reset" type="button" class="secondary" data-i18n="statsReset">Reset stats</button>
+      </div>
+    </section>
+
+    <section class="card" id="backup-section">
+      <h2 data-i18n="backupTitle">Backup</h2>
+      <p class="hint" data-i18n="backupHint">
+        Export every setting (toggles, skip domains, kept parameters) as a
+        JSON file, or import one exported earlier. Useful when moving to a
+        browser profile that doesn't share your sync account.
+      </p>
+      <div class="actions">
+        <button id="backup-export" type="button" class="primary" data-i18n="backupExport">Export settings</button>
+        <button id="backup-import" type="button" class="secondary" data-i18n="backupImport">Import settings</button>
+        <input type="file" id="backup-file" accept="application/json,.json" hidden />
+        <span class="saved-indicator" id="backup-indicator" aria-live="polite"></span>
+      </div>
+    </section>
+
     <section class="card about">
-      <h2>About</h2>
+      <h2 data-i18n="optAboutTitle">About</h2>
       <p>
-        Jimothy's Link Shortener stores your toggle preferences in
+        Rather's Link Shortener stores your toggle preferences in
         <code>chrome.storage.sync</code> so they follow you across
         Chrome installs signed in to the same Google account. Nothing
         is sent over the network — the extension makes zero remote calls.
@@ -74,6 +124,7 @@
     </section>
   </main>
 
+  <script src="i18n.js"></script>
   <script src="options.js"></script>
 </body>
 </html>

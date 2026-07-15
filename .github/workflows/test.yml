@@ -1,4 +1,4 @@
-# CI for Jimothy's Link Shortener.
+# CI for Rather Link Shortener.
 #
 # Two cheap, fast checks on every push and pull request:
 #   1. Parse-check every JS source file with `node --check`. Mirrors the

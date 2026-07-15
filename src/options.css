@@ -224,3 +224,63 @@ button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   button, .saved-indicator { transition: none; }
 }
+
+/* -- Stats + backup cards ------------------------------------------------- */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 6px 18px;
+  margin: 14px 0 6px;
+  justify-content: start;
+}
+
+.stats-grid dt {
+  color: var(--text-muted, #667085);
+  font-size: 13px;
+}
+
+.stats-grid dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 13px;
+  text-align: right;
+}
+
+.top-sites h3 {
+  margin-bottom: 4px;
+}
+
+.top-sites ol {
+  margin: 0 0 8px;
+  padding-left: 22px;
+  font-size: 13px;
+}
+
+.top-sites li {
+  margin: 2px 0;
+  color: var(--text-muted, #667085);
+}
+
+.top-sites li b {
+  color: inherit;
+  font-weight: 600;
+}
+
+/* -- General prefs (moved out of the popup) ------------------------------- */
+
+.pref-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pref-row input {
+  width: 16px;
+  height: 16px;
+  accent-color: #ff9900;
+}

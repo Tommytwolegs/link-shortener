@@ -1,0 +1,338 @@
+{
+  "extDesc": {
+    "message": "Ein Link-Kürzer, der Links wirklich kürzt: entfernt Tracking-Müll direkt aus URLs. Für saubere, teilbare Links."
+  },
+  "menuCopyClean": {
+    "message": "Saubere URL kopieren"
+  },
+  "menuCopyCleanSelection": {
+    "message": "Saubere URL aus Auswahl kopieren"
+  },
+  "copyCleanUrl": {
+    "message": "Saubere URL kopieren"
+  },
+  "copied": {
+    "message": "Kopiert ✓"
+  },
+  "copyMore": {
+    "message": "Weitere Kopierformate"
+  },
+  "qrShow": {
+    "message": "QR-Code anzeigen"
+  },
+  "copyAsMd": {
+    "message": "Als Markdown kopieren"
+  },
+  "copyAsHtml": {
+    "message": "Als HTML-Link kopieren"
+  },
+  "copyAsTitle": {
+    "message": "Als Titel + URL kopieren"
+  },
+  "copyOriginal": {
+    "message": "Original-URL kopieren"
+  },
+  "alreadyClean": {
+    "message": "Bereits sauber"
+  },
+  "removesParamOne": {
+    "message": "Entfernt 1 Tracking-Parameter"
+  },
+  "removesParams": {
+    "message": "Entfernt $1 Tracking-Parameter"
+  },
+  "shortensUrl": {
+    "message": "Kürzt diese URL"
+  },
+  "whatRemoved": {
+    "message": "Was entfernt wurde ($1)"
+  },
+  "chipUnwrapped": {
+    "message": "entpackt:"
+  },
+  "chipPath": {
+    "message": "Pfad:"
+  },
+  "statsLine": {
+    "message": "$1 URLs auf diesem Gerät bereinigt · $2 Zeichen Tracking-Müll entfernt"
+  },
+  "statusOff": {
+    "message": "Aus -- Links bleiben unverändert"
+  },
+  "statusOnNothing": {
+    "message": "An -- aber nichts aktiviert"
+  },
+  "statusOneSiteOnly": {
+    "message": "nur $1"
+  },
+  "statusNSites": {
+    "message": "$1 Websites"
+  },
+  "statusEverywhereUniversal": {
+    "message": "An -- <em>überall</em> + universell"
+  },
+  "statusOnSitesUniversal": {
+    "message": "An -- $1 + universell"
+  },
+  "statusOnUniversalOnly": {
+    "message": "An -- nur universell"
+  },
+  "statusAllSites": {
+    "message": "An auf <em>allen</em> Websites"
+  },
+  "statusOnSites": {
+    "message": "An -- $1"
+  },
+  "groupCount": {
+    "message": "$1 von $2 an"
+  },
+  "labelMaster": {
+    "message": "Alle Links kürzen"
+  },
+  "labelHideTravel": {
+    "message": "Reise-Popup ausblenden"
+  },
+  "labelAmazonTitle": {
+    "message": "Amazon-Artikelnamen einschließen"
+  },
+  "labelUtmStrip": {
+    "message": "Universeller Tracking-Filter"
+  },
+  "labelRedirectSkip": {
+    "message": "Weiterleitungsseiten überspringen"
+  },
+  "badgeNew": {
+    "message": "NEU"
+  },
+  "tipUtmStrip": {
+    "message": "Entfernt utm_*, gclid, fbclid usw. aus jeder URL auf jeder Website. Fragt beim Einschalten nach der erweiterten Berechtigung und gibt sie beim Ausschalten zurück."
+  },
+  "tipRedirectSkip": {
+    "message": "Beim Klick auf einen Link mit Klick-Tracker, Social-Wrapper, Affiliate-Wrapper oder AMP-Viewer geht es direkt zum echten Ziel. Das Ziel wird aus dem Link selbst gelesen, nie abgerufen. SafeLinks von Unternehmen werden bewusst nicht übersprungen."
+  },
+  "perSite": {
+    "message": "Pro Website"
+  },
+  "filterPlaceholder": {
+    "message": "Websites filtern…"
+  },
+  "filterEmpty": {
+    "message": "Keine Website passt. Die vollständige Liste steht auch auf der Projektseite."
+  },
+  "groupGlobal": {
+    "message": "Global"
+  },
+  "groupAmericas": {
+    "message": "Amerika"
+  },
+  "groupApac": {
+    "message": "Asien-Pazifik"
+  },
+  "groupEurope": {
+    "message": "Europa"
+  },
+  "groupNews": {
+    "message": "Nachrichten"
+  },
+  "subSearchProd": {
+    "message": "Suche & Produktivität"
+  },
+  "subAcademic": {
+    "message": "Wissenschaft"
+  },
+  "subShopping": {
+    "message": "Shopping"
+  },
+  "subLocal": {
+    "message": "Lokales"
+  },
+  "subTravel": {
+    "message": "Reisen"
+  },
+  "subFlights": {
+    "message": "Flüge"
+  },
+  "subSocial": {
+    "message": "Soziale Netzwerke"
+  },
+  "subMedia": {
+    "message": "Medien & Unterhaltung"
+  },
+  "subWorkTools": {
+    "message": "Arbeitswerkzeuge"
+  },
+  "subAppStores": {
+    "message": "App-Stores"
+  },
+  "subParcels": {
+    "message": "Paketverfolgung"
+  },
+  "subCommunity": {
+    "message": "Community & Events"
+  },
+  "subFood": {
+    "message": "Essen & Rezepte"
+  },
+  "subSports": {
+    "message": "Sport"
+  },
+  "subSearchPortals": {
+    "message": "Suche & Portale"
+  },
+  "newsAmericas": {
+    "message": "Amerika"
+  },
+  "newsEurope": {
+    "message": "Europa"
+  },
+  "newsApac": {
+    "message": "Asien-Pazifik"
+  },
+  "newsMea": {
+    "message": "Naher Osten & Afrika"
+  },
+  "newsAgencies": {
+    "message": "Nachrichtenagenturen"
+  },
+  "infoMain": {
+    "message": "Lange URLs auf unterstützten Websites werden direkt in der Adressleiste bereinigt. Rechtsklick auf einen Link oder eine Seite und \"Saubere URL kopieren\" wählen, oder auf Amazon direkt \"Link-Adresse kopieren\" nutzen. Der Schalter \"Universeller Tracking-Filter\" (standardmäßig aus) entfernt gängige Tracker wie utm_* auf jeder Website."
+  },
+  "infoSelection": {
+    "message": "Eine URL als Text markiert? Rechtsklick für \"Saubere URL aus Auswahl kopieren\". Oder in der Adressleiste <em>clean</em> tippen, Tab drücken und eine URL einfügen, um zur sauberen Form zu springen."
+  },
+  "tipShortcut": {
+    "message": "Tipp: $1 kopiert eine saubere URL der aktuellen Seite. In den Tastenkürzel-Einstellungen des Browsers änderbar."
+  },
+  "tipShortcutUnset": {
+    "message": "Tipp: Das Tastenkürzel zum Kopieren ist nicht belegt (eventuell von einer anderen Erweiterung beansprucht). In den Tastenkürzel-Einstellungen des Browsers festlegen."
+  },
+  "footerAdvanced": {
+    "message": "Erweitert"
+  },
+  "footerBulk": {
+    "message": "Massen-Reiniger"
+  },
+  "footerReport": {
+    "message": "Problem melden"
+  },
+  "optTitle": {
+    "message": "Erweiterte Einstellungen"
+  },
+  "optSubtitle": {
+    "message": "Universellen Tracking-Filter feinjustieren, lokale Statistik ansehen und Einstellungen sichern."
+  },
+  "optStripTitle": {
+    "message": "Universeller Tracking-Filter"
+  },
+  "optStripIntro": {
+    "message": "Diese Einstellungen greifen nur, wenn der <strong>universelle Tracking-Filter</strong> eingeschaltet ist. Die Bereinigung pro Website (Amazon, eBay usw.) bleibt unberührt."
+  },
+  "optSkipTitle": {
+    "message": "Diese Domains überspringen"
+  },
+  "optKeepTitle": {
+    "message": "Diese Parameter immer behalten"
+  },
+  "optSave": {
+    "message": "Speichern"
+  },
+  "optReset": {
+    "message": "Auf Standard zurücksetzen"
+  },
+  "optSaved": {
+    "message": "Gespeichert"
+  },
+  "optStripOn": {
+    "message": "Der universelle Tracking-Filter ist AN."
+  },
+  "optStripOff": {
+    "message": "Der universelle Tracking-Filter ist AUS. Die Einstellungen unten greifen, sobald der Schalter im Popup aktiviert wird."
+  },
+  "optAboutTitle": {
+    "message": "Info"
+  },
+  "statsTitle": {
+    "message": "Statistik"
+  },
+  "statsHint": {
+    "message": "Wird nur lokal in diesem Browserprofil gezählt. Die Statistik wird nie synchronisiert und verlässt nie dieses Gerät -- wie alles andere in dieser Erweiterung."
+  },
+  "statsUrls": {
+    "message": "Bereinigte URLs"
+  },
+  "statsChars": {
+    "message": "Entfernte Zeichen"
+  },
+  "statsCopies": {
+    "message": "Kopiervorgänge"
+  },
+  "statsSkips": {
+    "message": "Übersprungene Weiterleitungen"
+  },
+  "statsBulk": {
+    "message": "Massen-bereinigte Links"
+  },
+  "statsSince": {
+    "message": "Gezählt seit"
+  },
+  "statsTopSites": {
+    "message": "Am häufigsten bereinigt"
+  },
+  "statsReset": {
+    "message": "Statistik zurücksetzen"
+  },
+  "backupTitle": {
+    "message": "Sicherung"
+  },
+  "backupHint": {
+    "message": "Alle Einstellungen (Schalter, übersprungene Domains, behaltene Parameter) als JSON-Datei exportieren oder eine frühere Sicherung importieren. Praktisch beim Wechsel in ein Profil ohne gemeinsames Sync-Konto."
+  },
+  "backupExport": {
+    "message": "Einstellungen exportieren"
+  },
+  "backupImport": {
+    "message": "Einstellungen importieren"
+  },
+  "backupExported": {
+    "message": "Exportiert"
+  },
+  "backupImported": {
+    "message": "$1 Einstellungen importiert"
+  },
+  "backupInvalid": {
+    "message": "Keine gültige Einstellungsdatei"
+  },
+  "bulkTitle": {
+    "message": "Massen-Link-Reiniger"
+  },
+  "bulkSubtitle": {
+    "message": "Beliebigen Text einfügen. Jeder Link darin wird bereinigt und entpackt -- direkt auf diesem Gerät."
+  },
+  "bulkHint": {
+    "message": "Funktioniert mit ganzen E-Mails, Dokumenten oder Linklisten. Jede URL durchläuft dieselbe Pipeline wie das Rechtsklick-Menü: Tracking-Weiterleitungen werden entpackt, Website-Regeln angewendet, universelle Tracker entfernt. Der Text um die Links bleibt unangetastet, und nichts wird irgendwohin gesendet."
+  },
+  "bulkPlaceholder": {
+    "message": "Text mit Links hier einfügen"
+  },
+  "bulkClean": {
+    "message": "Links bereinigen"
+  },
+  "bulkCopy": {
+    "message": "Ergebnis kopieren"
+  },
+  "bulkStatus": {
+    "message": "$1 von $2 Links bereinigt, $3 Zeichen entfernt"
+  },
+  "bulkEmpty": {
+    "message": "Noch nichts zu bereinigen"
+  },
+  "bulkError": {
+    "message": "Etwas ist schiefgelaufen; bitte erneut versuchen"
+  },
+  "reportCleanup": {
+    "message": "Melden: wurde nicht richtig bereinigt"
+  },
+  "optGeneralTitle": {
+    "message": "Allgemein"
+  }
+}

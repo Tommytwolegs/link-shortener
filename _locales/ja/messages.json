@@ -1,0 +1,338 @@
+{
+  "extDesc": {
+    "message": "本当に短くするリンク短縮ツール。URLからトラッキング用のゴミをその場で取り除き、共有しやすいきれいなリンクに。"
+  },
+  "menuCopyClean": {
+    "message": "クリーンなURLをコピー"
+  },
+  "menuCopyCleanSelection": {
+    "message": "選択テキストからクリーンなURLをコピー"
+  },
+  "copyCleanUrl": {
+    "message": "クリーンなURLをコピー"
+  },
+  "copied": {
+    "message": "コピーしました ✓"
+  },
+  "copyMore": {
+    "message": "その他のコピー形式"
+  },
+  "qrShow": {
+    "message": "QRコードを表示"
+  },
+  "copyAsMd": {
+    "message": "Markdownとしてコピー"
+  },
+  "copyAsHtml": {
+    "message": "HTMLリンクとしてコピー"
+  },
+  "copyAsTitle": {
+    "message": "タイトル + URLとしてコピー"
+  },
+  "copyOriginal": {
+    "message": "元のURLをコピー"
+  },
+  "alreadyClean": {
+    "message": "すでにクリーンです"
+  },
+  "removesParamOne": {
+    "message": "トラッキングパラメータを1件削除"
+  },
+  "removesParams": {
+    "message": "トラッキングパラメータを$1件削除"
+  },
+  "shortensUrl": {
+    "message": "このURLを短縮します"
+  },
+  "whatRemoved": {
+    "message": "削除された内容($1)"
+  },
+  "chipUnwrapped": {
+    "message": "展開元:"
+  },
+  "chipPath": {
+    "message": "パス:"
+  },
+  "statsLine": {
+    "message": "この端末で$1件のURLをクリーン化 · $2文字のゴミを削除"
+  },
+  "statusOff": {
+    "message": "オフ:リンクはそのまま"
+  },
+  "statusOnNothing": {
+    "message": "オン:ただし何も有効になっていません"
+  },
+  "statusOneSiteOnly": {
+    "message": "$1のみ"
+  },
+  "statusNSites": {
+    "message": "$1サイト"
+  },
+  "statusEverywhereUniversal": {
+    "message": "<em>すべてのサイト</em>でオン + ユニバーサル"
+  },
+  "statusOnSitesUniversal": {
+    "message": "オン:$1 + ユニバーサル"
+  },
+  "statusOnUniversalOnly": {
+    "message": "オン:ユニバーサルのみ"
+  },
+  "statusAllSites": {
+    "message": "<em>全</em>サイトでオン"
+  },
+  "statusOnSites": {
+    "message": "オン:$1"
+  },
+  "groupCount": {
+    "message": "$2件中$1件オン"
+  },
+  "labelMaster": {
+    "message": "すべてのリンクを短縮"
+  },
+  "labelHideTravel": {
+    "message": "旅行ウィジェットを非表示"
+  },
+  "labelAmazonTitle": {
+    "message": "Amazonの商品名を含める"
+  },
+  "labelUtmStrip": {
+    "message": "ユニバーサルトラッキング除去"
+  },
+  "labelRedirectSkip": {
+    "message": "リダイレクトページをスキップ"
+  },
+  "badgeNew": {
+    "message": "NEW"
+  },
+  "tipUtmStrip": {
+    "message": "あらゆるサイトのURLからutm_*、gclid、fbclidなどを除去します。オンにすると広い権限を求め、オフにすると権限を返上します。"
+  },
+  "tipRedirectSkip": {
+    "message": "クリックトラッカー、SNSの外部リンクラッパー、アフィリエイトラッパー、AMPビューアに包まれたリンクをクリックすると、本当の行き先へ直行します。行き先はリンク自体から読み取り、通信は一切しません。企業向けSafeLinksは意図的にスキップしません。"
+  },
+  "perSite": {
+    "message": "サイトごと"
+  },
+  "filterPlaceholder": {
+    "message": "サイトを絞り込む…"
+  },
+  "filterEmpty": {
+    "message": "一致するサイトがありません。全リストはプロジェクトページにもあります。"
+  },
+  "groupGlobal": {
+    "message": "グローバル"
+  },
+  "groupAmericas": {
+    "message": "南北アメリカ"
+  },
+  "groupApac": {
+    "message": "アジア太平洋"
+  },
+  "groupEurope": {
+    "message": "ヨーロッパ"
+  },
+  "groupNews": {
+    "message": "ニュースメディア"
+  },
+  "subSearchProd": {
+    "message": "検索と生産性"
+  },
+  "subAcademic": {
+    "message": "学術"
+  },
+  "subShopping": {
+    "message": "ショッピング"
+  },
+  "subLocal": {
+    "message": "ローカル"
+  },
+  "subTravel": {
+    "message": "旅行"
+  },
+  "subFlights": {
+    "message": "フライト"
+  },
+  "subSocial": {
+    "message": "SNS"
+  },
+  "subMedia": {
+    "message": "メディアとエンタメ"
+  },
+  "subWorkTools": {
+    "message": "仕事ツール"
+  },
+  "subAppStores": {
+    "message": "アプリストア"
+  },
+  "subParcels": {
+    "message": "荷物追跡"
+  },
+  "subCommunity": {
+    "message": "コミュニティとイベント"
+  },
+  "subFood": {
+    "message": "料理とレシピ"
+  },
+  "subSports": {
+    "message": "スポーツ"
+  },
+  "subSearchPortals": {
+    "message": "検索とポータル"
+  },
+  "newsAmericas": {
+    "message": "南北アメリカ"
+  },
+  "newsEurope": {
+    "message": "ヨーロッパ"
+  },
+  "newsApac": {
+    "message": "アジア太平洋"
+  },
+  "newsMea": {
+    "message": "中東・アフリカ"
+  },
+  "newsAgencies": {
+    "message": "国際通信社"
+  },
+  "infoMain": {
+    "message": "対応サイトでは長いURLがアドレスバー上でそのまま書き換わります。リンクやページを右クリックして「クリーンなURLをコピー」で単発のクリーン化ができ、Amazonでは「リンクのアドレスをコピー」で直接きれいな形が得られます。「ユニバーサルトラッキング除去」(既定ではオフ)は、すべてのサイトでutm_*などの一般的なトラッカーを除去します。"
+  },
+  "infoSelection": {
+    "message": "テキストとして選択したURLも右クリックの「選択テキストからクリーンなURLをコピー」で処理できます。アドレスバーに<em>clean</em>と入力してTabを押し、URLを貼り付ければクリーンな形へ直接ジャンプします。"
+  },
+  "tipShortcut": {
+    "message": "ヒント: $1 で現在のページのクリーンなURLをコピーできます。割り当てはブラウザの拡張機能ショートカット設定で変更できます。"
+  },
+  "tipShortcutUnset": {
+    "message": "ヒント: コピー用のキーボードショートカットが未設定です(他の拡張機能が使用している可能性があります)。ブラウザのショートカット設定で割り当ててください。"
+  },
+  "footerAdvanced": {
+    "message": "詳細設定"
+  },
+  "footerBulk": {
+    "message": "一括クリーナー"
+  },
+  "footerReport": {
+    "message": "問題を報告"
+  },
+  "optTitle": {
+    "message": "詳細設定"
+  },
+  "optSubtitle": {
+    "message": "ユニバーサル除去の微調整、ローカル統計の確認、設定のバックアップができます。"
+  },
+  "optStripTitle": {
+    "message": "ユニバーサルトラッキング除去"
+  },
+  "optStripIntro": {
+    "message": "以下の設定は<strong>ユニバーサルトラッキング除去</strong>がオンのときだけ有効です。サイトごとのクリーン化(Amazon、eBayなど)には影響しません。"
+  },
+  "optSkipTitle": {
+    "message": "除外するドメイン"
+  },
+  "optKeepTitle": {
+    "message": "常に残すパラメータ"
+  },
+  "optSave": {
+    "message": "保存"
+  },
+  "optReset": {
+    "message": "既定値に戻す"
+  },
+  "optSaved": {
+    "message": "保存しました"
+  },
+  "optStripOn": {
+    "message": "ユニバーサルトラッキング除去はオンです。"
+  },
+  "optStripOff": {
+    "message": "ユニバーサルトラッキング除去はオフです。以下の設定はポップアップでオンにすると有効になります。"
+  },
+  "optAboutTitle": {
+    "message": "このツールについて"
+  },
+  "statsTitle": {
+    "message": "統計"
+  },
+  "statsHint": {
+    "message": "このブラウザプロファイル内でのみ集計されます。統計は同期されず、端末の外に出ることもありません。この拡張機能の他の部分と同じです。"
+  },
+  "statsUrls": {
+    "message": "クリーン化したURL"
+  },
+  "statsChars": {
+    "message": "削除した文字数"
+  },
+  "statsCopies": {
+    "message": "コピー操作"
+  },
+  "statsSkips": {
+    "message": "スキップしたリダイレクト"
+  },
+  "statsBulk": {
+    "message": "一括クリーン化したリンク"
+  },
+  "statsSince": {
+    "message": "集計開始日"
+  },
+  "statsTopSites": {
+    "message": "最もクリーン化したサイト"
+  },
+  "statsReset": {
+    "message": "統計をリセット"
+  },
+  "backupTitle": {
+    "message": "バックアップ"
+  },
+  "backupHint": {
+    "message": "すべての設定(トグル、除外ドメイン、残すパラメータ)をJSONファイルに書き出すか、以前の書き出しを読み込みます。同期アカウントを共有しないプロファイルへの移行に便利です。"
+  },
+  "backupExport": {
+    "message": "設定を書き出す"
+  },
+  "backupImport": {
+    "message": "設定を読み込む"
+  },
+  "backupExported": {
+    "message": "書き出しました"
+  },
+  "backupImported": {
+    "message": "$1件の設定を読み込みました"
+  },
+  "backupInvalid": {
+    "message": "有効な設定ファイルではありません"
+  },
+  "bulkTitle": {
+    "message": "一括リンククリーナー"
+  },
+  "bulkSubtitle": {
+    "message": "何でも貼り付けてください。中のリンクはすべて、この端末上でクリーン化・展開されます。"
+  },
+  "bulkHint": {
+    "message": "メール全文、文書、リンク一覧に対応。各URLは右クリックメニューと同じ処理を通ります: トラッキングリダイレクトの展開、サイトごとのルール適用、ユニバーサルトラッカーの除去。リンク以外のテキストには触れず、どこにも何も送信しません。"
+  },
+  "bulkPlaceholder": {
+    "message": "リンクを含むテキストをここに貼り付け"
+  },
+  "bulkClean": {
+    "message": "リンクをクリーン化"
+  },
+  "bulkCopy": {
+    "message": "結果をコピー"
+  },
+  "bulkStatus": {
+    "message": "$2件中$1件のリンクをクリーン化し、$3文字を削除しました"
+  },
+  "bulkEmpty": {
+    "message": "まだクリーン化するものがありません"
+  },
+  "bulkError": {
+    "message": "問題が発生しました。もう一度お試しください"
+  },
+  "reportCleanup": {
+    "message": "報告: 正しくクリーンにならなかった"
+  },
+  "optGeneralTitle": {
+    "message": "全般"
+  }
+}

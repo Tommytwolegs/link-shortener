@@ -1,0 +1,338 @@
+{
+  "extDesc": {
+    "message": "Bağlantıları gerçekten kısaltan araç: izleme çöpünü URL'den olduğu yerde temizler. Temiz, paylaşılabilir bağlantılar için."
+  },
+  "menuCopyClean": {
+    "message": "Temiz URL'yi kopyala"
+  },
+  "menuCopyCleanSelection": {
+    "message": "Seçimden temiz URL kopyala"
+  },
+  "copyCleanUrl": {
+    "message": "Temiz URL'yi kopyala"
+  },
+  "copied": {
+    "message": "Kopyalandı ✓"
+  },
+  "copyMore": {
+    "message": "Diğer kopyalama biçimleri"
+  },
+  "qrShow": {
+    "message": "QR kodunu göster"
+  },
+  "copyAsMd": {
+    "message": "Markdown olarak kopyala"
+  },
+  "copyAsHtml": {
+    "message": "HTML bağlantısı olarak kopyala"
+  },
+  "copyAsTitle": {
+    "message": "Başlık + URL olarak kopyala"
+  },
+  "copyOriginal": {
+    "message": "Orijinal URL'yi kopyala"
+  },
+  "alreadyClean": {
+    "message": "Zaten temiz"
+  },
+  "removesParamOne": {
+    "message": "1 izleme parametresi kaldırılır"
+  },
+  "removesParams": {
+    "message": "$1 izleme parametresi kaldırılır"
+  },
+  "shortensUrl": {
+    "message": "Bu URL'yi kısaltır"
+  },
+  "whatRemoved": {
+    "message": "Kaldırılanlar ($1)"
+  },
+  "chipUnwrapped": {
+    "message": "açıldı:"
+  },
+  "chipPath": {
+    "message": "yol:"
+  },
+  "statsLine": {
+    "message": "Bu cihazda $1 URL temizlendi · $2 karakter izleme çöpü kaldırıldı"
+  },
+  "statusOff": {
+    "message": "Kapalı -- bağlantılar olduğu gibi bırakılır"
+  },
+  "statusOnNothing": {
+    "message": "Açık -- ama hiçbir şey etkin değil"
+  },
+  "statusOneSiteOnly": {
+    "message": "yalnızca $1"
+  },
+  "statusNSites": {
+    "message": "$1 site"
+  },
+  "statusEverywhereUniversal": {
+    "message": "<em>Her yerde</em> açık + evrensel"
+  },
+  "statusOnSitesUniversal": {
+    "message": "Açık -- $1 + evrensel"
+  },
+  "statusOnUniversalOnly": {
+    "message": "Açık -- yalnızca evrensel"
+  },
+  "statusAllSites": {
+    "message": "<em>Tüm</em> sitelerde açık"
+  },
+  "statusOnSites": {
+    "message": "Açık -- $1"
+  },
+  "groupCount": {
+    "message": "$2 siteden $1 açık"
+  },
+  "labelMaster": {
+    "message": "Tüm Bağlantıları Kısalt"
+  },
+  "labelHideTravel": {
+    "message": "Seyahat aracını gizle"
+  },
+  "labelAmazonTitle": {
+    "message": "Amazon ürün adını dahil et"
+  },
+  "labelUtmStrip": {
+    "message": "Evrensel izleme filtresi"
+  },
+  "labelRedirectSkip": {
+    "message": "Yönlendirme sayfalarını atla"
+  },
+  "badgeNew": {
+    "message": "YENİ"
+  },
+  "tipUtmStrip": {
+    "message": "Her sitedeki her URL'den utm_*, gclid, fbclid vb. kaldırır. Açtığınızda daha geniş izni ister, kapattığınızda geri verir."
+  },
+  "tipRedirectSkip": {
+    "message": "Tıklama izleyicisi, sosyal medya sarmalayıcısı, satış ortaklığı sarmalayıcısı veya AMP görüntüleyiciyle sarılmış bir bağlantıya tıkladığınızda doğrudan gerçek hedefe gidersiniz. Hedef bağlantının kendisinden okunur, asla indirilmez. Kurumsal SafeLinks bilerek atlanmaz."
+  },
+  "perSite": {
+    "message": "Site bazında"
+  },
+  "filterPlaceholder": {
+    "message": "Siteleri filtrele…"
+  },
+  "filterEmpty": {
+    "message": "Eşleşen site yok. Tam liste proje sayfasında da var."
+  },
+  "groupGlobal": {
+    "message": "Küresel"
+  },
+  "groupAmericas": {
+    "message": "Amerika"
+  },
+  "groupApac": {
+    "message": "Asya-Pasifik"
+  },
+  "groupEurope": {
+    "message": "Avrupa"
+  },
+  "groupNews": {
+    "message": "Haber kaynakları"
+  },
+  "subSearchProd": {
+    "message": "Arama ve üretkenlik"
+  },
+  "subAcademic": {
+    "message": "Akademik"
+  },
+  "subShopping": {
+    "message": "Alışveriş"
+  },
+  "subLocal": {
+    "message": "Yerel"
+  },
+  "subTravel": {
+    "message": "Seyahat"
+  },
+  "subFlights": {
+    "message": "Uçuşlar"
+  },
+  "subSocial": {
+    "message": "Sosyal medya"
+  },
+  "subMedia": {
+    "message": "Medya ve eğlence"
+  },
+  "subWorkTools": {
+    "message": "İş araçları"
+  },
+  "subAppStores": {
+    "message": "Uygulama mağazaları"
+  },
+  "subParcels": {
+    "message": "Kargo takibi"
+  },
+  "subCommunity": {
+    "message": "Topluluk ve etkinlikler"
+  },
+  "subFood": {
+    "message": "Yemek ve tarifler"
+  },
+  "subSports": {
+    "message": "Spor"
+  },
+  "subSearchPortals": {
+    "message": "Arama ve portallar"
+  },
+  "newsAmericas": {
+    "message": "Amerika"
+  },
+  "newsEurope": {
+    "message": "Avrupa"
+  },
+  "newsApac": {
+    "message": "Asya-Pasifik"
+  },
+  "newsMea": {
+    "message": "Orta Doğu ve Afrika"
+  },
+  "newsAgencies": {
+    "message": "Küresel ajanslar"
+  },
+  "infoMain": {
+    "message": "Desteklenen sitelerde uzun URL'ler adres çubuğunda anında yeniden yazılır. Tek seferlik temizlik için bir bağlantıya veya sayfaya sağ tıklayıp \"Temiz URL'yi kopyala\"yı seçin; Amazon'da \"Bağlantı adresini kopyala\" doğrudan temiz biçimi verir. \"Evrensel izleme filtresi\" düğmesi (varsayılan olarak kapalı) her sitede utm_* gibi yaygın izleyicileri kaldırır."
+  },
+  "infoSelection": {
+    "message": "Metin olarak seçili bir URL mi var? Sağ tıklayıp \"Seçimden temiz URL kopyala\"yı seçin. Ya da adres çubuğuna <em>clean</em> yazın, Tab'a basın ve temiz biçimine gitmek için bir URL yapıştırın."
+  },
+  "tipShortcut": {
+    "message": "İpucu: $1 geçerli sayfanın temiz URL'sini kopyalar. Tarayıcının uzantı kısayolu ayarlarından değiştirebilirsiniz."
+  },
+  "tipShortcutUnset": {
+    "message": "İpucu: kopyalama klavye kısayolu ayarlı değil (başka bir uzantı almış olabilir). Tarayıcının kısayol ayarlarından bir tane atayın."
+  },
+  "footerAdvanced": {
+    "message": "Gelişmiş"
+  },
+  "footerBulk": {
+    "message": "Toplu temizleyici"
+  },
+  "footerReport": {
+    "message": "Sorun bildir"
+  },
+  "optTitle": {
+    "message": "Gelişmiş ayarlar"
+  },
+  "optSubtitle": {
+    "message": "Evrensel filtreye ince ayar yapın, yerel istatistiklerinize bakın ve ayarlarınızı yedekleyin."
+  },
+  "optStripTitle": {
+    "message": "Evrensel izleme filtresi"
+  },
+  "optStripIntro": {
+    "message": "Bu ayarlar yalnızca <strong>evrensel izleme filtresi</strong> açıkken geçerlidir. Site bazlı temizlik (Amazon, eBay vb.) etkilenmez."
+  },
+  "optSkipTitle": {
+    "message": "Bu alan adlarını atla"
+  },
+  "optKeepTitle": {
+    "message": "Bu parametreleri her zaman koru"
+  },
+  "optSave": {
+    "message": "Kaydet"
+  },
+  "optReset": {
+    "message": "Varsayılanlara sıfırla"
+  },
+  "optSaved": {
+    "message": "Kaydedildi"
+  },
+  "optStripOn": {
+    "message": "Evrensel izleme filtresi AÇIK."
+  },
+  "optStripOff": {
+    "message": "Evrensel izleme filtresi KAPALI. Aşağıdaki ayarlar, düğmeyi popup'tan açtığınızda geçerli olur."
+  },
+  "optAboutTitle": {
+    "message": "Hakkında"
+  },
+  "statsTitle": {
+    "message": "İstatistikler"
+  },
+  "statsHint": {
+    "message": "Yalnızca bu tarayıcı profilinde yerel olarak sayılır. İstatistikler asla eşitlenmez ve cihazınızdan asla çıkmaz; bu uzantıdaki her şey gibi."
+  },
+  "statsUrls": {
+    "message": "Temizlenen URL'ler"
+  },
+  "statsChars": {
+    "message": "Kaldırılan karakterler"
+  },
+  "statsCopies": {
+    "message": "Kopyalama işlemleri"
+  },
+  "statsSkips": {
+    "message": "Atlanan yönlendirmeler"
+  },
+  "statsBulk": {
+    "message": "Toplu temizlenen bağlantılar"
+  },
+  "statsSince": {
+    "message": "Sayım başlangıcı"
+  },
+  "statsTopSites": {
+    "message": "En çok temizlenen siteler"
+  },
+  "statsReset": {
+    "message": "İstatistikleri sıfırla"
+  },
+  "backupTitle": {
+    "message": "Yedekleme"
+  },
+  "backupHint": {
+    "message": "Tüm ayarları (düğmeler, atlanan alan adları, korunan parametreler) JSON dosyası olarak dışa aktarın veya daha önce alınmış bir yedeği içe aktarın. Eşitleme hesabınızın olmadığı bir profile geçerken kullanışlıdır."
+  },
+  "backupExport": {
+    "message": "Ayarları dışa aktar"
+  },
+  "backupImport": {
+    "message": "Ayarları içe aktar"
+  },
+  "backupExported": {
+    "message": "Dışa aktarıldı"
+  },
+  "backupImported": {
+    "message": "$1 ayar içe aktarıldı"
+  },
+  "backupInvalid": {
+    "message": "Geçerli bir ayar dosyası değil"
+  },
+  "bulkTitle": {
+    "message": "Toplu bağlantı temizleyici"
+  },
+  "bulkSubtitle": {
+    "message": "Ne olursa yapıştırın. İçindeki her bağlantı bu cihazda temizlenir ve açılır."
+  },
+  "bulkHint": {
+    "message": "Tüm e-postalar, belgeler veya bağlantı listeleriyle çalışır. Her URL sağ tık menüsüyle aynı hattan geçer: izleme yönlendirmeleri açılır, site kuralları uygulanır, evrensel izleyiciler kaldırılır. Bağlantıların çevresindeki metne dokunulmaz ve hiçbir şey hiçbir yere gönderilmez."
+  },
+  "bulkPlaceholder": {
+    "message": "Bağlantı içeren metni buraya yapıştırın"
+  },
+  "bulkClean": {
+    "message": "Bağlantıları temizle"
+  },
+  "bulkCopy": {
+    "message": "Sonucu kopyala"
+  },
+  "bulkStatus": {
+    "message": "$2 bağlantıdan $1 tanesi temizlendi, $3 karakter kaldırıldı"
+  },
+  "bulkEmpty": {
+    "message": "Henüz temizlenecek bir şey yok"
+  },
+  "bulkError": {
+    "message": "Bir şeyler ters gitti; yeniden deneyin"
+  },
+  "reportCleanup": {
+    "message": "Bildir: doğru temizlenmedi"
+  },
+  "optGeneralTitle": {
+    "message": "Genel"
+  }
+}

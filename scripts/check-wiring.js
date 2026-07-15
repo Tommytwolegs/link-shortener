@@ -49,6 +49,7 @@ const INFRA = new Set([
   'travel-content', 'news-content', 'site-toolbar', 'agoda-content',
   'airbnb-content', 'booking-content', 'expedia-content',
   'hotelscom-content', 'trip-content', 'vrbo-content',
+  'qr', 'bulk', 'i18n',
 ]);
 
 // Modules with their OWN content scripts (not social-content paired);
@@ -75,8 +76,8 @@ for (const m of modules) {
 const bg = read('src/background.js');
 const importMatch = bg.match(/importScripts\(([\s\S]*?)\);/);
 const imported = new Set([...importMatch[1].matchAll(/'([^']+)\.js'/g)].map((x) => x[1]));
-const shList = [...read('package.sh').matchAll(/"src\/([a-z-]+)\.js"/g)].map((x) => x[1]);
-const psList = [...read('package.ps1').matchAll(/'src\/([a-z-]+)\.js'/g)].map((x) => x[1]);
+const shList = [...read('package.sh').matchAll(/"src\/([a-z0-9-]+)\.js"/g)].map((x) => x[1]);
+const psList = [...read('package.ps1').matchAll(/'src\/([a-z0-9-]+)\.js'/g)].map((x) => x[1]);
 const hostChecks = new Map([...bg.matchAll(/\['(\w+LinkShortener)', '(\w+)'\]/g)].map((x) => [x[1], x[2]]));
 
 if (shList.join('|') !== psList.join('|')) flag('package.sh and package.ps1 background.scripts arrays differ');
@@ -100,12 +101,25 @@ for (const [m, { ns, api }] of Object.entries(mods)) {
 }
 
 // ---- 5-6. Popup wiring ----------------------------------------------------------
+// Site rows render lazily from the SITE_GROUPS catalog in popup.js (the
+// popup HTML carries only the group shells), so the catalog IS the
+// registry: every row is ['enabledKey', 'Label', 'SiteTag'].
 const popupJs = read('src/popup.js');
-const popupKeys = new Set([...popupJs.matchAll(/\{ key: '(\w+)',/g)].map((x) => x[1]));
+const popupKeys = new Set([...popupJs.matchAll(/\[\s*'(enabled[A-Za-z0-9_]+)', '/g)].map((x) => x[1]));
 const htmlIds = new Set([...read('src/popup.html').matchAll(/input type="checkbox" id="(enabled\w+)"/g)].map((x) => x[1]));
 
-for (const k of popupKeys) if (!htmlIds.has(k)) flag(`popup.js key ${k}: no popup.html checkbox`);
-for (const k of htmlIds) if (!popupKeys.has(k) && k !== 'enabledUtmStrip') flag(`popup.html checkbox ${k}: no popup.js SITES entry`);
+// Static popup.html checkboxes are feature flags only now; every per-site
+// toggle must come from the catalog, and no site row may linger in HTML.
+const FEATURE_FLAGS = new Set(['enabledUtmStrip', 'enabledRedirectSkip']);
+for (const k of htmlIds) {
+  if (!FEATURE_FLAGS.has(k)) flag(`popup.html static checkbox ${k}: site rows must live in SITE_GROUPS`);
+}
+for (const f of FEATURE_FLAGS) if (!htmlIds.has(f)) flag(`popup.html: feature flag ${f} checkbox missing`);
+// Each group referenced by the catalog needs a .group-body shell to render into.
+const groupShells = new Set([...read('src/popup.html').matchAll(/data-group="(\w+)"/g)].map((x) => x[1]));
+for (const g of [...popupJs.matchAll(/^    (\w+): \[$/gm)].map((x) => x[1])) {
+  if (!groupShells.has(g)) flag(`SITE_GROUPS group ${g}: no <details data-group> shell in popup.html`);
+}
 
 for (const [m, { api }] of Object.entries(mods)) {
   const key = api.STORAGE_KEY;
@@ -158,5 +172,50 @@ if (unique.length) {
   for (const i of unique) console.error('  - ' + i);
   process.exit(1);
 }
+// ---- i18n catalog audit -----------------------------------------------------
+// Every locale must carry exactly the en key set; every key referenced from
+// code (t('key'...), getMessage('key'...)) or markup (data-i18n*="key") and
+// the manifest (__MSG_key__) must exist in en; placeholder counts must agree.
+const localeDirs = fs.readdirSync(path.join(ROOT, '_locales'));
+const en = JSON.parse(read('_locales/en/messages.json'));
+const enKeys = new Set(Object.keys(en));
+const maxSub = (msg) => {
+  let n = 0;
+  for (const m of msg.matchAll(/\$(\d)/g)) n = Math.max(n, Number(m[1]));
+  return n;
+};
+for (const dir of localeDirs) {
+  const cat = JSON.parse(read('_locales/' + dir + '/messages.json'));
+  const keys = new Set(Object.keys(cat));
+  for (const k of enKeys) if (!keys.has(k)) flag(`_locales/${dir}: missing key ${k}`);
+  for (const k of keys) {
+    if (!enKeys.has(k)) flag(`_locales/${dir}: extra key ${k}`);
+    else {
+      if (!cat[k].message || !cat[k].message.trim()) flag(`_locales/${dir}: empty message ${k}`);
+      if (maxSub(cat[k].message || '') !== maxSub(en[k].message)) {
+        flag(`_locales/${dir}: placeholder count differs for ${k}`);
+      }
+    }
+  }
+}
+const refKeys = new Set();
+for (const f of fs.readdirSync(path.join(ROOT, 'src'))) {
+  const src = read('src/' + f);
+  for (const m of src.matchAll(/\bt\(\s*'([A-Za-z0-9_]+)'/g)) refKeys.add(m[1]);
+  for (const m of src.matchAll(/i18nKey: '([A-Za-z0-9_]+)'/g)) refKeys.add(m[1]);
+  for (const m of src.matchAll(/getMessage\(\s*'([A-Za-z0-9_]+)'/g)) refKeys.add(m[1]);
+  for (const m of src.matchAll(/data-i18n(?:-placeholder|-title|-html|-tip)?="([A-Za-z0-9_]+)"/g)) refKeys.add(m[1]);
+}
+for (const m of read('manifest.json').matchAll(/__MSG_([A-Za-z0-9_]+)__/g)) refKeys.add(m[1]);
+for (const k of refKeys) if (!enKeys.has(k)) flag(`i18n: referenced key ${k} missing from _locales/en`);
+for (const k of enKeys) if (!refKeys.has(k)) flag(`i18n: en key ${k} is referenced nowhere`);
+
+if (issues.length) {
+  console.error('wiring problems:');
+  for (const i of issues) console.error('  - ' + i);
+  process.exit(1);
+}
+
 console.log('wiring OK: ' + Object.keys(mods).length + ' modules x 9 surfaces, '
-  + popupKeys.size + ' popup toggles, ' + manifest.host_permissions.length + ' host permissions');
+  + popupKeys.size + ' popup toggles, ' + manifest.host_permissions.length + ' host permissions, '
+  + localeDirs.length + ' locales');

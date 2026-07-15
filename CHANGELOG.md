@@ -1,10 +1,197 @@
 # Changelog
 
-All notable changes to Jimothy's Link Shortener. Versions follow
+All notable changes to Rather's Link Shortener (named Jimothy's Link
+Shortener through v1.9.0). Versions follow
 [Semantic Versioning](https://semver.org/) loosely — minor bumps mark new
 features, patch bumps mark bug-fix-only releases.
 
-## [1.9.0] — in development
+## [1.10.0] — in development
+
+### Changed
+- **Renamed to Rather's Link Shortener** (another developer goes by
+  "jimothy"; clean brand before the marketing push, and the new name
+  joins the Ratherlist family). New home:
+  <https://ratherlinks.com> (jimothylinks.com now redirects). Store listings,
+  reviews, users, and the Firefox add-on ID are unchanged.
+- `homepage_url` now points at <https://ratherlinks.com>.
+- Promo art regenerated with the new name.
+
+### Added
+- **Flights pack.** Kayak + Skyscanner search links (functional params such
+  as sort/filters and passenger/cabin survive by construction), Google
+  Flights (inside the Google module: the `tfs=` itinerary blob is
+  untouchable; only search-junk is stripped), FlightAware + Flightradar24
+  status links, and one Airlines toggle covering marketing junk on 12
+  carriers (Delta, United, American, Southwest, JetBlue, Alaska, Ryanair,
+  easyJet, Lufthansa, British Airways, Emirates, Qatar).
+- **Work tools pack.** NetSuite (strips the sia* search-breadcrumb state --
+  including siaQ, which leaks the search query you typed -- plus whence),
+  Jira & Confluence (atlOrigin share tracker), Notion (pvs), Loom (sid on
+  share links; t= timestamps survive), Figma (t= share token on file paths;
+  node-id and viewport survive).
+- **Prime Video** (Amazon-family junk: /ref= path suffix, ref_, pf_rd_*,
+  pd_rd_*, Associates params).
+- **YouTube attribution_link unwrapper** (16 redirectors now) -- handles
+  the relative-path u= form.
+- **Privacy-search pack.** Ecosia, Startpage, Brave Search, Kagi -- tiny
+  denylists; queries, filters, and Startpage's anti-abuse token survive,
+  install/partner attribution goes.
+- **Academic pack.** PubMed (email-alert attribution; otool institution
+  affiliation deliberately kept), Google Scholar (its own host, distinct
+  from the Google module), ResearchGate (the enormous base64 enrichId/
+  enrichSource email blobs).
+- **Yelp** (osq= leaks the search query you typed to find the business,
+  same disease as NetSuite's siaQ; review deep-links survive).
+- **More unwrappers** -- Skimlinks (go.redirectingat.com,
+  go.skimresources.com), Slack (slack-redir.net, wrapping every external
+  link clicked in Slack), SoundCloud (exit.sc), DuckDuckGo's own /l/
+  click-redirect, VK away.php, Disqus comment links (disq.us, including
+  the :hash suffix Disqus appends inside the target), and Telegram
+  Instant View (t.me/iv), and the SafeLinks siblings: Proofpoint URL
+  Defense v2 AND v3 (v3's asterisk-run byte-count encoding decoded
+  faithfully, mirroring the public-domain reference decoder) plus
+  Barracuda LinkProtect; 27 redirectors now. Consumer wrappers are also
+  honored by Skip redirect pages; enterprise email-protection wrappers
+  (SafeLinks, Proofpoint, Barracuda) unwrap on COPY ONLY and are never
+  click-skipped -- their click-time scanning has real security value.
+- **Universal strip additions** -- Eloqua (elqTrackId, elq, elqaid,
+  elqat), dotdigital (dm_i), Adobe s_cid, srsltid (the Google Shopping
+  click id stamped on store links from Google results -- one of the most
+  common junk params on the web), ltclid (Linktree), the Yahoo-family
+  consent junk (guccounter, guce_referrer, guce_referrer_sig -- hello
+  TechCrunch), and Shopify's unambiguous pr_* recommendation family so
+  custom-domain Shopify stores get cleaned by the copy pipeline even
+  though they can't be host-scoped.
+- **Affiliate-network unwrappers.** Partnerize (prf.hn path-embedded
+  destination:), Awin (cread/awclick ued=), CJ across its five classic
+  domains (both the ?url= and path-embedded /links/ forms), and Rakuten
+  Advertising (linksynergy murl=) join Skimlinks -- newsletter and
+  deal-site links now unwrap to their real product pages, and these are
+  click-skippable like other consumer wrappers. Ad-click wrappers
+  (googleadservices adurl=, bing /aclick u=) unwrap on COPY ONLY --
+  deliberately never click-skipped, since that would break advertiser
+  click accounting. 34 redirectors total.
+- **Change.org + Eventbrite.** Petition shares carry recruiter= and
+  recruited_by_id= -- identifiers tied to the sharer's ACCOUNT -- plus
+  share provenance; all stripped. Eventbrite loses aff= attribution
+  while discount codes survive (stripping those costs attendees money).
+- **International pack, round three (23 more sites).** Japan (Yahoo!
+  Japan Search with its classic fr= attribution, Niconico -- where from=
+  is a KEPT timestamp), Korea (Daum, Gmarket, 11st), India (Myntra,
+  Zomato, Swiggy), Benelux/DACH/France (bol.com with its bltgh affiliate
+  id, OTTO, MediaMarkt, Cdiscount, Fnac), Turkey (Trendyol, Hepsiburada),
+  Middle East/Africa (Noon, Jumia), South Asia (Daraz), Brazil
+  (Americanas with opn/epar affiliate params, Magalu), Russia
+  (Wildberries, Ozon, Avito). Plus two outbound interstitials: pixiv
+  jump.php (both the url= and legacy raw-query forms) and DeviantArt
+  /users/outgoing; 36 redirectors now.
+- **Commerce platforms.** Shopify stores on *.myshopify.com get a full
+  module (search attribution _pos/_sid/_ss/_psq -- another typed-query
+  leak -- and the pr_* family; variant and selling_plan survive).
+  GoDaddy (itc= internal tracking; isc= promo codes and plid= reseller
+  pricing deliberately KEPT -- stripping them costs users money).
+  Product Hunt (ref=). WooCommerce/BigCommerce/Squarespace/Wix were
+  examined and add no distinctive junk -- nothing to do.
+- **Everyday coverage batch (31 more sites).** App stores (Google Play
+  referrer/pcampaignid install attribution; Apple App Store pt/ct/at/
+  itsct/itscg campaign+affiliate tokens), package tracking (UPS, FedEx,
+  USPS, DHL -- one toggle; tracking numbers survive by construction),
+  community & events (Kickstarter ref=, GoFundMe attribution_id, Patreon,
+  Meetup recId/recSource), food & recipes (AllRecipes, Serious Eats,
+  Food Network, BBC Good Food), big-box retail (Costco, Home Depot,
+  Lowe's, IKEA, Nike, Adidas -- affiliate click-id families), gaming
+  stores (Epic epic_affiliate, GOG, Humble partner/hmb_*, itch.io),
+  weather (AccuWeather partner/cmp, Weather Underground), sports (ESPN
+  ex_cid, Flashscore, Sofascore), and regional (Zhihu utm_psn, Weibo).
+- **"What was removed", at a glance.** The popup now shows strikethrough
+  chips for everything the current page's URL lost -- each removed
+  parameter, a changed path, the wrapper host after an unwrap -- plus a
+  "Copy original URL" escape hatch. The pre-rewrite URL is stashed
+  per-tab in chrome.storage.session: memory-only, cleared when the
+  browser closes, never synced. Skipped redirect pages get the same
+  treatment: after "Skip redirect pages" teleports you past a wrapper,
+  the popup on the landing page shows an "unwrapped:" chip and offers
+  the wrapper URL back.
+- **Turning the Universal tracking strip OFF hands the broad permission
+  back.** permissions.remove() on disable: the extension holds *://*/*
+  only while the strip is actually on, and re-enabling re-triggers the
+  browser's prompt. The tooltip says so.
+- **Fixed: enabling the Universal tracking strip actually enables it.**
+  The permission prompt steals focus, which closes the popup, which
+  destroyed the callback that was going to flip the setting after you
+  clicked Allow -- so the grant landed but the toggle stayed off. The
+  intent is now persisted before the prompt, the background registers the
+  strip the moment the grant arrives (permissions.onAdded), and the popup
+  double-checks flag-vs-permission on every open so the toggle can never
+  claim a power the extension doesn't hold.
+- **Fixed: the popup no longer contradicts itself when switched off.**
+  With the master switch OFF the address bar is deliberately left alone,
+  but the popup still showed the cleaned preview and "Removes N tracking
+  params" right under "Off -- links left as-is". The current-page block
+  is now gated on the master switch and returns the instant it's back on.
+- **Popup opens fast now.** The 200 site rows are no longer static HTML:
+  they render on demand from a data catalog when a group is expanded (or
+  when the filter needs them), all groups start collapsed, and the two
+  niche toggles (Hide travel popup, Include Amazon item name) moved to a
+  General section on the Advanced page. Opening the popup now lays out
+  five group headers instead of a hundred-plus rows; the filter behaves
+  exactly as before but searches the catalog instead of the DOM. The
+  wiring auditor now validates every toggle against the catalog.
+- **"Include Amazon item name" now applies to every copy surface.** The
+  popup preview/copy/QR, the right-click copy, the keyboard shortcut, the
+  omnibox, and the bulk cleaner all keep the product-name slug when the
+  option is on and the URL already carries one (previously only the
+  address-bar rewrite honored it, so the popup would strip a slug the
+  address bar had deliberately kept).
+- **Rich copy formats.** A format menu in the popup: Markdown
+  ([title](url), parens in the URL percent-encoded), an HTML link (both
+  text/html and text/plain clipboard flavors, so rich editors paste a
+  live link), or title + URL on two lines. Kept OUT of the right-click
+  menu on purpose: Chrome nests 2+ visible items under an extension
+  submenu, and "Copy clean URL" staying a single inline item is worth
+  more than a shortcut.
+- **Bulk link cleaner.** A new extension page (popup footer) where you
+  paste any text -- a whole email, a doc, a list of links -- and every
+  URL inside is unwrapped and cleaned through the exact same pipeline as
+  the copy menu, with a "cleaned X of Y links, removed Z characters"
+  readout. The surrounding text is untouched, and nothing leaves the
+  device.
+- **QR code for the clean link.** One click in the popup renders the
+  cleaned URL as a QR code for sending to a phone. The encoder is
+  dependency-free, fully offline, and pinned by tests to matrices
+  verified module-for-module against the python-qrcode reference
+  implementation (13 vectors x all 8 masks, versions 1-19).
+- **Local stats.** URLs cleaned, characters removed, copy actions,
+  skipped redirects, and bulk cleans -- counted in chrome.storage.local
+  ONLY (never synced, never sent; there is still no network code in the
+  extension). A summary line lives in the popup footer; details, a
+  most-cleaned-sites list, and a reset button live in Advanced settings.
+- **Settings export/import.** Advanced settings can now save every
+  toggle and rule to a JSON file and restore it later; imports are
+  validated key-by-key against the shapes the extension actually writes.
+- **Ten languages.** Full UI localization (popup, Advanced, bulk
+  cleaner, context menus, store summary) via _locales: English, German,
+  French, Spanish, Brazilian Portuguese, Turkish, Russian, Japanese,
+  Korean, and Simplified Chinese. Site names are brands and stay as-is.
+  The wiring auditor now enforces catalog parity: every locale carries
+  exactly the same keys, placeholders included, and every key referenced
+  in code or markup must exist (both directions).
+- **Skip redirect pages** (new toggle, ON by default). Clicking a link
+  wrapped by a click-tracker, social outbound wrapper, affiliate wrapper,
+  or AMP viewer now navigates straight to the real destination -- decoded
+  from the link itself by the same zero-network unwrapper as the copy
+  pipeline (webNavigation.onBeforeNavigate + tabs.update; NO new
+  permissions). Outlook SafeLinks is deliberately NOT skipped: corporate
+  click-time scanning has real security value, so SafeLinks stays
+  copy-time-only.
+- **"Report: this didn't clean right"** in the popup's format menu:
+  opens a prefilled GitHub issue with the pre-rewrite original URL and
+  what the cleaner produced (the popup already holds the truest pair).
+  User-initiated navigation; the extension still makes zero network
+  requests. Lives in the popup, not the right-click menu, for the same
+  single-inline-item reason as above.
+
+## [1.9.0] — submitted to both stores
 
 ### Added
 - **Unwrap pack** — the copy pipeline (context menu / keyboard shortcut /

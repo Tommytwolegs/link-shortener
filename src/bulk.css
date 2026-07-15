@@ -1,0 +1,18 @@
+/* bulk.css — the few rules the bulk cleaner page needs on top of options.css */
+
+textarea#bulk-in,
+textarea#bulk-out {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+textarea#bulk-out {
+  margin-top: 12px;
+}
+
+.saved-indicator.visible-hold {
+  opacity: 1;
+}

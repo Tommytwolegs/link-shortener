@@ -127,11 +127,26 @@
     // Webtrends (also covered by prefix below but exact-match is fine)
     'wt.mc_id', 'wt.tsrc',
     // Adobe
-    's_kwcid', 'ef_id', 'at_medium', 'at_campaign',
+    's_kwcid', 'ef_id', 'at_medium', 'at_campaign', 's_cid',
+    // Eloqua (Oracle Marketing) email links
+    'elqtrackid', 'elq', 'elqaid', 'elqat',
+    // dotdigital email links
+    'dm_i',
     // Vero
     'vero_id', 'vero_conv',
     // Impact partner network
     'irclickid', 'irgwc',
+    // Google Shopping / Merchant click id (stamped on store links from
+    // Google results — one of the most common junk params on the web)
+    'srsltid',
+    // Linktree outbound click id
+    'ltclid',
+    // Yahoo-family consent-flow junk (rides on TechCrunch/Yahoo article
+    // links after the consent redirect)
+    'guccounter', 'guce_referrer', 'guce_referrer_sig',
+    // Shopify recommendation-widget family (unambiguous names; rides on
+    // custom-domain Shopify stores that can't be host-scoped)
+    'pr_prod_strat', 'pr_rec_id', 'pr_rec_pid', 'pr_ref_pid', 'pr_seq',
     // Generic campaign identifiers
     'cmpid', 'cm_mmc',
   ]);

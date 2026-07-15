@@ -1,0 +1,338 @@
+{
+  "extDesc": {
+    "message": "Un acortador que de verdad acorta: elimina la basura de rastreo de las URL en el acto. Para enlaces limpios y compartibles."
+  },
+  "menuCopyClean": {
+    "message": "Copiar URL limpia"
+  },
+  "menuCopyCleanSelection": {
+    "message": "Copiar URL limpia de la selección"
+  },
+  "copyCleanUrl": {
+    "message": "Copiar URL limpia"
+  },
+  "copied": {
+    "message": "Copiado ✓"
+  },
+  "copyMore": {
+    "message": "Más formatos de copia"
+  },
+  "qrShow": {
+    "message": "Mostrar código QR"
+  },
+  "copyAsMd": {
+    "message": "Copiar como Markdown"
+  },
+  "copyAsHtml": {
+    "message": "Copiar como enlace HTML"
+  },
+  "copyAsTitle": {
+    "message": "Copiar como título + URL"
+  },
+  "copyOriginal": {
+    "message": "Copiar URL original"
+  },
+  "alreadyClean": {
+    "message": "Ya está limpia"
+  },
+  "removesParamOne": {
+    "message": "Elimina 1 parámetro de rastreo"
+  },
+  "removesParams": {
+    "message": "Elimina $1 parámetros de rastreo"
+  },
+  "shortensUrl": {
+    "message": "Acorta esta URL"
+  },
+  "whatRemoved": {
+    "message": "Qué se eliminó ($1)"
+  },
+  "chipUnwrapped": {
+    "message": "desenvuelto:"
+  },
+  "chipPath": {
+    "message": "ruta:"
+  },
+  "statsLine": {
+    "message": "$1 URL limpiadas en este dispositivo · $2 caracteres de basura eliminados"
+  },
+  "statusOff": {
+    "message": "Apagado -- los enlaces quedan como están"
+  },
+  "statusOnNothing": {
+    "message": "Encendido -- pero nada activado"
+  },
+  "statusOneSiteOnly": {
+    "message": "solo $1"
+  },
+  "statusNSites": {
+    "message": "$1 sitios"
+  },
+  "statusEverywhereUniversal": {
+    "message": "Activo <em>en todas partes</em> + universal"
+  },
+  "statusOnSitesUniversal": {
+    "message": "Activo -- $1 + universal"
+  },
+  "statusOnUniversalOnly": {
+    "message": "Activo -- solo universal"
+  },
+  "statusAllSites": {
+    "message": "Activo en <em>todos</em> los sitios"
+  },
+  "statusOnSites": {
+    "message": "Activo -- $1"
+  },
+  "groupCount": {
+    "message": "$1 de $2 activos"
+  },
+  "labelMaster": {
+    "message": "Acortar todos los enlaces"
+  },
+  "labelHideTravel": {
+    "message": "Ocultar widget de viajes"
+  },
+  "labelAmazonTitle": {
+    "message": "Incluir nombre del artículo de Amazon"
+  },
+  "labelUtmStrip": {
+    "message": "Filtro de rastreo universal"
+  },
+  "labelRedirectSkip": {
+    "message": "Saltar páginas de redirección"
+  },
+  "badgeNew": {
+    "message": "NUEVO"
+  },
+  "tipUtmStrip": {
+    "message": "Elimina utm_*, gclid, fbclid, etc. de cada URL en cada sitio. Pide el permiso más amplio al activarlo y lo devuelve al desactivarlo."
+  },
+  "tipRedirectSkip": {
+    "message": "Al hacer clic en un enlace envuelto por un rastreador de clics, un wrapper social o de afiliados, o un visor AMP, vas directo al destino real. El destino se lee del propio enlace, nunca se descarga. Los SafeLinks corporativos no se saltan a propósito."
+  },
+  "perSite": {
+    "message": "Por sitio"
+  },
+  "filterPlaceholder": {
+    "message": "Filtrar sitios…"
+  },
+  "filterEmpty": {
+    "message": "Ningún sitio coincide. La lista completa también está en la página del proyecto."
+  },
+  "groupGlobal": {
+    "message": "Global"
+  },
+  "groupAmericas": {
+    "message": "América"
+  },
+  "groupApac": {
+    "message": "Asia-Pacífico"
+  },
+  "groupEurope": {
+    "message": "Europa"
+  },
+  "groupNews": {
+    "message": "Medios de noticias"
+  },
+  "subSearchProd": {
+    "message": "Búsqueda y productividad"
+  },
+  "subAcademic": {
+    "message": "Académico"
+  },
+  "subShopping": {
+    "message": "Compras"
+  },
+  "subLocal": {
+    "message": "Local"
+  },
+  "subTravel": {
+    "message": "Viajes"
+  },
+  "subFlights": {
+    "message": "Vuelos"
+  },
+  "subSocial": {
+    "message": "Redes sociales"
+  },
+  "subMedia": {
+    "message": "Medios y entretenimiento"
+  },
+  "subWorkTools": {
+    "message": "Herramientas de trabajo"
+  },
+  "subAppStores": {
+    "message": "Tiendas de apps"
+  },
+  "subParcels": {
+    "message": "Seguimiento de paquetes"
+  },
+  "subCommunity": {
+    "message": "Comunidad y eventos"
+  },
+  "subFood": {
+    "message": "Comida y recetas"
+  },
+  "subSports": {
+    "message": "Deportes"
+  },
+  "subSearchPortals": {
+    "message": "Búsqueda y portales"
+  },
+  "newsAmericas": {
+    "message": "América"
+  },
+  "newsEurope": {
+    "message": "Europa"
+  },
+  "newsApac": {
+    "message": "Asia-Pacífico"
+  },
+  "newsMea": {
+    "message": "Oriente Medio y África"
+  },
+  "newsAgencies": {
+    "message": "Agencias globales"
+  },
+  "infoMain": {
+    "message": "Las URL largas de los sitios compatibles se reescriben en el acto. Haz clic derecho en un enlace o página y elige \"Copiar URL limpia\" para una limpieza puntual, o usa \"Copiar dirección del enlace\" en Amazon para obtener la forma limpia directamente. El interruptor \"Filtro de rastreo universal\" (apagado por defecto) elimina rastreadores comunes como utm_* en todos los sitios."
+  },
+  "infoSelection": {
+    "message": "¿Una URL seleccionada como texto? Clic derecho y \"Copiar URL limpia de la selección\". O en la barra de direcciones escribe <em>clean</em>, pulsa Tab y pega una URL para saltar a su forma limpia."
+  },
+  "tipShortcut": {
+    "message": "Consejo: $1 copia una URL limpia de la página actual. Puedes cambiarlo en los atajos de extensiones del navegador."
+  },
+  "tipShortcutUnset": {
+    "message": "Consejo: el atajo de teclado para copiar no está asignado (quizá otra extensión lo reclamó). Asigna uno en los atajos del navegador."
+  },
+  "footerAdvanced": {
+    "message": "Avanzado"
+  },
+  "footerBulk": {
+    "message": "Limpieza masiva"
+  },
+  "footerReport": {
+    "message": "Informar de un problema"
+  },
+  "optTitle": {
+    "message": "Ajustes avanzados"
+  },
+  "optSubtitle": {
+    "message": "Ajusta el filtro universal, consulta tus estadísticas locales y respalda tus ajustes."
+  },
+  "optStripTitle": {
+    "message": "Filtro de rastreo universal"
+  },
+  "optStripIntro": {
+    "message": "Estos ajustes solo importan cuando el <strong>filtro de rastreo universal</strong> está activado. La limpieza por sitio (Amazon, eBay, etc.) no se ve afectada."
+  },
+  "optSkipTitle": {
+    "message": "Omitir estos dominios"
+  },
+  "optKeepTitle": {
+    "message": "Conservar siempre estos parámetros"
+  },
+  "optSave": {
+    "message": "Guardar"
+  },
+  "optReset": {
+    "message": "Restablecer valores"
+  },
+  "optSaved": {
+    "message": "Guardado"
+  },
+  "optStripOn": {
+    "message": "El filtro de rastreo universal está ACTIVADO."
+  },
+  "optStripOff": {
+    "message": "El filtro de rastreo universal está DESACTIVADO. Los ajustes de abajo se aplican al activar el interruptor en el popup."
+  },
+  "optAboutTitle": {
+    "message": "Acerca de"
+  },
+  "statsTitle": {
+    "message": "Estadísticas"
+  },
+  "statsHint": {
+    "message": "Contadas solo localmente en este perfil del navegador. Las estadísticas nunca se sincronizan ni salen de tu dispositivo, como todo lo demás en esta extensión."
+  },
+  "statsUrls": {
+    "message": "URL limpiadas"
+  },
+  "statsChars": {
+    "message": "Caracteres eliminados"
+  },
+  "statsCopies": {
+    "message": "Acciones de copia"
+  },
+  "statsSkips": {
+    "message": "Redirecciones saltadas"
+  },
+  "statsBulk": {
+    "message": "Enlaces limpiados en masa"
+  },
+  "statsSince": {
+    "message": "Contando desde"
+  },
+  "statsTopSites": {
+    "message": "Sitios más limpiados"
+  },
+  "statsReset": {
+    "message": "Restablecer estadísticas"
+  },
+  "backupTitle": {
+    "message": "Copia de seguridad"
+  },
+  "backupHint": {
+    "message": "Exporta todos los ajustes (interruptores, dominios omitidos, parámetros conservados) como archivo JSON, o importa uno exportado antes. Útil al cambiar a un perfil sin tu cuenta de sincronización."
+  },
+  "backupExport": {
+    "message": "Exportar ajustes"
+  },
+  "backupImport": {
+    "message": "Importar ajustes"
+  },
+  "backupExported": {
+    "message": "Exportado"
+  },
+  "backupImported": {
+    "message": "$1 ajustes importados"
+  },
+  "backupInvalid": {
+    "message": "No es un archivo de ajustes válido"
+  },
+  "bulkTitle": {
+    "message": "Limpiador de enlaces en masa"
+  },
+  "bulkSubtitle": {
+    "message": "Pega lo que sea. Cada enlace se limpia y desenvuelve, aquí mismo en tu dispositivo."
+  },
+  "bulkHint": {
+    "message": "Funciona con correos enteros, documentos o listas de enlaces. Cada URL pasa por la misma cadena que el menú contextual: se desenvuelven las redirecciones de rastreo, se aplican las reglas por sitio y se eliminan los rastreadores universales. El texto alrededor de tus enlaces queda intacto, y nada se envía a ninguna parte."
+  },
+  "bulkPlaceholder": {
+    "message": "Pega aquí texto con enlaces"
+  },
+  "bulkClean": {
+    "message": "Limpiar enlaces"
+  },
+  "bulkCopy": {
+    "message": "Copiar resultado"
+  },
+  "bulkStatus": {
+    "message": "Limpiados $1 de $2 enlaces, $3 caracteres eliminados"
+  },
+  "bulkEmpty": {
+    "message": "Nada que limpiar todavía"
+  },
+  "bulkError": {
+    "message": "Algo salió mal; inténtalo de nuevo"
+  },
+  "reportCleanup": {
+    "message": "Informar: no se limpió bien"
+  },
+  "optGeneralTitle": {
+    "message": "General"
+  }
+}

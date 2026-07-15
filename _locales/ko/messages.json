@@ -1,0 +1,338 @@
+{
+  "extDesc": {
+    "message": "링크를 정말로 짧게 만드는 단축기. URL의 추적용 쓰레기를 그 자리에서 제거해 공유하기 좋은 깔끔한 링크로 만듭니다."
+  },
+  "menuCopyClean": {
+    "message": "깨끗한 URL 복사"
+  },
+  "menuCopyCleanSelection": {
+    "message": "선택 영역에서 깨끗한 URL 복사"
+  },
+  "copyCleanUrl": {
+    "message": "깨끗한 URL 복사"
+  },
+  "copied": {
+    "message": "복사됨 ✓"
+  },
+  "copyMore": {
+    "message": "다른 복사 형식"
+  },
+  "qrShow": {
+    "message": "QR 코드 표시"
+  },
+  "copyAsMd": {
+    "message": "Markdown으로 복사"
+  },
+  "copyAsHtml": {
+    "message": "HTML 링크로 복사"
+  },
+  "copyAsTitle": {
+    "message": "제목 + URL로 복사"
+  },
+  "copyOriginal": {
+    "message": "원본 URL 복사"
+  },
+  "alreadyClean": {
+    "message": "이미 깨끗함"
+  },
+  "removesParamOne": {
+    "message": "추적 매개변수 1개 제거"
+  },
+  "removesParams": {
+    "message": "추적 매개변수 $1개 제거"
+  },
+  "shortensUrl": {
+    "message": "이 URL을 단축합니다"
+  },
+  "whatRemoved": {
+    "message": "제거된 항목 ($1)"
+  },
+  "chipUnwrapped": {
+    "message": "래퍼 해제:"
+  },
+  "chipPath": {
+    "message": "경로:"
+  },
+  "statsLine": {
+    "message": "이 기기에서 URL $1개 정리 · 쓰레기 문자 $2자 제거"
+  },
+  "statusOff": {
+    "message": "꺼짐: 링크를 그대로 둡니다"
+  },
+  "statusOnNothing": {
+    "message": "켜짐: 그러나 활성화된 항목 없음"
+  },
+  "statusOneSiteOnly": {
+    "message": "$1만"
+  },
+  "statusNSites": {
+    "message": "사이트 $1곳"
+  },
+  "statusEverywhereUniversal": {
+    "message": "<em>모든 곳</em>에서 켜짐 + 유니버설"
+  },
+  "statusOnSitesUniversal": {
+    "message": "켜짐: $1 + 유니버설"
+  },
+  "statusOnUniversalOnly": {
+    "message": "켜짐: 유니버설만"
+  },
+  "statusAllSites": {
+    "message": "<em>모든</em> 사이트에서 켜짐"
+  },
+  "statusOnSites": {
+    "message": "켜짐: $1"
+  },
+  "groupCount": {
+    "message": "$2개 중 $1개 켜짐"
+  },
+  "labelMaster": {
+    "message": "모든 링크 단축"
+  },
+  "labelHideTravel": {
+    "message": "여행 위젯 숨기기"
+  },
+  "labelAmazonTitle": {
+    "message": "Amazon 상품명 포함"
+  },
+  "labelUtmStrip": {
+    "message": "유니버설 추적 제거"
+  },
+  "labelRedirectSkip": {
+    "message": "리디렉션 페이지 건너뛰기"
+  },
+  "badgeNew": {
+    "message": "NEW"
+  },
+  "tipUtmStrip": {
+    "message": "모든 사이트의 모든 URL에서 utm_*, gclid, fbclid 등을 제거합니다. 켤 때 더 넓은 권한을 요청하고, 끄면 그 권한을 반납합니다."
+  },
+  "tipRedirectSkip": {
+    "message": "클릭 추적기, 소셜 아웃바운드 래퍼, 제휴 래퍼, AMP 뷰어로 감싸진 링크를 클릭하면 실제 목적지로 바로 이동합니다. 목적지는 링크 자체에서 읽으며 절대 가져오지 않습니다. 기업용 SafeLinks는 의도적으로 건너뛰지 않습니다."
+  },
+  "perSite": {
+    "message": "사이트별"
+  },
+  "filterPlaceholder": {
+    "message": "사이트 검색…"
+  },
+  "filterEmpty": {
+    "message": "일치하는 사이트가 없습니다. 전체 목록은 프로젝트 페이지에도 있습니다."
+  },
+  "groupGlobal": {
+    "message": "글로벌"
+  },
+  "groupAmericas": {
+    "message": "아메리카"
+  },
+  "groupApac": {
+    "message": "아시아·태평양"
+  },
+  "groupEurope": {
+    "message": "유럽"
+  },
+  "groupNews": {
+    "message": "뉴스 매체"
+  },
+  "subSearchProd": {
+    "message": "검색·생산성"
+  },
+  "subAcademic": {
+    "message": "학술"
+  },
+  "subShopping": {
+    "message": "쇼핑"
+  },
+  "subLocal": {
+    "message": "로컬"
+  },
+  "subTravel": {
+    "message": "여행"
+  },
+  "subFlights": {
+    "message": "항공"
+  },
+  "subSocial": {
+    "message": "소셜"
+  },
+  "subMedia": {
+    "message": "미디어·엔터테인먼트"
+  },
+  "subWorkTools": {
+    "message": "업무 도구"
+  },
+  "subAppStores": {
+    "message": "앱 스토어"
+  },
+  "subParcels": {
+    "message": "택배 조회"
+  },
+  "subCommunity": {
+    "message": "커뮤니티·이벤트"
+  },
+  "subFood": {
+    "message": "음식·레시피"
+  },
+  "subSports": {
+    "message": "스포츠"
+  },
+  "subSearchPortals": {
+    "message": "검색·포털"
+  },
+  "newsAmericas": {
+    "message": "아메리카"
+  },
+  "newsEurope": {
+    "message": "유럽"
+  },
+  "newsApac": {
+    "message": "아시아·태평양"
+  },
+  "newsMea": {
+    "message": "중동·아프리카"
+  },
+  "newsAgencies": {
+    "message": "국제 통신사"
+  },
+  "infoMain": {
+    "message": "지원 사이트의 긴 URL은 주소창에서 즉시 다시 쓰입니다. 링크나 페이지를 우클릭해 \"깨끗한 URL 복사\"로 일회성 정리를 하거나, Amazon에서는 \"링크 주소 복사\"만으로 깨끗한 형태를 얻을 수 있습니다. \"유니버설 추적 제거\" 토글(기본 꺼짐)은 모든 사이트에서 utm_* 같은 흔한 추적기를 제거합니다."
+  },
+  "infoSelection": {
+    "message": "텍스트로 선택된 URL이 있나요? 우클릭 후 \"선택 영역에서 깨끗한 URL 복사\"를 사용하세요. 또는 주소창에 <em>clean</em>을 입력하고 Tab을 누른 뒤 URL을 붙여넣으면 깨끗한 형태로 바로 이동합니다."
+  },
+  "tipShortcut": {
+    "message": "팁: $1 키로 현재 페이지의 깨끗한 URL을 복사합니다. 브라우저의 확장 프로그램 단축키 설정에서 바꿀 수 있습니다."
+  },
+  "tipShortcutUnset": {
+    "message": "팁: 복사 단축키가 설정되어 있지 않습니다(다른 확장 프로그램이 차지했을 수 있음). 브라우저 단축키 설정에서 지정하세요."
+  },
+  "footerAdvanced": {
+    "message": "고급"
+  },
+  "footerBulk": {
+    "message": "일괄 정리"
+  },
+  "footerReport": {
+    "message": "문제 신고"
+  },
+  "optTitle": {
+    "message": "고급 설정"
+  },
+  "optSubtitle": {
+    "message": "유니버설 추적 제거를 세부 조정하고, 로컬 통계를 확인하고, 설정을 백업하세요."
+  },
+  "optStripTitle": {
+    "message": "유니버설 추적 제거"
+  },
+  "optStripIntro": {
+    "message": "아래 설정은 <strong>유니버설 추적 제거</strong> 토글이 켜져 있을 때만 적용됩니다. 사이트별 정리(Amazon, eBay 등)에는 영향이 없습니다."
+  },
+  "optSkipTitle": {
+    "message": "건너뛸 도메인"
+  },
+  "optKeepTitle": {
+    "message": "항상 유지할 매개변수"
+  },
+  "optSave": {
+    "message": "저장"
+  },
+  "optReset": {
+    "message": "기본값으로 재설정"
+  },
+  "optSaved": {
+    "message": "저장됨"
+  },
+  "optStripOn": {
+    "message": "유니버설 추적 제거가 켜져 있습니다."
+  },
+  "optStripOff": {
+    "message": "유니버설 추적 제거가 꺼져 있습니다. 아래 설정은 팝업에서 토글을 켜면 적용됩니다."
+  },
+  "optAboutTitle": {
+    "message": "정보"
+  },
+  "statsTitle": {
+    "message": "통계"
+  },
+  "statsHint": {
+    "message": "이 브라우저 프로필에서만 로컬로 집계됩니다. 통계는 절대 동기화되지 않고 기기를 떠나지 않습니다. 이 확장 프로그램의 다른 모든 것과 같습니다."
+  },
+  "statsUrls": {
+    "message": "정리한 URL"
+  },
+  "statsChars": {
+    "message": "제거한 문자 수"
+  },
+  "statsCopies": {
+    "message": "복사 작업"
+  },
+  "statsSkips": {
+    "message": "건너뛴 리디렉션"
+  },
+  "statsBulk": {
+    "message": "일괄 정리한 링크"
+  },
+  "statsSince": {
+    "message": "집계 시작일"
+  },
+  "statsTopSites": {
+    "message": "가장 많이 정리한 사이트"
+  },
+  "statsReset": {
+    "message": "통계 재설정"
+  },
+  "backupTitle": {
+    "message": "백업"
+  },
+  "backupHint": {
+    "message": "모든 설정(토글, 건너뛸 도메인, 유지할 매개변수)을 JSON 파일로 내보내거나 이전에 내보낸 파일을 가져옵니다. 동기화 계정을 공유하지 않는 프로필로 옮길 때 유용합니다."
+  },
+  "backupExport": {
+    "message": "설정 내보내기"
+  },
+  "backupImport": {
+    "message": "설정 가져오기"
+  },
+  "backupExported": {
+    "message": "내보냄"
+  },
+  "backupImported": {
+    "message": "설정 $1개 가져옴"
+  },
+  "backupInvalid": {
+    "message": "올바른 설정 파일이 아닙니다"
+  },
+  "bulkTitle": {
+    "message": "일괄 링크 정리"
+  },
+  "bulkSubtitle": {
+    "message": "무엇이든 붙여넣으세요. 안의 모든 링크가 이 기기에서 정리되고 래퍼가 풀립니다."
+  },
+  "bulkHint": {
+    "message": "이메일 전체, 문서, 링크 목록 모두 가능합니다. 각 URL은 우클릭 메뉴와 같은 파이프라인을 거칩니다: 추적 리디렉션 해제, 사이트별 규칙 적용, 유니버설 추적기 제거. 링크 주변 텍스트는 건드리지 않으며 아무것도 어디로도 전송되지 않습니다."
+  },
+  "bulkPlaceholder": {
+    "message": "링크가 있는 텍스트를 여기에 붙여넣기"
+  },
+  "bulkClean": {
+    "message": "링크 정리"
+  },
+  "bulkCopy": {
+    "message": "결과 복사"
+  },
+  "bulkStatus": {
+    "message": "링크 $2개 중 $1개 정리, $3자 제거"
+  },
+  "bulkEmpty": {
+    "message": "아직 정리할 것이 없습니다"
+  },
+  "bulkError": {
+    "message": "문제가 발생했습니다. 다시 시도하세요"
+  },
+  "reportCleanup": {
+    "message": "신고: 제대로 정리되지 않음"
+  },
+  "optGeneralTitle": {
+    "message": "일반"
+  }
+}

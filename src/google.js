@@ -11,9 +11,17 @@
 // aqs, sourceid, ie, uact, biw, bih, client, sclient, source, fbs, vet,
 // dpr, gs_* prefix, utm_* prefix. Everything unrecognized stays.
 //
-// Scope is the /search path on www.google.com / google.com ONLY — no
-// regional TLDs, no other Google properties (maps, accounts, mail are
-// different hosts or paths and are never touched).
+// Scope is the /search path PLUS /travel/flights[/search] on
+// www.google.com / google.com ONLY — no regional TLDs, no other Google
+// properties (maps, accounts, mail are different hosts or paths and are
+// never touched).
+//
+// Google Flights (v1.10): the tfs= parameter is a base64 protobuf that IS
+// the itinerary (legs, dates, passengers, cabin) — it must survive, along
+// with tfu (UI state), hl/gl (locale) and curr (currency). Only the
+// search-style junk is stripped there: ved, sa, source, sxsrf, ictx, ei,
+// utm_*. Flights lives inside this module because two modules must never
+// claim the same host (wiring collision matrix).
 //
 // The URL hash is preserved.
 //
@@ -32,6 +40,7 @@
   }
 
   const SEARCH_PATH_REGEX = /^\/search\/?$/;
+  const FLIGHTS_PATH_REGEX = /^\/travel\/flights(?:\/search)?\/?$/;
 
   // A search URL needs the /search path AND a non-empty q=.
   function isPostUrl(input) {
@@ -41,6 +50,14 @@
     if (!SEARCH_PATH_REGEX.test(url.pathname)) return false;
     const q = url.searchParams.get('q');
     return !!(q && q.length);
+  }
+
+  // Google Flights page (itinerary in tfs= or the bare landing page).
+  function isFlightsUrl(input) {
+    let url;
+    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    if (!isGoogleHost(url.hostname)) return false;
+    return FLIGHTS_PATH_REGEX.test(url.pathname);
   }
 
   const TRACKING_PARAMS = new Set([
@@ -56,15 +73,32 @@
     return TRACKING_PREFIXES.some((p) => lower.startsWith(p));
   }
 
+  // Flights denylist is DELIBERATELY smaller than the search one: several
+  // search-junk names (client, source-adjacent, ie) are untested on the
+  // flights surface, and tfs/tfu/hl/gl/curr must never be touched.
+  const FLIGHTS_TRACKING_PARAMS = new Set([
+    'ved', 'sa', 'source', 'sxsrf', 'ictx', 'ei',
+  ]);
+
+  function isFlightsTrackingParam(name) {
+    const lower = name.toLowerCase();
+    if (FLIGHTS_TRACKING_PARAMS.has(lower)) return true;
+    return lower.startsWith('utm_');
+  }
+
   function shortenGoogleUrl(input) {
     let url;
     // Clone URL-object inputs — we delete params in place below.
     try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
-    if (!isPostUrl(url)) return null;
+
+    let matcher = null;
+    if (isPostUrl(url)) matcher = isTrackingParam;
+    else if (isFlightsUrl(url)) matcher = isFlightsTrackingParam;
+    if (!matcher) return null;
 
     const names = Array.from(url.searchParams.keys());
     for (const name of names) {
-      if (isTrackingParam(name)) url.searchParams.delete(name);
+      if (matcher(name)) url.searchParams.delete(name);
     }
     const hash = url.hash || '';
     const query = url.search;
@@ -83,12 +117,14 @@
   const api = {
     isGoogleHost,
     isPostUrl,
+    isFlightsUrl,
     shortenGoogleUrl,
     shortenUrl: shortenGoogleUrl,
     needsShortening,
     STORAGE_KEY: 'enabledGoogle',
     GOOGLE_HOST_REGEX,
     TRACKING_PARAMS,
+    FLIGHTS_TRACKING_PARAMS,
   };
   global.GoogleLinkShortener = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
