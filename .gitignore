@@ -38,3 +38,4 @@ __pycache__/
 /scripts/make-screenshots.py
 /scripts/make-store-screenshot.ps1
 /scripts/smoke-test.html
+/package_lf.sh
