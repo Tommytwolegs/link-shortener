@@ -11,6 +11,11 @@ const CASES = [
   { name: 'company page: utm_* + gclid stripped via fallback',
     input: 'https://www.linkedin.com/company/somecorp/?utm_source=news&gclid=xyz',
     expected: 'https://www.linkedin.com/company/somecorp/' },
+  // Guards the FALLBACK_STRIP list around the (fixed) sparse-comma spot:
+  // original_referer + fbclid must still strip, keep= must survive.
+  { name: 'company page: original_referer + fbclid stripped, keep kept',
+    input: 'https://www.linkedin.com/company/somecorp/?original_referer=https%3A%2F%2Fx.com&fbclid=abc&keep=1',
+    expected: 'https://www.linkedin.com/company/somecorp/?keep=1' },
 
   // /jobs/search/ — functional search state kept, tracking stripped
   { name: 'jobs search: functional params kept, tracking stripped',

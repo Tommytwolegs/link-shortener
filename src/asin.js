@@ -132,16 +132,20 @@
       }
       const wrapped = params.get('url') || params.get('URL');
       if (wrapped) {
-        let wrappedPath;
+        let wrappedUrl;
         try {
           // Wrapped value may be a path or absolute URL; URL() handles both.
-          wrappedPath = new URL(wrapped, 'https://amazon.com').pathname;
+          wrappedUrl = new URL(wrapped, 'https://amazon.com');
         } catch (_e) {
           return null;
         }
-        const wrappedMatch = matchUrlForm(wrappedPath);
+        const wrappedMatch = matchUrlForm(wrappedUrl.pathname);
         if (wrappedMatch) {
-          return { asin: wrappedMatch.asin, form: DP_FORM };
+          // The variant lock (th/psc) lives in the WRAPPED target's query,
+          // not the outer clicktracker's — carry it through so a sponsored
+          // link to "red, size M" keeps that variant. wrappedSearch is the
+          // param source shortenAmazonUrl reads keepParams from.
+          return { asin: wrappedMatch.asin, form: DP_FORM, wrappedSearch: wrappedUrl.search };
         }
       }
     }
@@ -288,7 +292,7 @@
   function shortenAmazonUrl(input, options) {
     let url;
     try {
-      url = typeof input === 'string' ? new URL(input) : input;
+      url = typeof input === 'string' ? new URL(input) : (input || {});
     } catch (_e) {
       return null;
     }
@@ -301,12 +305,18 @@
     const slugPrefix = slug ? `/${slug}` : '';
     const hash = url.hash || '';
 
-    // Filter query string to the form's allowlist.
+    // Filter query string to the form's allowlist. For sponsored-click
+    // wrappers the meaningful params (th/psc) live in the wrapped target's
+    // query, captured as matched.wrappedSearch — read from there, not the
+    // outer clicktracker's params.
+    const paramSource = matched.wrappedSearch !== undefined
+      ? new URLSearchParams(matched.wrappedSearch)
+      : url.searchParams;
     let query = '';
     if (form.keepParams && form.keepParams.length > 0) {
       const params = new URLSearchParams();
       for (const k of form.keepParams) {
-        const v = url.searchParams.get(k);
+        const v = paramSource.get(k);
         if (v !== null && v !== '') params.set(k, v);
       }
       const s = params.toString();
@@ -323,7 +333,7 @@
   function needsShortening(input, options) {
     let url;
     try {
-      url = typeof input === 'string' ? new URL(input) : input;
+      url = typeof input === 'string' ? new URL(input) : (input || {});
     } catch (_e) {
       return false;
     }

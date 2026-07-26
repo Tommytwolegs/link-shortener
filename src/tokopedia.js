@@ -50,7 +50,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isTokopediaHost(url.hostname)) return false;
     return isProductPath(url.pathname);
   }
@@ -69,7 +69,7 @@
   function shortenTokopediaUrl(input) {
     let url;
     // Clone URL-object inputs — we delete params in place below.
-    try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
+    try { url = new URL(typeof input === 'string' ? input : (input && input.href)); } catch (_e) { return null; }
     if (!isTokopediaHost(url.hostname)) return null;
     if (!isProductPath(url.pathname)) return null;
 
@@ -84,7 +84,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isTokopediaHost(url.hostname)) return false;
     const cleaned = shortenTokopediaUrl(input);
     if (!cleaned) return false;

@@ -92,9 +92,6 @@
   "labelHideTravel": {
     "message": "隐藏旅行小组件"
   },
-  "labelAmazonTitle": {
-    "message": "包含亚马逊商品名"
-  },
   "labelUtmStrip": {
     "message": "通用跟踪清理"
   },
@@ -158,8 +155,14 @@
   "subMedia": {
     "message": "媒体与娱乐"
   },
+  "subDesign": {
+    "message": "设计与图片"
+  },
   "subWorkTools": {
     "message": "办公工具"
+  },
+  "subRealEstate": {
+    "message": "房产与招聘"
   },
   "subAppStores": {
     "message": "应用商店"
@@ -334,5 +337,11 @@
   },
   "optGeneralTitle": {
     "message": "常规"
+  },
+  "labelKeepTitles": {
+    "message": "在链接中保留标题"
+  },
+  "tipKeepTitles": {
+    "message": "在会缩短为纯ID的网站（目前为Amazon）上，在链接中保留可读标题，而非最短形式。"
   }
 }

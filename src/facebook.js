@@ -115,7 +115,7 @@
   function isPostUrl(input) {
     let url;
     try {
-      url = typeof input === 'string' ? new URL(input) : input;
+      url = typeof input === 'string' ? new URL(input) : (input || {});
     } catch (_e) {
       return false;
     }
@@ -146,7 +146,7 @@
   function shortenFacebookUrl(input) {
     let url;
     try {
-      url = typeof input === 'string' ? new URL(input) : input;
+      url = typeof input === 'string' ? new URL(input) : (input || {});
     } catch (_e) {
       return null;
     }
@@ -175,7 +175,7 @@
   function needsShortening(input) {
     let url;
     try {
-      url = typeof input === 'string' ? new URL(input) : input;
+      url = typeof input === 'string' ? new URL(input) : (input || {});
     } catch (_e) {
       return false;
     }

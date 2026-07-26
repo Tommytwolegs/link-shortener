@@ -39,7 +39,7 @@
 
   function toUrl(input) {
     try {
-      return typeof input === 'string' ? new URL(input) : input;
+      return typeof input === 'string' ? new URL(input) : (input || {});
     } catch (_e) {
       return null;
     }

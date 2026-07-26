@@ -92,9 +92,6 @@
   "labelHideTravel": {
     "message": "Seyahat aracını gizle"
   },
-  "labelAmazonTitle": {
-    "message": "Amazon ürün adını dahil et"
-  },
   "labelUtmStrip": {
     "message": "Evrensel izleme filtresi"
   },
@@ -158,8 +155,14 @@
   "subMedia": {
     "message": "Medya ve eğlence"
   },
+  "subDesign": {
+    "message": "Tasarım ve görseller"
+  },
   "subWorkTools": {
     "message": "İş araçları"
+  },
+  "subRealEstate": {
+    "message": "Emlak ve iş ilanları"
   },
   "subAppStores": {
     "message": "Uygulama mağazaları"
@@ -334,5 +337,11 @@
   },
   "optGeneralTitle": {
     "message": "Genel"
+  },
+  "labelKeepTitles": {
+    "message": "Bağlantılarda başlıkları koru"
+  },
+  "tipKeepTitles": {
+    "message": "Bağlantıyı yalnızca bir kimliğe indiren sitelerde (şimdilik Amazon), en kısa biçim yerine okunabilir başlığı korur."
   }
 }

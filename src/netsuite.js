@@ -55,7 +55,7 @@
   // "Post" here = any NetSuite URL carrying at least one strippable param.
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isNetsuiteHost(url.hostname)) return false;
     return Array.from(url.searchParams.keys()).some(isTrackingParam);
   }
@@ -63,7 +63,7 @@
   function shortenNetsuiteUrl(input) {
     let url;
     // Clone URL-object inputs — we delete params in place below.
-    try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
+    try { url = new URL(typeof input === 'string' ? input : (input && input.href)); } catch (_e) { return null; }
     if (!isNetsuiteHost(url.hostname)) return null;
 
     const names = Array.from(url.searchParams.keys());
@@ -77,7 +77,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isNetsuiteHost(url.hostname)) return false;
     const cleaned = shortenNetsuiteUrl(input);
     if (!cleaned) return false;

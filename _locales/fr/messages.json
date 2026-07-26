@@ -92,9 +92,6 @@
   "labelHideTravel": {
     "message": "Masquer le widget voyage"
   },
-  "labelAmazonTitle": {
-    "message": "Inclure le nom de l'article Amazon"
-  },
   "labelUtmStrip": {
     "message": "Filtre de suivi universel"
   },
@@ -158,8 +155,14 @@
   "subMedia": {
     "message": "Médias & divertissement"
   },
+  "subDesign": {
+    "message": "Design & images"
+  },
   "subWorkTools": {
     "message": "Outils de travail"
+  },
+  "subRealEstate": {
+    "message": "Immobilier et emploi"
   },
   "subAppStores": {
     "message": "Boutiques d'applications"
@@ -334,5 +337,11 @@
   },
   "optGeneralTitle": {
     "message": "Général"
+  },
+  "labelKeepTitles": {
+    "message": "Garder les titres dans les liens"
+  },
+  "tipKeepTitles": {
+    "message": "Sur les sites qui réduisent à un simple identifiant (Amazon pour l’instant), garder le titre lisible dans le lien au lieu de la forme la plus courte."
   }
 }

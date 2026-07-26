@@ -47,14 +47,14 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isBlueskyHost(url.hostname)) return false;
     return isPostPath(url.pathname);
   }
 
   function shortenBlueskyUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isBlueskyHost(url.hostname)) return null;
     if (!isPostPath(url.pathname)) return null;
     const hash = url.hash || '';
@@ -63,7 +63,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isBlueskyHost(url.hostname)) return false;
     const cleaned = shortenBlueskyUrl(input);
     if (!cleaned) return false;

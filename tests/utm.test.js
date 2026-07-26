@@ -235,6 +235,10 @@ const CASES = [
   { name: 'ttclid (TikTok Ads) stripped',
     input: 'https://example.com/buy?ttclid=abc123',
     expected: 'https://example.com/buy' },
+  // Twitter / X Ads
+  { name: 'twclid (X Ads) stripped, functional id kept',
+    input: 'https://shop.example.com/p?twclid=abc123&id=42',
+    expected: 'https://shop.example.com/p?id=42' },
   // LinkedIn
   { name: 'li_fat_id + trkCampaign (LinkedIn) stripped; bare trk preserved (too generic)',
     input: 'https://example.com/?li_fat_id=abc&trk=public_post&trkCampaign=spring',
@@ -291,6 +295,9 @@ const CASES = [
   { name: 'Rakuten ranEAID + ranMID + ranSiteID (case-insensitive)',
     input: 'https://example.com/?ranEAID=abc&ranMID=def&ranSiteID=ghi&id=1',
     expected: 'https://example.com/?id=1' },
+  { name: 'cjevent + cjdata (Commission Junction) stripped, functional kept',
+    input: 'https://shop.example.com/p?cjevent=abc123&cjdata=xyz&size=42',
+    expected: 'https://shop.example.com/p?size=42' },
   // Matomo modern
   { name: 'mtm_campaign + mtm_keyword (Matomo modern prefix)',
     input: 'https://example.com/?mtm_campaign=spring&mtm_keyword=mug&id=1',
@@ -353,6 +360,9 @@ check('isTrackingParam: mtm_kwd true (Matomo modern prefix)', isTrackingParam('m
 check('isTrackingParam: _bsft_eid true (Blueshift prefix)', isTrackingParam('_bsft_eid'), true);
 check('isTrackingParam: iterable_campaign true (Iterable prefix)', isTrackingParam('iterable_campaign'), true);
 check('isTrackingParam: ttclid true', isTrackingParam('ttclid'), true);
+check('isTrackingParam: twclid true', isTrackingParam('twclid'), true);
+check('isTrackingParam: cjevent true', isTrackingParam('cjevent'), true);
+check('isTrackingParam: cjdata true', isTrackingParam('cjdata'), true);
 check('isTrackingParam: li_fat_id true', isTrackingParam('li_fat_id'), true);
 check('isTrackingParam: epik true', isTrackingParam('epik'), true);
 check('isTrackingParam: id false', isTrackingParam('id'), false);

@@ -35,14 +35,14 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isLetterboxdHost(url.hostname)) return false;
     return isPostPath(url.pathname);
   }
 
   function shortenLetterboxdUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isLetterboxdHost(url.hostname)) return null;
     if (!isPostPath(url.pathname)) return null;
     const query = '';
@@ -53,7 +53,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isLetterboxdHost(url.hostname)) return false;
     const cleaned = shortenLetterboxdUrl(input);
     if (!cleaned) return false;

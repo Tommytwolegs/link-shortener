@@ -9,9 +9,12 @@
 //   enabled             -- master "Shorten All Links" toggle (default true)
 //   hideTravelPopup     -- if true, suppresses the floating toolbar on hotel
 //                          sites; URL-bar shortening still runs (default false)
-//   includeAmazonTitle  -- if true, Amazon URLs are shortened to
+//   keepTitles          -- if true, sites that shorten to a bare id (Amazon
+//                          today) keep the readable title slug, e.g.
 //                          /<title-slug>/dp/ASIN instead of bare /dp/ASIN
-//                          (default false)
+//                          (default false). Written alongside the legacy
+//   includeAmazonTitle  -- key so older content scripts / downgrades keep
+//                          honoring it.
 //   enabledUtmStrip     -- if true, the Universal tracking strip runs on every
 //                          http(s) page, stripping utm_*, gclid, fbclid, etc.
 //                          regardless of host. Default FALSE: opt-in because
@@ -90,6 +93,11 @@
         ['enabledShopify', 'Shopify stores (myshopify.com)', 'Shopify'],
         ['enabledNoon', 'Noon', 'Noon'],
         ['enabledJumia', 'Jumia', 'Jumia'],
+        ['enabledPoshmark', 'Poshmark', 'Poshmark'],
+        ['enabledDepop', 'Depop', 'Depop'],
+        ['enabledStockx', 'StockX', 'Stockx'],
+        ['enabledGoat', 'GOAT', 'Goat'],
+        ['enabledGrailed', 'Grailed', 'Grailed'],
       ] },
       { i18nKey: 'subLocal', en: 'Local', rows: [
         ['enabledYelp', 'Yelp', 'Yelp'],
@@ -103,6 +111,7 @@
         ['enabledHotelscom', 'Hotels.com', 'Hotelscom'],
         ['enabledVrbo', 'Vrbo', 'Vrbo'],
         ['enabledTripadvisor', 'Tripadvisor', 'Tripadvisor'],
+        ['enabledWaze', 'Waze', 'Waze'],
       ] },
       { i18nKey: 'subFlights', en: 'Flights', rows: [
         ['enabledKayak', 'Kayak', 'Kayak'],
@@ -140,6 +149,8 @@
         ['enabledLetterboxd', 'Letterboxd', 'Letterboxd'],
         ['enabledNetflix', 'Netflix', 'Netflix'],
         ['enabledPrimevideo', 'Prime Video', 'Primevideo'],
+        ['enabledVimeo', 'Vimeo', 'Vimeo'],
+        ['enabledDailymotion', 'Dailymotion', 'Dailymotion'],
         ['enabledRoblox', 'Roblox', 'Roblox'],
         ['enabledBilibili', 'Bilibili', 'Bilibili'],
         ['enabledFandom', 'Fandom', 'Fandom'],
@@ -148,6 +159,44 @@
         ['enabledHumble', 'Humble Bundle', 'Humble'],
         ['enabledItchio', 'itch.io', 'Itchio'],
         ['enabledProducthunt', 'Product Hunt', 'Producthunt'],
+        ['enabledRottentomatoes', 'Rotten Tomatoes', 'Rottentomatoes'],
+        ['enabledMetacritic', 'Metacritic', 'Metacritic'],
+        ['enabledGenius', 'Genius', 'Genius'],
+        ['enabledDiscogs', 'Discogs', 'Discogs'],
+        ['enabledDeezer', 'Deezer', 'Deezer'],
+        ['enabledTidal', 'TIDAL', 'Tidal'],
+        ['enabledPandora', 'Pandora', 'Pandora'],
+        ['enabledRumble', 'Rumble', 'Rumble'],
+        ['enabledKick', 'Kick', 'Kick'],
+        ['enabledCrunchyroll', 'Crunchyroll', 'Crunchyroll'],
+        ['enabledOdysee', 'Odysee', 'Odysee'],
+        ['enabledMyanimelist', 'MyAnimeList', 'Myanimelist'],
+        ['enabledBitchute', 'BitChute', 'Bitchute'],
+        ['enabledNewgrounds', 'Newgrounds', 'Newgrounds'],
+      ] },
+      { i18nKey: 'subDesign', en: 'Design & images', rows: [
+        ['enabledBehance', 'Behance', 'Behance'],
+        ['enabledDribbble', 'Dribbble', 'Dribbble'],
+        ['enabledArtstation', 'ArtStation', 'Artstation'],
+        ['enabledFlickr', 'Flickr', 'Flickr'],
+        ['enabledUnsplash', 'Unsplash', 'Unsplash'],
+        ['enabledPexels', 'Pexels', 'Pexels'],
+        ['enabledDeviantart', 'DeviantArt', 'Deviantart'],
+        ['enabledPixiv', 'pixiv', 'Pixiv'],
+        ['enabledPixabay', 'Pixabay', 'Pixabay'],
+        ['enabledShutterstock', 'Shutterstock', 'Shutterstock'],
+        ['enabledGettyimages', 'Getty Images', 'Gettyimages'],
+        ['enabledFreepik', 'Freepik', 'Freepik'],
+        ['enabledGiphy', 'GIPHY', 'Giphy'],
+        ['enabledTenor', 'Tenor', 'Tenor'],
+        ['enabledVsco', 'VSCO', 'Vsco'],
+        ['enabledSmugmug', 'SmugMug', 'Smugmug'],
+        ['enabledAdobestock', 'Adobe Stock', 'Adobestock'],
+        ['enabledAlamy', 'Alamy', 'Alamy'],
+        ['enabledVecteezy', 'Vecteezy', 'Vecteezy'],
+        ['enabledIstock', 'iStock', 'Istock'],
+        ['enabledDreamstime', 'Dreamstime', 'Dreamstime'],
+        ['enabledImgur', 'Imgur', 'Imgur'],
       ] },
       { i18nKey: 'subWorkTools', en: 'Work tools', rows: [
         ['enabledNetsuite', 'NetSuite', 'Netsuite'],
@@ -156,6 +205,30 @@
         ['enabledLoom', 'Loom', 'Loom'],
         ['enabledFigma', 'Figma', 'Figma'],
         ['enabledGodaddy', 'GoDaddy', 'Godaddy'],
+        ['enabledGitlab', 'GitLab', 'Gitlab'],
+        ['enabledBitbucket', 'Bitbucket', 'Bitbucket'],
+        ['enabledNpm', 'npm', 'Npm'],
+        ['enabledPypi', 'PyPI', 'Pypi'],
+        ['enabledDockerhub', 'Docker Hub', 'Dockerhub'],
+        ['enabledHuggingface', 'Hugging Face', 'Huggingface'],
+        ['enabledKaggle', 'Kaggle', 'Kaggle'],
+        ['enabledDropbox', 'Dropbox', 'Dropbox'],
+        ['enabledBox', 'Box', 'Box'],
+        ['enabledWetransfer', 'WeTransfer', 'Wetransfer'],
+        ['enabledMediafire', 'MediaFire', 'Mediafire'],
+        ['enabledCoursera', 'Coursera', 'Coursera'],
+        ['enabledUdemy', 'Udemy', 'Udemy'],
+        ['enabledKhanacademy', 'Khan Academy', 'Khanacademy'],
+        ['enabledEdx', 'edX', 'Edx'],
+        ['enabledSkillshare', 'Skillshare', 'Skillshare'],
+        ['enabledBrilliant', 'Brilliant', 'Brilliant'],
+      ] },
+      { i18nKey: 'subRealEstate', en: 'Real estate & jobs', rows: [
+        ['enabledZillow', 'Zillow', 'Zillow'],
+        ['enabledRedfin', 'Redfin', 'Redfin'],
+        ['enabledRealtor', 'Realtor.com', 'Realtor'],
+        ['enabledIndeed', 'Indeed', 'Indeed'],
+        ['enabledGlassdoor', 'Glassdoor', 'Glassdoor'],
       ] },
       { i18nKey: 'subAppStores', en: 'App stores', rows: [
         ['enabledPlaystore', 'Google Play', 'Playstore'],
@@ -327,6 +400,7 @@
     enabled: true,
     hideTravelPopup: false,
     includeAmazonTitle: false,
+    keepTitles: false,
     enabledUtmStrip: false,
     enabledRedirectSkip: true,
   };
@@ -334,7 +408,7 @@
 
   const masterEl = document.getElementById('enabled');
   const hidePopupEl = document.getElementById('hideTravelPopup');
-  const includeTitleEl = document.getElementById('includeAmazonTitle');
+  const keepTitlesEl = document.getElementById('keepTitles');
   const utmStripEl = document.getElementById('enabledUtmStrip');
   const redirectSkipEl = document.getElementById('enabledRedirectSkip');
   const status = document.getElementById('status');
@@ -593,7 +667,7 @@
     lastState = state;
     masterEl.checked = state.enabled !== false;
     if (hidePopupEl) hidePopupEl.checked = state.hideTravelPopup === true;
-    if (includeTitleEl) includeTitleEl.checked = state.includeAmazonTitle === true;
+    if (keepTitlesEl) keepTitlesEl.checked = state.keepTitles === true || state.includeAmazonTitle === true;
     utmStripEl.checked = state.enabledUtmStrip === true;
     redirectSkipEl.checked = state.enabledRedirectSkip !== false;
     for (const k of SITE_KEYS) {
@@ -630,10 +704,15 @@
     chrome.storage.sync.set({ hideTravelPopup: hidePopupEl.checked });
   });
 
-  // "Include Amazon item name" -- when on, Amazon URLs are rewritten to
-  // /<slug>/dp/ASIN instead of /dp/ASIN. Affects Amazon only.
-  if (includeTitleEl) includeTitleEl.addEventListener('change', () => {
-    chrome.storage.sync.set({ includeAmazonTitle: includeTitleEl.checked });
+  // "Keep item titles in links" -- when on, sites that shorten to a bare id
+  // (Amazon today) keep the readable title slug instead of the shortest form.
+  // Writes both the new key and the legacy includeAmazonTitle so older content
+  // scripts and downgrades keep honoring it.
+  if (keepTitlesEl) keepTitlesEl.addEventListener('change', () => {
+    chrome.storage.sync.set({
+      keepTitles: keepTitlesEl.checked,
+      includeAmazonTitle: keepTitlesEl.checked,
+    });
   });
 
   // "Universal tracking strip" -- gated on the optional *://*/* host
@@ -676,6 +755,7 @@
     const touchesUs = Object.prototype.hasOwnProperty.call(changes, 'enabled')
       || Object.prototype.hasOwnProperty.call(changes, 'hideTravelPopup')
       || Object.prototype.hasOwnProperty.call(changes, 'includeAmazonTitle')
+      || Object.prototype.hasOwnProperty.call(changes, 'keepTitles')
       || Object.prototype.hasOwnProperty.call(changes, 'enabledUtmStrip')
       || Object.prototype.hasOwnProperty.call(changes, 'enabledRedirectSkip')
       || SITE_KEYS.some((k) => Object.prototype.hasOwnProperty.call(changes, k));

@@ -50,7 +50,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isMercadolibreHost(url.hostname)) return false;
     return isPostPath(url.pathname);
   }
@@ -59,7 +59,7 @@
 
   function shortenMercadolibreUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isMercadolibreHost(url.hostname)) return null;
     if (!isPostPath(url.pathname)) return null;
 
@@ -76,7 +76,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isMercadolibreHost(url.hostname)) return false;
     const cleaned = shortenMercadolibreUrl(input);
     if (!cleaned) return false;

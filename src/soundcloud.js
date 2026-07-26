@@ -13,6 +13,12 @@
 // token), ref, p, c, in_system_playlist, utm_* — but PRESERVES `in`
 // (playlist-context queue continuity, like Spotify's ?context=).
 //
+// The same denylist runs on EVERY soundcloud path (profiles /<user>,
+// search, discover...), not just recognized track/set forms — the strip
+// is pure (path preserved, only known trackers removed), so the si share
+// token never leaks on a shared profile link. isPostUrl still reports
+// canonical-post status for callers that need it.
+//
 // A blocklist keeps navigational first segments (discover, search, you,
 // stream, ...) from being treated as user names.
 //
@@ -56,7 +62,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isSoundcloudHost(url.hostname)) return false;
     return isPostPath(url.hostname, url.pathname);
   }
@@ -73,9 +79,10 @@
   function shortenSoundcloudUrl(input) {
     let url;
     // Clone URL-object inputs — we delete params in place below.
-    try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
+    try { url = new URL(typeof input === 'string' ? input : (input && input.href)); } catch (_e) { return null; }
     if (!isSoundcloudHost(url.hostname)) return null;
-    if (!isPostPath(url.hostname, url.pathname)) return null;
+    // No post-path gate: the denylist strip below is safe on any path, so
+    // profiles/search/etc. also get the si share token removed.
 
     const names = Array.from(url.searchParams.keys());
     for (const name of names) {
@@ -88,7 +95,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isSoundcloudHost(url.hostname)) return false;
     const cleaned = shortenSoundcloudUrl(input);
     if (!cleaned) return false;

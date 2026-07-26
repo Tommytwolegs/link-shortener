@@ -35,7 +35,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isFandomHost(url.hostname)) return false;
     return isArticlePath(url.pathname);
   }
@@ -52,7 +52,7 @@
   function shortenFandomUrl(input) {
     let url;
     // Clone URL-object inputs — we delete params in place below.
-    try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
+    try { url = new URL(typeof input === 'string' ? input : (input && input.href)); } catch (_e) { return null; }
     if (!isFandomHost(url.hostname)) return null;
     if (!isArticlePath(url.pathname)) return null;
 
@@ -67,7 +67,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isFandomHost(url.hostname)) return false;
     const cleaned = shortenFandomUrl(input);
     if (!cleaned) return false;

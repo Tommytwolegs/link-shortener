@@ -42,14 +42,14 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isRobloxHost(url.hostname)) return false;
     return formFor(url.pathname) !== null;
   }
 
   function shortenRobloxUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isRobloxHost(url.hostname)) return null;
     const form = formFor(url.pathname);
     if (!form) return null;
@@ -67,7 +67,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isRobloxHost(url.hostname)) return false;
     const cleaned = shortenRobloxUrl(input);
     if (!cleaned) return false;

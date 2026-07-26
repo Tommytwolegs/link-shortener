@@ -89,6 +89,72 @@ if (typeof importScripts === 'function') {
     'roblox.js',
     'fandom.js',
     'bilibili.js',
+    'vimeo.js',
+    'dailymotion.js',
+    'waze.js',
+    'zillow.js',
+    'redfin.js',
+    'realtor.js',
+    'indeed.js',
+    'glassdoor.js',
+    'poshmark.js',
+    'depop.js',
+    'stockx.js',
+    'goat.js',
+    'grailed.js',
+    'rottentomatoes.js',
+    'metacritic.js',
+    'genius.js',
+    'discogs.js',
+    'deezer.js',
+    'tidal.js',
+    'pandora.js',
+    'gitlab.js',
+    'bitbucket.js',
+    'npm.js',
+    'pypi.js',
+    'dockerhub.js',
+    'huggingface.js',
+    'kaggle.js',
+    'dropbox.js',
+    'box.js',
+    'wetransfer.js',
+    'mediafire.js',
+    'behance.js',
+    'dribbble.js',
+    'artstation.js',
+    'flickr.js',
+    'unsplash.js',
+    'pexels.js',
+    'deviantart.js',
+    'pixiv.js',
+    'pixabay.js',
+    'shutterstock.js',
+    'gettyimages.js',
+    'freepik.js',
+    'giphy.js',
+    'tenor.js',
+    'vsco.js',
+    'smugmug.js',
+    'adobestock.js',
+    'alamy.js',
+    'vecteezy.js',
+    'istock.js',
+    'dreamstime.js',
+    'imgur.js',
+    'rumble.js',
+    'kick.js',
+    'crunchyroll.js',
+    'odysee.js',
+    'myanimelist.js',
+    'bitchute.js',
+    'newgrounds.js',
+    'coursera.js',
+    'udemy.js',
+    'khanacademy.js',
+    'edx.js',
+    'skillshare.js',
+    'brilliant.js',
     'shein.js',
     'news.js',
     'google.js',
@@ -931,9 +997,9 @@ function copyTextToTab(tabId, text, html) {
 }
 
 function copyCleanUrlToTab(tabId, sourceUrl) {
-  chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false }, (items) => {
+  chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false }, (items) => {
     const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
-    const cleaned = cleanAnyUrl(sourceUrl, keepParams, { amazonSlug: items.includeAmazonTitle === true });
+    const cleaned = cleanAnyUrl(sourceUrl, keepParams, { amazonSlug: items.keepTitles === true || items.includeAmazonTitle === true });
     recordStats({
       copies: 1,
       urls: cleaned === sourceUrl ? 0 : 1,
@@ -1002,9 +1068,9 @@ if (chrome.omnibox) {
     const extracted = self.TextUrlExtractor
       && self.TextUrlExtractor.extractUrlFromText(text);
     if (!extracted) { cb(null); return; }
-    chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false }, (items) => {
+    chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false }, (items) => {
       const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
-      const cleaned = cleanAnyUrl(extracted, keepParams, { amazonSlug: items.includeAmazonTitle === true });
+      const cleaned = cleanAnyUrl(extracted, keepParams, { amazonSlug: items.keepTitles === true || items.includeAmazonTitle === true });
       try {
         const u = new URL(cleaned);
         cb((u.protocol === 'http:' || u.protocol === 'https:') ? cleaned : null);
@@ -1054,9 +1120,9 @@ if (chrome.omnibox) {
 // keyboard shortcut (redirect unwrapping -> per-site shortener -> UTM strip).
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (!msg || msg.type !== 'clean-url' || typeof msg.url !== 'string') return undefined;
-  chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false }, (items) => {
+  chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false }, (items) => {
     const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
-    sendResponse({ cleaned: cleanAnyUrl(msg.url, keepParams, { amazonSlug: items.includeAmazonTitle === true }) });
+    sendResponse({ cleaned: cleanAnyUrl(msg.url, keepParams, { amazonSlug: items.keepTitles === true || items.includeAmazonTitle === true }) });
   });
   return true; // keep the message channel open for the async sendResponse
 });
@@ -1098,10 +1164,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return undefined;
   }
   if (msg.type === 'bulk-clean' && typeof msg.text === 'string') {
-    chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false }, (items) => {
+    chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false }, (items) => {
       const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
       const result = self.TextUrlExtractor && self.TextUrlExtractor.cleanAllUrlsInText
-        ? self.TextUrlExtractor.cleanAllUrlsInText(msg.text, (u) => cleanAnyUrl(u, keepParams, { amazonSlug: items.includeAmazonTitle === true }))
+        ? self.TextUrlExtractor.cleanAllUrlsInText(msg.text, (u) => cleanAnyUrl(u, keepParams, { amazonSlug: items.keepTitles === true || items.includeAmazonTitle === true }))
         : { text: msg.text, found: 0, changed: 0, saved: 0 };
       if (result.changed > 0) {
         recordStats({ bulk: result.changed, urls: result.changed, chars: result.saved });
@@ -1186,6 +1252,72 @@ const HOST_CHECKS = [
   ['RobloxLinkShortener', 'isRobloxHost'],
   ['FandomLinkShortener', 'isFandomHost'],
   ['BilibiliLinkShortener', 'isBilibiliHost'],
+  ['VimeoLinkShortener', 'isVimeoHost'],
+  ['DailymotionLinkShortener', 'isDailymotionHost'],
+  ['WazeLinkShortener', 'isWazeHost'],
+  ['ZillowLinkShortener', 'isZillowHost'],
+  ['RedfinLinkShortener', 'isRedfinHost'],
+  ['RealtorLinkShortener', 'isRealtorHost'],
+  ['IndeedLinkShortener', 'isIndeedHost'],
+  ['GlassdoorLinkShortener', 'isGlassdoorHost'],
+  ['PoshmarkLinkShortener', 'isPoshmarkHost'],
+  ['DepopLinkShortener', 'isDepopHost'],
+  ['StockxLinkShortener', 'isStockxHost'],
+  ['GoatLinkShortener', 'isGoatHost'],
+  ['GrailedLinkShortener', 'isGrailedHost'],
+  ['RottentomatoesLinkShortener', 'isRottentomatoesHost'],
+  ['MetacriticLinkShortener', 'isMetacriticHost'],
+  ['GeniusLinkShortener', 'isGeniusHost'],
+  ['DiscogsLinkShortener', 'isDiscogsHost'],
+  ['DeezerLinkShortener', 'isDeezerHost'],
+  ['TidalLinkShortener', 'isTidalHost'],
+  ['PandoraLinkShortener', 'isPandoraHost'],
+  ['GitlabLinkShortener', 'isGitlabHost'],
+  ['BitbucketLinkShortener', 'isBitbucketHost'],
+  ['NpmLinkShortener', 'isNpmHost'],
+  ['PypiLinkShortener', 'isPypiHost'],
+  ['DockerhubLinkShortener', 'isDockerhubHost'],
+  ['HuggingfaceLinkShortener', 'isHuggingfaceHost'],
+  ['KaggleLinkShortener', 'isKaggleHost'],
+  ['DropboxLinkShortener', 'isDropboxHost'],
+  ['BoxLinkShortener', 'isBoxHost'],
+  ['WetransferLinkShortener', 'isWetransferHost'],
+  ['MediafireLinkShortener', 'isMediafireHost'],
+  ['BehanceLinkShortener', 'isBehanceHost'],
+  ['DribbbleLinkShortener', 'isDribbbleHost'],
+  ['ArtstationLinkShortener', 'isArtstationHost'],
+  ['FlickrLinkShortener', 'isFlickrHost'],
+  ['UnsplashLinkShortener', 'isUnsplashHost'],
+  ['PexelsLinkShortener', 'isPexelsHost'],
+  ['DeviantartLinkShortener', 'isDeviantartHost'],
+  ['PixivLinkShortener', 'isPixivHost'],
+  ['PixabayLinkShortener', 'isPixabayHost'],
+  ['ShutterstockLinkShortener', 'isShutterstockHost'],
+  ['GettyimagesLinkShortener', 'isGettyimagesHost'],
+  ['FreepikLinkShortener', 'isFreepikHost'],
+  ['GiphyLinkShortener', 'isGiphyHost'],
+  ['TenorLinkShortener', 'isTenorHost'],
+  ['VscoLinkShortener', 'isVscoHost'],
+  ['SmugmugLinkShortener', 'isSmugmugHost'],
+  ['AdobestockLinkShortener', 'isAdobestockHost'],
+  ['AlamyLinkShortener', 'isAlamyHost'],
+  ['VecteezyLinkShortener', 'isVecteezyHost'],
+  ['IstockLinkShortener', 'isIstockHost'],
+  ['DreamstimeLinkShortener', 'isDreamstimeHost'],
+  ['ImgurLinkShortener', 'isImgurHost'],
+  ['RumbleLinkShortener', 'isRumbleHost'],
+  ['KickLinkShortener', 'isKickHost'],
+  ['CrunchyrollLinkShortener', 'isCrunchyrollHost'],
+  ['OdyseeLinkShortener', 'isOdyseeHost'],
+  ['MyanimelistLinkShortener', 'isMyanimelistHost'],
+  ['BitchuteLinkShortener', 'isBitchuteHost'],
+  ['NewgroundsLinkShortener', 'isNewgroundsHost'],
+  ['CourseraLinkShortener', 'isCourseraHost'],
+  ['UdemyLinkShortener', 'isUdemyHost'],
+  ['KhanacademyLinkShortener', 'isKhanacademyHost'],
+  ['EdxLinkShortener', 'isEdxHost'],
+  ['SkillshareLinkShortener', 'isSkillshareHost'],
+  ['BrilliantLinkShortener', 'isBrilliantHost'],
   ['SheinLinkShortener', 'isSheinHost'],
   ['NewsLinkShortener', 'isNewsHost'],
   ['GoogleLinkShortener', 'isGoogleHost'],

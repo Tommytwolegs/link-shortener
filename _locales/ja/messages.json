@@ -92,9 +92,6 @@
   "labelHideTravel": {
     "message": "旅行ウィジェットを非表示"
   },
-  "labelAmazonTitle": {
-    "message": "Amazonの商品名を含める"
-  },
   "labelUtmStrip": {
     "message": "ユニバーサルトラッキング除去"
   },
@@ -158,8 +155,14 @@
   "subMedia": {
     "message": "メディアとエンタメ"
   },
+  "subDesign": {
+    "message": "デザインと画像"
+  },
   "subWorkTools": {
     "message": "仕事ツール"
+  },
+  "subRealEstate": {
+    "message": "不動産・求人"
   },
   "subAppStores": {
     "message": "アプリストア"
@@ -334,5 +337,11 @@
   },
   "optGeneralTitle": {
     "message": "全般"
+  },
+  "labelKeepTitles": {
+    "message": "リンクにタイトルを残す"
+  },
+  "tipKeepTitles": {
+    "message": "IDだけに短縮するサイト（現在はAmazon）で、最短形式ではなく読みやすいタイトルをリンクに残します。"
   }
 }

@@ -343,7 +343,7 @@
   // isn't a recognized redirector (or the target isn't a sane http(s) URL).
   function unwrapOnce(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     for (const r of REDIRECTORS) {
       if (!r.host.test(url.hostname)) continue;
       if (!r.path.test(url.pathname)) continue;

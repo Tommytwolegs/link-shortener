@@ -73,7 +73,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isSpotifyHost(url.hostname)) return false;
     return isPostPath(url.pathname);
   }
@@ -99,7 +99,7 @@
 
   function shortenSpotifyUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isSpotifyHost(url.hostname)) return null;
     const form = formFor(url.pathname);
     if (!form) return fallbackClean(url);
@@ -120,7 +120,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isSpotifyHost(url.hostname)) return false;
     const cleaned = shortenSpotifyUrl(input);
     if (!cleaned) return false;

@@ -9,7 +9,8 @@
 // tbs filters, num, safe, lr, as_*) with per-session click tracking. Only
 // the known junk is stripped: ved, ei, sa, sxsrf, sca_esv, sca_upv, oq,
 // aqs, sourceid, ie, uact, biw, bih, client, sclient, source, fbs, vet,
-// dpr, gs_* prefix, utm_* prefix. Everything unrecognized stays.
+// dpr, rlz (Chrome distribution/cohort id), gs_* prefix, utm_* prefix.
+// Everything unrecognized stays.
 //
 // Scope is the /search path PLUS /travel/flights[/search] on
 // www.google.com / google.com ONLY — no regional TLDs, no other Google
@@ -22,6 +23,14 @@
 // search-style junk is stripped there: ved, sa, source, sxsrf, ictx, ei,
 // utm_*. Flights lives inside this module because two modules must never
 // claim the same host (wiring collision matrix).
+//
+// Google Maps (v1.11): /maps place and route URLs carry their identity in
+// the PATH (place name, @lat,lng,zoom, and the /data= blob) — never touched.
+// Only share telemetry in the query is stripped: entry, g_ep, ved, ei,
+// g_st, utm_*. Functional query params (q, ll, z, cid, hl, gl) survive.
+// Maps lives here for the same collision-matrix reason as Flights.
+// (maps.google.com is a separate host that 301s to google.com/maps; only
+// the canonical google.com/maps form is handled.)
 //
 // The URL hash is preserved.
 //
@@ -41,11 +50,12 @@
 
   const SEARCH_PATH_REGEX = /^\/search\/?$/;
   const FLIGHTS_PATH_REGEX = /^\/travel\/flights(?:\/search)?\/?$/;
+  const MAPS_PATH_REGEX = /^\/maps(?:\/|$)/;
 
   // A search URL needs the /search path AND a non-empty q=.
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isGoogleHost(url.hostname)) return false;
     if (!SEARCH_PATH_REGEX.test(url.pathname)) return false;
     const q = url.searchParams.get('q');
@@ -55,15 +65,26 @@
   // Google Flights page (itinerary in tfs= or the bare landing page).
   function isFlightsUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isGoogleHost(url.hostname)) return false;
     return FLIGHTS_PATH_REGEX.test(url.pathname);
+  }
+
+  // Google Maps page. The place/route identity lives in the PATH
+  // (/maps/place/<name>/@<lat>,<lng>,<zoom>z/data=<blob>, /maps/dir/...,
+  // /maps?q=/ll=), so we only strip share telemetry from the QUERY and never
+  // touch the path — the coordinates, place name and data= blob all survive.
+  function isMapsUrl(input) {
+    let url;
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
+    if (!isGoogleHost(url.hostname)) return false;
+    return MAPS_PATH_REGEX.test(url.pathname);
   }
 
   const TRACKING_PARAMS = new Set([
     'ved', 'ei', 'sa', 'sxsrf', 'sca_esv', 'sca_upv', 'oq', 'aqs',
     'sourceid', 'ie', 'uact', 'biw', 'bih', 'client', 'sclient',
-    'source', 'fbs', 'vet', 'dpr',
+    'source', 'fbs', 'vet', 'dpr', 'rlz',
   ]);
   const TRACKING_PREFIXES = ['gs_', 'utm_'];
 
@@ -86,14 +107,26 @@
     return lower.startsWith('utm_');
   }
 
+  // Maps denylist — only unambiguous share telemetry. entry=ttu (came from a
+  // share), g_ep (experiment/version blob), plus ved/ei/g_st. Everything
+  // functional (data=, q, ll, z, cid, hl, gl, the @lat,lng path) is kept.
+  const MAPS_TRACKING_PARAMS = new Set(['entry', 'g_ep', 'ved', 'ei', 'g_st']);
+
+  function isMapsTrackingParam(name) {
+    const lower = name.toLowerCase();
+    if (MAPS_TRACKING_PARAMS.has(lower)) return true;
+    return lower.startsWith('utm_');
+  }
+
   function shortenGoogleUrl(input) {
     let url;
     // Clone URL-object inputs — we delete params in place below.
-    try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
+    try { url = new URL(typeof input === 'string' ? input : (input && input.href)); } catch (_e) { return null; }
 
     let matcher = null;
     if (isPostUrl(url)) matcher = isTrackingParam;
     else if (isFlightsUrl(url)) matcher = isFlightsTrackingParam;
+    else if (isMapsUrl(url)) matcher = isMapsTrackingParam;
     if (!matcher) return null;
 
     const names = Array.from(url.searchParams.keys());
@@ -107,7 +140,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isGoogleHost(url.hostname)) return false;
     const cleaned = shortenGoogleUrl(input);
     if (!cleaned) return false;
@@ -118,6 +151,7 @@
     isGoogleHost,
     isPostUrl,
     isFlightsUrl,
+    isMapsUrl,
     shortenGoogleUrl,
     shortenUrl: shortenGoogleUrl,
     needsShortening,
@@ -125,6 +159,7 @@
     GOOGLE_HOST_REGEX,
     TRACKING_PARAMS,
     FLIGHTS_TRACKING_PARAMS,
+    MAPS_TRACKING_PARAMS,
   };
   global.GoogleLinkShortener = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

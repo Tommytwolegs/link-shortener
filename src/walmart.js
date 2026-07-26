@@ -47,7 +47,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isWalmartHost(url.hostname)) return false;
     return isProductPath(url.pathname);
   }
@@ -73,7 +73,7 @@
     let url;
     // Clone URL-object inputs — searchParams.delete below would otherwise
     // mutate the caller's object (and break needsShortening's comparison).
-    try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
+    try { url = new URL(typeof input === 'string' ? input : (input && input.href)); } catch (_e) { return null; }
     if (!isWalmartHost(url.hostname)) return null;
     // Denylist module: apply the same strip on ANY host path (search,
     // category, cart) — functional params always survive.
@@ -94,7 +94,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isWalmartHost(url.hostname)) return false;
     const cleaned = shortenWalmartUrl(input);
     if (!cleaned) return false;

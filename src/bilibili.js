@@ -12,6 +12,11 @@
 // share_tag, share_from, timestamp, unique_k, bbid, ts, from_spmid,
 // utm_* — everything else.
 //
+// FALLBACK: on non-video bilibili paths (space.bilibili.com/<uid> channel
+// pages, bangumi, dynamic...), a host-scoped denylist strips the same share
+// junk (spm_id_from/vd_source/share_*) + utm_*. spm_id_from is NOT in the
+// universal list, so without this a shared channel link would leak it.
+//
 // The URL hash is preserved.
 //
 // Hosts: bilibili.com (any subdomain — www, m), b23.tv.
@@ -41,18 +46,40 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isBilibiliHost(url.hostname)) return false;
     return isPostPath(url.hostname, url.pathname);
   }
 
   const KEEP_PARAMS = ['t', 'p'];
 
+  // Host-scoped tracking params, stripped on ANY bilibili path that isn't a
+  // recognized video form (channel / space / bangumi pages). Denylist:
+  // functional params survive.
+  const FALLBACK_STRIP = new Set([
+    'spm_id_from', 'vd_source', 'share_source', 'share_medium', 'share_plat',
+    'share_session_id', 'share_tag', 'share_from', 'timestamp', 'unique_k',
+    'bbid', 'ts', 'from_spmid', 'fbclid', 'gclid',
+  ]);
+  const FALLBACK_PREFIXES = ['utm_'];
+
+  function fallbackClean(url) {
+    const clone = new URL(url.href);
+    for (const name of Array.from(clone.searchParams.keys())) {
+      const lower = name.toLowerCase();
+      if (FALLBACK_STRIP.has(lower) || FALLBACK_PREFIXES.some((p) => lower.startsWith(p))) {
+        clone.searchParams.delete(name);
+      }
+    }
+    const hash = clone.hash || '';
+    return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;
+  }
+
   function shortenBilibiliUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isBilibiliHost(url.hostname)) return null;
-    if (!isPostPath(url.hostname, url.pathname)) return null;
+    if (!isPostPath(url.hostname, url.pathname)) return fallbackClean(url);
 
     // b23.tv short links: identity is the whole path; strip all params.
     const keep = B23_HOST_REGEX.test(url.hostname) ? [] : KEEP_PARAMS;
@@ -69,7 +96,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isBilibiliHost(url.hostname)) return false;
     const cleaned = shortenBilibiliUrl(input);
     if (!cleaned) return false;
@@ -86,6 +113,7 @@
     BILIBILI_HOST_REGEX,
     B23_HOST_REGEX,
     KEEP_PARAMS,
+    FALLBACK_STRIP,
   };
   global.BilibiliLinkShortener = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

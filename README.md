@@ -16,13 +16,13 @@ on the real destination ("Skip redirect pages", on by default — Outlook
 SafeLinks is deliberately left alone so corporate click-time scanning
 keeps working). The toolbar popup also previews the current page's
 cleaned URL with a one-click copy button, and has a filter box for
-finding a site among the 200 toggles.
+finding a site among the 266 toggles.
 
 ## Supported sites
 
-Two hundred seventeen (200 toggles), organized by world region and type in the popup:
+Two hundred eighty-four (266 toggles), organized by world region and type in the popup:
 
-- **Global** — Search & productivity: Google Search, Google Drive/Docs,
+- **Global** — Search & productivity: Google Search, Google Maps, Google Drive/Docs,
   Bing, DuckDuckGo, Weather.com, AccuWeather, Weather Underground,
   Ecosia, Startpage, Brave Search, Kagi ·
   Academic: PubMed, Google Scholar, ResearchGate ·
@@ -30,9 +30,11 @@ Two hundred seventeen (200 toggles), organized by world region and type in the p
   Package tracking: UPS, FedEx, USPS, DHL ·
   Shopping: Amazon, eBay, Etsy, AliExpress, Temu, Wayfair, SHEIN,
   Samsung, Costco, Home Depot, Lowe's, IKEA, Nike, Adidas, Shopify
-  stores (myshopify.com), Noon, Jumia · Local: Yelp ·
-  Travel: Booking.com, Expedia, Airbnb, Agoda, Trip.com, Hotels.com,
-  Vrbo, Tripadvisor ·
+  stores (myshopify.com), Noon, Jumia, Poshmark, Depop, StockX, GOAT,
+  Grailed · Local: Yelp ·
+  Real estate & jobs: Zillow, Redfin, Realtor.com, Indeed, Glassdoor ·
+  Travel & navigation: Booking.com, Expedia, Airbnb, Agoda, Trip.com,
+  Hotels.com, Vrbo, Tripadvisor, Waze ·
   Flights: Kayak, Skyscanner, Google Flights, FlightAware, Flightradar24,
   plus one Airlines toggle covering 12 carriers (Delta, United, American,
   Southwest, JetBlue, Alaska, Ryanair, easyJet, Lufthansa, British
@@ -42,9 +44,18 @@ Two hundred seventeen (200 toggles), organized by world region and type in the p
   Twitch, SoundCloud, Apple Music, Steam, IMDb, Goodreads, Wikipedia,
   Stack Overflow, GitHub, Medium, Quora, Substack, Bandcamp,
   Letterboxd, Netflix, Prime Video, Roblox, Fandom, Bilibili,
-  Epic Games, GOG, Humble Bundle, itch.io, Product Hunt ·
+  Epic Games, GOG, Humble Bundle, itch.io, Product Hunt, Vimeo,
+  Dailymotion, Rotten Tomatoes, Metacritic, Genius, Discogs, Deezer,
+  TIDAL, Pandora, Rumble, Kick, Crunchyroll, Odysee, MyAnimeList,
+  BitChute, Newgrounds ·
+  Design & creative: Behance, Dribbble, ArtStation, Flickr, Unsplash,
+  Pexels, DeviantArt, pixiv, Pixabay, Shutterstock, Getty Images,
+  Freepik, GIPHY, Tenor, VSCO, SmugMug, Adobe Stock, Alamy, Vecteezy,
+  iStock, Dreamstime, Imgur ·
   Work tools: NetSuite, Jira & Confluence, Notion, Loom, Figma,
-  GoDaddy ·
+  GoDaddy, GitLab, Bitbucket, npm, PyPI, Docker Hub, Hugging Face,
+  Kaggle, Dropbox, Box, WeTransfer, MediaFire ·
+  Learning: Coursera, Udemy, Khan Academy, edX, Skillshare, Brilliant ·
   Community & events: Kickstarter, GoFundMe, Patreon, Meetup,
   Eventbrite, Change.org ·
   Food & recipes: AllRecipes, Serious Eats, Food Network, BBC Good Food ·

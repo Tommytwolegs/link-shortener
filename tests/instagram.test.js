@@ -11,6 +11,21 @@ const {
 } = require(path.join('..', 'src', 'instagram.js'));
 
 const CASES = [
+  // Profile / non-post paths — host-scoped fallback denylist strips IG's
+  // own share junk while leaving functional params alone.
+  { name: 'profile: igshid stripped via fallback, hl kept',
+    input: 'https://www.instagram.com/nike?igshid=ABC123&hl=en',
+    expected: 'https://www.instagram.com/nike?hl=en' },
+  { name: 'profile: igsh + utm_* stripped via fallback',
+    input: 'https://www.instagram.com/nike?igsh=ZZ&utm_source=ig_web',
+    expected: 'https://www.instagram.com/nike' },
+  { name: 'explore tag: ig_rid stripped, clean path untouched',
+    input: 'https://www.instagram.com/explore/tags/coffee/?ig_rid=99',
+    expected: 'https://www.instagram.com/explore/tags/coffee/' },
+  { name: 'profile: already clean → no change',
+    input: 'https://www.instagram.com/nike',
+    expected: 'https://www.instagram.com/nike',
+    expectedNeeds: false },
   // /p/<shortcode>
   { name: 'p: igsh stripped',
     input: 'https://www.instagram.com/p/ABC123/?igsh=ZbWKwL',
@@ -72,24 +87,26 @@ const CASES = [
     expected: 'https://www.instagram.com/stories/jane-doe_42/1234567890/' },
 
   // Non-post pages on instagram.com
-  { name: 'home page → null',
+  // Non-post instagram.com paths: fallback denylist runs (strips IG share
+  // junk) but leaves clean paths byte-identical.
+  { name: 'home page: unchanged',
     input: 'https://www.instagram.com/',
-    expected: null },
-  { name: 'profile page → null',
+    expected: 'https://www.instagram.com/' },
+  { name: 'profile page: unchanged when clean',
     input: 'https://www.instagram.com/janedoe/',
-    expected: null },
-  { name: 'profile page no slash → null',
+    expected: 'https://www.instagram.com/janedoe/' },
+  { name: 'profile page no slash: unchanged when clean',
     input: 'https://www.instagram.com/janedoe',
-    expected: null },
-  { name: 'explore → null',
+    expected: 'https://www.instagram.com/janedoe' },
+  { name: 'explore: igsh stripped via fallback',
     input: 'https://www.instagram.com/explore/?igsh=Y',
-    expected: null },
-  { name: 'direct messages → null',
+    expected: 'https://www.instagram.com/explore/' },
+  { name: 'direct messages: unchanged',
     input: 'https://www.instagram.com/direct/inbox/',
-    expected: null },
-  { name: 'reel index page (no shortcode) → null',
+    expected: 'https://www.instagram.com/direct/inbox/' },
+  { name: 'reel index page (no shortcode): unchanged',
     input: 'https://www.instagram.com/reel/',
-    expected: null },
+    expected: 'https://www.instagram.com/reel/' },
 
   // Non-Instagram hosts
   { name: 'facebook.com → null',

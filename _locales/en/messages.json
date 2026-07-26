@@ -92,9 +92,6 @@
   "labelHideTravel": {
     "message": "Hide travel popup"
   },
-  "labelAmazonTitle": {
-    "message": "Include Amazon item name"
-  },
   "labelUtmStrip": {
     "message": "Universal tracking strip"
   },
@@ -158,8 +155,14 @@
   "subMedia": {
     "message": "Media & entertainment"
   },
+  "subDesign": {
+    "message": "Design & images"
+  },
   "subWorkTools": {
     "message": "Work tools"
+  },
+  "subRealEstate": {
+    "message": "Real estate & jobs"
   },
   "subAppStores": {
     "message": "App stores"
@@ -334,5 +337,11 @@
   },
   "optGeneralTitle": {
     "message": "General"
+  },
+  "labelKeepTitles": {
+    "message": "Keep item titles in links"
+  },
+  "tipKeepTitles": {
+    "message": "On sites that shorten to a bare ID (Amazon today), keep the readable title in the link instead of the shortest form."
   }
 }

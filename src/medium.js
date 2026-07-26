@@ -67,7 +67,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isMediumHost(url.hostname)) return false;
     return isPostPath(url.hostname, url.pathname);
   }
@@ -97,7 +97,7 @@
 
   function shortenMediumUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isMediumHost(url.hostname)) return null;
     if (!isPostPath(url.hostname, url.pathname)) return fallbackClean(url);
 
@@ -114,7 +114,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isMediumHost(url.hostname)) return false;
     const cleaned = shortenMediumUrl(input);
     if (!cleaned) return false;

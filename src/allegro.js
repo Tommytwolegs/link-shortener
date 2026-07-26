@@ -35,14 +35,14 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isAllegroHost(url.hostname)) return false;
     return isOfferPath(url.pathname);
   }
 
   function shortenAllegroUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isAllegroHost(url.hostname)) return null;
     if (!isOfferPath(url.pathname)) return null;
     const hash = url.hash || '';
@@ -51,7 +51,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isAllegroHost(url.hostname)) return false;
     const cleaned = shortenAllegroUrl(input);
     if (!cleaned) return false;

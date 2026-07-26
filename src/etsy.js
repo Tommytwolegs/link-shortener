@@ -48,7 +48,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isEtsyHost(url.hostname)) return false;
     return isListingPath(url.pathname);
   }
@@ -74,7 +74,7 @@
 
   function shortenEtsyUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isEtsyHost(url.hostname)) return null;
     if (!isListingPath(url.pathname)) return fallbackClean(url);
     // The path itself (with optional locale prefix and slug) is canonical;
@@ -87,7 +87,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isEtsyHost(url.hostname)) return false;
     const cleaned = shortenEtsyUrl(input);
     if (!cleaned) return false;

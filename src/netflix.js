@@ -38,14 +38,14 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isNetflixHost(url.hostname)) return false;
     return isPostPath(url.pathname);
   }
 
   function shortenNetflixUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isNetflixHost(url.hostname)) return null;
     if (!isPostPath(url.pathname)) return null;
     const hash = url.hash || '';
@@ -54,7 +54,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isNetflixHost(url.hostname)) return false;
     const cleaned = shortenNetflixUrl(input);
     if (!cleaned) return false;

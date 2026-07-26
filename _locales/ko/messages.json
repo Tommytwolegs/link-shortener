@@ -92,9 +92,6 @@
   "labelHideTravel": {
     "message": "여행 위젯 숨기기"
   },
-  "labelAmazonTitle": {
-    "message": "Amazon 상품명 포함"
-  },
   "labelUtmStrip": {
     "message": "유니버설 추적 제거"
   },
@@ -158,8 +155,14 @@
   "subMedia": {
     "message": "미디어·엔터테인먼트"
   },
+  "subDesign": {
+    "message": "디자인·이미지"
+  },
   "subWorkTools": {
     "message": "업무 도구"
+  },
+  "subRealEstate": {
+    "message": "부동산 및 채용"
   },
   "subAppStores": {
     "message": "앱 스토어"
@@ -334,5 +337,11 @@
   },
   "optGeneralTitle": {
     "message": "일반"
+  },
+  "labelKeepTitles": {
+    "message": "링크에 제목 유지"
+  },
+  "tipKeepTitles": {
+    "message": "ID로만 축약하는 사이트(현재 Amazon)에서 가장 짧은 형태 대신 읽기 쉬운 제목을 링크에 유지합니다."
   }
 }

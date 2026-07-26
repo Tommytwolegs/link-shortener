@@ -63,14 +63,14 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isStackoverflowHost(url.hostname)) return false;
     return isPostPath(url.pathname);
   }
 
   function shortenStackoverflowUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isStackoverflowHost(url.hostname)) return null;
     const form = canonicalFor(url.pathname);
     if (form === null) return null;
@@ -87,7 +87,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isStackoverflowHost(url.hostname)) return false;
     const cleaned = shortenStackoverflowUrl(input);
     if (!cleaned) return false;

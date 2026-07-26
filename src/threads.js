@@ -8,9 +8,11 @@
 //
 // Tracking parameters stripped: xmt, igshid, hl, etc.
 //
-// Profile pages (/@<user>) are intentionally NOT recognized — landing
-// pages get shared with various intent and we don't want to strip query
-// state that might mean something.
+// FALLBACK: on non-post paths (profiles /@<user>, explore, search...), a
+// host-scoped denylist still strips Threads' own share junk (xmt, igshid,
+// igsh, ig_rid) + utm_*, leaving functional query state alone. xmt in
+// particular is NOT in the universal strip list, so without this a shared
+// profile link would leak it. Same pattern as the other social modules.
 //
 // The URL hash is preserved.
 //
@@ -40,23 +42,40 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isThreadsHost(url.hostname)) return false;
     return isPostPath(url.pathname);
   }
 
+  // Host-scoped tracking params, stripped on ANY threads path that isn't a
+  // recognized post form. Denylist: functional params always survive.
+  const FALLBACK_STRIP = new Set(['xmt', 'igshid', 'igsh', 'ig_rid', 'fbclid', 'gclid']);
+  const FALLBACK_PREFIXES = ['utm_'];
+
+  function fallbackClean(url) {
+    const clone = new URL(url.href);
+    for (const name of Array.from(clone.searchParams.keys())) {
+      const lower = name.toLowerCase();
+      if (FALLBACK_STRIP.has(lower) || FALLBACK_PREFIXES.some((p) => lower.startsWith(p))) {
+        clone.searchParams.delete(name);
+      }
+    }
+    const hash = clone.hash || '';
+    return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;
+  }
+
   function shortenThreadsUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isThreadsHost(url.hostname)) return null;
-    if (!isPostPath(url.pathname)) return null;
+    if (!isPostPath(url.pathname)) return fallbackClean(url);
     const hash = url.hash || '';
     return `${url.protocol}//${url.host}${url.pathname}${hash}`;
   }
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isThreadsHost(url.hostname)) return false;
     const cleaned = shortenThreadsUrl(input);
     if (!cleaned) return false;
@@ -72,6 +91,7 @@
     STORAGE_KEY: 'enabledThreads',
     THREADS_HOST_REGEX,
     POST_PATTERNS,
+    FALLBACK_STRIP,
   };
   global.ThreadsLinkShortener = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

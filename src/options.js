@@ -128,14 +128,12 @@
   (function initGeneralPrefs() {
     const els = {
       hideTravelPopup: document.getElementById('hideTravelPopup'),
-      includeAmazonTitle: document.getElementById('includeAmazonTitle'),
     };
-    if (!els.hideTravelPopup || !els.includeAmazonTitle) return;
+    if (!els.hideTravelPopup) return;
     function apply(items) {
       els.hideTravelPopup.checked = items.hideTravelPopup === true;
-      els.includeAmazonTitle.checked = items.includeAmazonTitle === true;
     }
-    chrome.storage.sync.get({ hideTravelPopup: false, includeAmazonTitle: false }, (items) => {
+    chrome.storage.sync.get({ hideTravelPopup: false }, (items) => {
       void chrome.runtime.lastError;
       apply(items);
     });
@@ -146,8 +144,8 @@
     }
     chrome.storage.onChanged.addListener((changes, area) => {
       if (area !== 'sync') return;
-      if ('hideTravelPopup' in changes || 'includeAmazonTitle' in changes) {
-        chrome.storage.sync.get({ hideTravelPopup: false, includeAmazonTitle: false }, apply);
+      if ('hideTravelPopup' in changes) {
+        chrome.storage.sync.get({ hideTravelPopup: false }, apply);
       }
     });
   })();
@@ -235,7 +233,7 @@
       let n = 0;
       if (!settings || typeof settings !== 'object' || Array.isArray(settings)) return { out, n };
       for (const [k, v] of Object.entries(settings)) {
-        if (/^(enabled|enabled[A-Z][A-Za-z0-9]*|includeAmazonTitle|hideTravelPopup)$/.test(k)
+        if (/^(enabled|enabled[A-Z][A-Za-z0-9]*|includeAmazonTitle|keepTitles|hideTravelPopup)$/.test(k)
             && typeof v === 'boolean') {
           out[k] = v; n++;
         } else if ((k === 'utmStripSkipDomains' || k === 'utmStripKeepParams')

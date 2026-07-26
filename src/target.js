@@ -48,7 +48,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isTargetHost(url.hostname)) return false;
     return isProductPath(url.pathname);
   }
@@ -69,7 +69,7 @@
     let url;
     // Clone URL-object inputs — searchParams.delete below would otherwise
     // mutate the caller's object (and break needsShortening's comparison).
-    try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
+    try { url = new URL(typeof input === 'string' ? input : (input && input.href)); } catch (_e) { return null; }
     if (!isTargetHost(url.hostname)) return null;
     if (!isProductPath(url.pathname)) {
       // Non-product paths get a REDUCED strip: searchTerm is attribution
@@ -100,7 +100,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isTargetHost(url.hostname)) return false;
     const cleaned = shortenTargetUrl(input);
     if (!cleaned) return false;

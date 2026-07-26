@@ -52,14 +52,14 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isTemuHost(url.hostname)) return false;
     return !!formFor(url.pathname, url.searchParams);
   }
 
   function shortenTemuUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isTemuHost(url.hostname)) return null;
     const form = formFor(url.pathname, url.searchParams);
     if (!form) return null;
@@ -77,7 +77,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isTemuHost(url.hostname)) return false;
     const cleaned = shortenTemuUrl(input);
     if (!cleaned) return false;

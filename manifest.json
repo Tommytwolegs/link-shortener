@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Rather's Link Shortener",
   "short_name": "Link Shortener",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "__MSG_extDesc__",
   "default_locale": "en",
   "author": "Thomas Powers",
@@ -306,6 +306,73 @@
     "*://*.zalando.cz/*",
     "*://*.zalando.ie/*",
     "*://*.netflix.com/*",
+    "*://*.vimeo.com/*",
+    "*://*.dailymotion.com/*",
+    "*://dai.ly/*",
+    "*://*.waze.com/*",
+    "*://*.zillow.com/*",
+    "*://*.redfin.com/*",
+    "*://*.realtor.com/*",
+    "*://*.indeed.com/*",
+    "*://*.glassdoor.com/*",
+    "*://*.poshmark.com/*",
+    "*://*.depop.com/*",
+    "*://*.stockx.com/*",
+    "*://*.goat.com/*",
+    "*://*.grailed.com/*",
+    "*://*.rottentomatoes.com/*",
+    "*://*.metacritic.com/*",
+    "*://*.genius.com/*",
+    "*://*.discogs.com/*",
+    "*://*.deezer.com/*",
+    "*://*.tidal.com/*",
+    "*://*.pandora.com/*",
+    "*://*.gitlab.com/*",
+    "*://*.bitbucket.org/*",
+    "*://*.npmjs.com/*",
+    "*://*.pypi.org/*",
+    "*://hub.docker.com/*",
+    "*://*.huggingface.co/*",
+    "*://*.kaggle.com/*",
+    "*://*.dropbox.com/*",
+    "*://*.box.com/*",
+    "*://*.wetransfer.com/*",
+    "*://*.mediafire.com/*",
+    "*://*.behance.net/*",
+    "*://*.dribbble.com/*",
+    "*://*.artstation.com/*",
+    "*://*.flickr.com/*",
+    "*://*.unsplash.com/*",
+    "*://*.pexels.com/*",
+    "*://*.deviantart.com/*",
+    "*://*.pixiv.net/*",
+    "*://*.pixabay.com/*",
+    "*://*.shutterstock.com/*",
+    "*://*.gettyimages.com/*",
+    "*://*.freepik.com/*",
+    "*://*.giphy.com/*",
+    "*://*.tenor.com/*",
+    "*://*.vsco.co/*",
+    "*://*.smugmug.com/*",
+    "*://stock.adobe.com/*",
+    "*://*.alamy.com/*",
+    "*://*.vecteezy.com/*",
+    "*://*.istockphoto.com/*",
+    "*://*.dreamstime.com/*",
+    "*://*.imgur.com/*",
+    "*://*.rumble.com/*",
+    "*://*.kick.com/*",
+    "*://*.crunchyroll.com/*",
+    "*://*.odysee.com/*",
+    "*://*.myanimelist.net/*",
+    "*://*.bitchute.com/*",
+    "*://*.newgrounds.com/*",
+    "*://*.coursera.org/*",
+    "*://*.udemy.com/*",
+    "*://*.khanacademy.org/*",
+    "*://*.edx.org/*",
+    "*://*.skillshare.com/*",
+    "*://*.brilliant.org/*",
     "*://*.roblox.com/*",
     "*://*.fandom.com/*",
     "*://*.bilibili.com/*",
@@ -1294,6 +1361,733 @@
       ],
       "js": [
         "src/letterboxd.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.vimeo.com/*"
+      ],
+      "js": [
+        "src/vimeo.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.dailymotion.com/*",
+        "*://dai.ly/*"
+      ],
+      "js": [
+        "src/dailymotion.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.waze.com/*"
+      ],
+      "js": [
+        "src/waze.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.zillow.com/*"
+      ],
+      "js": [
+        "src/zillow.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.redfin.com/*"
+      ],
+      "js": [
+        "src/redfin.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.realtor.com/*"
+      ],
+      "js": [
+        "src/realtor.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.indeed.com/*"
+      ],
+      "js": [
+        "src/indeed.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.glassdoor.com/*"
+      ],
+      "js": [
+        "src/glassdoor.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.poshmark.com/*"
+      ],
+      "js": [
+        "src/poshmark.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.depop.com/*"
+      ],
+      "js": [
+        "src/depop.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.stockx.com/*"
+      ],
+      "js": [
+        "src/stockx.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.goat.com/*"
+      ],
+      "js": [
+        "src/goat.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.grailed.com/*"
+      ],
+      "js": [
+        "src/grailed.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.rottentomatoes.com/*"
+      ],
+      "js": [
+        "src/rottentomatoes.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.metacritic.com/*"
+      ],
+      "js": [
+        "src/metacritic.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.genius.com/*"
+      ],
+      "js": [
+        "src/genius.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.discogs.com/*"
+      ],
+      "js": [
+        "src/discogs.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.deezer.com/*"
+      ],
+      "js": [
+        "src/deezer.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.tidal.com/*"
+      ],
+      "js": [
+        "src/tidal.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.pandora.com/*"
+      ],
+      "js": [
+        "src/pandora.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.gitlab.com/*"
+      ],
+      "js": [
+        "src/gitlab.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.bitbucket.org/*"
+      ],
+      "js": [
+        "src/bitbucket.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.npmjs.com/*"
+      ],
+      "js": [
+        "src/npm.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.pypi.org/*"
+      ],
+      "js": [
+        "src/pypi.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://hub.docker.com/*"
+      ],
+      "js": [
+        "src/dockerhub.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.huggingface.co/*"
+      ],
+      "js": [
+        "src/huggingface.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.kaggle.com/*"
+      ],
+      "js": [
+        "src/kaggle.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.dropbox.com/*"
+      ],
+      "js": [
+        "src/dropbox.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.box.com/*"
+      ],
+      "js": [
+        "src/box.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.wetransfer.com/*"
+      ],
+      "js": [
+        "src/wetransfer.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.mediafire.com/*"
+      ],
+      "js": [
+        "src/mediafire.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.behance.net/*"
+      ],
+      "js": [
+        "src/behance.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.dribbble.com/*"
+      ],
+      "js": [
+        "src/dribbble.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.artstation.com/*"
+      ],
+      "js": [
+        "src/artstation.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.flickr.com/*"
+      ],
+      "js": [
+        "src/flickr.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.unsplash.com/*"
+      ],
+      "js": [
+        "src/unsplash.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.pexels.com/*"
+      ],
+      "js": [
+        "src/pexels.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.deviantart.com/*"
+      ],
+      "js": [
+        "src/deviantart.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.pixiv.net/*"
+      ],
+      "js": [
+        "src/pixiv.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.pixabay.com/*"
+      ],
+      "js": [
+        "src/pixabay.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.shutterstock.com/*"
+      ],
+      "js": [
+        "src/shutterstock.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.gettyimages.com/*"
+      ],
+      "js": [
+        "src/gettyimages.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.freepik.com/*"
+      ],
+      "js": [
+        "src/freepik.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.giphy.com/*"
+      ],
+      "js": [
+        "src/giphy.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.tenor.com/*"
+      ],
+      "js": [
+        "src/tenor.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.vsco.co/*"
+      ],
+      "js": [
+        "src/vsco.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.smugmug.com/*"
+      ],
+      "js": [
+        "src/smugmug.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://stock.adobe.com/*"
+      ],
+      "js": [
+        "src/adobestock.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.alamy.com/*"
+      ],
+      "js": [
+        "src/alamy.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.vecteezy.com/*"
+      ],
+      "js": [
+        "src/vecteezy.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.istockphoto.com/*"
+      ],
+      "js": [
+        "src/istock.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.dreamstime.com/*"
+      ],
+      "js": [
+        "src/dreamstime.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.imgur.com/*"
+      ],
+      "js": [
+        "src/imgur.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.rumble.com/*"
+      ],
+      "js": [
+        "src/rumble.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.kick.com/*"
+      ],
+      "js": [
+        "src/kick.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.crunchyroll.com/*"
+      ],
+      "js": [
+        "src/crunchyroll.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.odysee.com/*"
+      ],
+      "js": [
+        "src/odysee.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.myanimelist.net/*"
+      ],
+      "js": [
+        "src/myanimelist.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.bitchute.com/*"
+      ],
+      "js": [
+        "src/bitchute.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.newgrounds.com/*"
+      ],
+      "js": [
+        "src/newgrounds.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.coursera.org/*"
+      ],
+      "js": [
+        "src/coursera.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.udemy.com/*"
+      ],
+      "js": [
+        "src/udemy.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.khanacademy.org/*"
+      ],
+      "js": [
+        "src/khanacademy.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.edx.org/*"
+      ],
+      "js": [
+        "src/edx.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.skillshare.com/*"
+      ],
+      "js": [
+        "src/skillshare.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.brilliant.org/*"
+      ],
+      "js": [
+        "src/brilliant.js",
         "src/social-content.js"
       ],
       "run_at": "document_start",

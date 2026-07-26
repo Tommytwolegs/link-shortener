@@ -221,11 +221,11 @@
   // page render by a large margin.
   if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
     chrome.storage.sync.get(
-      { enabled: true, enabledAmazon: true, includeAmazonTitle: false },
+      { enabled: true, enabledAmazon: true, includeAmazonTitle: false, keepTitles: false },
       (items) => {
         masterEnabled = items.enabled !== false;
         siteEnabled = items.enabledAmazon !== false;
-        includeTitle = items.includeAmazonTitle === true;
+        includeTitle = items.keepTitles === true || items.includeAmazonTitle === true;
         doFullPass();
       },
     );
@@ -241,7 +241,10 @@
         siteEnabled = changes.enabledAmazon.newValue !== false;
         touched = true;
       }
-      if (Object.prototype.hasOwnProperty.call(changes, 'includeAmazonTitle')) {
+      if (Object.prototype.hasOwnProperty.call(changes, 'keepTitles')) {
+        includeTitle = changes.keepTitles.newValue === true;
+        touched = true;
+      } else if (Object.prototype.hasOwnProperty.call(changes, 'includeAmazonTitle')) {
         includeTitle = changes.includeAmazonTitle.newValue === true;
         touched = true;
       }

@@ -10,13 +10,16 @@
 //   /<channel>/clip/<slug>       → clip (channel-scoped form)
 //   clips.twitch.tv/<slug>       → clip (short host form)
 //
-// Channel pages (/<channel>) are intentionally NOT recognized — a single
-// generic path segment is too collision-prone, and their share junk is
-// already handled by the opt-in universal strip.
+// Channel pages (/<channel>) are NOT canonicalized — a single generic path
+// segment is too collision-prone to treat as a permalink. But their share
+// junk (tt_content, tt_medium) is NOT in the universal strip list, so a
+// host-scoped fallback denylist cleans it without needing to "recognize"
+// the page: it just removes known Twitch tracking from any non-form path.
 //
 // Tracking stripped: tt_content, tt_medium, featured, filter, sort, sig,
 // token (never functional on these forms), utm_* — everything except the
-// VOD timestamp.
+// VOD timestamp. On non-form paths the fallback strips tt_content/tt_medium
+// + utm_* only, leaving any functional query state intact.
 //
 // The URL hash is preserved.
 //
@@ -56,17 +59,35 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isTwitchHost(url.hostname)) return false;
     return !!formFor(url.hostname, url.pathname);
   }
 
+  // Host-scoped tracking params, stripped on ANY twitch.tv path that isn't a
+  // recognized VOD/clip form (channel pages, directory...). Denylist:
+  // functional params (sort/filter on directory pages, etc.) always survive.
+  const FALLBACK_STRIP = new Set(['tt_content', 'tt_medium', 'fbclid', 'gclid']);
+  const FALLBACK_PREFIXES = ['utm_'];
+
+  function fallbackClean(url) {
+    const clone = new URL(url.href);
+    for (const name of Array.from(clone.searchParams.keys())) {
+      const lower = name.toLowerCase();
+      if (FALLBACK_STRIP.has(lower) || FALLBACK_PREFIXES.some((p) => lower.startsWith(p))) {
+        clone.searchParams.delete(name);
+      }
+    }
+    const hash = clone.hash || '';
+    return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;
+  }
+
   function shortenTwitchUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isTwitchHost(url.hostname)) return null;
     const form = formFor(url.hostname, url.pathname);
-    if (!form) return null;
+    if (!form) return fallbackClean(url);
 
     const params = new URLSearchParams();
     for (const k of form.keepParams) {
@@ -81,7 +102,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isTwitchHost(url.hostname)) return false;
     const cleaned = shortenTwitchUrl(input);
     if (!cleaned) return false;
@@ -98,6 +119,7 @@
     TWITCH_HOST_REGEX,
     CLIPS_HOST_REGEX,
     FORMS,
+    FALLBACK_STRIP,
   };
   global.TwitchLinkShortener = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

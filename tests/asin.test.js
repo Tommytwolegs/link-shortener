@@ -176,9 +176,12 @@ const CASES = [
 
   // ----- Sponsored / wrapper URLs always go to /dp/ — sponsored-product
   // clickthroughs land on the product page.
-  { name: 'Sponsored: /sspa/click with url= param',
+  { name: 'Sponsored: /sspa/click keeps psc variant from wrapped target, drops pd_rd_w',
     input: 'https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo5MjkzMzg5ODA2MDQyOTE&url=%2FWordsworth-Black-Cartridges-Converter-Calligraphy%2Fdp%2FB0B57CV483%3Fpsc%3D1%26pd_rd_w%3D8Wtcb',
-    expected: 'https://www.amazon.com/dp/B0B57CV483' },
+    expected: 'https://www.amazon.com/dp/B0B57CV483?psc=1' },
+  { name: 'Sponsored: /sspa/click keeps th+psc variant lock from wrapped target',
+    input: 'https://www.amazon.com/sspa/click?ie=UTF8&url=%2Fdp%2FB0B57CV483%3Fth%3D1%26psc%3D1%26ref%3Dsr_1',
+    expected: 'https://www.amazon.com/dp/B0B57CV483?th=1&psc=1' },
   { name: 'Sponsored: /sspa/click with bare /dp/ASIN in url= param',
     input: 'https://www.amazon.com/sspa/click?ie=UTF8&url=%2Fdp%2FB08N5WRWNW',
     expected: 'https://www.amazon.com/dp/B08N5WRWNW' },

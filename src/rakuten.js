@@ -41,7 +41,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isRakutenHost(url.hostname)) return false;
     return isItemPath(url.pathname);
   }
@@ -50,7 +50,7 @@
 
   function shortenRakutenUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isRakutenHost(url.hostname)) return null;
     if (!isItemPath(url.pathname)) return null;
 
@@ -67,7 +67,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isRakutenHost(url.hostname)) return false;
     const cleaned = shortenRakutenUrl(input);
     if (!cleaned) return false;

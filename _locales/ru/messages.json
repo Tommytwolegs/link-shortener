@@ -92,9 +92,6 @@
   "labelHideTravel": {
     "message": "Скрыть виджет путешествий"
   },
-  "labelAmazonTitle": {
-    "message": "Добавлять название товара Amazon"
-  },
   "labelUtmStrip": {
     "message": "Универсальный фильтр слежения"
   },
@@ -158,8 +155,14 @@
   "subMedia": {
     "message": "Медиа и развлечения"
   },
+  "subDesign": {
+    "message": "Дизайн и изображения"
+  },
   "subWorkTools": {
     "message": "Рабочие инструменты"
+  },
+  "subRealEstate": {
+    "message": "Недвижимость и работа"
   },
   "subAppStores": {
     "message": "Магазины приложений"
@@ -334,5 +337,11 @@
   },
   "optGeneralTitle": {
     "message": "Общие"
+  },
+  "labelKeepTitles": {
+    "message": "Сохранять названия в ссылках"
+  },
+  "tipKeepTitles": {
+    "message": "На сайтах, сокращающих ссылку до чистого ID (пока это Amazon), сохранять читаемый заголовок вместо самой короткой формы."
   }
 }

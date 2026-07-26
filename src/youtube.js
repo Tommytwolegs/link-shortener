@@ -5,14 +5,16 @@
 // Recognized forms and how each is cleaned:
 //
 //   /watch?v=ID&t=N&list=PL&...   → keep ?v=, ?t= (timestamp), ?list= and
-//                                    ?index= (playlist context + position);
+//                                    ?index= (playlist context + position),
+//                                    and ?lc= (linked-comment deep-link);
 //                                    drop si, pp, feature, ab_channel,
 //                                    utm_*, etc.
 //   /shorts/ID?si=X               → /shorts/ID
 //   /playlist?list=PLID&...       → keep ?list= only
 //   /live/ID?si=X                 → /live/ID
 //   /embed/ID?si=X                → /embed/ID
-//   youtu.be/ID?si=X&t=N          → youtu.be/ID, with ?t= preserved if set
+//   youtu.be/ID?si=X&t=N          → youtu.be/ID, with ?t=/?list=/?index=
+//                                    preserved if set
 //
 // Hosts: youtube.com, m.youtube.com, music.youtube.com, youtu.be.
 //
@@ -38,8 +40,9 @@
   // as a post.
   const YT_PATTERNS = [
     // /watch — needs v=. Keeps t= (timestamp) + list= (playlist context) +
-    // index= (1-based playlist position; pairs with list).
-    { pattern: /^\/watch\/?$/, allowedParams: new Set(['v', 't', 'list', 'index']), requiredParams: ['v'] },
+    // index= (1-based playlist position; pairs with list) + lc= (linked
+    // comment: the scroll-to-and-highlight anchor for a shared comment).
+    { pattern: /^\/watch\/?$/, allowedParams: new Set(['v', 't', 'list', 'index', 'lc']), requiredParams: ['v'] },
     // /shorts/<id>
     { pattern: /^\/shorts\/[^/?#]+\/?$/, allowedParams: new Set(['t']) },
     // /live/<id>
@@ -58,7 +61,10 @@
   function postSpecFor(hostname, pathname, searchParams) {
     if (YOUTU_BE_HOST_REGEX.test(hostname)) {
       if (YOUTU_BE_PATH.test(pathname)) {
-        return { allowedParams: new Set(['t']) };
+        // Keep ?t= (timestamp) and ?list=/?index= (playlist context), for
+        // parity with /watch — youtu.be links shared from a playlist carry
+        // these too. si= (share tracking) and the rest are dropped.
+        return { allowedParams: new Set(['t', 'list', 'index']) };
       }
       return null;
     }
@@ -75,7 +81,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isYoutubeHost(url.hostname)) return false;
     return !!postSpecFor(url.hostname, url.pathname, url.searchParams);
   }
@@ -101,7 +107,7 @@
 
   function shortenYoutubeUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isYoutubeHost(url.hostname)) return null;
     const spec = postSpecFor(url.hostname, url.pathname, url.searchParams);
     if (!spec) return fallbackClean(url);
@@ -124,7 +130,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isYoutubeHost(url.hostname)) return false;
     const cleaned = shortenYoutubeUrl(input);
     if (!cleaned) return false;

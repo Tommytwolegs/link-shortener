@@ -2,7 +2,10 @@
 // ----------------------------------------------------------------------------
 // Pure functions for cleaning Best Buy product URLs. Address-bar-only.
 //
-//   /site/<slug>/<sku>.p                 → US product page
+//   /site/<slug>/<sku>.p                 → US product page (legacy numeric sku)
+//   /product/<slug>/<id>                 → US product page (new scheme; the id
+//                                          is alphanumeric, e.g. JJGCQ88C8X —
+//                                          Best Buy now redirects /site/*.p here)
 //   /en-ca/product/<slug>/<sku>          → Canada (also /fr-ca/, and the
 //   /en-ca/product/<sku>                   slugless variant) — verified
 //
@@ -28,6 +31,10 @@
   const POST_PATTERNS = [
     /^\/site\/(?:[^/]+\/)+\d+\.p\/?$/i,
     /^\/(?:en|fr)-ca\/product\/(?:[^/]+\/)?\d+\/?$/i,
+    // US new scheme: /product/<slug?>/<alphanumeric-id>. The id guard requires
+    // 8+ chars with at least one digit (real ids like JJGCQ88C8X qualify) so
+    // we never match a letters-only category slug such as /product/deals.
+    /^\/product\/(?:[^/]+\/)?(?=[A-Za-z0-9]*\d)[A-Za-z0-9]{8,}\/?$/i,
   ];
 
   function isPostPath(pathname) {
@@ -36,7 +43,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isBestbuyHost(url.hostname)) return false;
     return isPostPath(url.pathname);
   }
@@ -45,7 +52,7 @@
 
   function shortenBestbuyUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isBestbuyHost(url.hostname)) return null;
     if (!isPostPath(url.pathname)) return null;
     const params = new URLSearchParams();
@@ -62,7 +69,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isBestbuyHost(url.hostname)) return false;
     const cleaned = shortenBestbuyUrl(input);
     if (!cleaned) return false;

@@ -92,9 +92,6 @@
   "labelHideTravel": {
     "message": "Reise-Popup ausblenden"
   },
-  "labelAmazonTitle": {
-    "message": "Amazon-Artikelnamen einschließen"
-  },
   "labelUtmStrip": {
     "message": "Universeller Tracking-Filter"
   },
@@ -158,8 +155,14 @@
   "subMedia": {
     "message": "Medien & Unterhaltung"
   },
+  "subDesign": {
+    "message": "Design & Bilder"
+  },
   "subWorkTools": {
     "message": "Arbeitswerkzeuge"
+  },
+  "subRealEstate": {
+    "message": "Immobilien & Jobs"
   },
   "subAppStores": {
     "message": "App-Stores"
@@ -334,5 +337,11 @@
   },
   "optGeneralTitle": {
     "message": "Allgemein"
+  },
+  "labelKeepTitles": {
+    "message": "Titel in Links behalten"
+  },
+  "tipKeepTitles": {
+    "message": "Auf Seiten, die auf eine reine ID kürzen (derzeit Amazon), den lesbaren Titel im Link behalten statt der Kurzform."
   }
 }

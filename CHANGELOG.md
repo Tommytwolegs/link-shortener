@@ -5,6 +5,65 @@ Shortener through v1.9.0). Versions follow
 [Semantic Versioning](https://semver.org/) loosely — minor bumps mark new
 features, patch bumps mark bug-fix-only releases.
 
+## [1.11.0] — in development
+
+### Added
+- **Maps & video pack.** Google Maps (inside the Google module: the place
+  name, `@lat,lng,zoom` coordinates and the `/data=` blob are untouched;
+  only share telemetry — entry, g_ep, ved, ei, g_st, utm_* — is stripped),
+  Vimeo (the unlisted-video privacy hash in the path and `?h=` on player
+  embeds survive; timestamp `#t=` fragments preserved), Dailymotion (+
+  dai.ly; start timestamp and playlist kept), Waze (ll/to/from/navigate
+  coordinates kept).
+- **Real estate & jobs pack.** Zillow, Redfin, Realtor.com (listing identity
+  in the path is untouched), Indeed (the `jk` job key and `q`/`l` search
+  state survive; referral/session junk goes), Glassdoor.
+- **Resale pack.** Poshmark, Depop, StockX (the `?size` selector survives),
+  GOAT, Grailed (+ its Algolia click-analytics params g_aidx/g_aci).
+- **Entertainment & music pack.** Rotten Tomatoes, Metacritic, Genius,
+  Discogs, Deezer, Tidal, Pandora.
+- **Dev & tech pack.** GitLab, Bitbucket (line-anchor `#L` hashes survive),
+  npm, PyPI, Docker Hub, Hugging Face, Kaggle.
+- **Cloud & files pack.** Dropbox (the `rlkey` access grant and `dl` flag are
+  kept; only the `st` session token + utm_* go), Box, WeTransfer, MediaFire.
+- **Design & creative pack.** Behance, Dribbble, ArtStation, Flickr, Unsplash,
+  Pexels, DeviantArt, pixiv, Pixabay, Shutterstock, Getty Images, Freepik,
+  GIPHY, Tenor, VSCO, SmugMug, Adobe Stock, Alamy, Vecteezy, iStock,
+  Dreamstime, Imgur.
+- **More streaming & video pack.** Rumble, Kick, Crunchyroll, Odysee,
+  MyAnimeList, BitChute, Newgrounds.
+- **Learning pack.** Coursera, Udemy (the `couponCode` discount survives),
+  Khan Academy, edX, Skillshare, Brilliant.
+
+### Changed
+- **"Keep item titles in links" moved into the popup** and generalized from the
+  old Advanced-only "Include Amazon item name" toggle into a single global
+  preference (`keepTitles`). Off by default (shortest form). It applies to
+  Amazon today — the one major site whose bare `/dp/ASIN` form stays put; live
+  testing showed most other sites (StackOverflow, Walmart, …) re-add their own
+  title slug, so the switch is built to honor any site that opts in later
+  without another settings change. The legacy `includeAmazonTitle` key is still
+  written and read, so existing preferences and downgrades keep working.
+
+### Fixed
+- **YouTube linked-comment deep-links** (`?lc=`) now survive; youtu.be keeps
+  playlist context (list/index).
+- **New universal trackers:** twclid (X/Twitter Ads), cjevent/cjdata
+  (Commission Junction affiliate).
+- **Instagram, Threads, Twitch, Substack, SoundCloud, Bilibili** now strip
+  their own share tokens on profile/channel pages (igshid, xmt, tt_content,
+  r, si, spm_id_from) via host-scoped fallbacks, not just on recognized post
+  URLs.
+- **Amazon** sponsored-click unwrap now keeps the `th`/`psc` variant lock
+  from the wrapped target.
+- **Best Buy (US)** now recognizes the new `/product/<slug>/<id>` URL scheme
+  Best Buy redirects product links to (alphanumeric id, e.g. `JJGCQ88C8X`);
+  previously only the legacy `/site/<slug>/<sku>.p` form was cleaned, so
+  tracking survived on the new pages.
+- **Google Search** strips `rlz` (Chrome distribution id); **Humble** strips
+  the full `hmb_*` family; **Times of India** no longer claims Economic Times
+  / NavBharat under one toggle; a **LinkedIn** denylist typo was fixed.
+
 ## [1.10.0] — in development
 
 ### Changed

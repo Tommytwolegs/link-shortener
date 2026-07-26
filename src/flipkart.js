@@ -41,7 +41,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isFlipkartHost(url.hostname)) return false;
     return isProductPath(url.pathname);
   }
@@ -50,7 +50,7 @@
 
   function shortenFlipkartUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isFlipkartHost(url.hostname)) return null;
     if (!isProductPath(url.pathname)) return null;
 
@@ -67,7 +67,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isFlipkartHost(url.hostname)) return false;
     const cleaned = shortenFlipkartUrl(input);
     if (!cleaned) return false;

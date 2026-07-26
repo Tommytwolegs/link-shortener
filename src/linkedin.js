@@ -76,7 +76,7 @@
   // case-insensitively.
   const FALLBACK_STRIP = new Set([
     'lipi', 'trk', 'trkinfo', 'trackingid', 'refid', 'midtoken', 'midsig',
-    'ebp', 'originalsubdomain', 'licu', 'miniprofileurn', 'original_referer',, 'fbclid', 'gclid',
+    'ebp', 'originalsubdomain', 'licu', 'miniprofileurn', 'original_referer', 'fbclid', 'gclid',
   ]);
 
   function specFor(pathname) {
@@ -92,14 +92,14 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isLinkedinHost(url.hostname)) return false;
     return isPostPath(url.pathname);
   }
 
   function shortenLinkedinUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isLinkedinHost(url.hostname)) return null;
     const spec = specFor(url.pathname);
     if (spec) {
@@ -127,7 +127,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isLinkedinHost(url.hostname)) return false;
     const cleaned = shortenLinkedinUrl(input);
     if (!cleaned) return false;

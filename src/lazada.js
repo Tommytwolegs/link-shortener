@@ -40,14 +40,14 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isLazadaHost(url.hostname)) return false;
     return isProductPath(url.pathname);
   }
 
   function shortenLazadaUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isLazadaHost(url.hostname)) return null;
     if (!isProductPath(url.pathname)) return null;
     const hash = url.hash || '';
@@ -56,7 +56,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isLazadaHost(url.hostname)) return false;
     const cleaned = shortenLazadaUrl(input);
     if (!cleaned) return false;

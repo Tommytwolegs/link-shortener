@@ -39,7 +39,7 @@
   // A search URL is any path on a DDG host with a non-empty q=.
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isDuckduckgoHost(url.hostname)) return false;
     const q = url.searchParams.get('q');
     return !!(q && q.length);
@@ -57,7 +57,7 @@
   function shortenDuckduckgoUrl(input) {
     let url;
     // Clone URL-object inputs — we delete params in place below.
-    try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
+    try { url = new URL(typeof input === 'string' ? input : (input && input.href)); } catch (_e) { return null; }
     if (!isPostUrl(url)) return null;
 
     const names = Array.from(url.searchParams.keys());
@@ -71,7 +71,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isDuckduckgoHost(url.hostname)) return false;
     const cleaned = shortenDuckduckgoUrl(input);
     if (!cleaned) return false;

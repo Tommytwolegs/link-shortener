@@ -73,7 +73,7 @@
   // "Post" here = any covered airline URL carrying at least one strippable param.
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     const airline = airlineFor(url.hostname);
     if (!airline) return false;
     return Array.from(url.searchParams.keys())
@@ -83,7 +83,7 @@
   function shortenAirlineUrl(input) {
     let url;
     // Clone URL-object inputs — we delete params in place below.
-    try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
+    try { url = new URL(typeof input === 'string' ? input : (input && input.href)); } catch (_e) { return null; }
     const airline = airlineFor(url.hostname);
     if (!airline) return null;
 
@@ -98,7 +98,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isAirlineHost(url.hostname)) return false;
     const cleaned = shortenAirlineUrl(input);
     if (!cleaned) return false;

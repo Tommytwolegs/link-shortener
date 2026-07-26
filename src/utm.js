@@ -21,6 +21,7 @@
 //   * Instagram share identifiers: igshid, ig_rid, ig_share, igsh.
 //   * Microsoft Ads / Bing Clarity: msclkid, msockid.
 //   * TikTok Ads: ttclid.
+//   * Twitter/X Ads: twclid.
 //   * LinkedIn: li_fat_id, trkCampaign. (Bare `trk` is intentionally NOT
 //     stripped universally — too generic a name for a host-agnostic
 //     denylist; the LinkedIn per-site module strips it on linkedin.com.)
@@ -42,7 +43,8 @@
 //   * Mailgun: mailgun_* prefix.
 //   * ExactTarget/Salesforce: et_cid, et_rid.
 //   * Affiliate networks: sscid (ShareASale), awc (AWIN), rfsn (Refersion),
-//     tduid (TradeDoubler), ranEAID/ranMID/ranSiteID (Rakuten).
+//     tduid (TradeDoubler), ranEAID/ranMID/ranSiteID (Rakuten),
+//     cjevent/cjdata (Commission Junction).
 //   * Wicked Reports: wickedid, wickedsource, wickedlocation.
 //   * Omeda: oly_anon_id, oly_enc_id.
 //   * Webtrends: WT.mc_id, WT.tsrc.
@@ -84,6 +86,8 @@
     'msclkid', 'msockid',
     // TikTok Ads
     'ttclid',
+    // Twitter / X Ads (click id stamped on advertiser destination URLs)
+    'twclid',
     // LinkedIn
     'li_fat_id', 'trkcampaign',
     // Pinterest
@@ -120,6 +124,7 @@
     'rfsn',                                   // Refersion
     'tduid',                                  // TradeDoubler
     'raneaid', 'ranmid', 'ransiteid',         // Rakuten
+    'cjevent', 'cjdata',                      // Commission Junction (CJ Affiliate)
     // Wicked Reports
     'wickedid', 'wickedsource', 'wickedlocation',
     // Omeda
@@ -185,7 +190,7 @@
     try {
       // Clone URL-object inputs so we never mutate the caller's object
       // (searchParams.delete below would otherwise modify it in place).
-      url = new URL(typeof input === 'string' ? input : input.href);
+      url = new URL(typeof input === 'string' ? input : (input && input.href));
     } catch (_e) {
       return typeof input === 'string' ? input : null;
     }
@@ -234,7 +239,7 @@
   function needsStripping(input, options) {
     let url;
     try {
-      url = typeof input === 'string' ? new URL(input) : input;
+      url = typeof input === 'string' ? new URL(input) : (input || {});
     } catch (_e) {
       return false;
     }

@@ -18,6 +18,12 @@
 // `img_index` is preserved. Without it, a shared "slide 3 of 7" link snaps
 // back to slide 1 the moment our cleanup pass runs.
 //
+// FALLBACK: on instagram.com paths that match NO recognized post form
+// (profiles, /explore/, tags, locations...), a host-scoped denylist still
+// strips IG's own share junk (igsh, igshid, ig_rid, ig_share) + utm_*,
+// leaving everything else untouched — same pattern as the other social
+// modules, so "Copy clean URL" works there without the universal strip.
+//
 // The URL hash is preserved — Instagram doesn't use hashes for tracking.
 //
 // Loaded as:
@@ -53,7 +59,7 @@
   function isPostUrl(input) {
     let url;
     try {
-      url = typeof input === 'string' ? new URL(input) : input;
+      url = typeof input === 'string' ? new URL(input) : (input || {});
     } catch (_e) {
       return false;
     }
@@ -68,16 +74,38 @@
   // cleanup pass strips the param.
   const KEEP_PARAMS = new Set(['img_index']);
 
-  // Build the clean form. Returns null if `input` isn't an Instagram post URL.
+  // Host-scoped tracking params, stripped on ANY instagram.com path that
+  // isn't a recognized post form (profiles, explore, tags, locations...).
+  // Denylist: functional params always survive. Mirrors the other social
+  // modules so "Copy clean URL" cleans the long tail of IG pages even when
+  // the universal tracking strip is off.
+  const FALLBACK_STRIP = new Set(['igsh', 'igshid', 'ig_rid', 'ig_share', 'fbclid', 'gclid']);
+  const FALLBACK_PREFIXES = ['utm_'];
+
+  function fallbackClean(url) {
+    const clone = new URL(url.href);
+    for (const name of Array.from(clone.searchParams.keys())) {
+      const lower = name.toLowerCase();
+      if (FALLBACK_STRIP.has(lower) || FALLBACK_PREFIXES.some((p) => lower.startsWith(p))) {
+        clone.searchParams.delete(name);
+      }
+    }
+    const hash = clone.hash || '';
+    return `${clone.protocol}//${clone.host}${clone.pathname}${clone.search}${hash}`;
+  }
+
+  // Build the clean form. Post URLs collapse to path + img_index; every other
+  // instagram.com path runs through the host-scoped fallback denylist.
+  // Returns null only for non-Instagram hosts.
   function shortenInstagramUrl(input) {
     let url;
     try {
-      url = typeof input === 'string' ? new URL(input) : input;
+      url = typeof input === 'string' ? new URL(input) : (input || {});
     } catch (_e) {
       return null;
     }
     if (!isInstagramHost(url.hostname)) return null;
-    if (!isPostPath(url.pathname)) return null;
+    if (!isPostPath(url.pathname)) return fallbackClean(url);
     const params = new URLSearchParams();
     for (const k of KEEP_PARAMS) {
       const v = url.searchParams.get(k);
@@ -92,7 +120,7 @@
   function needsShortening(input) {
     let url;
     try {
-      url = typeof input === 'string' ? new URL(input) : input;
+      url = typeof input === 'string' ? new URL(input) : (input || {});
     } catch (_e) {
       return false;
     }
@@ -112,6 +140,7 @@
     INSTAGRAM_HOST_REGEX,
     POST_PATTERNS,
     KEEP_PARAMS,
+    FALLBACK_STRIP,
   };
 
   global.InstagramLinkShortener = api;

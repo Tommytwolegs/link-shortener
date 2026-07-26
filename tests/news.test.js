@@ -12,6 +12,11 @@ const CASES = [
   { name: 'yahoojp: source share attribution stripped',
     input: 'https://news.yahoo.co.jp/articles/0123456789abcdef0123456789abcdef01234567?source=sns',
     expected: 'https://news.yahoo.co.jp/articles/0123456789abcdef0123456789abcdef01234567' },
+  // Times of India — scoped to timesofindia.indiatimes.com (not the whole
+  // indiatimes.com portal, which also hosts Economic Times / NavBharat)
+  { name: 'toi: frmapp stripped',
+    input: 'https://timesofindia.indiatimes.com/city/delhi/x/articleshow/123.cms?frmapp=yes&utm_source=x',
+    expected: 'https://timesofindia.indiatimes.com/city/delhi/x/articleshow/123.cms' },
   { name: 'yahoojp: article already clean',
     input: 'https://news.yahoo.co.jp/articles/0123456789abcdef0123456789abcdef01234567',
     expected: 'https://news.yahoo.co.jp/articles/0123456789abcdef0123456789abcdef01234567',
@@ -148,6 +153,9 @@ check('host: nytimes', isNewsHost('www.nytimes.com'), true);
 check('host: g1.globo.com subdomain', isNewsHost('g1.globo.com'), true);
 check('host: lookalike', isNewsHost('nytimes.com.evil.com'), false);
 check('storageKeyFor: nyt', storageKeyFor('www.nytimes.com'), 'enabledNewsNyt');
+check('storageKeyFor: toi (timesofindia)', storageKeyFor('timesofindia.indiatimes.com'), 'enabledNewsToi');
+check('storageKeyFor: economictimes NOT claimed by toi', storageKeyFor('economictimes.indiatimes.com'), null);
+check('storageKeyFor: navbharattimes NOT claimed by toi', storageKeyFor('navbharattimes.indiatimes.com'), null);
 check('storageKeyFor: bbc.co.uk', storageKeyFor('www.bbc.co.uk'), 'enabledNewsBbc');
 check('storageKeyFor: scmp', storageKeyFor('www.scmp.com'), 'enabledNewsScmp');
 check('storageKeyFor: aljazeera', storageKeyFor('www.aljazeera.com'), 'enabledNewsAljazeera');

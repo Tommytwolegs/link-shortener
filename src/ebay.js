@@ -54,7 +54,7 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isEbayHost(url.hostname)) return false;
     return isItemPath(url.pathname);
   }
@@ -87,7 +87,7 @@
 
   function shortenEbayUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isEbayHost(url.hostname)) return null;
     const id = extractItemId(url.pathname);
     if (!id) return fallbackClean(url);
@@ -112,7 +112,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isEbayHost(url.hostname)) return false;
     const cleaned = shortenEbayUrl(input);
     if (!cleaned) return false;

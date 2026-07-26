@@ -1,6 +1,6 @@
 // news.js
 // ----------------------------------------------------------------------------
-// One module covering share-link junk on 51 news outlets worldwide,
+// One module covering share-link junk on 52 news outlets worldwide,
 // each with its OWN popup toggle (per-outlet storage keys) so a single
 // misbehaving outlet can be switched off without losing the rest.
 //
@@ -55,7 +55,7 @@
     { host: /(?:^|\.)elmundo\.es$/i, key: 'enabledNewsElmundo', strip: ['emk'], prefixes: [] },
     { host: /(?:^|\.)corriere\.it$/i, key: 'enabledNewsCorriere', strip: [], prefixes: [] },
     { host: /(?:^|\.)repubblica\.it$/i, key: 'enabledNewsRepubblica', strip: ['ref'], prefixes: [] },
-    { host: /(?:^|\.)indiatimes\.com$/i, key: 'enabledNewsToi', strip: ['frmapp'], prefixes: [] },
+    { host: /(?:^|\.)timesofindia\.indiatimes\.com$/i, key: 'enabledNewsToi', strip: ['frmapp'], prefixes: [] },
     { host: /(?:^|\.)thehindu\.com$/i, key: 'enabledNewsThehindu', strip: [], prefixes: [] },
     { host: /(?:^|\.)ndtv\.com$/i, key: 'enabledNewsNdtv', strip: ['pfrom'], prefixes: [] },
     { host: /(?:^|\.)indianexpress\.com$/i, key: 'enabledNewsIndianexpress', strip: [], prefixes: [] },
@@ -100,14 +100,14 @@
 
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     return isNewsHost(url.hostname);
   }
 
   function shortenNewsUrl(input) {
     let url;
     // Clone URL-object inputs — we delete params in place below.
-    try { url = new URL(typeof input === 'string' ? input : input.href); } catch (_e) { return null; }
+    try { url = new URL(typeof input === 'string' ? input : (input && input.href)); } catch (_e) { return null; }
     const o = outletFor(url.hostname);
     if (o === null) return null;
 
@@ -126,7 +126,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isNewsHost(url.hostname)) return false;
     const cleaned = shortenNewsUrl(input);
     if (!cleaned) return false;

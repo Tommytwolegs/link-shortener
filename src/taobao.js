@@ -37,7 +37,7 @@
   // An item URL needs BOTH the /item.htm path AND a numeric ?id=.
   function isPostUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isTaobaoHost(url.hostname)) return false;
     if (!ITEM_PATH_REGEX.test(url.pathname)) return false;
     const id = url.searchParams.get('id');
@@ -48,7 +48,7 @@
 
   function shortenTaobaoUrl(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return null; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return null; }
     if (!isPostUrl(url)) return null;
 
     const params = new URLSearchParams();
@@ -62,7 +62,7 @@
 
   function needsShortening(input) {
     let url;
-    try { url = typeof input === 'string' ? new URL(input) : input; } catch (_e) { return false; }
+    try { url = typeof input === 'string' ? new URL(input) : (input || {}); } catch (_e) { return false; }
     if (!isTaobaoHost(url.hostname)) return false;
     const cleaned = shortenTaobaoUrl(input);
     if (!cleaned) return false;
