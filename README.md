@@ -191,7 +191,7 @@ Chrome Web Store.
 
 ### From Firefox Add-ons (AMO)
 
-[**Rather's Link Shortener**](https://addons.mozilla.org/firefox/addon/jimothy-s-link-shortener/) on AMO.
+[**Rather's Link Shortener**](https://addons.mozilla.org/firefox/addon/rather-s-link-shortener/) on AMO.
 
 ### From source (developer mode)
 

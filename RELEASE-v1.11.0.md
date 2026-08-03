@@ -58,7 +58,7 @@ Existing listing: `https://chromewebstore.google.com/detail/hffnedgkbfnphmibabal
 
 ## Stage 2 — Firefox AMO (upload new version)
 
-Existing add-on: `https://addons.mozilla.org/firefox/addon/jimothy-s-link-shortener/`
+Existing add-on: `https://addons.mozilla.org/firefox/addon/rather-s-link-shortener/`
 
 1. AMO **Developer Hub** → your add-on → **Upload New Version**.
 2. Upload `dist/link-shortener-1.11.0.xpi` (gecko id `link-shortener@tommytwolegs.github.io`,
