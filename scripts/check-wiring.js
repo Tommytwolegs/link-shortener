@@ -45,7 +45,7 @@ const flag = (msg) => issues.push(msg);
 // Infra files that are not per-site URL modules.
 const INFRA = new Set([
   'background', 'popup', 'options', 'utm', 'utm-content', 'redirect',
-  'texturl', 'social-content', 'content', 'amazon-content',
+  'dnr', 'texturl', 'social-content', 'content', 'amazon-content',
   'travel-content', 'news-content', 'site-toolbar', 'agoda-content',
   'airbnb-content', 'booking-content', 'expedia-content',
   'hotelscom-content', 'trip-content', 'vrbo-content',
@@ -110,7 +110,7 @@ const htmlIds = new Set([...read('src/popup.html').matchAll(/input type="checkbo
 
 // Static popup.html checkboxes are feature flags only now; every per-site
 // toggle must come from the catalog, and no site row may linger in HTML.
-const FEATURE_FLAGS = new Set(['enabledUtmStrip', 'enabledRedirectSkip']);
+const FEATURE_FLAGS = new Set(['enabledUtmStrip', 'enabledActiveStrip', 'enabledRedirectSkip']);
 for (const k of htmlIds) {
   if (!FEATURE_FLAGS.has(k)) flag(`popup.html static checkbox ${k}: site rows must live in SITE_GROUPS`);
 }

@@ -402,6 +402,7 @@
     includeAmazonTitle: false,
     keepTitles: false,
     enabledUtmStrip: false,
+    enabledActiveStrip: false,
     enabledRedirectSkip: true,
   };
   for (const k of SITE_KEYS) DEFAULTS[k] = true;
@@ -410,6 +411,7 @@
   const hidePopupEl = document.getElementById('hideTravelPopup');
   const keepTitlesEl = document.getElementById('keepTitles');
   const utmStripEl = document.getElementById('enabledUtmStrip');
+  const activeStripEl = document.getElementById('enabledActiveStrip');
   const redirectSkipEl = document.getElementById('enabledRedirectSkip');
   const status = document.getElementById('status');
   const versionEl = document.getElementById('version');
@@ -669,6 +671,7 @@
     if (hidePopupEl) hidePopupEl.checked = state.hideTravelPopup === true;
     if (keepTitlesEl) keepTitlesEl.checked = state.keepTitles === true || state.includeAmazonTitle === true;
     utmStripEl.checked = state.enabledUtmStrip === true;
+    if (activeStripEl) activeStripEl.checked = state.enabledActiveStrip === true;
     redirectSkipEl.checked = state.enabledRedirectSkip !== false;
     for (const k of SITE_KEYS) {
       if (siteEls[k]) siteEls[k].checked = state[k] !== false;
@@ -682,13 +685,14 @@
   // Initial load.
   chrome.storage.sync.get(DEFAULTS, (items) => {
     setUi(items);
-    // Truth check: if the strip flag is on but the permission is missing
-    // (grant flow interrupted, or revoked via the browser's own UI), the
-    // toggle would be a lie -- flip it back off.
-    if (items.enabledUtmStrip === true && chrome.permissions && chrome.permissions.contains) {
+    // Truth check: if either strip flag is on but the shared permission is
+    // missing (grant flow interrupted, or revoked via the browser's own UI),
+    // the toggle would be a lie -- flip it back off.
+    if ((items.enabledUtmStrip === true || items.enabledActiveStrip === true)
+        && chrome.permissions && chrome.permissions.contains) {
       chrome.permissions.contains({ origins: ['*://*/*'] }, (has) => {
         void chrome.runtime.lastError;
-        if (!has) chrome.storage.sync.set({ enabledUtmStrip: false });
+        if (!has) chrome.storage.sync.set({ enabledUtmStrip: false, enabledActiveStrip: false });
       });
     }
   });
@@ -740,6 +744,22 @@
     }
   });
 
+  // "Block trackers before they load" -- the Active strip. Same shared
+  // *://*/* optional permission and the same flag-before-prompt dance as the
+  // Universal strip above (see that comment for why the flag is written
+  // BEFORE the permission prompt).
+  if (activeStripEl) activeStripEl.addEventListener('change', () => {
+    if (activeStripEl.checked) {
+      chrome.storage.sync.set({ enabledActiveStrip: true });
+      chrome.permissions.request({ origins: ['*://*/*'] }, (granted) => {
+        void chrome.runtime.lastError;
+        if (!granted) chrome.storage.sync.set({ enabledActiveStrip: false });
+      });
+    } else {
+      chrome.storage.sync.set({ enabledActiveStrip: false });
+    }
+  });
+
   // "Skip redirect pages" -- navigate straight to a wrapped link's real
   // destination on click. Default ON; no permission dance (webNavigation
   // is already held). SafeLinks is excluded in the background handler.
@@ -757,6 +777,7 @@
       || Object.prototype.hasOwnProperty.call(changes, 'includeAmazonTitle')
       || Object.prototype.hasOwnProperty.call(changes, 'keepTitles')
       || Object.prototype.hasOwnProperty.call(changes, 'enabledUtmStrip')
+      || Object.prototype.hasOwnProperty.call(changes, 'enabledActiveStrip')
       || Object.prototype.hasOwnProperty.call(changes, 'enabledRedirectSkip')
       || SITE_KEYS.some((k) => Object.prototype.hasOwnProperty.call(changes, k));
     if (!touchesUs) return;
@@ -1005,6 +1026,21 @@
         if (original === cleaned) {
           noteEl.textContent = t('alreadyClean', 'Already clean');
           noteEl.classList.remove('dirty');
+          // Active-strip attribution: if trackers were removed from this
+          // navigation BEFORE the request went out, "Already clean" would
+          // wrongly read as "did nothing" -- credit the block instead.
+          if (tab.id != null) {
+            try {
+              chrome.runtime.sendMessage({ type: 'active-block-info', tabId: tab.id }, (resp) => {
+                void chrome.runtime.lastError;
+                if (resp && resp.count > 0) {
+                  noteEl.textContent = resp.count === 1
+                    ? t('blockedBeforeLoadOne', 'Blocked 1 tracker before this page loaded')
+                    : t('blockedBeforeLoad', 'Blocked ' + resp.count + ' trackers before this page loaded', [String(resp.count)]);
+                }
+              });
+            } catch (_e) { /* ignore */ }
+          }
         } else {
           const removed = chips.filter((c) => c.k !== undefined).length;
           noteEl.textContent = removed > 0

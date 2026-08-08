@@ -345,6 +345,7 @@ m["background"] = {
         "src/redirect.js",
         "src/texturl.js",
         "src/utm.js",
+        "src/dnr.js",
         "src/background.js",
     ],
 }

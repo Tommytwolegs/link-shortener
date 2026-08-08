@@ -343,5 +343,20 @@
   },
   "tipKeepTitles": {
     "message": "IDだけに短縮するサイト（現在はAmazon）で、最短形式ではなく読みやすいタイトルをリンクに残します。"
+  },
+  "labelActiveStrip": {
+    "message": "読み込み前にトラッカーをブロック"
+  },
+  "tipActiveStrip": {
+    "message": "リクエストがブラウザーを出る前に、ページ移動から一般的なトラッキングパラメータ（utm_*、gclid、fbclid など）を除去します。移動先には一切届きません。ユニバーサルクリーニングと同じ広範な権限とスキップ/保持リストを使用します。アドレスバーでのサイト別クリーニングは引き続き動作します。"
+  },
+  "blockedBeforeLoadOne": {
+    "message": "読み込み前にトラッカーを1件ブロックしました"
+  },
+  "blockedBeforeLoad": {
+    "message": "読み込み前にトラッカーを$1件ブロックしました"
+  },
+  "statsBlocked": {
+    "message": "読み込み前にブロックしたトラッカー"
   }
 }

@@ -343,5 +343,20 @@
   },
   "tipKeepTitles": {
     "message": "En sitios que acortan a un ID simple (Amazon por ahora), conserva el título legible en el enlace en vez de la forma más corta."
+  },
+  "labelActiveStrip": {
+    "message": "Bloquear rastreadores antes de que carguen"
+  },
+  "tipActiveStrip": {
+    "message": "Elimina parametros de rastreo comunes (utm_*, gclid, fbclid y mas) de las navegaciones antes de que la solicitud salga del navegador, asi el destino nunca los recibe. Usa el mismo permiso amplio y las mismas listas que la limpieza universal. La limpieza por sitio en la barra de direcciones sigue funcionando."
+  },
+  "blockedBeforeLoadOne": {
+    "message": "1 rastreador bloqueado antes de cargar esta pagina"
+  },
+  "blockedBeforeLoad": {
+    "message": "$1 rastreadores bloqueados antes de cargar esta pagina"
+  },
+  "statsBlocked": {
+    "message": "Rastreadores bloqueados antes de cargar"
   }
 }

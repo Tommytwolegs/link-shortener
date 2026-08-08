@@ -343,5 +343,20 @@
   },
   "tipKeepTitles": {
     "message": "Auf Seiten, die auf eine reine ID kürzen (derzeit Amazon), den lesbaren Titel im Link behalten statt der Kurzform."
+  },
+  "labelActiveStrip": {
+    "message": "Tracker blockieren, bevor sie laden"
+  },
+  "tipActiveStrip": {
+    "message": "Entfernt gaengige Tracking-Parameter (utm_*, gclid, fbclid u. a.) aus Seitenaufrufen, bevor die Anfrage den Browser verlaesst - die Zielseite erhaelt sie also nie. Nutzt dieselbe weitreichende Berechtigung und dieselben Listen wie die universelle Tracking-Bereinigung. Die seitenspezifische Bereinigung in der Adressleiste laeuft weiter."
+  },
+  "blockedBeforeLoadOne": {
+    "message": "1 Tracker vor dem Laden dieser Seite blockiert"
+  },
+  "blockedBeforeLoad": {
+    "message": "$1 Tracker vor dem Laden dieser Seite blockiert"
+  },
+  "statsBlocked": {
+    "message": "Vor dem Laden blockierte Tracker"
   }
 }

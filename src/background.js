@@ -242,6 +242,7 @@ if (typeof importScripts === 'function') {
     'redirect.js',
     'texturl.js',
     'utm.js',
+    'dnr.js',
   );
 }
 
@@ -665,7 +666,7 @@ async function unregisterUtmContentScript() {
 }
 
 async function syncUtmContentScript() {
-  const items = await chrome.storage.sync.get({ enabledUtmStrip: false });
+  const items = await chrome.storage.sync.get({ enabledUtmStrip: false, enabledActiveStrip: false });
   const flagOn = items.enabledUtmStrip === true;
   const hasPerm = await new Promise((resolve) => {
     chrome.permissions.contains({ origins: ['*://*/*'] }, (granted) => {
@@ -683,7 +684,9 @@ async function syncUtmContentScript() {
   // re-enabling re-triggers Chrome's permission prompt. (When the flag is
   // ON but the permission is missing we're mid-grant -- the prompt is on
   // screen -- so we deliberately do NOT remove anything in that state.)
-  if (!flagOn && hasPerm && chrome.permissions.remove) {
+  // The Active strip SHARES this permission: only hand it back when both
+  // features are off, or toggling one would silently kill the other.
+  if (!flagOn && items.enabledActiveStrip !== true && hasPerm && chrome.permissions.remove) {
     chrome.permissions.remove({ origins: ['*://*/*'] }, () => void chrome.runtime.lastError);
   }
 }
@@ -697,13 +700,128 @@ chrome.storage.onChanged.addListener((changes, area) => {
   syncUtmContentScript();
 });
 
+// ---------------------------------------------------------------------------
+// Active strip: declarativeNetRequest dynamic rules that remove universal
+// tracking params from main_frame navigations BEFORE the request leaves the
+// browser (SPEC-active-mode.md). Same optional *://*/* permission and the
+// same skip/keep lists as the Universal tracking strip; the rule content is
+// computed by the pure builder in dnr.js. An over-strip here breaks the
+// request rather than the address bar, so ONLY the utm.js universal denylist
+// feeds this — never per-site params.
+// ---------------------------------------------------------------------------
+
+// The removeParams set of the currently installed rule; null when inactive.
+// The attribution diff below only counts a navigation as "blocked before
+// load" when the URL delta is exactly a removal of params from this set.
+let activeRemoveSet = null;
+
+async function syncActiveStrip() {
+  if (!chrome.declarativeNetRequest || !chrome.declarativeNetRequest.updateDynamicRules) return;
+  const D = self.DnrRules;
+  if (!D) return;
+  const items = await chrome.storage.sync.get({
+    enabledActiveStrip: false,
+    enabledUtmStrip: false,
+    utmStripSkipDomains: [],
+    utmStripKeepParams: [],
+  });
+  const flagOn = items.enabledActiveStrip === true;
+  const hasPerm = await new Promise((resolve) => {
+    chrome.permissions.contains({ origins: ['*://*/*'] }, (granted) => {
+      void chrome.runtime.lastError;
+      resolve(!!granted);
+    });
+  });
+  try {
+    if (flagOn && hasPerm && self.UtmStripper) {
+      const rules = D.buildRules({
+        params: Array.from(self.UtmStripper.TRACKING_PARAMS || []),
+        keepParams: Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [],
+        skipDomains: Array.isArray(items.utmStripSkipDomains) ? items.utmStripSkipDomains : [],
+      });
+      await chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: [D.ACTIVE_RULE_ID],
+        addRules: rules,
+      });
+      activeRemoveSet = rules.length
+        ? new Set(rules[0].action.redirect.transform.queryTransform.removeParams)
+        : null;
+    } else {
+      await chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: [D.ACTIVE_RULE_ID],
+      });
+      activeRemoveSet = null;
+    }
+  } catch (e) {
+    console.debug('[Link Shortener] could not update active-strip rules:', e);
+    activeRemoveSet = null;
+  }
+  // Mirror of syncUtmContentScript's hand-back: this feature also holds the
+  // broad permission only while one of the two strips is actually on.
+  if (!flagOn && items.enabledUtmStrip !== true && hasPerm && chrome.permissions.remove) {
+    chrome.permissions.remove({ origins: ['*://*/*'] }, () => void chrome.runtime.lastError);
+  }
+}
+
+chrome.runtime.onInstalled.addListener(syncActiveStrip);
+chrome.runtime.onStartup.addListener(syncActiveStrip);
+
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'sync') return;
+  if (Object.prototype.hasOwnProperty.call(changes, 'enabledActiveStrip')
+      || Object.prototype.hasOwnProperty.call(changes, 'utmStripSkipDomains')
+      || Object.prototype.hasOwnProperty.call(changes, 'utmStripKeepParams')) {
+    syncActiveStrip();
+  }
+});
+
+// Attribution: DNR does not report rule matches without the
+// declarativeNetRequestFeedback permission (and its warning), so we diff
+// consecutive main-frame navigation URLs instead — webNavigation is already
+// held. A DNR redirect restarts the navigation, so the original URL and the
+// transformed URL arrive as back-to-back onBeforeNavigate events for the
+// same tab. Only a delta that is EXACTLY "params from our set removed"
+// counts; site redirects and rewrites fall through to -1 and are ignored.
+const activeBlocks = new Map(); // tabId -> { count, at }
+const pendingNav = new Map();   // tabId -> { url, at }
+
+chrome.webNavigation.onBeforeNavigate.addListener((details) => {
+  if (details.frameId !== 0) return;
+  const prev = pendingNav.get(details.tabId);
+  pendingNav.set(details.tabId, { url: details.url, at: Date.now() });
+  if (!activeRemoveSet || !prev || !self.DnrRules) return;
+  if (Date.now() - prev.at > 3000) return;
+  const removed = self.DnrRules.diffRemovedParams(prev.url, details.url, activeRemoveSet);
+  if (removed > 0) {
+    activeBlocks.set(details.tabId, { count: removed, at: Date.now() });
+    recordStats({ blocked: removed, chars: Math.max(0, prev.url.length - details.url.length) });
+  }
+});
+
+if (chrome.tabs && chrome.tabs.onRemoved) {
+  chrome.tabs.onRemoved.addListener((tabId) => {
+    activeBlocks.delete(tabId);
+    pendingNav.delete(tabId);
+  });
+}
+
+// Popup asks whether the current tab's page had trackers stripped before it
+// loaded, so "Already clean" can credit the active strip instead.
+chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  if (!msg || msg.type !== 'active-block-info' || typeof msg.tabId !== 'number') return undefined;
+  const info = activeBlocks.get(msg.tabId);
+  sendResponse({ count: info ? info.count : 0 });
+  return false;
+});
+
 if (chrome.permissions && chrome.permissions.onAdded) {
   chrome.permissions.onAdded.addListener(() => {
     // The popup closes (focus loss) the moment the permission dialog
     // opens, so its post-grant callback may never run. The grant itself
     // lands HERE, where the flag is already set optimistically -- register
-    // the strip right away.
+    // the strip right away. Same story for the active strip's rules.
     syncUtmContentScript();
+    syncActiveStrip();
   });
 }
 
@@ -711,7 +829,10 @@ if (chrome.permissions && chrome.permissions.onRemoved) {
   chrome.permissions.onRemoved.addListener((p) => {
     if (p && Array.isArray(p.origins) && p.origins.includes('*://*/*')) {
       unregisterUtmContentScript();
-      chrome.storage.sync.set({ enabledUtmStrip: false });
+      // Both strips ride this permission; revoking it (browser UI or our own
+      // hand-back) turns both off. The storage write triggers syncActiveStrip,
+      // which clears the DNR rule.
+      chrome.storage.sync.set({ enabledUtmStrip: false, enabledActiveStrip: false });
     }
   });
 }
@@ -752,10 +873,11 @@ function recordStats(delta) {
       void chrome.runtime.lastError;
       const s = (items && items.stats) || {
         urls: 0, chars: 0, unwraps: 0, skips: 0, copies: 0, bulk: 0,
-        perSite: {}, since: Date.now(),
+        blocked: 0, perSite: {}, since: Date.now(),
       };
       if (!s.perSite) s.perSite = {};
-      for (const k of ['urls', 'chars', 'unwraps', 'skips', 'copies', 'bulk']) {
+      if (typeof s.blocked !== 'number') s.blocked = 0; // pre-1.12 stats object
+      for (const k of ['urls', 'chars', 'unwraps', 'skips', 'copies', 'bulk', 'blocked']) {
         if (delta[k]) s[k] += delta[k];
       }
       if (delta.site && Object.keys(s.perSite).length < 400) {

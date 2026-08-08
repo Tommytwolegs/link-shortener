@@ -343,5 +343,20 @@
   },
   "tipKeepTitles": {
     "message": "在会缩短为纯ID的网站（目前为Amazon）上，在链接中保留可读标题，而非最短形式。"
+  },
+  "labelActiveStrip": {
+    "message": "在加载前拦截跟踪参数"
+  },
+  "tipActiveStrip": {
+    "message": "在请求离开浏览器之前，就从页面跳转中移除常见跟踪参数（utm_*、gclid、fbclid 等），目标网站完全不会收到它们。与通用跟踪清理共用同一广泛权限及跳过/保留列表。地址栏中的按站点清理仍照常进行。"
+  },
+  "blockedBeforeLoadOne": {
+    "message": "已在页面加载前拦截 1 个跟踪参数"
+  },
+  "blockedBeforeLoad": {
+    "message": "已在页面加载前拦截 $1 个跟踪参数"
+  },
+  "statsBlocked": {
+    "message": "加载前拦截的跟踪参数"
   }
 }

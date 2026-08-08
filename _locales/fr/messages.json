@@ -343,5 +343,20 @@
   },
   "tipKeepTitles": {
     "message": "Sur les sites qui réduisent à un simple identifiant (Amazon pour l’instant), garder le titre lisible dans le lien au lieu de la forme la plus courte."
+  },
+  "labelActiveStrip": {
+    "message": "Bloquer les traqueurs avant chargement"
+  },
+  "tipActiveStrip": {
+    "message": "Supprime les parametres de suivi courants (utm_*, gclid, fbclid, etc.) des navigations avant meme que la requete ne quitte le navigateur : la destination ne les recoit jamais. Utilise la meme permission large et les memes listes que le filtre universel. Le nettoyage par site dans la barre d'adresse continue."
+  },
+  "blockedBeforeLoadOne": {
+    "message": "1 traqueur bloque avant le chargement de la page"
+  },
+  "blockedBeforeLoad": {
+    "message": "$1 traqueurs bloques avant le chargement de la page"
+  },
+  "statsBlocked": {
+    "message": "Traqueurs bloques avant chargement"
   }
 }

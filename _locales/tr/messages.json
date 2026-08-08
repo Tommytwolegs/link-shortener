@@ -343,5 +343,20 @@
   },
   "tipKeepTitles": {
     "message": "Bağlantıyı yalnızca bir kimliğe indiren sitelerde (şimdilik Amazon), en kısa biçim yerine okunabilir başlığı korur."
+  },
+  "labelActiveStrip": {
+    "message": "İzleyicileri yüklenmeden engelle"
+  },
+  "tipActiveStrip": {
+    "message": "Yaygın izleme parametrelerini (utm_*, gclid, fbclid ve diğerleri) istek tarayıcıdan çıkmadan önce sayfa gezinmelerinden kaldırır; hedef site bunları hiç görmez. Evrensel izleme filtresiyle aynı geniş izni ve aynı atla/koru listelerini kullanır. Adres çubuğundaki siteye özel temizlik çalışmaya devam eder."
+  },
+  "blockedBeforeLoadOne": {
+    "message": "Sayfa yüklenmeden 1 izleyici engellendi"
+  },
+  "blockedBeforeLoad": {
+    "message": "Sayfa yüklenmeden $1 izleyici engellendi"
+  },
+  "statsBlocked": {
+    "message": "Yüklenmeden engellenen izleyiciler"
   }
 }

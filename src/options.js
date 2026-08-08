@@ -154,7 +154,7 @@
   // Read-only view over the local-only counters the background maintains.
   // Device-scoped by design: chrome.storage.local, never sync, never sent.
   (function initStats() {
-    const ids = ['urls', 'chars', 'copies', 'skips', 'bulk'];
+    const ids = ['urls', 'chars', 'copies', 'skips', 'blocked', 'bulk'];
     const els = {};
     for (const id of ids) els[id] = document.getElementById('stat-' + id);
     const sinceEl = document.getElementById('stat-since');

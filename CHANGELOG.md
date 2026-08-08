@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.12.0] — in development
+
+### Added
+- **Active strip: "Block trackers before they load."** New opt-in popup
+  switch that removes universal tracking params (utm_*, gclid, fbclid, and
+  the rest of the utm.js denylist) from page navigations at the network
+  layer via `declarativeNetRequest`, BEFORE the request leaves the browser —
+  the destination never receives them. Off by default. Uses the same
+  optional `*://*/*` permission (requested on enable, handed back when both
+  strips are off) and the same skip-domains / keep-params lists as the
+  Universal tracking strip. Main-frame navigations only — API calls and
+  subframes are deliberately untouched, and per-site params stay with the
+  passive per-site modules (an over-strip here would break the request, not
+  just the address bar; see SPEC-active-mode.md).
+- **"Blocked before load" attribution.** When the active strip cleans a
+  navigation, the popup credits it instead of showing "Already clean", and a
+  new "Trackers blocked before load" counter appears in Advanced → Stats.
+  Detection diffs consecutive navigation URLs via the already-held
+  webNavigation permission — no `declarativeNetRequestFeedback` needed.
+- New `declarativeNetRequestWithHostAccess` permission (acts only on hosts
+  the user has granted; no new install-time warning expected).
+
+
 All notable changes to Rather's Link Shortener (named Jimothy's Link
 Shortener through v1.9.0). Versions follow
 [Semantic Versioning](https://semver.org/) loosely — minor bumps mark new

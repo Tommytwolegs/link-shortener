@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Rather's Link Shortener",
   "short_name": "Link Shortener",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "description": "__MSG_extDesc__",
   "default_locale": "en",
   "author": "Thomas Powers",
@@ -17,7 +17,8 @@
     "storage",
     "scripting",
     "contextMenus",
-    "activeTab"
+    "activeTab",
+    "declarativeNetRequestWithHostAccess"
   ],
   "action": {
     "default_title": "Rather's Link Shortener",

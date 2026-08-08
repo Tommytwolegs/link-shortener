@@ -343,5 +343,20 @@
   },
   "tipKeepTitles": {
     "message": "ID로만 축약하는 사이트(현재 Amazon)에서 가장 짧은 형태 대신 읽기 쉬운 제목을 링크에 유지합니다."
+  },
+  "labelActiveStrip": {
+    "message": "로드 전에 추적기 차단"
+  },
+  "tipActiveStrip": {
+    "message": "요청이 브라우저를 떠나기 전에 페이지 이동에서 일반적인 추적 매개변수(utm_*, gclid, fbclid 등)를 제거하여 대상 사이트가 전혀 받지 못하게 합니다. 범용 추적 제거와 동일한 광범위 권한과 건너뛰기/유지 목록을 사용합니다. 주소창의 사이트별 정리는 계속 작동합니다."
+  },
+  "blockedBeforeLoadOne": {
+    "message": "페이지 로드 전에 추적기 1개를 차단했습니다"
+  },
+  "blockedBeforeLoad": {
+    "message": "페이지 로드 전에 추적기 $1개를 차단했습니다"
+  },
+  "statsBlocked": {
+    "message": "로드 전 차단된 추적기"
   }
 }
