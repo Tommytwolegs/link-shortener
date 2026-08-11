@@ -228,7 +228,7 @@
     "message": "Filtro de rastreo universal"
   },
   "optStripIntro": {
-    "message": "Estos ajustes solo importan cuando el <strong>filtro de rastreo universal</strong> está activado. La limpieza por sitio (Amazon, eBay, etc.) no se ve afectada."
+    "message": "Estos ajustes se aplican tanto a la <strong>limpieza universal</strong> como a <strong>Bloquear rastreadores antes de que carguen</strong>. La limpieza por sitio (Amazon, eBay, etc.) no se ve afectada."
   },
   "optSkipTitle": {
     "message": "Omitir estos dominios"
@@ -249,7 +249,7 @@
     "message": "El filtro de rastreo universal está ACTIVADO."
   },
   "optStripOff": {
-    "message": "El filtro de rastreo universal está DESACTIVADO. Los ajustes de abajo se aplican al activar el interruptor en el popup."
+    "message": "Ambos filtros están DESACTIVADOS. Los ajustes de abajo surten efecto cuando actives la limpieza universal o \"Bloquear rastreadores antes de que carguen\" en el popup."
   },
   "optAboutTitle": {
     "message": "Acerca de"
@@ -348,15 +348,21 @@
     "message": "Bloquear rastreadores antes de que carguen"
   },
   "tipActiveStrip": {
-    "message": "Elimina parametros de rastreo comunes (utm_*, gclid, fbclid y mas) de las navegaciones antes de que la solicitud salga del navegador, asi el destino nunca los recibe. Usa el mismo permiso amplio y las mismas listas que la limpieza universal. La limpieza por sitio en la barra de direcciones sigue funcionando."
+    "message": "Elimina parámetros de rastreo comunes (utm_*, gclid, fbclid y más) de las navegaciones antes de que la solicitud salga del navegador, así el destino nunca los recibe. Usa el mismo permiso amplio y las mismas listas que la limpieza universal. La limpieza por sitio en la barra de direcciones sigue funcionando."
   },
   "blockedBeforeLoadOne": {
-    "message": "1 rastreador bloqueado antes de cargar esta pagina"
+    "message": "1 rastreador bloqueado antes de cargar esta página"
   },
   "blockedBeforeLoad": {
-    "message": "$1 rastreadores bloqueados antes de cargar esta pagina"
+    "message": "$1 rastreadores bloqueados antes de cargar esta página"
   },
   "statsBlocked": {
     "message": "Rastreadores bloqueados antes de cargar"
+  },
+  "optStripBothOn": {
+    "message": "La limpieza universal y el filtro activo están ACTIVADOS."
+  },
+  "optStripActiveOnly": {
+    "message": "El filtro activo (bloqueo antes de cargar) está ACTIVADO. Las listas de abajo se le aplican; la limpieza universal está DESACTIVADA."
   }
 }

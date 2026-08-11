@@ -32,6 +32,7 @@
 
   const DEFAULTS = {
     enabledUtmStrip: false,
+    enabledActiveStrip: false,
     utmStripSkipDomains: [],
     utmStripKeepParams: [],
   };
@@ -70,12 +71,24 @@
     if (active !== keepParamsEl) {
       keepParamsEl.value = (items.utmStripKeepParams || []).join('\n');
     }
-    if (items.enabledUtmStrip) {
+    // These lists drive BOTH the Universal strip (address bar) and the
+    // Active strip (network layer) -- report whichever is actually on.
+    const utmOn = items.enabledUtmStrip === true;
+    const activeOn = items.enabledActiveStrip === true;
+    if (utmOn && activeOn) {
+      stripStatusEl.textContent = t('optStripBothOn',
+        'Universal tracking strip and Active strip are both ON.');
+      stripStatusEl.classList.add('on');
+    } else if (utmOn) {
       stripStatusEl.textContent = t('optStripOn', 'Universal tracking strip is ON.');
+      stripStatusEl.classList.add('on');
+    } else if (activeOn) {
+      stripStatusEl.textContent = t('optStripActiveOnly',
+        'Active strip (block before load) is ON. The lists below apply to it; the Universal tracking strip is OFF.');
       stripStatusEl.classList.add('on');
     } else {
       stripStatusEl.textContent = t('optStripOff',
-        'Universal tracking strip is OFF. Settings below take effect once you enable the toggle in the toolbar popup.');
+        'Both strips are OFF. Settings below take effect once you enable the Universal tracking strip or "Block trackers before they load" in the toolbar popup.');
       stripStatusEl.classList.remove('on');
     }
   }
@@ -117,6 +130,7 @@
     if (area !== 'sync') return;
     if (
       'enabledUtmStrip' in changes ||
+      'enabledActiveStrip' in changes ||
       'utmStripSkipDomains' in changes ||
       'utmStripKeepParams' in changes
     ) {

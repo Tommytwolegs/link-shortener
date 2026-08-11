@@ -228,7 +228,7 @@
     "message": "Universal tracking strip"
   },
   "optStripIntro": {
-    "message": "These settings only matter when the <strong>Universal tracking strip</strong> toggle is on. Per-site cleanup (Amazon, eBay, etc.) is unaffected."
+    "message": "These settings apply to both the <strong>Universal tracking strip</strong> and <strong>Block trackers before they load</strong>. Per-site cleanup (Amazon, eBay, etc.) is unaffected."
   },
   "optSkipTitle": {
     "message": "Skip these domains"
@@ -249,7 +249,7 @@
     "message": "Universal tracking strip is ON."
   },
   "optStripOff": {
-    "message": "Universal tracking strip is OFF. Settings below take effect once you enable the toggle in the toolbar popup."
+    "message": "Both strips are OFF. Settings below take effect once you enable the Universal tracking strip or \"Block trackers before they load\" in the toolbar popup."
   },
   "optAboutTitle": {
     "message": "About"
@@ -358,5 +358,11 @@
   },
   "statsBlocked": {
     "message": "Trackers blocked before load"
+  },
+  "optStripBothOn": {
+    "message": "Universal tracking strip and Active strip are both ON."
+  },
+  "optStripActiveOnly": {
+    "message": "Active strip (block before load) is ON. The lists below apply to it; the Universal tracking strip is OFF."
   }
 }

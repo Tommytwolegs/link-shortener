@@ -228,7 +228,7 @@
     "message": "Evrensel izleme filtresi"
   },
   "optStripIntro": {
-    "message": "Bu ayarlar yalnızca <strong>evrensel izleme filtresi</strong> açıkken geçerlidir. Site bazlı temizlik (Amazon, eBay vb.) etkilenmez."
+    "message": "Bu ayarlar hem <strong>evrensel izleme filtresi</strong> hem de <strong>İzleyicileri yüklenmeden engelle</strong> için geçerlidir. Siteye özel temizlik (Amazon, eBay vb.) etkilenmez."
   },
   "optSkipTitle": {
     "message": "Bu alan adlarını atla"
@@ -249,7 +249,7 @@
     "message": "Evrensel izleme filtresi AÇIK."
   },
   "optStripOff": {
-    "message": "Evrensel izleme filtresi KAPALI. Aşağıdaki ayarlar, düğmeyi popup'tan açtığınızda geçerli olur."
+    "message": "Her iki filtre de KAPALI. Aşağıdaki ayarlar, açılır pencereden evrensel izleme filtresi veya \"İzleyicileri yüklenmeden engelle\" etkinleştirildiğinde geçerli olur."
   },
   "optAboutTitle": {
     "message": "Hakkında"
@@ -358,5 +358,11 @@
   },
   "statsBlocked": {
     "message": "Yüklenmeden engellenen izleyiciler"
+  },
+  "optStripBothOn": {
+    "message": "Evrensel izleme filtresi ve etkin filtre AÇIK."
+  },
+  "optStripActiveOnly": {
+    "message": "Etkin filtre (yüklenmeden engelleme) AÇIK. Aşağıdaki listeler ona uygulanır; evrensel izleme filtresi KAPALI."
   }
 }

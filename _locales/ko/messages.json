@@ -228,7 +228,7 @@
     "message": "유니버설 추적 제거"
   },
   "optStripIntro": {
-    "message": "아래 설정은 <strong>유니버설 추적 제거</strong> 토글이 켜져 있을 때만 적용됩니다. 사이트별 정리(Amazon, eBay 등)에는 영향이 없습니다."
+    "message": "이 설정은 <strong>범용 추적 제거</strong>와 <strong>로드 전에 추적기 차단</strong> 모두에 적용됩니다. 사이트별 정리(Amazon, eBay 등)에는 영향을 주지 않습니다."
   },
   "optSkipTitle": {
     "message": "건너뛸 도메인"
@@ -249,7 +249,7 @@
     "message": "유니버설 추적 제거가 켜져 있습니다."
   },
   "optStripOff": {
-    "message": "유니버설 추적 제거가 꺼져 있습니다. 아래 설정은 팝업에서 토글을 켜면 적용됩니다."
+    "message": "두 필터 모두 꺼져 있습니다. 팝업에서 범용 추적 제거 또는 \"로드 전에 추적기 차단\"을 켜면 아래 설정이 적용됩니다."
   },
   "optAboutTitle": {
     "message": "정보"
@@ -358,5 +358,11 @@
   },
   "statsBlocked": {
     "message": "로드 전 차단된 추적기"
+  },
+  "optStripBothOn": {
+    "message": "범용 추적 제거와 로드 전 차단이 모두 켜져 있습니다."
+  },
+  "optStripActiveOnly": {
+    "message": "로드 전 차단이 켜져 있습니다. 아래 목록이 여기에 적용되며, 범용 추적 제거는 꺼져 있습니다."
   }
 }

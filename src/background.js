@@ -715,17 +715,61 @@ chrome.storage.onChanged.addListener((changes, area) => {
 // load" when the URL delta is exactly a removal of params from this set.
 let activeRemoveSet = null;
 
+// MV3 wrinkle: the DNR rule OUTLIVES this service worker (the browser
+// enforces it while we sleep), but the module-global above does not. After
+// an idle-kill, the first webNavigation event wakes a fresh worker where
+// activeRemoveSet is null -- without repair, attribution and the "blocked"
+// stat would silently stop until the next browser restart or toggle flip.
+// ensureActiveRemoveSet() reconstructs the set from the installed rule
+// itself (getDynamicRules reads reality and writes nothing), at most once
+// per worker lifetime; syncActiveStrip marks the state known whenever it
+// recomputes truth.
+let removeSetKnown = false;
+let removeSetLoad = null;
+function ensureActiveRemoveSet() {
+  if (removeSetKnown || !chrome.declarativeNetRequest
+      || !chrome.declarativeNetRequest.getDynamicRules) {
+    return Promise.resolve();
+  }
+  if (!removeSetLoad) {
+    removeSetLoad = new Promise((resolve) => {
+      chrome.declarativeNetRequest.getDynamicRules((rules) => {
+        void chrome.runtime.lastError;
+        const D = self.DnrRules;
+        const rule = Array.isArray(rules) && D
+          ? rules.find((x) => x && x.id === D.ACTIVE_RULE_ID)
+          : null;
+        const params = rule && rule.action && rule.action.redirect
+          && rule.action.redirect.transform
+          && rule.action.redirect.transform.queryTransform
+          && rule.action.redirect.transform.queryTransform.removeParams;
+        activeRemoveSet = Array.isArray(params) && params.length
+          ? new Set(params)
+          : null;
+        removeSetKnown = true;
+        resolve();
+      });
+    });
+  }
+  return removeSetLoad;
+}
+
 async function syncActiveStrip() {
   if (!chrome.declarativeNetRequest || !chrome.declarativeNetRequest.updateDynamicRules) return;
   const D = self.DnrRules;
   if (!D) return;
   const items = await chrome.storage.sync.get({
+    enabled: true,
     enabledActiveStrip: false,
     enabledUtmStrip: false,
     utmStripSkipDomains: [],
     utmStripKeepParams: [],
   });
-  const flagOn = items.enabledActiveStrip === true;
+  // Gated on the master toggle like everything else: "Shorten All Links"
+  // off means the network-layer strip stops too (rules cleared below). The
+  // enabledActiveStrip flag itself is untouched, so flipping the master
+  // back on restores the strip without re-prompting.
+  const flagOn = items.enabledActiveStrip === true && items.enabled !== false;
   const hasPerm = await new Promise((resolve) => {
     chrome.permissions.contains({ origins: ['*://*/*'] }, (granted) => {
       void chrome.runtime.lastError;
@@ -746,11 +790,13 @@ async function syncActiveStrip() {
       activeRemoveSet = rules.length
         ? new Set(rules[0].action.redirect.transform.queryTransform.removeParams)
         : null;
+      removeSetKnown = true;
     } else {
       await chrome.declarativeNetRequest.updateDynamicRules({
         removeRuleIds: [D.ACTIVE_RULE_ID],
       });
       activeRemoveSet = null;
+      removeSetKnown = true;
     }
   } catch (e) {
     console.debug('[Link Shortener] could not update active-strip rules:', e);
@@ -768,7 +814,8 @@ chrome.runtime.onStartup.addListener(syncActiveStrip);
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'sync') return;
-  if (Object.prototype.hasOwnProperty.call(changes, 'enabledActiveStrip')
+  if (Object.prototype.hasOwnProperty.call(changes, 'enabled')
+      || Object.prototype.hasOwnProperty.call(changes, 'enabledActiveStrip')
       || Object.prototype.hasOwnProperty.call(changes, 'utmStripSkipDomains')
       || Object.prototype.hasOwnProperty.call(changes, 'utmStripKeepParams')) {
     syncActiveStrip();
@@ -789,13 +836,18 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
   if (details.frameId !== 0) return;
   const prev = pendingNav.get(details.tabId);
   pendingNav.set(details.tabId, { url: details.url, at: Date.now() });
-  if (!activeRemoveSet || !prev || !self.DnrRules) return;
+  if (!prev || !self.DnrRules) return;
   if (Date.now() - prev.at > 3000) return;
-  const removed = self.DnrRules.diffRemovedParams(prev.url, details.url, activeRemoveSet);
-  if (removed > 0) {
-    activeBlocks.set(details.tabId, { count: removed, at: Date.now() });
-    recordStats({ blocked: removed, chars: Math.max(0, prev.url.length - details.url.length) });
-  }
+  // The diff itself runs after the (usually no-op) worker-restart repair.
+  // The prev/current pair is captured above, so the async hop is safe.
+  ensureActiveRemoveSet().then(() => {
+    if (!activeRemoveSet) return;
+    const removed = self.DnrRules.diffRemovedParams(prev.url, details.url, activeRemoveSet);
+    if (removed > 0) {
+      activeBlocks.set(details.tabId, { count: removed, at: Date.now() });
+      recordStats({ blocked: removed, chars: Math.max(0, prev.url.length - details.url.length) });
+    }
+  });
 });
 
 if (chrome.tabs && chrome.tabs.onRemoved) {

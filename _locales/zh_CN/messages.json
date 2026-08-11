@@ -228,7 +228,7 @@
     "message": "通用跟踪清理"
   },
   "optStripIntro": {
-    "message": "以下设置仅在<strong>通用跟踪清理</strong>开关开启时生效。按站点清理(亚马逊、eBay 等)不受影响。"
+    "message": "这些设置同时适用于<strong>通用跟踪清理</strong>和<strong>在加载前拦截跟踪参数</strong>。按站点清理（Amazon、eBay 等）不受影响。"
   },
   "optSkipTitle": {
     "message": "跳过这些域名"
@@ -249,7 +249,7 @@
     "message": "通用跟踪清理已开启。"
   },
   "optStripOff": {
-    "message": "通用跟踪清理已关闭。在弹窗中开启开关后,以下设置才会生效。"
+    "message": "两个过滤器均已关闭。在弹窗中开启通用跟踪清理或\"在加载前拦截跟踪参数\"后，以下设置才会生效。"
   },
   "optAboutTitle": {
     "message": "关于"
@@ -358,5 +358,11 @@
   },
   "statsBlocked": {
     "message": "加载前拦截的跟踪参数"
+  },
+  "optStripBothOn": {
+    "message": "通用跟踪清理与加载前拦截均已开启。"
+  },
+  "optStripActiveOnly": {
+    "message": "加载前拦截已开启，以下列表对其生效；通用跟踪清理已关闭。"
   }
 }

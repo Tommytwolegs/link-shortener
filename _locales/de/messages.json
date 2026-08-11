@@ -228,7 +228,7 @@
     "message": "Universeller Tracking-Filter"
   },
   "optStripIntro": {
-    "message": "Diese Einstellungen greifen nur, wenn der <strong>universelle Tracking-Filter</strong> eingeschaltet ist. Die Bereinigung pro Website (Amazon, eBay usw.) bleibt unberührt."
+    "message": "Diese Einstellungen gelten für den <strong>universellen Tracking-Filter</strong> und für <strong>Tracker blockieren, bevor sie laden</strong>. Die Bereinigung pro Website (Amazon, eBay usw.) bleibt unberührt."
   },
   "optSkipTitle": {
     "message": "Diese Domains überspringen"
@@ -249,7 +249,7 @@
     "message": "Der universelle Tracking-Filter ist AN."
   },
   "optStripOff": {
-    "message": "Der universelle Tracking-Filter ist AUS. Die Einstellungen unten greifen, sobald der Schalter im Popup aktiviert wird."
+    "message": "Beide Filter sind AUS. Die Einstellungen unten greifen, sobald der universelle Tracking-Filter oder \"Tracker blockieren, bevor sie laden\" im Popup aktiviert wird."
   },
   "optAboutTitle": {
     "message": "Info"
@@ -348,7 +348,7 @@
     "message": "Tracker blockieren, bevor sie laden"
   },
   "tipActiveStrip": {
-    "message": "Entfernt gaengige Tracking-Parameter (utm_*, gclid, fbclid u. a.) aus Seitenaufrufen, bevor die Anfrage den Browser verlaesst - die Zielseite erhaelt sie also nie. Nutzt dieselbe weitreichende Berechtigung und dieselben Listen wie die universelle Tracking-Bereinigung. Die seitenspezifische Bereinigung in der Adressleiste laeuft weiter."
+    "message": "Entfernt gängige Tracking-Parameter (utm_*, gclid, fbclid u. a.) aus Seitenaufrufen, bevor die Anfrage den Browser verlässt - die Zielseite erhält sie also nie. Nutzt dieselbe weitreichende Berechtigung und dieselben Listen wie die universelle Tracking-Bereinigung. Die seitenspezifische Bereinigung in der Adressleiste läuft weiter."
   },
   "blockedBeforeLoadOne": {
     "message": "1 Tracker vor dem Laden dieser Seite blockiert"
@@ -358,5 +358,11 @@
   },
   "statsBlocked": {
     "message": "Vor dem Laden blockierte Tracker"
+  },
+  "optStripBothOn": {
+    "message": "Universeller Tracking-Filter und Aktiv-Filter sind beide AN."
+  },
+  "optStripActiveOnly": {
+    "message": "Der Aktiv-Filter (Blockieren vor dem Laden) ist AN. Die Listen unten gelten für ihn; der universelle Tracking-Filter ist AUS."
   }
 }

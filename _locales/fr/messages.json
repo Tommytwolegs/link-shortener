@@ -228,7 +228,7 @@
     "message": "Filtre de suivi universel"
   },
   "optStripIntro": {
-    "message": "Ces réglages ne comptent que lorsque le <strong>filtre de suivi universel</strong> est activé. Le nettoyage par site (Amazon, eBay, etc.) n'est pas concerné."
+    "message": "Ces réglages s'appliquent au <strong>filtre universel</strong> et à <strong>Bloquer les traqueurs avant chargement</strong>. Le nettoyage par site (Amazon, eBay, etc.) n'est pas concerné."
   },
   "optSkipTitle": {
     "message": "Ignorer ces domaines"
@@ -249,7 +249,7 @@
     "message": "Le filtre de suivi universel est ACTIVÉ."
   },
   "optStripOff": {
-    "message": "Le filtre de suivi universel est DÉSACTIVÉ. Les réglages ci-dessous prendront effet une fois l'option activée dans le popup."
+    "message": "Les deux filtres sont DÉSACTIVÉS. Les réglages ci-dessous prennent effet dès que le filtre universel ou \"Bloquer les traqueurs avant chargement\" est activé dans le popup."
   },
   "optAboutTitle": {
     "message": "À propos"
@@ -348,15 +348,21 @@
     "message": "Bloquer les traqueurs avant chargement"
   },
   "tipActiveStrip": {
-    "message": "Supprime les parametres de suivi courants (utm_*, gclid, fbclid, etc.) des navigations avant meme que la requete ne quitte le navigateur : la destination ne les recoit jamais. Utilise la meme permission large et les memes listes que le filtre universel. Le nettoyage par site dans la barre d'adresse continue."
+    "message": "Supprime les paramètres de suivi courants (utm_*, gclid, fbclid, etc.) des navigations avant même que la requête ne quitte le navigateur : la destination ne les reçoit jamais. Utilise la même permission large et les mêmes listes que le filtre universel. Le nettoyage par site dans la barre d'adresse continue."
   },
   "blockedBeforeLoadOne": {
-    "message": "1 traqueur bloque avant le chargement de la page"
+    "message": "1 traqueur bloqué avant le chargement de la page"
   },
   "blockedBeforeLoad": {
-    "message": "$1 traqueurs bloques avant le chargement de la page"
+    "message": "$1 traqueurs bloqués avant le chargement de la page"
   },
   "statsBlocked": {
-    "message": "Traqueurs bloques avant chargement"
+    "message": "Traqueurs bloqués avant chargement"
+  },
+  "optStripBothOn": {
+    "message": "Le filtre universel et le filtre actif sont tous deux ACTIVÉS."
+  },
+  "optStripActiveOnly": {
+    "message": "Le filtre actif (blocage avant chargement) est ACTIVÉ. Les listes ci-dessous s'y appliquent ; le filtre universel est DÉSACTIVÉ."
   }
 }

@@ -77,7 +77,11 @@ Two hundred eighty-four (266 toggles), organized by world region and type in the
 
 Plus an opt-in **Universal tracking strip** mode that strips well-known
 tracking parameters (`utm_*`, `gclid`, `fbclid`, `mc_cid`, `igshid`,
-`msclkid`, etc.) from URLs on every site you visit. Off by default.
+`msclkid`, etc.) from URLs on every site you visit, and an opt-in
+**Active strip** ("Block trackers before they load") that removes the
+same parameters from page navigations at the network layer — before the
+request leaves the browser, so the destination never receives them.
+Both off by default.
 
 ## What it does on each site
 
@@ -177,8 +181,22 @@ extension strips a fixed allowlist of cross-site tracking parameters
 It still reads only the URL — never page content — and still makes zero
 network requests.
 
-The toggle is gated on the master "Shorten All Links" toggle, so
-flipping the master off stops the universal strip too. You can revoke
+### Active strip: block trackers before they load (off by default)
+
+A second toggle beneath it. The Universal strip cleans the address bar
+after the page arrives; this one removes the same parameters from the
+navigation *before the request is sent*, via a `declarativeNetRequest`
+dynamic rule (`src/dnr.js` builds it from the same `src/utm.js`
+denylist). The destination site never receives the tracking params at
+all. It rides the same optional all-sites permission (requested when you
+enable either strip, handed back when both are off), honors the same
+skip-domains and keep-params lists, and applies only to top-level
+navigations — never subframes, API calls, or other subresources. When it
+fires, the popup credits it ("Blocked N trackers before this page
+loaded") and a counter appears under Advanced → Stats.
+
+Both strips are gated on the master "Shorten All Links" toggle, so
+flipping the master off stops them too. You can revoke
 the broad permission at any time from your browser's extension
 management page; the toggle will auto-untoggle in sync.
 
@@ -289,7 +307,8 @@ chmod +x .git/hooks/pre-commit
 | `webNavigation` | Detect in-page navigations (pushState) so SPA transitions also get handled. |
 | `storage` | Remember your toggle preferences across browser restarts (`chrome.storage.sync`). |
 | `scripting` | Dynamically register the Universal tracking strip content script when you enable it. |
-| **Optional**: access to all sites (`*://*/*`) | Only requested if you enable the Universal tracking strip toggle in the popup. |
+| `declarativeNetRequestWithHostAccess` | The Active strip's dynamic rule (strip params before the request goes out). Acts only on hosts covered by the optional grant below, so it is inert until you opt in. |
+| **Optional**: access to all sites (`*://*/*`) | Only requested if you enable the Universal tracking strip or "Block trackers before they load" in the popup; handed back when both are off. |
 
 The extension does not request `tabs`, `cookies`, `webRequest`, or any
 broader permission.
