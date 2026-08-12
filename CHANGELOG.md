@@ -22,6 +22,18 @@
 - New `declarativeNetRequestWithHostAccess` permission (acts only on hosts
   the user has granted; no new install-time warning expected).
 
+### Fixed
+- **Prime Video clicks no longer die.** Search-result clicks on Prime Video
+  navigated the URL but never loaded the page (a hard refresh did). Root
+  cause: Prime Video routes with the Navigation API, and per spec ANY
+  `history.replaceState` landing while a transition is in flight aborts
+  it — our SPA address-bar cleanup (CHECK_URL / poll) was racing the
+  router's detail fetch and cancelling the user's click. All four runners
+  that mutate history (social-content, utm-content, Amazon content,
+  site-toolbar) now wait for `navigation.transition` to settle and
+  re-validate before touching the URL. Browsers without the Navigation
+  API (Firefox) keep the previous immediate path.
+
 
 All notable changes to Rather's Link Shortener (named Jimothy's Link
 Shortener through v1.9.0). Versions follow

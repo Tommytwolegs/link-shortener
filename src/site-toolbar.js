@@ -219,6 +219,13 @@
     function cleanAddressBar() {
       if (!isOn()) return;
       if (!config.addressBarShort) return;
+      // Navigation-API guard (see social-content.js for the full story):
+      // mutating history while the page's own SPA transition is in flight
+      // aborts that transition and kills the user's click. Skip this pass;
+      // the reconciliation loop re-runs and catches up once it settles.
+      try {
+        if (self.navigation && self.navigation.transition) return;
+      } catch (_e) { /* Navigation API absent -- proceed */ }
       const target = config.addressBarShort(location.href);
       if (!target) return;
       if (target === location.href) return;

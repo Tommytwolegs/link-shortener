@@ -93,7 +93,37 @@
     } catch (_e) { /* context gone; nothing to do */ }
   }
 
+  // Navigation-API guard: mutating history while the page's OWN SPA
+  // transition is in flight ABORTS that transition (per spec, any history
+  // update cancels a pending navigation). Prime Video's search->detail
+  // click died exactly this way: its router calls navigation.navigate()
+  // with an intercept, our CHECK_URL/poll replaceState landed while the
+  // detail fetch was in flight, and the click was cancelled with the URL
+  // half-updated. So: if a transition is pending, wait for it to settle,
+  // then RE-VALIDATE from scratch (the URL may have changed again, or a
+  // second transition may have started -- in which case we defer again).
+  // Browsers without the Navigation API (Firefox) always take the
+  // immediate path, which is the pre-fix behavior.
+  let waitingForTransition = false;
+  function pendingTransition() {
+    try {
+      return (self.navigation && self.navigation.transition
+        && self.navigation.transition.finished) || null;
+    } catch (_e) {
+      return null;
+    }
+  }
+
   function cleanCurrentUrl() {
+    const t = pendingTransition();
+    if (t) {
+      if (!waitingForTransition) {
+        waitingForTransition = true;
+        const settle = () => { waitingForTransition = false; cleanCurrentUrl(); };
+        t.then(settle, settle);
+      }
+      return false; // nothing rewritten yet; the deferred pass re-checks
+    }
     if (!isOn()) return false;
     try {
       const before = location.href;

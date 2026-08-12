@@ -88,7 +88,30 @@
 
   // -------- Address bar rewriting ----------------------------------------
 
+  // Navigation-API guard (same as social-content.js): replacing history
+  // state while the page's own SPA transition is in flight aborts that
+  // transition and kills the user's click (amazon.com's Prime Video
+  // section routes this way). Defer until it settles, then re-validate.
+  let waitingForTransition = false;
+  function pendingTransition() {
+    try {
+      return (self.navigation && self.navigation.transition
+        && self.navigation.transition.finished) || null;
+    } catch (_e) {
+      return null;
+    }
+  }
+
   function cleanCurrentUrl() {
+    const t = pendingTransition();
+    if (t) {
+      if (!waitingForTransition) {
+        waitingForTransition = true;
+        const settle = () => { waitingForTransition = false; cleanCurrentUrl(); };
+        t.then(settle, settle);
+      }
+      return false;
+    }
     if (!isOn()) return false;
     try {
       const slug = slugForAddressBar();
