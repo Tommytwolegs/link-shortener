@@ -335,9 +335,6 @@
   "reportCleanup": {
     "message": "Melden: wurde nicht richtig bereinigt"
   },
-  "optGeneralTitle": {
-    "message": "Allgemein"
-  },
   "labelKeepTitles": {
     "message": "Titel in Links behalten"
   },
@@ -364,5 +361,8 @@
   },
   "optStripActiveOnly": {
     "message": "Der Aktiv-Filter (Blockieren vor dem Laden) ist AN. Die Listen unten gelten für ihn; der universelle Tracking-Filter ist AUS."
+  },
+  "tipHideTravel": {
+    "message": "Blendet das schwebende Kopier-Widget auf Hotel- und Ferienwohnungsseiten aus. Die Bereinigung der Adressleiste läuft weiter. Tipp: Das Widget lässt sich an seiner Kopfzeile an jede beliebige Stelle ziehen."
   }
 }

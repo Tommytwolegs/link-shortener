@@ -335,9 +335,6 @@
   "reportCleanup": {
     "message": "Report: this didn’t clean right"
   },
-  "optGeneralTitle": {
-    "message": "General"
-  },
   "labelKeepTitles": {
     "message": "Keep item titles in links"
   },
@@ -364,5 +361,8 @@
   },
   "optStripActiveOnly": {
     "message": "Active strip (block before load) is ON. The lists below apply to it; the Universal tracking strip is OFF."
+  },
+  "tipHideTravel": {
+    "message": "Hides the floating copy widget on hotel and rental sites. Address-bar cleanup still runs. Tip: you can also drag the widget by its header to move it anywhere on the page."
   }
 }

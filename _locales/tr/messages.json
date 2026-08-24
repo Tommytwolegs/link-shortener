@@ -335,9 +335,6 @@
   "reportCleanup": {
     "message": "Bildir: doğru temizlenmedi"
   },
-  "optGeneralTitle": {
-    "message": "Genel"
-  },
   "labelKeepTitles": {
     "message": "Bağlantılarda başlıkları koru"
   },
@@ -364,5 +361,8 @@
   },
   "optStripActiveOnly": {
     "message": "Etkin filtre (yüklenmeden engelleme) AÇIK. Aşağıdaki listeler ona uygulanır; evrensel izleme filtresi KAPALI."
+  },
+  "tipHideTravel": {
+    "message": "Otel ve kiralama sitelerindeki yüzen kopyalama aracını gizler. Adres çubuğu temizliği çalışmaya devam eder. İpucu: Aracı başlığından sürükleyerek istediğiniz yere taşıyabilirsiniz."
   }
 }

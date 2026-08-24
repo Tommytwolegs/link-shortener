@@ -22,6 +22,15 @@
 - New `declarativeNetRequestWithHostAccess` permission (acts only on hosts
   the user has granted; no new install-time warning expected).
 
+### Changed
+- **The travel widget is draggable now.** Grab it by its "Link Shortener"
+  header and park it anywhere; the position is remembered (as viewport
+  fractions, synced across devices) and re-clamped on window resize so it
+  can never end up off-screen. Button clicks are unaffected — the drag only
+  arms after the pointer travels a few pixels.
+- **"Hide travel popup" moved back into the main popup** switch cluster
+  (from Advanced), alongside the other feature toggles.
+
 ### Fixed
 - **Prime Video clicks no longer die.** Search-result clicks on Prime Video
   navigated the URL but never loaded the page (a hard refresh did). Root

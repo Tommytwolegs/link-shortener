@@ -335,9 +335,6 @@
   "reportCleanup": {
     "message": "反馈：没有正确清理"
   },
-  "optGeneralTitle": {
-    "message": "常规"
-  },
   "labelKeepTitles": {
     "message": "在链接中保留标题"
   },
@@ -364,5 +361,8 @@
   },
   "optStripActiveOnly": {
     "message": "加载前拦截已开启，以下列表对其生效；通用跟踪清理已关闭。"
+  },
+  "tipHideTravel": {
+    "message": "隐藏酒店和民宿网站上的浮动复制小组件。地址栏清理仍照常进行。提示：也可以拖动小组件的标题栏，把它移到页面任意位置。"
   }
 }

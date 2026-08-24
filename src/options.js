@@ -138,31 +138,8 @@
     }
   });
 
-  // -- General prefs (the two toggles that used to crowd the popup) ----------
-  (function initGeneralPrefs() {
-    const els = {
-      hideTravelPopup: document.getElementById('hideTravelPopup'),
-    };
-    if (!els.hideTravelPopup) return;
-    function apply(items) {
-      els.hideTravelPopup.checked = items.hideTravelPopup === true;
-    }
-    chrome.storage.sync.get({ hideTravelPopup: false }, (items) => {
-      void chrome.runtime.lastError;
-      apply(items);
-    });
-    for (const [key, el] of Object.entries(els)) {
-      el.addEventListener('change', () => {
-        chrome.storage.sync.set({ [key]: el.checked });
-      });
-    }
-    chrome.storage.onChanged.addListener((changes, area) => {
-      if (area !== 'sync') return;
-      if ('hideTravelPopup' in changes) {
-        chrome.storage.sync.get({ hideTravelPopup: false }, apply);
-      }
-    });
-  })();
+  // (The old "General prefs" card is gone: hideTravelPopup moved back into
+  // the popup's main switch cluster in v1.12, and keepTitles before it.)
 
   // -- Stats card -----------------------------------------------------------
   // Read-only view over the local-only counters the background maintains.
@@ -258,6 +235,10 @@
             && Object.values(v).every((x) => typeof x === 'boolean')
             && Object.keys(v).length <= 50) {
           out[k] = v; n++;
+        } else if (k === 'travelPopupPos' && v && typeof v === 'object' && !Array.isArray(v)
+            && typeof v.x === 'number' && typeof v.y === 'number'
+            && v.x >= 0 && v.x <= 1 && v.y >= 0 && v.y <= 1) {
+          out[k] = { x: v.x, y: v.y }; n++;
         }
       }
       return { out, n };

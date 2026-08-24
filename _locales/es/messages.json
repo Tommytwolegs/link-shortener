@@ -335,9 +335,6 @@
   "reportCleanup": {
     "message": "Informar: no se limpió bien"
   },
-  "optGeneralTitle": {
-    "message": "General"
-  },
   "labelKeepTitles": {
     "message": "Mantener títulos en los enlaces"
   },
@@ -364,5 +361,8 @@
   },
   "optStripActiveOnly": {
     "message": "El filtro activo (bloqueo antes de cargar) está ACTIVADO. Las listas de abajo se le aplican; la limpieza universal está DESACTIVADA."
+  },
+  "tipHideTravel": {
+    "message": "Oculta el widget de copia flotante en sitios de hoteles y alquileres. La limpieza de la barra de direcciones sigue funcionando. Consejo: también puedes arrastrar el widget por su cabecera para moverlo a cualquier parte."
   }
 }

@@ -64,7 +64,12 @@
       letter-spacing: 0.02em;
       text-align: center;
       border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
     }
+    .box.dragging { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); }
+    .box.dragging .label { cursor: grabbing; }
     .btn {
       appearance: none;
       border: 0;
@@ -103,9 +108,93 @@
     }
 
     let host = null;
+    let boxEl = null;
     let buttonEls = []; // [{ el, originalLabel, def, toastTimer }]
     let pollTimer = null;
     let lastHref = location.href;
+    let savedPos = null; // { x, y } viewport fractions (0..1), from storage
+
+    function validPos(v) {
+      return v && typeof v === 'object'
+        && typeof v.x === 'number' && typeof v.y === 'number'
+        && v.x >= 0 && v.x <= 1 && v.y >= 0 && v.y <= 1
+        ? { x: v.x, y: v.y } : null;
+    }
+
+    // -- Drag-to-move ------------------------------------------------------
+    // The header strip doubles as a drag handle. Position persists as
+    // viewport FRACTIONS in storage.sync (`travelPopupPos`), so it follows
+    // the user across tabs and devices, adapts to different window sizes,
+    // and survives the destroy/rebuild cycle reconcile() runs on every SPA
+    // navigation. Buttons stay plain clicks: the drag only arms on the
+    // header, and only after the pointer travels ~4px, so a sloppy click
+    // never teleports the box. Clamped to the viewport on both drag and
+    // re-apply -- the box can't be parked off-screen.
+
+    function applyPosition() {
+      if (!boxEl || !savedPos) return;
+      const w = boxEl.offsetWidth || 140;
+      const h = boxEl.offsetHeight || 80;
+      const maxL = Math.max(4, window.innerWidth - w - 4);
+      const maxT = Math.max(4, window.innerHeight - h - 4);
+      boxEl.style.left = Math.round(Math.max(4, Math.min(savedPos.x * maxL, maxL))) + 'px';
+      boxEl.style.top = Math.round(Math.max(4, Math.min(savedPos.y * maxT, maxT))) + 'px';
+    }
+
+    function attachDrag(handle, box) {
+      let startX = 0;
+      let startY = 0;
+      let baseL = 0;
+      let baseT = 0;
+      let dragging = false;
+      let pid = null;
+
+      handle.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        const r = box.getBoundingClientRect();
+        startX = e.clientX;
+        startY = e.clientY;
+        baseL = r.left;
+        baseT = r.top;
+        dragging = false;
+        pid = e.pointerId;
+        try { handle.setPointerCapture(pid); } catch (_e) { /* fine */ }
+      });
+
+      handle.addEventListener('pointermove', (e) => {
+        if (pid === null || e.pointerId !== pid) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (!dragging && (dx * dx + dy * dy) < 16) return; // 4px arm threshold
+        dragging = true;
+        box.classList.add('dragging');
+        const maxL = Math.max(4, window.innerWidth - box.offsetWidth - 4);
+        const maxT = Math.max(4, window.innerHeight - box.offsetHeight - 4);
+        box.style.left = Math.round(Math.max(4, Math.min(baseL + dx, maxL))) + 'px';
+        box.style.top = Math.round(Math.max(4, Math.min(baseT + dy, maxT))) + 'px';
+      });
+
+      const endDrag = (e) => {
+        if (pid === null || e.pointerId !== pid) return;
+        try { handle.releasePointerCapture(pid); } catch (_e) { /* fine */ }
+        pid = null;
+        if (!dragging) return;
+        dragging = false;
+        box.classList.remove('dragging');
+        const maxL = Math.max(1, window.innerWidth - box.offsetWidth - 4);
+        const maxT = Math.max(1, window.innerHeight - box.offsetHeight - 4);
+        const r = box.getBoundingClientRect();
+        savedPos = {
+          x: Math.max(0, Math.min(1, r.left / maxL)),
+          y: Math.max(0, Math.min(1, r.top / maxT)),
+        };
+        try {
+          chrome.storage.sync.set({ travelPopupPos: savedPos });
+        } catch (_e) { /* context gone; position still holds on this page */ }
+      };
+      handle.addEventListener('pointerup', endDrag);
+      handle.addEventListener('pointercancel', endDrag);
+    }
 
     // -- UI lifecycle ------------------------------------------------------
 
@@ -128,7 +217,9 @@
       const label = document.createElement('span');
       label.className = 'label';
       label.textContent = 'Link Shortener';
+      label.title = 'Drag to move';
       box.appendChild(label);
+      attachDrag(label, box);
 
       buttonEls = config.buttons.map((def) => {
         const btn = document.createElement('button');
@@ -141,15 +232,18 @@
       });
 
       shadow.appendChild(box);
+      boxEl = box;
       // documentElement is always available; body may not be at document_idle
       // on some pages. Either anchor works -- both live for the page lifetime.
       (document.body || document.documentElement).appendChild(host);
+      applyPosition();
     }
 
     function destroyUI() {
       if (!host) return;
       host.remove();
       host = null;
+      boxEl = null;
       for (const b of buttonEls) clearTimeout(b.toastTimer);
       buttonEls = [];
     }
@@ -270,6 +364,10 @@
       } else {
         buildUI();
         refreshButtonStates();
+        // Re-clamp the dragged position: reconcile() also runs on window
+        // resize, so a box parked bottom-right stays reachable when the
+        // window shrinks.
+        applyPosition();
       }
       // Record the post-clean href so the polling watchdog below doesn't
       // immediately fire a redundant reconcile from our own URL change.
@@ -279,12 +377,13 @@
     // -- Boot --------------------------------------------------------------
 
     if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
-      const defaults = { enabled: true, hideTravelPopup: false };
+      const defaults = { enabled: true, hideTravelPopup: false, travelPopupPos: null };
       if (siteKey) defaults[siteKey] = true;
       chrome.storage.sync.get(defaults, (items) => {
         masterEnabled = items.enabled !== false;
         siteEnabled = siteKey ? items[siteKey] !== false : true;
         hideToolbar = items.hideTravelPopup === true;
+        savedPos = validPos(items.travelPopupPos);
         reconcile();
       });
       chrome.storage.onChanged.addListener((changes, area) => {
@@ -301,6 +400,12 @@
         if (Object.prototype.hasOwnProperty.call(changes, 'hideTravelPopup')) {
           hideToolbar = changes.hideTravelPopup.newValue === true;
           touched = true;
+        }
+        if (Object.prototype.hasOwnProperty.call(changes, 'travelPopupPos')) {
+          // Position dragged in another tab (or synced from another device):
+          // adopt it in place, no full reconcile needed.
+          savedPos = validPos(changes.travelPopupPos.newValue);
+          applyPosition();
         }
         if (touched) reconcile();
       });

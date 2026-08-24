@@ -335,9 +335,6 @@
   "reportCleanup": {
     "message": "신고: 제대로 정리되지 않음"
   },
-  "optGeneralTitle": {
-    "message": "일반"
-  },
   "labelKeepTitles": {
     "message": "링크에 제목 유지"
   },
@@ -364,5 +361,8 @@
   },
   "optStripActiveOnly": {
     "message": "로드 전 차단이 켜져 있습니다. 아래 목록이 여기에 적용되며, 범용 추적 제거는 꺼져 있습니다."
+  },
+  "tipHideTravel": {
+    "message": "호텔·숙박 사이트의 플로팅 복사 위젯을 숨깁니다. 주소창 정리는 계속 작동합니다. 팁: 위젯 머리글을 드래그하여 원하는 위치로 옮길 수도 있습니다."
   }
 }
