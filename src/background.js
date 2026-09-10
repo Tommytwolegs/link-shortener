@@ -824,28 +824,53 @@ chrome.storage.onChanged.addListener((changes, area) => {
 
 // Attribution: DNR does not report rule matches without the
 // declarativeNetRequestFeedback permission (and its warning), so we diff
-// consecutive main-frame navigation URLs instead — webNavigation is already
-// held. A DNR redirect restarts the navigation, so the original URL and the
-// transformed URL arrive as back-to-back onBeforeNavigate events for the
-// same tab. Only a delta that is EXACTLY "params from our set removed"
-// counts; site redirects and rewrites fall through to -1 and are ignored.
+// the navigation's own URLs instead -- webNavigation is already held.
+// The mechanics live on the two listeners below: onBeforeNavigate records
+// what the user headed for, onCommitted compares it with what actually
+// loaded. (An earlier cut paired two consecutive onBeforeNavigate events;
+// a DNR redirect never fires a second one, so nothing was ever counted
+// and the popup always fell back to "Already clean".)
 const activeBlocks = new Map(); // tabId -> { count, at }
-const pendingNav = new Map();   // tabId -> { url, at }
+const pendingNav = new Map();   // tabId -> { url, at } (pre-redirect URL)
 
 chrome.webNavigation.onBeforeNavigate.addListener((details) => {
   if (details.frameId !== 0) return;
-  const prev = pendingNav.get(details.tabId);
   pendingNav.set(details.tabId, { url: details.url, at: Date.now() });
-  if (!prev || !self.DnrRules) return;
-  if (Date.now() - prev.at > 3000) return;
-  // The diff itself runs after the (usually no-op) worker-restart repair.
-  // The prev/current pair is captured above, so the async hop is safe.
+});
+
+// A DNR redirect happens INSIDE a single navigation (it surfaces like an
+// HTTP redirect, redirectCount 1 -- there is no second onBeforeNavigate).
+// So the pair to diff is onBeforeNavigate's URL (what the user headed for)
+// against onCommitted's URL (what actually loaded). Only a delta that is
+// EXACTLY "params from our set removed" counts; server redirects and site
+// rewrites fall through to -1 and are ignored. Every committed navigation
+// either sets or clears the tab's entry, so a blocked count from a previous
+// page never lingers on a later clean one.
+chrome.webNavigation.onCommitted.addListener((details) => {
+  if (details.frameId !== 0) return;
+  const started = pendingNav.get(details.tabId);
+  pendingNav.delete(details.tabId);
+  if (!started || !self.DnrRules) {
+    activeBlocks.delete(details.tabId);
+    return;
+  }
+  if (Date.now() - started.at > 10000 || started.url === details.url) {
+    activeBlocks.delete(details.tabId);
+    return;
+  }
+  // The diff runs after the (usually no-op) worker-restart repair. The
+  // started/committed pair is captured above, so the async hop is safe.
   ensureActiveRemoveSet().then(() => {
-    if (!activeRemoveSet) return;
-    const removed = self.DnrRules.diffRemovedParams(prev.url, details.url, activeRemoveSet);
+    if (!activeRemoveSet) {
+      activeBlocks.delete(details.tabId);
+      return;
+    }
+    const removed = self.DnrRules.diffRemovedParams(started.url, details.url, activeRemoveSet);
     if (removed > 0) {
       activeBlocks.set(details.tabId, { count: removed, at: Date.now() });
-      recordStats({ blocked: removed, chars: Math.max(0, prev.url.length - details.url.length) });
+      recordStats({ blocked: removed, chars: Math.max(0, started.url.length - details.url.length) });
+    } else {
+      activeBlocks.delete(details.tabId);
     }
   });
 });
