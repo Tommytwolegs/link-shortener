@@ -60,6 +60,31 @@ $xpiPath = Join-Path $distDir "link-shortener-$version.xpi"
 Remove-Item -Force -ErrorAction SilentlyContinue $zipPath, $xpiPath
 
 # ---------------------------------------------------------------------------
+# Zip helper. Windows PowerShell 5.1's Compress-Archive writes zip entry
+# names with BACKSLASH separators, which AMO rejects ("Invalid file name in
+# archive: icons\icon.svg") and which would break the extension on
+# Mac/Linux if a store ever shipped it as-is. This helper zips via .NET and
+# forces forward slashes in every entry name, on every PowerShell version.
+# ---------------------------------------------------------------------------
+Add-Type -AssemblyName System.IO.Compression
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+function New-StoreZip([string]$SourceDir, [string]$DestPath) {
+    if (Test-Path $DestPath) { Remove-Item -Force $DestPath }
+    $src = (Get-Item $SourceDir).FullName
+    $zip = [System.IO.Compression.ZipFile]::Open($DestPath, 'Create')
+    try {
+        Get-ChildItem -Path $src -Recurse -File | ForEach-Object {
+            $rel = $_.FullName.Substring($src.Length + 1).Replace('\', '/')
+            [void][System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
+                $zip, $_.FullName, $rel,
+                [System.IO.Compression.CompressionLevel]::Optimal)
+        }
+    } finally {
+        $zip.Dispose()
+    }
+}
+
+# ---------------------------------------------------------------------------
 # Chrome zip — manifest.json shipped as-is.
 # ---------------------------------------------------------------------------
 
@@ -68,7 +93,7 @@ Copy-Item -Path 'manifest.json' -Destination $chromeStage.FullName
 Copy-Item -Path 'src' -Destination $chromeStage.FullName -Recurse
 Copy-Item -Path 'icons' -Destination $chromeStage.FullName -Recurse
 Copy-Item -Path '_locales' -Destination $chromeStage.FullName -Recurse
-Compress-Archive -Path (Join-Path $chromeStage.FullName '*') -DestinationPath $zipPath -CompressionLevel Optimal
+New-StoreZip $chromeStage.FullName $zipPath
 Remove-Item -Recurse -Force $chromeStage.FullName
 Write-Host "Built $zipPath"
 
@@ -332,21 +357,41 @@ $firefoxManifest | ConvertTo-Json -Depth 50 | Out-File -FilePath (Join-Path $fir
 Copy-Item -Path 'src' -Destination $firefoxStage.FullName -Recurse
 Copy-Item -Path 'icons' -Destination $firefoxStage.FullName -Recurse
 Copy-Item -Path '_locales' -Destination $firefoxStage.FullName -Recurse
-# Compress-Archive only accepts .zip extensions; build as .zip in a temp
-# location (separate from the Chrome zip we just made — collision would
-# clobber it), then rename to .xpi. An xpi is just a zip with a different
-# extension — Mozilla's tooling and Firefox itself read either interchangeably.
-$xpiTempZip = Join-Path $env:TEMP "ls-firefox-$([guid]::NewGuid().Guid).zip"
-Compress-Archive -Path (Join-Path $firefoxStage.FullName '*') -DestinationPath $xpiTempZip -CompressionLevel Optimal
-Remove-Item -Force -ErrorAction SilentlyContinue $xpiPath
-Move-Item -Force $xpiTempZip $xpiPath
+# An xpi is just a zip with a different extension — Mozilla's tooling and
+# Firefox itself read either interchangeably, and New-StoreZip doesn't care
+# about the extension.
+New-StoreZip $firefoxStage.FullName $xpiPath
 Remove-Item -Recurse -Force $firefoxStage.FullName
 Write-Host "Built $xpiPath"
 
 # ---------------------------------------------------------------------------
-# Quick verification
+# Quick verification: no backslash entry names (AMO hard-rejects them and
+# they break extraction on Mac/Linux), and each package's manifest version
+# matches the source manifest.
 # ---------------------------------------------------------------------------
-
-# Guardrail: Windows PowerShell 5.1's Compress-Archive writes zip entry
-# names with backslash separators, which Chrome Web Store / AMO can reject
-# ("invalid file name"). PowerShell 7+ writes forward slashes. Ver
+$verifyFailed = $false
+foreach ($pkg in @($zipPath, $xpiPath)) {
+    $archive = [System.IO.Compression.ZipFile]::OpenRead($pkg)
+    try {
+        $bad = @($archive.Entries | Where-Object { $_.FullName.Contains('\') })
+        if ($bad.Count -gt 0) {
+            Write-Host "  VERIFY FAIL: $(Split-Path -Leaf $pkg) has backslash entry names, e.g. $($bad[0].FullName)"
+            $verifyFailed = $true
+        }
+        $manifestEntry = $archive.Entries | Where-Object { $_.FullName -eq 'manifest.json' }
+        $reader = New-Object System.IO.StreamReader($manifestEntry.Open())
+        $pkgVersion = ($reader.ReadToEnd() | ConvertFrom-Json).version
+        $reader.Dispose()
+        if ($pkgVersion -ne $version) {
+            Write-Host "  VERIFY FAIL: $(Split-Path -Leaf $pkg) manifest version is $pkgVersion, expected $version"
+            $verifyFailed = $true
+        }
+    } finally {
+        $archive.Dispose()
+    }
+}
+if ($verifyFailed) {
+    Write-Error "Package verification failed; do not upload these files."
+    exit 1
+}
+Write-Host "Verified: forward-slash entry names, manifest version $version in both packages."
