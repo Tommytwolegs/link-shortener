@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rather's Link Shortener — v1.13.0 live test</title>
+<style>
+  :root {
+    --blue: #184459; --deep: #10222d; --orange: #f8990f;
+    --ok: #1d7a3a; --bg: #f4f7f9; --card: #ffffff; --line: #dde6ec;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font: 15px/1.55 "Segoe UI", system-ui, sans-serif;
+    background: var(--bg); color: #22303a;
+  }
+  header {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--blue); color: #fff; padding: 14px 22px;
+    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  header h1 { font-size: 17px; margin: 0; font-weight: 600; }
+  #progress-wrap { flex: 1; min-width: 220px; display: flex; align-items: center; gap: 10px; }
+  #bar { flex: 1; height: 10px; background: rgba(255,255,255,0.25); border-radius: 6px; overflow: hidden; }
+  #bar > div { height: 100%; width: 0; background: var(--orange); transition: width 0.25s ease; }
+  #count { font-size: 13px; white-space: nowrap; }
+  #reset {
+    border: 1px solid rgba(255,255,255,0.4); background: transparent; color: #fff;
+    border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer;
+  }
+  main { max-width: 880px; margin: 0 auto; padding: 20px 18px 80px; }
+  .prep {
+    background: #fff7e8; border: 1px solid #f3d9a4; border-radius: 10px;
+    padding: 14px 18px; margin-bottom: 18px;
+  }
+  .prep h2 { margin: 0 0 6px; font-size: 15px; }
+  section.test {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 16px 18px 12px; margin-bottom: 14px;
+  }
+  section.test.done { border-color: #bfe3c8; background: #f6fcf7; }
+  .t-head { display: flex; align-items: baseline; gap: 10px; }
+  .t-num {
+    flex: none; background: var(--blue); color: #fff; border-radius: 6px;
+    font-size: 12px; font-weight: 700; padding: 2px 8px;
+  }
+  section.test.done .t-num { background: var(--ok); }
+  .t-head h3 { margin: 0; font-size: 16px; }
+  .steps { margin: 10px 0 4px; padding-left: 22px; }
+  .steps li { margin: 5px 0; }
+  .expect {
+    background: #eef4f8; border-left: 4px solid var(--orange);
+    padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 10px 0;
+  }
+  .expect b { color: var(--blue); }
+  .pass-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .pass-row label {
+    display: flex; align-items: center; gap: 8px; font-weight: 600;
+    color: var(--ok); cursor: pointer; user-select: none;
+  }
+  .pass-row input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--ok); cursor: pointer; }
+  .notes { flex: 1; min-width: 220px; }
+  .notes input {
+    width: 100%; border: 1px solid var(--line); border-radius: 6px;
+    padding: 5px 8px; font: 13px inherit;
+  }
+  a.testlink {
+    display: inline-block; background: var(--deep); color: #ffd9a0;
+    padding: 3px 9px; border-radius: 6px; text-decoration: none;
+    font-family: Consolas, monospace; font-size: 12.5px; margin: 2px 0;
+    overflow-wrap: anywhere;
+  }
+  a.testlink:hover { background: #1c3a4a; }
+  code {
+    background: #eef2f5; padding: 1px 5px; border-radius: 4px;
+    font-family: Consolas, monospace; font-size: 13px;
+  }
+  kbd {
+    background: #fff; border: 1px solid #b9c6cf; border-bottom-width: 2px;
+    border-radius: 4px; padding: 0 5px; font: 12px Consolas, monospace;
+  }
+  .warn { color: #8a5b00; font-size: 13px; }
+  .clean-note { color: #6a7a86; font-size: 13px; font-style: italic; }
+  h2.group { margin: 26px 4px 10px; font-size: 14px; text-transform: uppercase;
+    letter-spacing: 0.06em; color: #5a6b77; }
+  #dl-btn {
+    background: var(--orange); border: 0; color: #3a2500; font-weight: 600;
+    border-radius: 6px; padding: 5px 12px; cursor: pointer; font-size: 13px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>v1.13.0 live test</h1>
+  <div id="progress-wrap">
+    <div id="bar"><div></div></div>
+    <span id="count">0 / 0 passed</span>
+  </div>
+  <button id="reset" type="button">Reset all</button>
+</header>
+<main>
+
+<div class="prep">
+  <h2>Before you start (do all four, in order)</h2>
+  <ol class="steps">
+    <li>Open <code>chrome://extensions</code>, find <b>Rather's Link Shortener</b>, and click the <b>reload arrow ⟳</b>.</li>
+    <li>Confirm the version shown on that card is <b>1.13.0</b>. If it says 1.12.0, the unpacked folder isn't the repo build — fix that first.</li>
+    <li>Open the extension popup and make sure the top switch <b>Shorten All Links</b> is ON.</li>
+    <li>Every test below wants a <b>fresh tab</b> unless it says otherwise. Checkbox state on this page saves itself — you can close and come back.</li>
+  </ol>
+</div>
+
+<h2 class="group">Badge &amp; attribution</h2>
+
+<section class="test" data-id="t1">
+  <div class="t-head"><span class="t-num">1</span><h3>Active strip still blocks (regression from 1.12)</h3></div>
+  <ol class="steps">
+    <li>In the popup, turn ON <b>Block trackers before they load</b> (accept the permission prompt if it appears).</li>
+    <li>Click this link (opens a new tab):<br>
+      <a class="testlink" href="https://example.com/?utm_source=newsletter&amp;gclid=test123" target="_blank" rel="noopener">example.com/?utm_source=newsletter&amp;gclid=test123</a></li>
+    <li>Look at the address bar of the new tab.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> the address bar reads plain <code>https://example.com/</code> — the two params never arrived.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes / what you saw instead"></span></div>
+</section>
+
+<section class="test" data-id="t2">
+  <div class="t-head"><span class="t-num">2</span><h3>Badge counts on the icon</h3></div>
+  <ol class="steps">
+    <li>Stay on the example.com tab from test 1.</li>
+    <li>Look at the extension's toolbar icon (pin it if it's hidden behind the puzzle piece).</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> the icon shows a small badge with <b>2</b> on it (dark blue background).</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t3">
+  <div class="t-head"><span class="t-num">3</span><h3>Badge resets on a new page</h3></div>
+  <ol class="steps">
+    <li>In that same tab, go to <a class="testlink" href="https://example.org" target="_blank" rel="noopener">example.org</a> (or type any clean address).</li>
+    <li>Look at the icon again.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> the badge is <b>gone</b> (empty) on the clean page.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t4">
+  <div class="t-head"><span class="t-num">4</span><h3>Popup credits the block</h3></div>
+  <ol class="steps">
+    <li>Click the test-1 link again (fresh tab):<br>
+      <a class="testlink" href="https://example.com/?utm_source=newsletter&amp;gclid=test123" target="_blank" rel="noopener">example.com/?utm_source=newsletter&amp;gclid=test123</a></li>
+    <li>On that tab, open the extension popup and read the line under the URL preview.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> it says <b>"Blocked 2 trackers before this page loaded"</b> (not "Already clean").</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t5">
+  <div class="t-head"><span class="t-num">5</span><h3>Badge switch turns it off</h3></div>
+  <ol class="steps">
+    <li>In the popup, turn OFF <b>Show count on the icon</b>.</li>
+    <li>Click the test-1 link once more (fresh tab). Look at the icon.</li>
+    <li>Turn the switch back ON when done.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> no badge appears while the switch is off.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<h2 class="group">Recent activity (local history)</h2>
+
+<section class="test" data-id="t6">
+  <div class="t-head"><span class="t-num">6</span><h3>History records — names only, never links</h3></div>
+  <ol class="steps">
+    <li>Popup → <b>Advanced</b> (footer link) → scroll to the <b>Stats</b> card → click <b>Recent activity</b> to expand it.</li>
+    <li>Find the entries from your test clicks.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> you see entries like <code>example.com · blocked before load · utm_source, gclid</code> — and <b>no entry anywhere shows a full URL or a parameter value</b> (no <code>test123</code>, no <code>https://…</code>).</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t7">
+  <div class="t-head"><span class="t-num">7</span><h3>Clear history works</h3></div>
+  <ol class="steps">
+    <li>Still in Recent activity, click <b>Clear history</b>.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> the list empties immediately and shows "Nothing yet."</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<h2 class="group">Active redirect skip (the new flagship)</h2>
+
+<section class="test" data-id="t8">
+  <div class="t-head"><span class="t-num">8</span><h3>Enable it</h3></div>
+  <ol class="steps">
+    <li>In the popup, turn ON <b>Skip redirects before they load</b> (the NEW one). Since you already granted the permission in test 1, no prompt should appear.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> the toggle stays on when you reopen the popup.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t9">
+  <div class="t-head"><span class="t-num">9</span><h3>Raw Google wrapper: skipped before it loads</h3></div>
+  <ol class="steps">
+    <li>Click this fake Google click-tracker link (the destination is written in plain text inside it):<br>
+      <a class="testlink" href="https://www.google.com/url?q=https://example.com/&amp;sa=t&amp;ved=2ahUKEtesttest" target="_blank" rel="noopener">google.com/url?q=https://example.com/&amp;sa=t&amp;ved=…</a></li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> you land straight on <code>example.com</code> with <b>no Google page and no "Redirect Notice" flashing by</b>, and the popup on that page shows an <b>unwrapped:</b> chip under "What was removed".</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t10">
+  <div class="t-head"><span class="t-num">10</span><h3>Encoded wrapper: old skip still catches it</h3></div>
+  <ol class="steps">
+    <li>This one is percent-encoded, so the new network rule must NOT touch it — the older tab-level skip should still deliver you:<br>
+      <a class="testlink" href="https://www.google.com/url?q=https%3A%2F%2Fexample.com%2F&amp;sa=t" target="_blank" rel="noopener">google.com/url?q=https%3A%2F%2Fexample.com%2F (encoded)</a></li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> you still end up on <code>example.com</code> (a very brief flash of the wrapper is acceptable here).</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t11">
+  <div class="t-head"><span class="t-num">11</span><h3>Bing's base64 wrapper: tab-level skip handles it</h3></div>
+  <ol class="steps">
+    <li>Bing hides the target in base64 — impossible for the network rule, handled by the old path:<br>
+      <a class="testlink" href="https://www.bing.com/ck/a?!&amp;&amp;p=test&amp;u=a1aHR0cHM6Ly9leGFtcGxlLmNvbS8" target="_blank" rel="noopener">bing.com/ck/a?…&amp;u=a1aHR0cHM6Ly9leGFtcGxlLmNvbS8</a></li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> you end up on <code>example.com</code>.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t12">
+  <div class="t-head"><span class="t-num">12</span><h3>href.li keeps the destination's own query</h3></div>
+  <ol class="steps">
+    <li><a class="testlink" href="https://href.li/?https://example.com/page?a=1&amp;b=2" target="_blank" rel="noopener">href.li/?https://example.com/page?a=1&amp;b=2</a></li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> the address bar shows <code>example.com/page?a=1&amp;b=2</code> — both params survived (they belong to the destination, not the tracker). A 404 page from example.com is fine; the URL is what matters.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t13">
+  <div class="t-head"><span class="t-num">13</span><h3>SafeLinks is NEVER skipped (security check)</h3></div>
+  <ol class="steps">
+    <li>This is shaped like a corporate Outlook protection link. It must NOT jump straight to example.com:<br>
+      <a class="testlink" href="https://nam12.safelinks.protection.outlook.com/?url=https%3A%2F%2Fexample.com%2F&amp;data=05%7Ctest" target="_blank" rel="noopener">nam12.safelinks.protection.outlook.com/?url=…example.com…</a></li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> the tab actually goes to the <code>safelinks.protection.outlook.com</code> address (Microsoft will likely show an error for our fake link — that's fine and expected). <b>FAIL if you land directly on example.com.</b></div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<h2 class="group">Per-site options</h2>
+
+<section class="test" data-id="t14">
+  <div class="t-head"><span class="t-num">14</span><h3>The gear appears and remembers</h3></div>
+  <ol class="steps">
+    <li>Popup → expand the <b>Global</b> group → hover the <b>Amazon</b> row.</li>
+    <li>A small <b>⚙ gear</b> should fade in next to the switch. Click it.</li>
+    <li>In the row that unfolds, set <b>Keep item titles in links</b> to <b>Always off here</b>.</li>
+    <li>Close and reopen the popup, click the gear again.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> the dropdown still says "Always off here" after reopening.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t15">
+  <div class="t-head"><span class="t-num">15</span><h3>The override actually wins on Amazon</h3></div>
+  <ol class="steps">
+    <li>In the popup's main switches, turn <b>Keep item titles in links</b> ON (the global one).</li>
+    <li>Open any Amazon product page (search "usb cable", click a product).</li>
+    <li>Look at the address bar after it settles.</li>
+    <li><span class="clean-note">Cleanup: set the Amazon gear back to "Use global setting" and the global switch back OFF.</span></li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> the URL is the SHORT form <code>amazon.com/dp/ASIN</code> with no title slug — the per-site "Always off here" beat the global ON.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t16">
+  <div class="t-head"><span class="t-num">16</span><h3>Per-site widget hide (travel)</h3></div>
+  <ol class="steps">
+    <li>Popup → filter for <b>Booking</b> → hover its row → gear → tick <b>Hide the floating widget on this site</b>.</li>
+    <li>Open a hotel page on booking.com (search any city, click a hotel).</li>
+    <li>Then open a property on <b>airbnb.com</b> for comparison.</li>
+    <li><span class="clean-note">Cleanup: untick the Booking gear option afterwards.</span></li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> no floating copy widget on Booking, but the widget still appears on Airbnb.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<h2 class="group">Page tools</h2>
+
+<section class="test" data-id="t17">
+  <div class="t-head"><span class="t-num">17</span><h3>Clean links on this page</h3></div>
+  <ol class="steps">
+    <li>Open <a class="testlink" href="https://old.reddit.com/r/all/" target="_blank" rel="noopener">old.reddit.com/r/all</a> (or any link-heavy page — a newsletter in Gmail works too).</li>
+    <li>Open the popup → footer → click <b>Clean links on this page</b>.</li>
+    <li>Watch the footer text.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> it changes to <b>"Cleaned X of Y links"</b> (or "Links already clean" on a spotless page) and nothing on the page breaks.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t18">
+  <div class="t-head"><span class="t-num">18</span><h3>Per-tab pause</h3></div>
+  <ol class="steps">
+    <li>Go to the test-1 tab (or click the test-1 link fresh):
+      <a class="testlink" href="https://example.com/?utm_source=newsletter&amp;gclid=test123" target="_blank" rel="noopener">the dirty example.com link</a></li>
+    <li>Popup → footer → <b>Pause on this tab</b> (the label flips to "Resume on this tab").</li>
+    <li>In that SAME tab, paste and load the dirty URL again: <code>https://example.com/?utm_source=newsletter&amp;gclid=test123</code></li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> this time the params <b>SURVIVE</b> in the address bar (nothing cleaned, no badge) while the tab is paused.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t19">
+  <div class="t-head"><span class="t-num">19</span><h3>Pause auto-expires when you leave the site</h3></div>
+  <ol class="steps">
+    <li>In the paused tab, navigate to <code>example.org</code> (different site).</li>
+    <li>Then load the dirty example.com URL once more in the same tab.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> cleaning is back automatically — params stripped, badge shows 2. (The pause died when you left example.com.)</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t20">
+  <div class="t-head"><span class="t-num">20</span><h3>One-click site exclusion (fix flow)</h3></div>
+  <ol class="steps">
+    <li>On a freshly-cleaned example.com tab, open the popup → click the <b>⋯ / More copy formats</b> button to open the copy menu.</li>
+    <li>Click <b>Exclude this site from tracking strip</b>.</li>
+    <li>Open <b>Advanced</b> → look at the <b>Skip these domains</b> box.</li>
+    <li><span class="clean-note">Cleanup: delete <code>example.com</code> from that box and Save — later re-runs of these tests need it gone.</span></li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> the menu button confirms ("Added example.com to the skip list") and <code>example.com</code> appears in the Skip domains list.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<h2 class="group">Bulk cleaner &amp; shortcut</h2>
+
+<section class="test" data-id="t21">
+  <div class="t-head"><span class="t-num">21</span><h3>Bulk cleaner file drop</h3></div>
+  <ol class="steps">
+    <li>Click <button id="dl-btn" type="button">Download test file (links.txt)</button> — it saves a small text file full of dirty links.</li>
+    <li>Popup → footer → <b>Bulk cleaner</b>.</li>
+    <li>Drag <code>links.txt</code> from your Downloads bar/folder and drop it anywhere on the bulk page (or use its <b>Open a file</b> button).</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> the text loads, cleaning runs by itself, and the status line reports cleaned links (should be 3 of 3).</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t22">
+  <div class="t-head"><span class="t-num">22</span><h3>Master-switch keyboard shortcut</h3></div>
+  <ol class="steps">
+    <li>Open <code>chrome://extensions/shortcuts</code>.</li>
+    <li>Under Rather's Link Shortener, find <b>"Toggle the master switch"</b> and assign it (e.g. <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>9</kbd>).</li>
+    <li>Press it once, then hover the extension icon and read its tooltip.</li>
+    <li>Press it again to turn everything back on.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> after the first press the tooltip reads <b>"Rather's Link Shortener (off)"</b> and the popup's master switch is off; after the second press both are back to on.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<h2 class="group">Regression sweep (nothing old broke)</h2>
+
+<section class="test" data-id="t23">
+  <div class="t-head"><span class="t-num">23</span><h3>Amazon still shortens + Prime Video still clicks</h3></div>
+  <ol class="steps">
+    <li>Open any Amazon product → address bar should settle to a short <code>/dp/ASIN</code> form.</li>
+    <li>Go to Prime Video, search for anything, click a title.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> Amazon shortens, and the Prime Video title page loads normally on first click (the v1.12 fix held).</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t24">
+  <div class="t-head"><span class="t-num">24</span><h3>Travel widget still drags (never hand-verified!)</h3></div>
+  <ol class="steps">
+    <li>Open a hotel page on booking.com (widget visible — make sure test 16's cleanup was done).</li>
+    <li>Grab the widget by its <b>"Link Shortener" header</b> and drag it to a different corner.</li>
+    <li>Reload the page.</li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> it drags smoothly, buttons still click, and after reload it reappears where you parked it.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<section class="test" data-id="t25">
+  <div class="t-head"><span class="t-num">25</span><h3>Copy clean URL shortcut + context menu</h3></div>
+  <ol class="steps">
+    <li>On any dirty page, press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd> and paste somewhere.</li>
+    <li>Right-click this link and choose <b>Copy clean URL</b>, paste:
+      <a class="testlink" href="https://example.com/story?fbclid=IwAR0test&amp;mibextid=abc123" target="_blank" rel="noopener">example.com/story?fbclid=…&amp;mibextid=…</a></li>
+  </ol>
+  <div class="expect"><b>Pass if:</b> both pastes are clean — and note the second one: <code>mibextid</code> (new this release) is gone too, leaving <code>https://example.com/story</code>.</div>
+  <div class="pass-row"><label><input type="checkbox"> PASS</label><span class="notes"><input placeholder="notes"></span></div>
+</section>
+
+<p class="warn" style="margin-top:26px">When all 25 are green, tell Claude — v1.13.0 gets tagged and the store packages are already built and waiting in <code>dist\</code>.</p>
+
+</main>
+<script>
+(function () {
+  'use strict';
+  var KEY = 'ls-test-v1.13.0';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { state = {}; }
+
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.test'));
+  var barFill = document.querySelector('#bar > div');
+  var countEl = document.getElementById('count');
+
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  function refresh() {
+    var passed = 0;
+    sections.forEach(function (s) {
+      var id = s.dataset.id;
+      var cb = s.querySelector('input[type="checkbox"]');
+      if (cb.checked) passed++;
+      s.classList.toggle('done', cb.checked);
+    });
+    countEl.textContent = passed + ' / ' + sections.length + ' passed';
+    barFill.style.width = (100 * passed / sections.length) + '%';
+    if (passed === sections.length) countEl.textContent += ' — SHIP IT 🎉';
+  }
+
+  sections.forEach(function (s) {
+    var id = s.dataset.id;
+    var cb = s.querySelector('input[type="checkbox"]');
+    var note = s.querySelector('.notes input');
+    var saved = state[id] || {};
+    cb.checked = !!saved.pass;
+    note.value = saved.note || '';
+    cb.addEventListener('change', function () {
+      state[id] = state[id] || {};
+      state[id].pass = cb.checked;
+      save(); refresh();
+    });
+    note.addEventListener('input', function () {
+      state[id] = state[id] || {};
+      state[id].note = note.value;
+      save();
+    });
+  });
+
+  document.getElementById('reset').addEventListener('click', function () {
+    if (!confirm('Clear all checkboxes and notes?')) return;
+    state = {};
+    save();
+    sections.forEach(function (s) {
+      s.querySelector('input[type="checkbox"]').checked = false;
+      s.querySelector('.notes input').value = '';
+    });
+    refresh();
+  });
+
+  document.getElementById('dl-btn').addEventListener('click', function () {
+    var text = [
+      'Some links from a newsletter:',
+      '',
+      'Read this: https://example.com/article?utm_source=news&utm_medium=email&mc_eid=abc123',
+      'A product: https://example.com/item?gclid=TeStGcLiD&fbclid=IwAR0zzz',
+      'Shared from the app: https://example.com/recipe?mibextid=Nif5oz&sfnsn=mo',
+      '',
+      'That is all.',
+      ''
+    ].join('\n');
+    var blob = new Blob([text], { type: 'text/plain' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'links.txt';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  });
+
+  refresh();
+})();
+</script>
+</body>
+</html>
