@@ -25,9 +25,15 @@
       <textarea id="bulk-in" rows="12" spellcheck="false"
                 data-i18n-placeholder="bulkPlaceholder"
                 placeholder="Paste text with links here"></textarea>
+      <p class="hint drop-hint" id="drop-hint" data-i18n="bulkDropHint">
+        Or drop a .txt, .md, .csv, or .html file anywhere on this page —
+        it is read locally, never uploaded.
+      </p>
       <div class="actions">
         <button id="bulk-clean" type="button" class="primary" data-i18n="bulkClean">Clean links</button>
         <button id="bulk-copy" type="button" class="secondary" data-i18n="bulkCopy" disabled>Copy result</button>
+        <button id="bulk-pick" type="button" class="secondary" data-i18n="bulkPickFile">Open a file</button>
+        <input id="bulk-file" type="file" accept=".txt,.md,.csv,.html,.htm,text/plain,text/csv,text/html,text/markdown" hidden />
         <span class="saved-indicator" id="bulk-status" aria-live="polite"></span>
       </div>
       <textarea id="bulk-out" rows="12" spellcheck="false" readonly hidden></textarea>

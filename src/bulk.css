@@ -16,3 +16,7 @@ textarea#bulk-out {
 .saved-indicator.visible-hold {
   opacity: 1;
 }
+
+/* -- File drop (v1.13) ------------------------------------------------------ */
+.drop-hint { margin-top: 6px; font-size: 12px; opacity: 0.85; }
+body.dragging { outline: 3px dashed #f8990f; outline-offset: -6px; }

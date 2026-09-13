@@ -442,5 +442,17 @@
   },
   "fixSkipDone": {
     "message": "$1 をスキップリストに追加しました"
+  },
+  "cmdToggleMaster": {
+    "message": "マスタースイッチを切り替え（すべてのリンク短縮のオン/オフ）"
+  },
+  "bulkDropHint": {
+    "message": ".txt、.md、.csv、.html ファイルをこのページのどこにでもドロップできます。ローカルで読み込まれ、アップロードされることはありません。"
+  },
+  "bulkPickFile": {
+    "message": "ファイルを開く"
+  },
+  "bulkTooBig": {
+    "message": "ファイルが大きすぎます（上限 5 MB）"
   }
 }

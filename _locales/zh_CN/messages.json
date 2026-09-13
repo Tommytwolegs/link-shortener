@@ -442,5 +442,17 @@
   },
   "fixSkipDone": {
     "message": "已将 $1 添加到跳过列表"
+  },
+  "cmdToggleMaster": {
+    "message": "切换主开关（所有链接缩短功能的开/关）"
+  },
+  "bulkDropHint": {
+    "message": "或将 .txt、.md、.csv 或 .html 文件拖放到此页面任意位置。文件仅在本地读取，绝不上传。"
+  },
+  "bulkPickFile": {
+    "message": "打开文件"
+  },
+  "bulkTooBig": {
+    "message": "文件太大（上限 5 MB）"
   }
 }

@@ -442,5 +442,17 @@
   },
   "fixSkipDone": {
     "message": "$1 ajouté à la liste d'exclusion"
+  },
+  "cmdToggleMaster": {
+    "message": "Basculer l'interrupteur principal (tout le raccourcissement de liens)"
+  },
+  "bulkDropHint": {
+    "message": "Ou déposez un fichier .txt, .md, .csv ou .html n'importe où sur cette page. Il est lu localement, jamais téléversé."
+  },
+  "bulkPickFile": {
+    "message": "Ouvrir un fichier"
+  },
+  "bulkTooBig": {
+    "message": "Le fichier est trop volumineux (limite de 5 Mo)"
   }
 }

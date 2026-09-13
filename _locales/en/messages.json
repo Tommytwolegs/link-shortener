@@ -442,5 +442,17 @@
   },
   "fixSkipDone": {
     "message": "Added $1 to the skip list"
+  },
+  "cmdToggleMaster": {
+    "message": "Toggle the master switch (all link shortening on/off)"
+  },
+  "bulkDropHint": {
+    "message": "Or drop a .txt, .md, .csv, or .html file anywhere on this page. It is read locally, never uploaded."
+  },
+  "bulkPickFile": {
+    "message": "Open a file"
+  },
+  "bulkTooBig": {
+    "message": "File is too big (limit 5 MB)"
   }
 }

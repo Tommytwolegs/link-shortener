@@ -39,6 +39,9 @@
         "mac": "Command+Shift+L"
       },
       "description": "Copy a clean URL of the current page"
+    },
+    "toggle-master": {
+      "description": "__MSG_cmdToggleMaster__"
     }
   },
   "host_permissions": [

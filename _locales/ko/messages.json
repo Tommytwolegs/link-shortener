@@ -442,5 +442,17 @@
   },
   "fixSkipDone": {
     "message": "$1을(를) 건너뛰기 목록에 추가했습니다"
+  },
+  "cmdToggleMaster": {
+    "message": "마스터 스위치 전환(모든 링크 단축 켜기/끄기)"
+  },
+  "bulkDropHint": {
+    "message": "또는 .txt, .md, .csv, .html 파일을 이 페이지 아무 곳에나 끌어다 놓으세요. 로컬에서만 읽으며 절대 업로드하지 않습니다."
+  },
+  "bulkPickFile": {
+    "message": "파일 열기"
+  },
+  "bulkTooBig": {
+    "message": "파일이 너무 큽니다(최대 5MB)"
   }
 }

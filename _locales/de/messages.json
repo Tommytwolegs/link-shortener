@@ -442,5 +442,17 @@
   },
   "fixSkipDone": {
     "message": "$1 zur Ausnahmeliste hinzugefügt"
+  },
+  "cmdToggleMaster": {
+    "message": "Hauptschalter umschalten (alle Link-Kürzungen an/aus)"
+  },
+  "bulkDropHint": {
+    "message": "Oder ziehen Sie eine .txt-, .md-, .csv- oder .html-Datei irgendwo auf diese Seite. Sie wird lokal gelesen und nie hochgeladen."
+  },
+  "bulkPickFile": {
+    "message": "Datei öffnen"
+  },
+  "bulkTooBig": {
+    "message": "Datei ist zu groß (Limit 5 MB)"
   }
 }

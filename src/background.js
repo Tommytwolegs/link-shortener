@@ -1258,7 +1258,18 @@ function ensureUiPrefs() {
 }
 
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area !== 'sync' || !uiPrefs) return;
+  if (area !== 'sync') return;
+  // Toolbar title mirrors the master switch no matter where it was
+  // flipped (popup, keyboard command, another device via sync).
+  if (Object.prototype.hasOwnProperty.call(changes, 'enabled')
+      && chrome.action && chrome.action.setTitle) {
+    chrome.action.setTitle({
+      title: changes.enabled.newValue !== false
+        ? "Rather's Link Shortener"
+        : "Rather's Link Shortener (off)",
+    }, () => void chrome.runtime.lastError);
+  }
+  if (!uiPrefs) return;
   if (Object.prototype.hasOwnProperty.call(changes, 'enabled')) {
     uiPrefs.enabled = changes.enabled.newValue !== false;
   }
@@ -1619,6 +1630,20 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 // and executeScript would fail there anyway.
 if (chrome.commands && chrome.commands.onCommand) {
   chrome.commands.onCommand.addListener((command, tab) => {
+    // "toggle-master" (v1.13): flip the master switch from the keyboard.
+    // Ships UNBOUND — copy-clean keeps the prime binding; users assign
+    // this one in the browser's shortcut settings. The action title
+    // reflects the state so the flip is visible without opening the popup.
+    if (command === 'toggle-master') {
+      chrome.storage.sync.get({ enabled: true }, (items) => {
+        void chrome.runtime.lastError;
+        // The storage change also flips the toolbar title (see the
+        // onChanged listener by the badge code), so the flip is visible
+        // without opening the popup.
+        chrome.storage.sync.set({ enabled: items.enabled === false });
+      });
+      return;
+    }
     if (command !== 'copy-clean-url') return;
     const run = (t) => {
       if (t && t.id != null && t.url && /^https?:/i.test(t.url)) {

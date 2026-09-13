@@ -442,5 +442,17 @@
   },
   "fixSkipDone": {
     "message": "$1 atlama listesine eklendi"
+  },
+  "cmdToggleMaster": {
+    "message": "Ana anahtarı aç/kapat (tüm bağlantı kısaltma)"
+  },
+  "bulkDropHint": {
+    "message": "Ya da bir .txt, .md, .csv veya .html dosyasını bu sayfanın herhangi bir yerine bırakın. Yerel olarak okunur, asla yüklenmez."
+  },
+  "bulkPickFile": {
+    "message": "Dosya aç"
+  },
+  "bulkTooBig": {
+    "message": "Dosya çok büyük (sınır 5 MB)"
   }
 }
