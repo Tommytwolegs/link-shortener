@@ -1430,4 +1430,41 @@
       }
     });
   })();
+
+  // -- Per-tab pause (v1.13) --------------------------------------------------
+  // Footer action: suspend every layer on the current tab until resumed,
+  // the tab closes, or it navigates to a different origin. Network layers
+  // stand down immediately (session allow rule); content rewrites stop
+  // fully after a reload.
+  (function initPause() {
+    const el = document.getElementById('pause-tab');
+    if (!el || !chrome.tabs || !chrome.tabs.query) return;
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      void chrome.runtime.lastError;
+      const tab = tabs && tabs[0];
+      if (!tab || tab.id == null || !tab.url || !/^https?:/i.test(tab.url)) return;
+      let paused = false;
+      const renderLabel = () => {
+        el.textContent = paused
+          ? t('btnResumeTab', 'Resume on this tab')
+          : t('btnPauseTab', 'Pause on this tab');
+        el.classList.toggle('paused', paused);
+      };
+      chrome.runtime.sendMessage({ type: 'pause-info', tabId: tab.id }, (resp) => {
+        void chrome.runtime.lastError;
+        paused = !!(resp && resp.paused);
+        el.hidden = false;
+        renderLabel();
+      });
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const type = paused ? 'resume-tab' : 'pause-tab';
+        chrome.runtime.sendMessage({ type, tabId: tab.id, url: tab.url }, () => {
+          void chrome.runtime.lastError;
+          paused = !paused;
+          renderLabel();
+        });
+      });
+    });
+  })();
 })();

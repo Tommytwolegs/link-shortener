@@ -421,5 +421,11 @@
   },
   "tipActiveSkip": {
     "message": "Para invólucros de redirecionamento conhecidos, vai direto ao destino antes que a solicitação chegue ao rastreador, que assim nunca fica sabendo do clique. Só se aplica quando o destino está legível no próprio link; todo o resto continua usando o pulo normal de redirecionamentos. Usa a mesma permissão ampla dos recursos de rastreamento acima. Links de proteção corporativa nunca são pulados."
+  },
+  "btnPauseTab": {
+    "message": "Pausar nesta aba"
+  },
+  "btnResumeTab": {
+    "message": "Retomar nesta aba"
   }
 }

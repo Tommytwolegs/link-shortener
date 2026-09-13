@@ -421,5 +421,11 @@
   },
   "tipActiveSkip": {
     "message": "Springt bei bekannten Weiterleitungs-Wrappern direkt zum Ziel, bevor die Anfrage an den Tracker gesendet wird, sodass er nie vom Klick erfährt. Gilt nur, wenn das Ziel im Link klar lesbar ist; alles andere nutzt weiterhin das normale Überspringen von Weiterleitungsseiten. Verwendet dieselbe weitreichende Berechtigung wie die Tracking-Funktionen oben. Geschützte Unternehmenslinks werden nie übersprungen."
+  },
+  "btnPauseTab": {
+    "message": "Auf diesem Tab pausieren"
+  },
+  "btnResumeTab": {
+    "message": "Auf diesem Tab fortsetzen"
   }
 }

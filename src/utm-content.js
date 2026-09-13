@@ -49,8 +49,18 @@
   let pollTimer = null;
 
   function isOn() {
-    return masterEnabled && utmEnabled;
+    return masterEnabled && utmEnabled && !tabPaused;
   }
+
+  // Per-tab pause (v1.13): asked once per page load; takes full effect
+  // after a reload.
+  let tabPaused = false;
+  try {
+    chrome.runtime.sendMessage({ type: 'pause-info' }, (resp) => {
+      void chrome.runtime.lastError;
+      if (resp && resp.paused === true) tabPaused = true;
+    });
+  } catch (_e) { /* extension context gone; leave unpaused */ }
 
   // Returns true if the current hostname matches any entry in the user's
   // skip list. Entry rules:

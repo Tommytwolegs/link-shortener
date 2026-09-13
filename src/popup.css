@@ -699,3 +699,6 @@ label.switch:hover .site-gear,
   max-width: 150px;
 }
 .site-optcheck { accent-color: var(--accent, #f8990f); }
+
+/* -- Per-tab pause (v1.13) -------------------------------------------------- */
+.footer-links a.paused { color: var(--accent, #f8990f); font-weight: 600; }

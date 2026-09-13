@@ -904,6 +904,114 @@ async function syncActiveSkip() {
 chrome.runtime.onInstalled.addListener(syncActiveSkip);
 chrome.runtime.onStartup.addListener(syncActiveSkip);
 
+// ---------------------------------------------------------------------------
+// Per-tab pause (v1.13): suspend every layer on ONE tab until the user
+// resumes, the tab closes, or the tab navigates to a different origin.
+// Source of truth is storage.session (survives worker restarts, dies with
+// the browser). The network layers stand down via one high-priority
+// SESSION-scoped allow rule (tabIds conditions are session-rule-only);
+// the tab layers check pause state directly.
+// ---------------------------------------------------------------------------
+function getPausedTabs() {
+  return new Promise((resolve) => {
+    if (!chrome.storage.session) {
+      resolve({});
+      return;
+    }
+    chrome.storage.session.get({ pausedTabs: {} }, (items) => {
+      void chrome.runtime.lastError;
+      resolve(items && items.pausedTabs && typeof items.pausedTabs === 'object'
+        ? items.pausedTabs : {});
+    });
+  });
+}
+
+async function setPausedTabs(map) {
+  if (chrome.storage.session) {
+    await new Promise((resolve) => {
+      chrome.storage.session.set({ pausedTabs: map }, () => {
+        void chrome.runtime.lastError;
+        resolve();
+      });
+    });
+  }
+  // Session allow rule covering the paused tabs (or nothing when none).
+  const D = self.DnrRules;
+  if (!D || !chrome.declarativeNetRequest
+      || !chrome.declarativeNetRequest.updateSessionRules) return;
+  const ids = Object.keys(map).map(Number).filter((n) => Number.isInteger(n) && n >= 0);
+  try {
+    await chrome.declarativeNetRequest.updateSessionRules({
+      removeRuleIds: [D.PAUSE_RULE_ID],
+      addRules: D.buildPauseRules(ids),
+    });
+  } catch (e) {
+    console.debug('[Link Shortener] could not update pause rule:', e);
+  }
+}
+
+async function pauseTab(tabId, url) {
+  if (typeof tabId !== 'number') return;
+  const map = await getPausedTabs();
+  let origin = '';
+  try { origin = new URL(url).origin; } catch (_e) { /* keep '' */ }
+  map[String(tabId)] = { origin, at: Date.now() };
+  await setPausedTabs(map);
+}
+
+async function resumeTab(tabId) {
+  const map = await getPausedTabs();
+  if (!(String(tabId) in map)) return;
+  delete map[String(tabId)];
+  await setPausedTabs(map);
+}
+
+if (chrome.tabs && chrome.tabs.onRemoved) {
+  chrome.tabs.onRemoved.addListener((tabId) => { resumeTab(tabId); });
+}
+
+// Pause housekeeping + tab-layer gate: expire the pause when the tab
+// leaves the origin it was paused on.
+chrome.webNavigation.onCommitted.addListener((details) => {
+  if (details.frameId !== 0) return;
+  getPausedTabs().then((map) => {
+    const entry = map[String(details.tabId)];
+    if (!entry) return;
+    let origin = '';
+    try { origin = new URL(details.url).origin; } catch (_e) { /* keep '' */ }
+    if (entry.origin && origin && entry.origin !== origin) {
+      resumeTab(details.tabId);
+    }
+  });
+});
+
+// Popup + content scripts ask whether their tab is paused; the popup also
+// flips the state. Content scripts can't know their own tab id, so the
+// sender's tab fills it in for them.
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (!msg) return undefined;
+  if (msg.type === 'pause-info') {
+    const tabId = typeof msg.tabId === 'number'
+      ? msg.tabId
+      : (sender && sender.tab ? sender.tab.id : null);
+    if (tabId == null) {
+      sendResponse({ paused: false });
+      return false;
+    }
+    getPausedTabs().then((map) => sendResponse({ paused: String(tabId) in map }));
+    return true;
+  }
+  if (msg.type === 'pause-tab' && typeof msg.tabId === 'number') {
+    pauseTab(msg.tabId, typeof msg.url === 'string' ? msg.url : '').then(() => sendResponse({ ok: true }));
+    return true;
+  }
+  if (msg.type === 'resume-tab' && typeof msg.tabId === 'number') {
+    resumeTab(msg.tabId).then(() => sendResponse({ ok: true }));
+    return true;
+  }
+  return undefined;
+});
+
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'sync') return;
   if (Object.prototype.hasOwnProperty.call(changes, 'enabled')
@@ -2058,6 +2166,9 @@ function handleRedirectSkip(details) {
         && self.DnrRules.skipRuleWouldMatch(details.url)) {
       return;
     }
+    // Per-tab pause suspends the tab-layer skip too.
+    const pausedMap = await getPausedTabs();
+    if (String(details.tabId) in pausedMap) return;
     chrome.tabs.update(details.tabId, { url: target }, () => void chrome.runtime.lastError);
     // Skip transparency: stash the wrapper -> destination pair so the popup
     // on the landing page can show an "unwrapped:" chip and offer the

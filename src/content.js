@@ -43,8 +43,18 @@
   let domReadyHooked = false;
 
   function isOn() {
-    return masterEnabled && siteEnabled;
+    return masterEnabled && siteEnabled && !tabPaused;
   }
+
+  // Per-tab pause (v1.13): asked once per page load; pausing is a debugging
+  // affordance and takes full effect after a reload.
+  let tabPaused = false;
+  try {
+    chrome.runtime.sendMessage({ type: 'pause-info' }, (resp) => {
+      void chrome.runtime.lastError;
+      if (resp && resp.paused === true) tabPaused = true;
+    });
+  } catch (_e) { /* extension context gone; leave unpaused */ }
 
   // -------- Slug derivation ----------------------------------------------
 

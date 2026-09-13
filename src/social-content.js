@@ -78,7 +78,17 @@
   let lastHref = null;
   let pollTimer = null;
 
-  function isOn() { return masterEnabled && siteEnabled && !!M; }
+  function isOn() { return masterEnabled && siteEnabled && !tabPaused && !!M; }
+
+  // Per-tab pause (v1.13): asked once per page load; takes full effect
+  // after a reload.
+  let tabPaused = false;
+  try {
+    chrome.runtime.sendMessage({ type: 'pause-info' }, (resp) => {
+      void chrome.runtime.lastError;
+      if (resp && resp.paused === true) tabPaused = true;
+    });
+  } catch (_e) { /* extension context gone; leave unpaused */ }
 
   // Fire-and-forget: tell the background a rewrite happened so the popup
   // can show what was removed (and offer the original), and the local
