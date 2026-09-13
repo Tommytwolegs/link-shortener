@@ -69,6 +69,11 @@ check('skip domains wired',
   rules[0].condition.excludedRequestDomains, ['corp.example.com']);
 check('real denylist size lands in rule',
   rules[0].action.redirect.transform.queryTransform.removeParams.length > 90, true);
+// v1.13 universal promotions flow through from utm.js automatically
+check('mibextid flows into the rule',
+  rules[0].action.redirect.transform.queryTransform.removeParams.includes('mibextid'), true);
+check('sfnsn flows into the rule',
+  rules[0].action.redirect.transform.queryTransform.removeParams.includes('sfnsn'), true);
 const noSkip = buildRules({ params: ['gclid'], keepParams: [], skipDomains: [] });
 check('no skip list -> no excludedRequestDomains key',
   'excludedRequestDomains' in noSkip[0].condition, false);

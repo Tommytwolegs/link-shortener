@@ -328,6 +328,16 @@ const CASES = [
   { name: 'real-world: affiliate-network click-through',
     input: 'https://store.example.com/?rfsn=12345.abc&sscid=def&utm_source=affiliate&pid=99',
     expected: 'https://store.example.com/?pid=99' },
+
+  // Facebook/Messenger mobile-share trackers (v1.13: promoted from
+  // facebook.js to the universal list — they ride on OUTBOUND links
+  // shared through the Meta mobile apps, so they land on any site)
+  { name: 'mibextid on a third-party article (Messenger share)',
+    input: 'https://news.example.com/story/123?mibextid=Nif5oz',
+    expected: 'https://news.example.com/story/123' },
+  { name: 'sfnsn + fbclid on a recipe link (FB app share)',
+    input: 'https://cook.example.com/pie?sfnsn=mo&fbclid=IwAR0abc&step=2',
+    expected: 'https://cook.example.com/pie?step=2' },
 ];
 
 let passed = 0;
@@ -365,6 +375,9 @@ check('isTrackingParam: cjevent true', isTrackingParam('cjevent'), true);
 check('isTrackingParam: cjdata true', isTrackingParam('cjdata'), true);
 check('isTrackingParam: li_fat_id true', isTrackingParam('li_fat_id'), true);
 check('isTrackingParam: epik true', isTrackingParam('epik'), true);
+check('isTrackingParam: mibextid true', isTrackingParam('mibextid'), true);
+check('isTrackingParam: sfnsn true', isTrackingParam('sfnsn'), true);
+check('isTrackingParam: wtsid false (stays per-site in facebook.js)', isTrackingParam('wtsid'), false);
 check('isTrackingParam: id false', isTrackingParam('id'), false);
 check('isTrackingParam: q false', isTrackingParam('q'), false);
 check('isTrackingParam: ref false', isTrackingParam('ref'), false);

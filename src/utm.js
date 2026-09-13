@@ -17,7 +17,11 @@
 //   * Google Ads click identifiers: gclid, gclsrc, dclid, gbraid, wbraid,
 //     gad_source, gad.
 //   * Facebook click identifier: fbclid, _fbc, _fbp, fb_action_ids,
-//     fb_action_types, fb_ref, fb_source.
+//     fb_action_types, fb_ref, fb_source. Mobile-share trackers stamped on
+//     OUTBOUND links shared through the Facebook/Messenger apps: mibextid,
+//     sfnsn — both names are Meta-unique, so they're safe host-agnostically.
+//     (wtsid/extid/rdid stay per-site in facebook.js: shorter, less
+//     documented names with real collision risk on unrelated sites.)
 //   * Instagram share identifiers: igshid, ig_rid, ig_share, igsh.
 //   * Microsoft Ads / Bing Clarity: msclkid, msockid.
 //   * TikTok Ads: ttclid.
@@ -80,6 +84,7 @@
     // Facebook
     'fbclid', '_fbc', '_fbp',
     'fb_action_ids', 'fb_action_types', 'fb_ref', 'fb_source',
+    'mibextid', 'sfnsn',
     // Instagram
     'igshid', 'igsh', 'ig_rid', 'ig_share',
     // Microsoft Ads / Bing Clarity
