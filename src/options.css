@@ -304,27 +304,48 @@ button:focus-visible {
   list-style: none;
   margin: 10px 0 0;
   padding: 0;
-  max-height: 320px;
+  max-height: 340px;
   overflow-y: auto;
-  font-size: 12.5px;
+  font-size: 13px;
 }
+/* Two-row grid per entry: [chip | host + params] over a small muted
+ * timestamp. The text cell owns all leftover width (minmax(0, 1fr) so
+ * long hosts wrap as words, never letter-by-letter), and nothing inside
+ * an entry ever scrolls on its own. Theme variables throughout — the
+ * first cut hardcoded light-mode colors and looked broken in dark mode. */
 .history-list li {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 10px;
+  row-gap: 2px;
   align-items: baseline;
-  gap: 8px;
-  padding: 5px 2px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 7px 2px;
+  border-bottom: 1px solid var(--border);
 }
-.hist-when { color: #667; white-space: nowrap; }
+.history-list li:last-child { border-bottom: 0; }
 .hist-kind {
-  flex: none;
-  padding: 1px 7px;
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  padding: 1px 8px;
   border-radius: 9px;
-  background: #e8eef2;
-  color: #184459;
+  background: var(--code-bg);
+  color: var(--text-muted);
   font-size: 11px;
   white-space: nowrap;
 }
-.hist-kind-active { background: #fdeacc; color: #7a4c00; }
-.hist-kind-skip { background: #e2f2e5; color: #1d5c2a; }
-.hist-what { overflow-wrap: anywhere; }
+.hist-kind-active { color: var(--accent); }
+.hist-what {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+.hist-what b { font-weight: 600; }
+.hist-what .hist-params { color: var(--text-muted); }
+.hist-when {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  font-size: 11px;
+  color: var(--text-muted);
+}

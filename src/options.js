@@ -218,17 +218,26 @@
       bulk: t('histKindBulk', 'bulk clean'),
     };
 
+    // Compact timestamp: time only for today's entries, month + day + time
+    // for older ones. The full locale string ate half the row width.
+    function shortWhen(t) {
+      if (!t) return '';
+      const d = new Date(t);
+      const now = new Date();
+      const sameDay = d.getFullYear() === now.getFullYear()
+        && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+      const time = d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      return sameDay
+        ? time
+        : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ', ' + time;
+    }
+
     function renderHistory(list) {
       listEl.textContent = '';
       const entries = Array.isArray(list) ? list : [];
       for (const e of entries) {
         if (!e || typeof e !== 'object') continue;
         const li = document.createElement('li');
-
-        const when = document.createElement('span');
-        when.className = 'hist-when';
-        when.textContent = e.t ? new Date(e.t).toLocaleString() : '';
-        li.appendChild(when);
 
         const kind = document.createElement('span');
         kind.className = 'hist-kind hist-kind-' + (e.kind || 'rewrite');
@@ -237,17 +246,30 @@
 
         const what = document.createElement('span');
         what.className = 'hist-what';
-        const bits = [];
-        if (e.host) bits.push(e.host);
-        if (Array.isArray(e.params) && e.params.length) {
-          let p = e.params.join(', ');
-          if (e.more > 0) p += ' +' + e.more;
-          bits.push(p);
-        } else if (typeof e.count === 'number' && e.count > 0) {
-          bits.push('×' + e.count);
+        if (e.host) {
+          const b = document.createElement('b');
+          b.textContent = e.host;
+          what.appendChild(b);
         }
-        what.textContent = bits.join(' — ');
+        let detail = '';
+        if (Array.isArray(e.params) && e.params.length) {
+          detail = e.params.join(', ');
+          if (e.more > 0) detail += ' +' + e.more;
+        } else if (typeof e.count === 'number' && e.count > 0) {
+          detail = '×' + e.count;
+        }
+        if (detail) {
+          const p = document.createElement('span');
+          p.className = 'hist-params';
+          p.textContent = (e.host ? ' · ' : '') + detail;
+          what.appendChild(p);
+        }
         li.appendChild(what);
+
+        const when = document.createElement('span');
+        when.className = 'hist-when';
+        when.textContent = shortWhen(e.t);
+        li.appendChild(when);
 
         listEl.appendChild(li);
       }
