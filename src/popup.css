@@ -681,6 +681,9 @@ label.switch:hover .site-gear,
   flex-direction: column;
   gap: 6px;
 }
+/* The explicit display above would defeat the hidden attribute (author
+ * styles beat the UA sheet's [hidden] rule) — restate it. */
+.site-optrow[hidden] { display: none; }
 .site-optline {
   display: flex;
   align-items: center;
