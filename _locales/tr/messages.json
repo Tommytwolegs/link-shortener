@@ -415,5 +415,11 @@
   },
   "siteOptHideWidget": {
     "message": "Bu sitede yüzen bileşeni gizle"
+  },
+  "labelActiveSkip": {
+    "message": "Yönlendirmeleri yüklenmeden önce atla"
+  },
+  "tipActiveSkip": {
+    "message": "Bilinen yönlendirme sarmalayıcılarında, istek izleyiciye gönderilmeden önce doğrudan hedefe gider; izleyici tıklamayı hiç öğrenmez. Yalnızca hedef bağlantıda olduğu gibi okunabiliyorsa uygulanır; diğer her şey normal yönlendirme atlamayı kullanmaya devam eder. Yukarıdaki izleme özellikleriyle aynı geniş izni kullanır. Kurumsal koruma bağlantıları asla atlanmaz."
   }
 }

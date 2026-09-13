@@ -165,6 +165,136 @@
     return removed;
   }
 
+  // ---------------------------------------------------------------------------
+  // Active redirect skip (v1.13): DNR redirect rules that jump straight to a
+  // wrapper's embedded destination BEFORE the request to the wrapper is sent,
+  // so the click tracker never hears about the click at all.
+  //
+  // THE design rule: a skip rule may only match when the embedded target is
+  // provably BYTE-IDENTICAL to the real destination. regexSubstitution cannot
+  // URL-decode, so every capture group requires an UNencoded scheme and
+  // forbids '%' outright — any percent-encoded target simply doesn't match
+  // and falls through to the existing tab-layer skip (webNavigation +
+  // tabs.update), which decodes properly. Fast path + universal fallback;
+  // no correctness risk by construction.
+  //
+  // For ?param=target families the capture also stops at '&' — exactly where
+  // the wrapper's own server-side parser stops, so truncation behavior is
+  // byte-identical to the wrapper too. Raw-query families (href.li,
+  // DeviantArt outgoing) take the WHOLE query as the target, '&' included,
+  // matching their servers.
+  //
+  // Deliberately ABSENT here (tab-layer or copy-only, as before):
+  //   * Bing /ck/a (base64) and DuckDuckGo uddg= (always encoded) — cannot
+  //     or will never match byte-identical.
+  //   * AMP viewers/CDN — path surgery + junk stripping, not expressible.
+  //   * disq.us (hash suffix), t.me/iv, YouTube attribution_link (relative
+  //     targets).
+  //   * Enterprise protection wrappers (SafeLinks, Proofpoint, Barracuda) —
+  //     NEVER skipped anywhere; a test asserts no rule can match them.
+  //   * Affiliate wrappers (CJ, Awin, Partnerize, linksynergy) and ad-click
+  //     wrappers — unchanged policy from the tab-layer list.
+  // ---------------------------------------------------------------------------
+
+  // Param-style capture: unencoded scheme, no %, stops at & / # / end.
+  const CAP = '(https?://[^&%#]+)';
+  // Raw-query capture: the whole remaining query is the target; & allowed.
+  const CAP_RAW = '(https?://[^%#]+)';
+  const TAIL = '(?:[&#].*)?$';
+
+  function qsPattern(hosts, path, params) {
+    return '^https?://(?:' + hosts + ')' + path + '\\?(?:[^#]*&)?(?:' + params + ')=' + CAP + TAIL;
+  }
+
+  // [id, regexFilter] — ids are stable API: never renumber, only append.
+  const SKIP_RULE_DEFS = [
+    [900101, qsPattern('(?:www\\.)?google\\.com', '/url', 'q|url')],
+    [900102, qsPattern('l\\.facebook\\.com|lm\\.facebook\\.com|l\\.messenger\\.com', '/l\\.php', 'u')],
+    [900103, qsPattern('l\\.instagram\\.com', '/', 'u')],
+    [900104, qsPattern('out\\.reddit\\.com', '/', 'url')],
+    [900105, qsPattern('(?:www\\.|m\\.)?youtube\\.com', '/redirect', 'q')],
+    [900106, qsPattern('(?:www\\.)?steamcommunity\\.com', '/linkfilter/', 'u|url')],
+    [900107, qsPattern('t\\.umblr\\.com', '/redirect', 'z')],
+    [900108, '^https?://(?:www\\.)?href\\.li/\\?' + CAP_RAW + '$'],
+    [900109, qsPattern('go\\.redirectingat\\.com|go\\.skimresources\\.com', '/[^?#]*', 'url')],
+    [900110, qsPattern('(?:www\\.)?slack-redir\\.net', '/link', 'url')],
+    [900111, qsPattern('(?:www\\.)?exit\\.sc', '/[^?#]*', 'url')],
+    [900112, qsPattern('(?:www\\.|m\\.)?vk\\.com', '/away(?:\\.php)?', 'to')],
+    [900113, qsPattern('(?:www\\.)?pixiv\\.net', '/jump\\.php', 'url')],
+    [900114, '^https?://(?:www\\.)?pixiv\\.net/jump\\.php\\?' + CAP + '$'],
+    [900115, '^https?://(?:www\\.)?deviantart\\.com/users/outgoing\\?' + CAP_RAW + '$'],
+  ];
+
+  const SKIP_RULE_IDS = SKIP_RULE_DEFS.map((d) => d[0]);
+
+  // The dynamic rule set for the active skip. skipDomains excludes wrapper
+  // REQUEST domains, mirroring the active strip's semantics.
+  function buildSkipRules(opts) {
+    const o = opts || {};
+    const excluded = normalizeSkipDomains(o.skipDomains);
+    return SKIP_RULE_DEFS.map(([id, regexFilter]) => {
+      const rule = {
+        id,
+        priority: 1,
+        action: {
+          type: 'redirect',
+          redirect: { regexSubstitution: '\\1' },
+        },
+        condition: {
+          regexFilter,
+          resourceTypes: ['main_frame'],
+        },
+      };
+      if (excluded.length > 0) rule.condition.excludedRequestDomains = excluded;
+      return rule;
+    });
+  }
+
+  // The same regexes as JS RegExp objects ('i' mirrors DNR's default
+  // case-insensitive matching). The background's tab-layer skip handler
+  // uses this to stand down when the DNR fast path will handle a URL —
+  // and the unit tests use it to pin the patterns' behavior.
+  const SKIP_RES = SKIP_RULE_DEFS.map(([, p]) => new RegExp(p, 'i'));
+  function skipRuleWouldMatch(url) {
+    if (typeof url !== 'string') return false;
+    for (const re of SKIP_RES) {
+      if (re.test(url)) return true;
+    }
+    return false;
+  }
+
+  // What a matching rule redirects to, computed with the same regexes.
+  // Returns null when no rule matches. Tests compare this against the
+  // tab-layer unwrapper to prove byte-identical behavior on the fast path.
+  function skipRuleTarget(url) {
+    if (typeof url !== 'string') return null;
+    for (const re of SKIP_RES) {
+      const m = re.exec(url);
+      if (m) return m[1];
+    }
+    return null;
+  }
+
+  // Per-tab pause (v1.13): one high-priority SESSION-scoped allow rule
+  // covering the paused tabs. Allow beats redirect at higher priority, so
+  // both the active strip and the active skip stand down on those tabs.
+  // tabIds conditions are only legal in session rules — the background
+  // must install this via updateSessionRules, never updateDynamicRules.
+  const PAUSE_RULE_ID = 920001;
+  function buildPauseRules(tabIds) {
+    const ids = [];
+    for (const t of Array.isArray(tabIds) ? tabIds : []) {
+      if (typeof t === 'number' && t >= 0 && ids.indexOf(t) === -1) ids.push(t);
+    }
+    if (ids.length === 0) return [];
+    return [{
+      id: PAUSE_RULE_ID,
+      priority: 99,
+      action: { type: 'allow' },
+      condition: { resourceTypes: ['main_frame'], tabIds: ids },
+    }];
+  }
+
   const api = {
     ACTIVE_RULE_ID,
     PREFIX_EXPANSIONS,
@@ -172,6 +302,12 @@
     buildRemoveParams,
     buildRules,
     diffRemovedParams,
+    SKIP_RULE_IDS,
+    buildSkipRules,
+    skipRuleWouldMatch,
+    skipRuleTarget,
+    PAUSE_RULE_ID,
+    buildPauseRules,
   };
   global.DnrRules = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

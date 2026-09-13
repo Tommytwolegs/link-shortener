@@ -403,6 +403,7 @@
     keepTitles: false,
     enabledUtmStrip: false,
     enabledActiveStrip: false,
+    enabledActiveSkip: false,
     enabledRedirectSkip: true,
     showBadge: true,
   };
@@ -414,6 +415,7 @@
   const keepTitlesEl = document.getElementById('keepTitles');
   const utmStripEl = document.getElementById('enabledUtmStrip');
   const activeStripEl = document.getElementById('enabledActiveStrip');
+  const activeSkipEl = document.getElementById('enabledActiveSkip');
   const redirectSkipEl = document.getElementById('enabledRedirectSkip');
   const status = document.getElementById('status');
   const versionEl = document.getElementById('version');
@@ -790,6 +792,7 @@
     if (keepTitlesEl) keepTitlesEl.checked = state.keepTitles === true || state.includeAmazonTitle === true;
     utmStripEl.checked = state.enabledUtmStrip === true;
     if (activeStripEl) activeStripEl.checked = state.enabledActiveStrip === true;
+    if (activeSkipEl) activeSkipEl.checked = state.enabledActiveSkip === true;
     redirectSkipEl.checked = state.enabledRedirectSkip !== false;
     for (const k of SITE_KEYS) {
       if (siteEls[k]) siteEls[k].checked = state[k] !== false;
@@ -806,11 +809,16 @@
     // Truth check: if either strip flag is on but the shared permission is
     // missing (grant flow interrupted, or revoked via the browser's own UI),
     // the toggle would be a lie -- flip it back off.
-    if ((items.enabledUtmStrip === true || items.enabledActiveStrip === true)
+    if ((items.enabledUtmStrip === true || items.enabledActiveStrip === true
+        || items.enabledActiveSkip === true)
         && chrome.permissions && chrome.permissions.contains) {
       chrome.permissions.contains({ origins: ['*://*/*'] }, (has) => {
         void chrome.runtime.lastError;
-        if (!has) chrome.storage.sync.set({ enabledUtmStrip: false, enabledActiveStrip: false });
+        if (!has) {
+          chrome.storage.sync.set({
+            enabledUtmStrip: false, enabledActiveStrip: false, enabledActiveSkip: false,
+          });
+        }
       });
     }
   });
@@ -891,6 +899,22 @@
     chrome.storage.sync.set({ enabledRedirectSkip: redirectSkipEl.checked });
   });
 
+  // "Skip redirects before they load" -- the Active skip (v1.13): DNR rules
+  // that jump to the destination before the wrapper request is sent. Same
+  // shared *://*/* optional permission and the same flag-before-prompt dance
+  // as the strips above.
+  if (activeSkipEl) activeSkipEl.addEventListener('change', () => {
+    if (activeSkipEl.checked) {
+      chrome.storage.sync.set({ enabledActiveSkip: true });
+      chrome.permissions.request({ origins: ['*://*/*'] }, (granted) => {
+        void chrome.runtime.lastError;
+        if (!granted) chrome.storage.sync.set({ enabledActiveSkip: false });
+      });
+    } else {
+      chrome.storage.sync.set({ enabledActiveSkip: false });
+    }
+  });
+
   // Per-site toggle listeners are attached in buildRow at render time.
 
   // React to storage changes from anywhere.
@@ -902,6 +926,7 @@
       || Object.prototype.hasOwnProperty.call(changes, 'keepTitles')
       || Object.prototype.hasOwnProperty.call(changes, 'enabledUtmStrip')
       || Object.prototype.hasOwnProperty.call(changes, 'enabledActiveStrip')
+      || Object.prototype.hasOwnProperty.call(changes, 'enabledActiveSkip')
       || Object.prototype.hasOwnProperty.call(changes, 'enabledRedirectSkip')
       || Object.prototype.hasOwnProperty.call(changes, 'showBadge')
       || SITE_KEYS.some((k) => Object.prototype.hasOwnProperty.call(changes, k));

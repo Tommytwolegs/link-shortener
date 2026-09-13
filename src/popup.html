@@ -104,10 +104,24 @@
               data-tip="Removes common tracking parameters (utm_*, gclid, fbclid, and more) from page navigations before the request even leaves your browser, so the destination never receives them. Uses the same broad permission and the same skip/keep lists as the Universal tracking strip. Site-specific cleanup still happens in the address bar."
               aria-label="Removes common tracking parameters (utm_*, gclid, fbclid, and more) from page navigations before the request even leaves your browser, so the destination never receives them. Uses the same broad permission and the same skip/keep lists as the Universal tracking strip. Site-specific cleanup still happens in the address bar."
               data-i18n-tip="tipActiveStrip">?</span>
-        <span class="badge-new" aria-label="new" data-i18n="badgeNew">NEW</span>
       </span>
       <span class="switch-control">
         <input type="checkbox" id="enabledActiveStrip" />
+        <span class="slider" aria-hidden="true"></span>
+      </span>
+    </label>
+
+    <label class="switch switch-secondary" for="enabledActiveSkip">
+      <span class="switch-label">
+        <span data-i18n="labelActiveSkip">Skip redirects before they load</span>
+        <span class="help-dot" tabindex="0"
+              data-tip="For well-known redirect wrappers, jump straight to the destination before the request to the tracker is even sent, so it never learns about the click. Only applies when the destination is plainly readable in the link; everything else still uses the regular redirect skip. Uses the same broad permission as the tracking features above. Enterprise protection links are never skipped."
+              aria-label="For well-known redirect wrappers, jump straight to the destination before the request to the tracker is even sent, so it never learns about the click. Only applies when the destination is plainly readable in the link; everything else still uses the regular redirect skip. Uses the same broad permission as the tracking features above. Enterprise protection links are never skipped."
+              data-i18n-tip="tipActiveSkip">?</span>
+        <span class="badge-new" aria-label="new" data-i18n="badgeNew">NEW</span>
+      </span>
+      <span class="switch-control">
+        <input type="checkbox" id="enabledActiveSkip" />
         <span class="slider" aria-hidden="true"></span>
       </span>
     </label>

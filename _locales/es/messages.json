@@ -415,5 +415,11 @@
   },
   "siteOptHideWidget": {
     "message": "Ocultar el widget flotante en este sitio"
+  },
+  "labelActiveSkip": {
+    "message": "Omitir redirecciones antes de que carguen"
+  },
+  "tipActiveSkip": {
+    "message": "Para envoltorios de redirección conocidos, salta directamente al destino antes de que la solicitud llegue al rastreador, que así nunca se entera del clic. Solo se aplica cuando el destino es legible en el propio enlace; el resto sigue usando la omisión normal de redirecciones. Usa el mismo permiso amplio que las funciones de rastreo anteriores. Los enlaces de protección corporativa nunca se omiten."
   }
 }

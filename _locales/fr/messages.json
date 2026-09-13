@@ -415,5 +415,11 @@
   },
   "siteOptHideWidget": {
     "message": "Masquer le widget flottant sur ce site"
+  },
+  "labelActiveSkip": {
+    "message": "Ignorer les redirections avant leur chargement"
+  },
+  "tipActiveSkip": {
+    "message": "Pour les enveloppes de redirection connues, va directement à la destination avant même que la requête ne parte vers le traceur, qui n'apprend donc jamais le clic. Ne s'applique que lorsque la destination est lisible telle quelle dans le lien ; tout le reste passe par l'ignorance normale des redirections. Utilise la même permission étendue que les fonctions de suivi ci-dessus. Les liens de protection d'entreprise ne sont jamais ignorés."
   }
 }

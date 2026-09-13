@@ -668,7 +668,9 @@ async function unregisterUtmContentScript() {
 }
 
 async function syncUtmContentScript() {
-  const items = await chrome.storage.sync.get({ enabledUtmStrip: false, enabledActiveStrip: false });
+  const items = await chrome.storage.sync.get({
+    enabledUtmStrip: false, enabledActiveStrip: false, enabledActiveSkip: false,
+  });
   const flagOn = items.enabledUtmStrip === true;
   const hasPerm = await new Promise((resolve) => {
     chrome.permissions.contains({ origins: ['*://*/*'] }, (granted) => {
@@ -686,9 +688,11 @@ async function syncUtmContentScript() {
   // re-enabling re-triggers Chrome's permission prompt. (When the flag is
   // ON but the permission is missing we're mid-grant -- the prompt is on
   // screen -- so we deliberately do NOT remove anything in that state.)
-  // The Active strip SHARES this permission: only hand it back when both
-  // features are off, or toggling one would silently kill the other.
-  if (!flagOn && items.enabledActiveStrip !== true && hasPerm && chrome.permissions.remove) {
+  // The Active strip and Active skip SHARE this permission: only hand it
+  // back when all three features are off, or toggling one would silently
+  // kill the others.
+  if (!flagOn && items.enabledActiveStrip !== true && items.enabledActiveSkip !== true
+      && hasPerm && chrome.permissions.remove) {
     chrome.permissions.remove({ origins: ['*://*/*'] }, () => void chrome.runtime.lastError);
   }
 }
@@ -764,6 +768,7 @@ async function syncActiveStrip() {
     enabled: true,
     enabledActiveStrip: false,
     enabledUtmStrip: false,
+    enabledActiveSkip: false,
     utmStripSkipDomains: [],
     utmStripKeepParams: [],
   });
@@ -805,14 +810,99 @@ async function syncActiveStrip() {
     activeRemoveSet = null;
   }
   // Mirror of syncUtmContentScript's hand-back: this feature also holds the
-  // broad permission only while one of the two strips is actually on.
-  if (!flagOn && items.enabledUtmStrip !== true && hasPerm && chrome.permissions.remove) {
+  // broad permission only while one of the three network-layer features is
+  // actually on.
+  if (!flagOn && items.enabledUtmStrip !== true && items.enabledActiveSkip !== true
+      && hasPerm && chrome.permissions.remove) {
     chrome.permissions.remove({ origins: ['*://*/*'] }, () => void chrome.runtime.lastError);
   }
 }
 
 chrome.runtime.onInstalled.addListener(syncActiveStrip);
 chrome.runtime.onStartup.addListener(syncActiveStrip);
+
+// ---------------------------------------------------------------------------
+// Active redirect skip (v1.13): DNR redirect rules that jump straight to a
+// wrapper's embedded destination BEFORE the request is sent, so the click
+// tracker never hears about the click. Rules only match byte-identical raw
+// targets (dnr.js); everything else falls through to the tab-layer skip
+// below, which stays enabled as the universal fallback. Shares the optional
+// *://*/* permission and the skip-domain list with the strips.
+// ---------------------------------------------------------------------------
+
+// Whether the skip rules are currently installed. Same MV3 repair story as
+// activeRemoveSet: the rules outlive the worker, this global does not.
+let activeSkipInstalled = false;
+let skipKnown = false;
+let skipLoad = null;
+function ensureActiveSkipKnown() {
+  if (skipKnown || !chrome.declarativeNetRequest
+      || !chrome.declarativeNetRequest.getDynamicRules) {
+    return Promise.resolve();
+  }
+  if (!skipLoad) {
+    skipLoad = new Promise((resolve) => {
+      chrome.declarativeNetRequest.getDynamicRules((rules) => {
+        void chrome.runtime.lastError;
+        const D = self.DnrRules;
+        activeSkipInstalled = !!(Array.isArray(rules) && D
+          && rules.some((x) => x && D.SKIP_RULE_IDS.indexOf(x.id) !== -1));
+        skipKnown = true;
+        resolve();
+      });
+    });
+  }
+  return skipLoad;
+}
+
+async function syncActiveSkip() {
+  if (!chrome.declarativeNetRequest || !chrome.declarativeNetRequest.updateDynamicRules) return;
+  const D = self.DnrRules;
+  if (!D || !D.buildSkipRules) return;
+  const items = await chrome.storage.sync.get({
+    enabled: true,
+    enabledActiveSkip: false,
+    enabledActiveStrip: false,
+    enabledUtmStrip: false,
+    utmStripSkipDomains: [],
+  });
+  const flagOn = items.enabledActiveSkip === true && items.enabled !== false;
+  const hasPerm = await new Promise((resolve) => {
+    chrome.permissions.contains({ origins: ['*://*/*'] }, (granted) => {
+      void chrome.runtime.lastError;
+      resolve(!!granted);
+    });
+  });
+  try {
+    if (flagOn && hasPerm) {
+      await chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: D.SKIP_RULE_IDS,
+        addRules: D.buildSkipRules({
+          skipDomains: Array.isArray(items.utmStripSkipDomains) ? items.utmStripSkipDomains : [],
+        }),
+      });
+      activeSkipInstalled = true;
+    } else {
+      await chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: D.SKIP_RULE_IDS,
+      });
+      activeSkipInstalled = false;
+    }
+    skipKnown = true;
+  } catch (e) {
+    console.debug('[Link Shortener] could not update active-skip rules:', e);
+    activeSkipInstalled = false;
+  }
+  // Same hand-back interlock as the strips: the broad permission goes back
+  // to the browser only when all three network-layer features are off.
+  if (!flagOn && items.enabledUtmStrip !== true && items.enabledActiveStrip !== true
+      && hasPerm && chrome.permissions.remove) {
+    chrome.permissions.remove({ origins: ['*://*/*'] }, () => void chrome.runtime.lastError);
+  }
+}
+
+chrome.runtime.onInstalled.addListener(syncActiveSkip);
+chrome.runtime.onStartup.addListener(syncActiveSkip);
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'sync') return;
@@ -821,6 +911,11 @@ chrome.storage.onChanged.addListener((changes, area) => {
       || Object.prototype.hasOwnProperty.call(changes, 'utmStripSkipDomains')
       || Object.prototype.hasOwnProperty.call(changes, 'utmStripKeepParams')) {
     syncActiveStrip();
+  }
+  if (Object.prototype.hasOwnProperty.call(changes, 'enabled')
+      || Object.prototype.hasOwnProperty.call(changes, 'enabledActiveSkip')
+      || Object.prototype.hasOwnProperty.call(changes, 'utmStripSkipDomains')) {
+    syncActiveSkip();
   }
 });
 
@@ -861,6 +956,33 @@ chrome.webNavigation.onCommitted.addListener((details) => {
   }
   if (Date.now() - started.at > 10000 || started.url === details.url) {
     activeBlocks.delete(details.tabId);
+    return;
+  }
+  // Active-skip attribution: a DNR fast-path skip is also ONE navigation
+  // (wrapper in onBeforeNavigate, destination in onCommitted). Credit it
+  // only when the delta is EXACTLY what our own rules produce — the
+  // skipRuleTarget equality — and only while the rules are installed, so
+  // a site's own redirect can never be miscounted.
+  if (self.DnrRules && self.DnrRules.skipRuleTarget
+      && self.DnrRules.skipRuleTarget(started.url) === details.url) {
+    activeBlocks.delete(details.tabId);
+    ensureActiveSkipKnown().then(() => {
+      if (!activeSkipInstalled) return;
+      stashOriginal(details.tabId, started.url, details.url);
+      recordStats({
+        skips: 1,
+        urls: 1,
+        chars: Math.max(0, started.url.length - details.url.length),
+      });
+      bumpTabCount(details.tabId, 1);
+      if (self.HistoryLog) {
+        recordHistory({
+          host: self.HistoryLog.hostOf(details.url),
+          kind: 'skip',
+          chars: Math.max(0, started.url.length - details.url.length),
+        });
+      }
+    });
     return;
   }
   // The diff runs after the (usually no-op) worker-restart repair. The
@@ -913,9 +1035,11 @@ if (chrome.permissions && chrome.permissions.onAdded) {
     // The popup closes (focus loss) the moment the permission dialog
     // opens, so its post-grant callback may never run. The grant itself
     // lands HERE, where the flag is already set optimistically -- register
-    // the strip right away. Same story for the active strip's rules.
+    // the strip right away. Same story for the active strip's rules and
+    // the active skip's.
     syncUtmContentScript();
     syncActiveStrip();
+    syncActiveSkip();
   });
 }
 
@@ -923,10 +1047,12 @@ if (chrome.permissions && chrome.permissions.onRemoved) {
   chrome.permissions.onRemoved.addListener((p) => {
     if (p && Array.isArray(p.origins) && p.origins.includes('*://*/*')) {
       unregisterUtmContentScript();
-      // Both strips ride this permission; revoking it (browser UI or our own
-      // hand-back) turns both off. The storage write triggers syncActiveStrip,
-      // which clears the DNR rule.
-      chrome.storage.sync.set({ enabledUtmStrip: false, enabledActiveStrip: false });
+      // All three network-layer features ride this permission; revoking it
+      // (browser UI or our own hand-back) turns them all off. The storage
+      // write triggers the sync functions, which clear the DNR rules.
+      chrome.storage.sync.set({
+        enabledUtmStrip: false, enabledActiveStrip: false, enabledActiveSkip: false,
+      });
     }
   });
 }
@@ -1921,8 +2047,17 @@ function handleRedirectSkip(details) {
   const target = self.RedirectUnwrapper.unwrapRedirects(details.url);
   if (!target || target === details.url) return;
   if (!/^https?:/i.test(target)) return;
-  chrome.storage.sync.get({ enabled: true, enabledRedirectSkip: true }, (items) => {
+  chrome.storage.sync.get({ enabled: true, enabledRedirectSkip: true }, async (items) => {
     if (items.enabled === false || items.enabledRedirectSkip === false) return;
+    // Stand down when the active skip's DNR fast path covers this URL: the
+    // redirect already happened inside the network layer, and the commit
+    // listener does the attribution. Acting here too would double-navigate
+    // and double-count.
+    await ensureActiveSkipKnown();
+    if (activeSkipInstalled && self.DnrRules && self.DnrRules.skipRuleWouldMatch
+        && self.DnrRules.skipRuleWouldMatch(details.url)) {
+      return;
+    }
     chrome.tabs.update(details.tabId, { url: target }, () => void chrome.runtime.lastError);
     // Skip transparency: stash the wrapper -> destination pair so the popup
     // on the landing page can show an "unwrapped:" chip and offer the

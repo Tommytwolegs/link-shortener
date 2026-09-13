@@ -110,7 +110,7 @@ const htmlIds = new Set([...read('src/popup.html').matchAll(/input type="checkbo
 
 // Static popup.html checkboxes are feature flags only now; every per-site
 // toggle must come from the catalog, and no site row may linger in HTML.
-const FEATURE_FLAGS = new Set(['enabledUtmStrip', 'enabledActiveStrip', 'enabledRedirectSkip']);
+const FEATURE_FLAGS = new Set(['enabledUtmStrip', 'enabledActiveStrip', 'enabledActiveSkip', 'enabledRedirectSkip']);
 for (const k of htmlIds) {
   if (!FEATURE_FLAGS.has(k)) flag(`popup.html static checkbox ${k}: site rows must live in SITE_GROUPS`);
 }

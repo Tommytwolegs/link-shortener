@@ -415,5 +415,11 @@
   },
   "siteOptHideWidget": {
     "message": "Hide the floating widget on this site"
+  },
+  "labelActiveSkip": {
+    "message": "Skip redirects before they load"
+  },
+  "tipActiveSkip": {
+    "message": "For well-known redirect wrappers, jump straight to the destination before the request to the tracker is even sent, so it never learns about the click. Only applies when the destination is plainly readable in the link; everything else still uses the regular redirect skip. Uses the same broad permission as the tracking features above. Enterprise protection links are never skipped."
   }
 }
