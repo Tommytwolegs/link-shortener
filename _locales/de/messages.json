@@ -228,7 +228,7 @@
     "message": "Universeller Tracking-Filter"
   },
   "optStripIntro": {
-    "message": "Diese Einstellungen gelten für den <strong>universellen Tracking-Filter</strong> und für <strong>Tracker blockieren, bevor sie laden</strong>. Die Bereinigung pro Website (Amazon, eBay usw.) bleibt unberührt."
+    "message": "Diese Einstellungen gelten für den <strong>universellen Tracking-Filter</strong> und für <strong>Tracker blockieren, bevor sie laden</strong>. Die Bereinigung pro Website (Amazon, eBay usw.) bleibt unberührt. Die Liste der übersprungenen Domains gilt auch für „Weiterleitungen vor dem Laden überspringen“."
   },
   "optSkipTitle": {
     "message": "Diese Domains überspringen"

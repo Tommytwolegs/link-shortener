@@ -228,7 +228,7 @@
     "message": "Universele trackingfilter"
   },
   "optStripIntro": {
-    "message": "Deze instellingen gelden voor zowel de <strong>Universele trackingfilter</strong> als <strong>Trackers blokkeren vóór het laden</strong>. Opschoning per site (Amazon, eBay, enz.) blijft ongewijzigd."
+    "message": "Deze instellingen gelden voor zowel de <strong>Universele trackingfilter</strong> als <strong>Trackers blokkeren vóór het laden</strong>. Opschoning per site (Amazon, eBay, enz.) blijft ongewijzigd. De lijst met over te slaan domeinen geldt ook voor \"Doorsturingen overslaan vóór het laden\"."
   },
   "optSkipTitle": {
     "message": "Deze domeinen overslaan"

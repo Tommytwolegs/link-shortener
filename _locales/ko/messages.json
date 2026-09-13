@@ -228,7 +228,7 @@
     "message": "유니버설 추적 제거"
   },
   "optStripIntro": {
-    "message": "이 설정은 <strong>범용 추적 제거</strong>와 <strong>로드 전에 추적기 차단</strong> 모두에 적용됩니다. 사이트별 정리(Amazon, eBay 등)에는 영향을 주지 않습니다."
+    "message": "이 설정은 <strong>범용 추적 제거</strong>와 <strong>로드 전에 추적기 차단</strong> 모두에 적용됩니다. 사이트별 정리(Amazon, eBay 등)에는 영향을 주지 않습니다. 건너뛸 도메인 목록은 \"로드 전에 리디렉션 건너뛰기\"에도 적용됩니다."
   },
   "optSkipTitle": {
     "message": "건너뛸 도메인"

@@ -228,7 +228,7 @@
     "message": "Evrensel izleme filtresi"
   },
   "optStripIntro": {
-    "message": "Bu ayarlar hem <strong>evrensel izleme filtresi</strong> hem de <strong>İzleyicileri yüklenmeden engelle</strong> için geçerlidir. Siteye özel temizlik (Amazon, eBay vb.) etkilenmez."
+    "message": "Bu ayarlar hem <strong>evrensel izleme filtresi</strong> hem de <strong>İzleyicileri yüklenmeden engelle</strong> için geçerlidir. Siteye özel temizlik (Amazon, eBay vb.) etkilenmez. Atlanan alan adları listesi \"Yönlendirmeleri yüklenmeden önce atla\" için de geçerlidir."
   },
   "optSkipTitle": {
     "message": "Bu alan adlarını atla"

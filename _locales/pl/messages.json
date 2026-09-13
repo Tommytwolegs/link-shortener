@@ -228,7 +228,7 @@
     "message": "Uniwersalny filtr śledzenia"
   },
   "optStripIntro": {
-    "message": "Te ustawienia dotyczą zarówno <strong>Uniwersalnego filtra śledzenia</strong>, jak i funkcji <strong>Blokuj trackery przed załadowaniem</strong>. Czyszczenie według witryny (Amazon, eBay itd.) pozostaje bez zmian."
+    "message": "Te ustawienia dotyczą zarówno <strong>Uniwersalnego filtra śledzenia</strong>, jak i funkcji <strong>Blokuj trackery przed załadowaniem</strong>. Czyszczenie według witryny (Amazon, eBay itd.) pozostaje bez zmian. Lista pomijanych domen dotyczy też funkcji „Pomijaj przekierowania przed załadowaniem”."
   },
   "optSkipTitle": {
     "message": "Pomijaj te domeny"

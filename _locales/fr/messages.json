@@ -228,7 +228,7 @@
     "message": "Filtre de suivi universel"
   },
   "optStripIntro": {
-    "message": "Ces réglages s'appliquent au <strong>filtre universel</strong> et à <strong>Bloquer les traqueurs avant chargement</strong>. Le nettoyage par site (Amazon, eBay, etc.) n'est pas concerné."
+    "message": "Ces réglages s'appliquent au <strong>filtre universel</strong> et à <strong>Bloquer les traqueurs avant chargement</strong>. Le nettoyage par site (Amazon, eBay, etc.) n'est pas concerné. La liste des domaines exclus s'applique aussi à « Ignorer les redirections avant leur chargement »."
   },
   "optSkipTitle": {
     "message": "Ignorer ces domaines"

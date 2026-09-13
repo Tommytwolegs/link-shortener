@@ -1,6 +1,58 @@
 # Changelog
 
-## [1.12.0] — in development
+## [1.13.0] — in development
+
+### Added
+- **Active redirect skip: "Skip redirects before they load."** New opt-in
+  popup switch. For well-known redirect wrappers (Google /url, Facebook
+  l.php, Reddit out., YouTube /redirect, href.li, Skimlinks, Slack, VK,
+  Steam, Tumblr, pixiv, DeviantArt, and more), a declarativeNetRequest
+  redirect rule jumps straight to the destination BEFORE the request to
+  the tracker is sent — it never learns the click happened. Rules only
+  fire when the embedded destination is byte-identical raw text in the
+  link (no percent-encoding); everything else falls through to the
+  existing tab-layer redirect skip, unchanged. Enterprise protection
+  wrappers (SafeLinks, Proofpoint, Barracuda) are never skipped, at
+  either layer, and a test suite proves the rules cannot match them.
+  Shares the optional `*://*/*` permission with the strips; it is handed
+  back only when all three network-layer features are off.
+- **Per-tab cleanup counter on the toolbar icon.** Address-bar rewrites,
+  trackers blocked before load, and skipped redirects tick a small badge
+  for the current tab; it resets on every navigation. On by default; new
+  "Show count on the icon" switch turns it off.
+- **Recent activity (local history).** Advanced → Stats grows a 50-entry
+  newest-first log: time, hostname, kind, and removed parameter NAMES
+  only — never full links, never values, never synced (the entry format
+  structurally has no field for them). One-click clear; "Keep local
+  activity history" toggle.
+- **Per-site options.** Site rows in the popup grow a gear (on the sites
+  that have options): Amazon gets a per-site title override
+  (default/always/never on top of the global "Keep item titles" switch),
+  and each travel site can hide the floating widget individually.
+- **Per-tab pause.** New popup footer action suspends every layer on the
+  current tab (network rules via a session-scoped allow rule, tab-layer
+  skip and rewrites directly) until resume, tab close, or navigation to
+  a different origin.
+- **"Clean links on this page."** One-shot popup action that runs every
+  link on the current page through the full cleanup pipeline (unwrap,
+  per-site rules, universal strip) and rewrites the hrefs in place. User-
+  initiated only; no automatic page rewriting.
+- **Self-healing fix flow.** The copy menu's report section gains
+  "Exclude this site from tracking strip" — one click adds the hostname
+  to the skip-domain list, standing down the universal strip, active
+  strip, and active skip on that site.
+- **Bulk cleaner: file drop.** Drop (or pick) a .txt/.md/.csv/.html file;
+  it is read locally via FileReader — never uploaded — and .html files
+  are reduced to their links with an inert parser first. 5 MB cap.
+- **Keyboard command: toggle the master switch.** Ships unbound (assign
+  it in the browser's shortcut settings); the toolbar icon title shows
+  the off state.
+- **Universal denylist: `mibextid`, `sfnsn`.** Facebook/Messenger
+  mobile-share trackers ride on outbound links shared through the Meta
+  apps and now strip on every site, not just facebook.com.
+- **Locales: Italiano, Nederlands, Polski** (13 languages total).
+
+## [1.12.0]
 
 ### Added
 - **Active strip: "Block trackers before they load."** New opt-in popup

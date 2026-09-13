@@ -228,7 +228,7 @@
     "message": "Filtro de rastreo universal"
   },
   "optStripIntro": {
-    "message": "Estos ajustes se aplican tanto a la <strong>limpieza universal</strong> como a <strong>Bloquear rastreadores antes de que carguen</strong>. La limpieza por sitio (Amazon, eBay, etc.) no se ve afectada."
+    "message": "Estos ajustes se aplican tanto a la <strong>limpieza universal</strong> como a <strong>Bloquear rastreadores antes de que carguen</strong>. La limpieza por sitio (Amazon, eBay, etc.) no se ve afectada. La lista de dominios omitidos también se aplica a \"Omitir redirecciones antes de que carguen\"."
   },
   "optSkipTitle": {
     "message": "Omitir estos dominios"

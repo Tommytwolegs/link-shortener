@@ -228,7 +228,7 @@
     "message": "Universal tracking strip"
   },
   "optStripIntro": {
-    "message": "These settings apply to both the <strong>Universal tracking strip</strong> and <strong>Block trackers before they load</strong>. Per-site cleanup (Amazon, eBay, etc.) is unaffected."
+    "message": "These settings apply to both the <strong>Universal tracking strip</strong> and <strong>Block trackers before they load</strong>. Per-site cleanup (Amazon, eBay, etc.) is unaffected. The skip-domain list also applies to \"Skip redirects before they load\"."
   },
   "optSkipTitle": {
     "message": "Skip these domains"

@@ -228,7 +228,7 @@
     "message": "通用跟踪清理"
   },
   "optStripIntro": {
-    "message": "这些设置同时适用于<strong>通用跟踪清理</strong>和<strong>在加载前拦截跟踪参数</strong>。按站点清理（Amazon、eBay 等）不受影响。"
+    "message": "这些设置同时适用于<strong>通用跟踪清理</strong>和<strong>在加载前拦截跟踪参数</strong>。按站点清理（Amazon、eBay 等）不受影响。「跳过这些域名」列表同样适用于「在加载前跳过重定向」。"
   },
   "optSkipTitle": {
     "message": "跳过这些域名"

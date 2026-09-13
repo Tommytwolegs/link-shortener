@@ -168,8 +168,8 @@ link opens the bulk cleaner: paste any text and every URL inside is
 unwrapped and cleaned in one pass. A local stats line (URLs cleaned,
 characters removed) is counted in `chrome.storage.local` only -- never
 synced, never sent. Advanced settings adds stats detail with reset, and
-settings export/import as JSON. The whole UI ships in ten languages
-(en, de, fr, es, pt-BR, tr, ru, ja, ko, zh-CN) via `_locales`.
+settings export/import as JSON. The whole UI ships in thirteen languages
+(en, de, fr, es, it, nl, pl, pt-BR, tr, ru, ja, ko, zh-CN) via `_locales`.
 
 ### Universal tracking strip (off by default)
 

@@ -228,7 +228,7 @@
     "message": "ユニバーサルトラッキング除去"
   },
   "optStripIntro": {
-    "message": "これらの設定は<strong>ユニバーサルクリーニング</strong>と<strong>読み込み前にトラッカーをブロック</strong>の両方に適用されます。サイト別クリーニング（Amazon、eBay など）には影響しません。"
+    "message": "これらの設定は<strong>ユニバーサルクリーニング</strong>と<strong>読み込み前にトラッカーをブロック</strong>の両方に適用されます。サイト別クリーニング（Amazon、eBay など）には影響しません。スキップするドメインのリストは「読み込み前にリダイレクトをスキップ」にも適用されます。"
   },
   "optSkipTitle": {
     "message": "除外するドメイン"

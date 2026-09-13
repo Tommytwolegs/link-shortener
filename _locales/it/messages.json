@@ -228,7 +228,7 @@
     "message": "Filtro tracciamento universale"
   },
   "optStripIntro": {
-    "message": "Queste impostazioni valgono sia per il <strong>Filtro tracciamento universale</strong> sia per <strong>Blocca i tracciatori prima del caricamento</strong>. La pulizia per sito (Amazon, eBay, ecc.) non è interessata."
+    "message": "Queste impostazioni valgono sia per il <strong>Filtro tracciamento universale</strong> sia per <strong>Blocca i tracciatori prima del caricamento</strong>. La pulizia per sito (Amazon, eBay, ecc.) non è interessata. L'elenco dei domini da saltare vale anche per \"Salta i reindirizzamenti prima del caricamento\"."
   },
   "optSkipTitle": {
     "message": "Salta questi domini"
