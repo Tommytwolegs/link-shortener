@@ -446,6 +446,95 @@
   // The filter registers a callback so late-rendered rows join its cache.
   let onGroupRendered = null;
 
+  // Per-site options capabilities (v1.13). A site key listed here gets a
+  // gear affordance on its row; the values name which controls the inline
+  // options row offers. Storage: the `siteOpts` map, strict-sanitized by
+  // siteopts.js on every write.
+  const SITE_OPTIONS = {
+    enabledAmazon: ['keepTitles'],
+    enabledBooking: ['hideWidget'],
+    enabledExpedia: ['hideWidget'],
+    enabledAirbnb: ['hideWidget'],
+    enabledAgoda: ['hideWidget'],
+    enabledTrip: ['hideWidget'],
+    enabledHotelscom: ['hideWidget'],
+    enabledVrbo: ['hideWidget'],
+  };
+
+  function writeSiteOpt(key, optKey, value) {
+    chrome.storage.sync.get({ siteOpts: {} }, (items) => {
+      const raw = items.siteOpts && typeof items.siteOpts === 'object' ? items.siteOpts : {};
+      const entry = Object.assign({}, raw[key]);
+      if (value === undefined) delete entry[optKey];
+      else entry[optKey] = value;
+      const next = Object.assign({}, raw, { [key]: entry });
+      const clean = window.SiteOpts ? window.SiteOpts.sanitizeSiteOpts(next) : next;
+      chrome.storage.sync.set({ siteOpts: clean });
+    });
+  }
+
+  function buildOptRow(key, opts) {
+    const row = document.createElement('div');
+    row.className = 'site-optrow';
+    row.hidden = true;
+
+    if (opts.includes('keepTitles')) {
+      const line = document.createElement('label');
+      line.className = 'site-optline';
+      const span = document.createElement('span');
+      span.textContent = t('labelKeepTitles', 'Keep item titles in links');
+      const sel = document.createElement('select');
+      sel.className = 'site-optselect';
+      for (const [val, optLabel] of [
+        ['', t('siteOptDefault', 'Use global setting')],
+        ['always', t('siteOptAlways', 'Always on here')],
+        ['never', t('siteOptNever', 'Always off here')],
+      ]) {
+        const o = document.createElement('option');
+        o.value = val;
+        o.textContent = optLabel;
+        sel.appendChild(o);
+      }
+      sel.addEventListener('change', () => {
+        writeSiteOpt(key, 'keepTitles', sel.value || undefined);
+      });
+      line.appendChild(span);
+      line.appendChild(sel);
+      row.appendChild(line);
+      row.dataset.hasKeepTitles = '1';
+    }
+
+    if (opts.includes('hideWidget')) {
+      const line = document.createElement('label');
+      line.className = 'site-optline';
+      const span = document.createElement('span');
+      span.textContent = t('siteOptHideWidget', 'Hide the floating widget on this site');
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.className = 'site-optcheck';
+      cb.addEventListener('change', () => {
+        writeSiteOpt(key, 'hideWidget', cb.checked ? true : undefined);
+      });
+      line.appendChild(span);
+      line.appendChild(cb);
+      row.appendChild(line);
+      row.dataset.hasHideWidget = '1';
+    }
+
+    // Lazy state load on first expand, so 200 rows don't each hit storage
+    // on popup open.
+    row.refreshFromStorage = () => {
+      chrome.storage.sync.get({ siteOpts: {} }, (items) => {
+        const entry = (items.siteOpts && items.siteOpts[key]) || {};
+        const sel = row.querySelector('.site-optselect');
+        if (sel) sel.value = entry.keepTitles === 'always' || entry.keepTitles === 'never' ? entry.keepTitles : '';
+        const cb = row.querySelector('.site-optcheck');
+        if (cb) cb.checked = entry.hideWidget === true;
+      });
+    };
+    return row;
+  }
+
   function buildRow(key, label, site, group) {
     const lab = document.createElement('label');
     lab.className = 'switch switch-sm';
@@ -472,7 +561,33 @@
       chrome.storage.sync.set({ [key]: input.checked });
     });
     siteEls[key] = input;
-    return lab;
+
+    const opts = SITE_OPTIONS[key];
+    if (!opts) return lab;
+
+    // Sites with per-site options get a wrapper: [row with gear][options].
+    // The filter targets .site-row when present, so hiding hides both.
+    const wrap = document.createElement('div');
+    wrap.className = 'site-row';
+    const gear = document.createElement('button');
+    gear.type = 'button';
+    gear.className = 'site-gear';
+    gear.textContent = '⚙';
+    gear.title = t('siteOptGear', 'Site options');
+    gear.setAttribute('aria-label', t('siteOptGear', 'Site options'));
+    // Inside a <label>, a plain click would toggle the site checkbox too.
+    const optRow = buildOptRow(key, opts);
+    gear.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      optRow.hidden = !optRow.hidden;
+      gear.classList.toggle('open', !optRow.hidden);
+      if (!optRow.hidden) optRow.refreshFromStorage();
+    });
+    lab.insertBefore(gear, ctrl);
+    wrap.appendChild(lab);
+    wrap.appendChild(optRow);
+    return wrap;
   }
 
   function renderGroup(group) {
@@ -1215,7 +1330,7 @@
       for (const k of SITE_KEYS) {
         const el = siteEls[k];
         if (!el) continue;
-        const row = el.closest('label.switch');
+        const row = el.closest('.site-row') || el.closest('label.switch');
         if (!row) continue;
         const labelEl = row.querySelector('.switch-label');
         rows.push({

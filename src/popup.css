@@ -651,3 +651,51 @@ footer a:hover {
   opacity: 1;
   visibility: visible;
 }
+
+/* -- Per-site options (v1.13) ---------------------------------------------- */
+.site-row { display: block; }
+.site-gear {
+  flex: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted, #8aa3b0);
+  font-size: 13px;
+  line-height: 1;
+  padding: 2px 4px;
+  margin-left: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease, color 0.12s ease;
+}
+label.switch:hover .site-gear,
+.site-gear:focus-visible,
+.site-gear.open {
+  opacity: 1;
+}
+.site-gear.open { color: var(--accent, #f8990f); }
+.site-optrow {
+  margin: 2px 0 6px 14px;
+  padding: 6px 10px;
+  border-left: 2px solid rgba(248, 153, 15, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.site-optline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11.5px;
+  color: var(--muted, #8aa3b0);
+}
+.site-optselect {
+  font-size: 11.5px;
+  background: var(--bg2, #10222d);
+  color: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+  padding: 2px 4px;
+  max-width: 150px;
+}
+.site-optcheck { accent-color: var(--accent, #f8990f); }

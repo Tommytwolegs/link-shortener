@@ -400,5 +400,20 @@
   },
   "histKindBulk": {
     "message": "toplu temizlik"
+  },
+  "siteOptGear": {
+    "message": "Site seçenekleri"
+  },
+  "siteOptDefault": {
+    "message": "Genel ayarı kullan"
+  },
+  "siteOptAlways": {
+    "message": "Burada her zaman açık"
+  },
+  "siteOptNever": {
+    "message": "Burada her zaman kapalı"
+  },
+  "siteOptHideWidget": {
+    "message": "Bu sitede yüzen bileşeni gizle"
   }
 }

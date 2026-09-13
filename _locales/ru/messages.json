@@ -400,5 +400,20 @@
   },
   "histKindBulk": {
     "message": "массовая очистка"
+  },
+  "siteOptGear": {
+    "message": "Настройки сайта"
+  },
+  "siteOptDefault": {
+    "message": "Использовать общую настройку"
+  },
+  "siteOptAlways": {
+    "message": "Здесь всегда включено"
+  },
+  "siteOptNever": {
+    "message": "Здесь всегда выключено"
+  },
+  "siteOptHideWidget": {
+    "message": "Скрывать плавающий виджет на этом сайте"
   }
 }

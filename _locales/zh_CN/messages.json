@@ -400,5 +400,20 @@
   },
   "histKindBulk": {
     "message": "批量清理"
+  },
+  "siteOptGear": {
+    "message": "站点选项"
+  },
+  "siteOptDefault": {
+    "message": "使用全局设置"
+  },
+  "siteOptAlways": {
+    "message": "在此站点始终开启"
+  },
+  "siteOptNever": {
+    "message": "在此站点始终关闭"
+  },
+  "siteOptHideWidget": {
+    "message": "在此站点隐藏浮动小组件"
   }
 }

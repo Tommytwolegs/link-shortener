@@ -400,5 +400,20 @@
   },
   "histKindBulk": {
     "message": "一括クリーンアップ"
+  },
+  "siteOptGear": {
+    "message": "サイトのオプション"
+  },
+  "siteOptDefault": {
+    "message": "全体設定に従う"
+  },
+  "siteOptAlways": {
+    "message": "ここでは常にオン"
+  },
+  "siteOptNever": {
+    "message": "ここでは常にオフ"
+  },
+  "siteOptHideWidget": {
+    "message": "このサイトではフローティングウィジェットを非表示"
   }
 }

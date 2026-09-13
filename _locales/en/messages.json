@@ -400,5 +400,20 @@
   },
   "histKindBulk": {
     "message": "bulk clean"
+  },
+  "siteOptGear": {
+    "message": "Site options"
+  },
+  "siteOptDefault": {
+    "message": "Use global setting"
+  },
+  "siteOptAlways": {
+    "message": "Always on here"
+  },
+  "siteOptNever": {
+    "message": "Always off here"
+  },
+  "siteOptHideWidget": {
+    "message": "Hide the floating widget on this site"
   }
 }

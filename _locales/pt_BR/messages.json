@@ -400,5 +400,20 @@
   },
   "histKindBulk": {
     "message": "limpeza em massa"
+  },
+  "siteOptGear": {
+    "message": "Opções do site"
+  },
+  "siteOptDefault": {
+    "message": "Usar configuração global"
+  },
+  "siteOptAlways": {
+    "message": "Sempre ativado aqui"
+  },
+  "siteOptNever": {
+    "message": "Sempre desativado aqui"
+  },
+  "siteOptHideWidget": {
+    "message": "Ocultar o widget flutuante neste site"
   }
 }

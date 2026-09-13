@@ -400,5 +400,20 @@
   },
   "histKindBulk": {
     "message": "일괄 정리"
+  },
+  "siteOptGear": {
+    "message": "사이트 옵션"
+  },
+  "siteOptDefault": {
+    "message": "전역 설정 사용"
+  },
+  "siteOptAlways": {
+    "message": "여기서는 항상 켬"
+  },
+  "siteOptNever": {
+    "message": "여기서는 항상 끔"
+  },
+  "siteOptHideWidget": {
+    "message": "이 사이트에서 플로팅 위젯 숨기기"
   }
 }

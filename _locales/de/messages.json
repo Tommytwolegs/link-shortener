@@ -400,5 +400,20 @@
   },
   "histKindBulk": {
     "message": "Massenbereinigung"
+  },
+  "siteOptGear": {
+    "message": "Website-Optionen"
+  },
+  "siteOptDefault": {
+    "message": "Globale Einstellung verwenden"
+  },
+  "siteOptAlways": {
+    "message": "Hier immer an"
+  },
+  "siteOptNever": {
+    "message": "Hier immer aus"
+  },
+  "siteOptHideWidget": {
+    "message": "Schwebendes Widget auf dieser Website ausblenden"
   }
 }
