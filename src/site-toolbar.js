@@ -377,12 +377,23 @@
     // -- Boot --------------------------------------------------------------
 
     if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
-      const defaults = { enabled: true, hideTravelPopup: false, travelPopupPos: null };
+      // Widget visibility = global "Hide travel popup" OR the per-site
+      // hideWidget override (siteOpts, resolved by siteopts.js which the
+      // manifest injects before this file on every travel site).
+      const hideSettings = { hideTravelPopup: false, siteOpts: {} };
+      const resolveHide = () => (
+        window.SiteOpts && siteKey
+          ? window.SiteOpts.resolveHideWidget(siteKey, hideSettings)
+          : hideSettings.hideTravelPopup === true
+      );
+      const defaults = { enabled: true, hideTravelPopup: false, travelPopupPos: null, siteOpts: {} };
       if (siteKey) defaults[siteKey] = true;
       chrome.storage.sync.get(defaults, (items) => {
         masterEnabled = items.enabled !== false;
         siteEnabled = siteKey ? items[siteKey] !== false : true;
-        hideToolbar = items.hideTravelPopup === true;
+        hideSettings.hideTravelPopup = items.hideTravelPopup === true;
+        hideSettings.siteOpts = items.siteOpts || {};
+        hideToolbar = resolveHide();
         savedPos = validPos(items.travelPopupPos);
         reconcile();
       });
@@ -397,8 +408,17 @@
           siteEnabled = changes[siteKey].newValue !== false;
           touched = true;
         }
+        let hideTouched = false;
         if (Object.prototype.hasOwnProperty.call(changes, 'hideTravelPopup')) {
-          hideToolbar = changes.hideTravelPopup.newValue === true;
+          hideSettings.hideTravelPopup = changes.hideTravelPopup.newValue === true;
+          hideTouched = true;
+        }
+        if (Object.prototype.hasOwnProperty.call(changes, 'siteOpts')) {
+          hideSettings.siteOpts = changes.siteOpts.newValue || {};
+          hideTouched = true;
+        }
+        if (hideTouched) {
+          hideToolbar = resolveHide();
           touched = true;
         }
         if (Object.prototype.hasOwnProperty.call(changes, 'travelPopupPos')) {

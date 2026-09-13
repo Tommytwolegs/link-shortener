@@ -663,6 +663,7 @@
       ],
       "js": [
         "src/asin.js",
+        "src/siteopts.js",
         "src/content.js"
       ],
       "run_at": "document_start",
@@ -673,6 +674,7 @@
         "*://*.agoda.com/*"
       ],
       "js": [
+        "src/siteopts.js",
         "src/site-toolbar.js",
         "src/agoda.js",
         "src/agoda-content.js"
@@ -685,6 +687,7 @@
         "*://*.booking.com/*"
       ],
       "js": [
+        "src/siteopts.js",
         "src/site-toolbar.js",
         "src/booking.js",
         "src/booking-content.js"
@@ -710,6 +713,7 @@
         "*://*.expedia.co.in/*"
       ],
       "js": [
+        "src/siteopts.js",
         "src/site-toolbar.js",
         "src/expedia.js",
         "src/expedia-content.js"
@@ -735,6 +739,7 @@
         "*://*.airbnb.co.in/*"
       ],
       "js": [
+        "src/siteopts.js",
         "src/site-toolbar.js",
         "src/airbnb.js",
         "src/airbnb-content.js"
@@ -1108,6 +1113,7 @@
         "*://*.trip.com/*"
       ],
       "js": [
+        "src/siteopts.js",
         "src/site-toolbar.js",
         "src/trip.js",
         "src/trip-content.js"
@@ -1120,6 +1126,7 @@
         "*://*.hotels.com/*"
       ],
       "js": [
+        "src/siteopts.js",
         "src/site-toolbar.js",
         "src/hotelscom.js",
         "src/hotelscom-content.js"
@@ -1219,6 +1226,7 @@
         "*://*.vrbo.com/*"
       ],
       "js": [
+        "src/siteopts.js",
         "src/site-toolbar.js",
         "src/vrbo.js",
         "src/vrbo-content.js"

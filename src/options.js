@@ -239,6 +239,11 @@
             && typeof v.x === 'number' && typeof v.y === 'number'
             && v.x >= 0 && v.x <= 1 && v.y >= 0 && v.y <= 1) {
           out[k] = { x: v.x, y: v.y }; n++;
+        } else if (k === 'siteOpts' && window.SiteOpts) {
+          // Per-site options map (v1.13): strict-shape sanitize shared with
+          // the popup's write path — unknown ids/keys/values are dropped.
+          const clean = window.SiteOpts.sanitizeSiteOpts(v);
+          if (Object.keys(clean).length) { out[k] = clean; n++; }
         }
       }
       return { out, n };

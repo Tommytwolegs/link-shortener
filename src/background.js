@@ -243,6 +243,7 @@ if (typeof importScripts === 'function') {
     'texturl.js',
     'utm.js',
     'dnr.js',
+    'siteopts.js',
   );
 }
 
@@ -1196,9 +1197,9 @@ function copyTextToTab(tabId, text, html) {
 }
 
 function copyCleanUrlToTab(tabId, sourceUrl) {
-  chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false }, (items) => {
+  chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false, siteOpts: {} }, (items) => {
     const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
-    const cleaned = cleanAnyUrl(sourceUrl, keepParams, { amazonSlug: items.keepTitles === true || items.includeAmazonTitle === true });
+    const cleaned = cleanAnyUrl(sourceUrl, keepParams, { amazonSlug: self.SiteOpts.resolveKeepTitles('enabledAmazon', items) });
     recordStats({
       copies: 1,
       urls: cleaned === sourceUrl ? 0 : 1,
@@ -1267,9 +1268,9 @@ if (chrome.omnibox) {
     const extracted = self.TextUrlExtractor
       && self.TextUrlExtractor.extractUrlFromText(text);
     if (!extracted) { cb(null); return; }
-    chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false }, (items) => {
+    chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false, siteOpts: {} }, (items) => {
       const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
-      const cleaned = cleanAnyUrl(extracted, keepParams, { amazonSlug: items.keepTitles === true || items.includeAmazonTitle === true });
+      const cleaned = cleanAnyUrl(extracted, keepParams, { amazonSlug: self.SiteOpts.resolveKeepTitles('enabledAmazon', items) });
       try {
         const u = new URL(cleaned);
         cb((u.protocol === 'http:' || u.protocol === 'https:') ? cleaned : null);
@@ -1319,9 +1320,9 @@ if (chrome.omnibox) {
 // keyboard shortcut (redirect unwrapping -> per-site shortener -> UTM strip).
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (!msg || msg.type !== 'clean-url' || typeof msg.url !== 'string') return undefined;
-  chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false }, (items) => {
+  chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false, siteOpts: {} }, (items) => {
     const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
-    sendResponse({ cleaned: cleanAnyUrl(msg.url, keepParams, { amazonSlug: items.keepTitles === true || items.includeAmazonTitle === true }) });
+    sendResponse({ cleaned: cleanAnyUrl(msg.url, keepParams, { amazonSlug: self.SiteOpts.resolveKeepTitles('enabledAmazon', items) }) });
   });
   return true; // keep the message channel open for the async sendResponse
 });
@@ -1363,10 +1364,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return undefined;
   }
   if (msg.type === 'bulk-clean' && typeof msg.text === 'string') {
-    chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false }, (items) => {
+    chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false, siteOpts: {} }, (items) => {
       const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
       const result = self.TextUrlExtractor && self.TextUrlExtractor.cleanAllUrlsInText
-        ? self.TextUrlExtractor.cleanAllUrlsInText(msg.text, (u) => cleanAnyUrl(u, keepParams, { amazonSlug: items.keepTitles === true || items.includeAmazonTitle === true }))
+        ? self.TextUrlExtractor.cleanAllUrlsInText(msg.text, (u) => cleanAnyUrl(u, keepParams, { amazonSlug: self.SiteOpts.resolveKeepTitles('enabledAmazon', items) }))
         : { text: msg.text, found: 0, changed: 0, saved: 0 };
       if (result.changed > 0) {
         recordStats({ bulk: result.changed, urls: result.changed, chars: result.saved });

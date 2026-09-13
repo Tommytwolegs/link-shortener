@@ -243,12 +243,26 @@
   // resolves in well under a millisecond in practice, so this still beats
   // page render by a large margin.
   if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
+    // Title behavior = global switch + optional per-site override
+    // (siteOpts.enabledAmazon.keepTitles, resolved by siteopts.js which the
+    // manifest injects before this file). Keep the raw inputs around so any
+    // one of them changing can recompute the resolved value.
+    const titleSettings = { keepTitles: false, includeAmazonTitle: false, siteOpts: {} };
+    const resolveTitle = () => (
+      window.SiteOpts
+        ? window.SiteOpts.resolveKeepTitles('enabledAmazon', titleSettings)
+        : (titleSettings.keepTitles === true || titleSettings.includeAmazonTitle === true)
+    );
+
     chrome.storage.sync.get(
-      { enabled: true, enabledAmazon: true, includeAmazonTitle: false, keepTitles: false },
+      { enabled: true, enabledAmazon: true, includeAmazonTitle: false, keepTitles: false, siteOpts: {} },
       (items) => {
         masterEnabled = items.enabled !== false;
         siteEnabled = items.enabledAmazon !== false;
-        includeTitle = items.keepTitles === true || items.includeAmazonTitle === true;
+        titleSettings.keepTitles = items.keepTitles === true;
+        titleSettings.includeAmazonTitle = items.includeAmazonTitle === true;
+        titleSettings.siteOpts = items.siteOpts || {};
+        includeTitle = resolveTitle();
         doFullPass();
       },
     );
@@ -264,11 +278,21 @@
         siteEnabled = changes.enabledAmazon.newValue !== false;
         touched = true;
       }
+      let titleTouched = false;
       if (Object.prototype.hasOwnProperty.call(changes, 'keepTitles')) {
-        includeTitle = changes.keepTitles.newValue === true;
-        touched = true;
-      } else if (Object.prototype.hasOwnProperty.call(changes, 'includeAmazonTitle')) {
-        includeTitle = changes.includeAmazonTitle.newValue === true;
+        titleSettings.keepTitles = changes.keepTitles.newValue === true;
+        titleTouched = true;
+      }
+      if (Object.prototype.hasOwnProperty.call(changes, 'includeAmazonTitle')) {
+        titleSettings.includeAmazonTitle = changes.includeAmazonTitle.newValue === true;
+        titleTouched = true;
+      }
+      if (Object.prototype.hasOwnProperty.call(changes, 'siteOpts')) {
+        titleSettings.siteOpts = changes.siteOpts.newValue || {};
+        titleTouched = true;
+      }
+      if (titleTouched) {
+        includeTitle = resolveTitle();
         touched = true;
       }
       if (!touched) return;

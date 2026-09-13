@@ -348,6 +348,7 @@ $firefoxManifest.background = [pscustomobject]@{
         'src/texturl.js',
         'src/utm.js',
         'src/dnr.js',
+        'src/siteopts.js',
         'src/background.js'
     )
 }
