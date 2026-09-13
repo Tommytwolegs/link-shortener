@@ -427,5 +427,20 @@
   },
   "btnResumeTab": {
     "message": "Retomar nesta aba"
+  },
+  "btnCleanPage": {
+    "message": "Limpar os links desta página"
+  },
+  "cleanPageDone": {
+    "message": "$1 de $2 links limpos"
+  },
+  "cleanPageNone": {
+    "message": "Os links já estão limpos"
+  },
+  "fixSkipSite": {
+    "message": "Excluir este site do filtro de rastreamento"
+  },
+  "fixSkipDone": {
+    "message": "$1 adicionado à lista de exclusão"
   }
 }

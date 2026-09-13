@@ -1257,6 +1257,28 @@
           if (copyOriginalBtn && original !== cleaned) copyOriginalBtn.hidden = false;
           menuEl.addEventListener('click', (e) => {
             if (e.target && e.target.getAttribute
+                && e.target.getAttribute('data-action') === 'fix-skip') {
+              // Self-healing: one click adds this page's hostname to the
+              // skip-domain list, so the universal strip, active strip, and
+              // active skip all stand down here from now on. Per-site rules
+              // are unaffected (that's what the report below is for).
+              let skipHost = '';
+              try { skipHost = new URL(tabUrl).hostname; } catch (_e) { /* ignore */ }
+              if (skipHost) {
+                try {
+                  chrome.runtime.sendMessage(
+                    { type: 'add-skip-domain', host: skipHost },
+                    () => {
+                      void chrome.runtime.lastError;
+                      e.target.textContent = t('fixSkipDone', 'Added ' + skipHost + ' to the skip list', [skipHost]);
+                      e.target.disabled = true;
+                    },
+                  );
+                } catch (_e) { /* ignore */ }
+              }
+              return;
+            }
+            if (e.target && e.target.getAttribute
                 && e.target.getAttribute('data-action') === 'report') {
               // Background builds the prefilled GitHub issue from the pair
               // we already have -- the truest original vs what we produced.
@@ -1428,6 +1450,63 @@
         input.value = '';
         applyFilter();
       }
+    });
+  })();
+
+  // -- Clean all links on this page (v1.13) -----------------------------------
+  // One shot, user-initiated: collect every anchor href, run the batch
+  // through the background's bulk pipeline, write the cleaned hrefs back.
+  // activeTab (granted by opening the popup) + scripting make this work on
+  // every http(s) page with no extra permissions. No automatic rewriting.
+  (function initCleanPage() {
+    const el = document.getElementById('clean-page');
+    if (!el || !chrome.tabs || !chrome.scripting || !chrome.scripting.executeScript) return;
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      void chrome.runtime.lastError;
+      const tab = tabs && tabs[0];
+      if (!tab || tab.id == null || !tab.url || !/^https?:/i.test(tab.url)) return;
+      el.hidden = false;
+      let running = false;
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (running) return;
+        running = true;
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: async () => {
+            const anchors = Array.from(document.links || []);
+            const urls = [];
+            const seen = new Set();
+            for (const a of anchors) {
+              const h = a.href;
+              if (!/^https?:/i.test(h) || seen.has(h)) continue;
+              seen.add(h);
+              urls.push(h);
+            }
+            if (urls.length === 0) return { changed: 0, total: 0 };
+            const resp = await chrome.runtime.sendMessage({ type: 'clean-links-batch', urls });
+            const map = resp && resp.map ? resp.map : {};
+            let changed = 0;
+            for (const a of anchors) {
+              const clean = map[a.href];
+              if (clean) {
+                a.href = clean;
+                changed++;
+              }
+            }
+            return { changed, total: urls.length };
+          },
+        }, (results) => {
+          void chrome.runtime.lastError;
+          running = false;
+          const r = results && results[0] && results[0].result;
+          if (r && r.changed > 0) {
+            el.textContent = t('cleanPageDone', 'Cleaned ' + r.changed + ' of ' + r.total + ' links', [String(r.changed), String(r.total)]);
+          } else {
+            el.textContent = t('cleanPageNone', 'Links already clean');
+          }
+        });
+      });
     });
   })();
 

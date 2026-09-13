@@ -49,6 +49,7 @@
       <button type="button" data-fmt="html" data-i18n="copyAsHtml">Copy as HTML link</button>
       <button type="button" data-fmt="titleurl" data-i18n="copyAsTitle">Copy as title + URL</button>
       <button type="button" data-fmt="original" id="copy-original" data-i18n="copyOriginal" hidden>Copy original URL</button>
+      <button type="button" data-action="fix-skip" class="menu-report" id="fix-skip" data-i18n="fixSkipSite">Exclude this site from tracking strip</button>
       <button type="button" data-action="report" class="menu-report" data-i18n="reportCleanup">Report: this didn't clean right</button>
     </div>
     <details class="removed-details" id="removed-details" hidden>
@@ -248,6 +249,8 @@
       <a href="#" id="open-bulk" data-i18n="footerBulk">Bulk cleaner</a>
       <span class="footer-sep">·</span>
       <a href="https://github.com/Tommytwolegs/link-shortener/issues" target="_blank" rel="noopener noreferrer" data-i18n="footerReport">Report an issue</a>
+      <span class="footer-sep">·</span>
+      <a href="#" id="clean-page" hidden data-i18n="btnCleanPage">Clean links on this page</a>
       <span class="footer-sep">·</span>
       <a href="#" id="pause-tab" hidden data-i18n="btnPauseTab">Pause on this tab</a>
     </span>

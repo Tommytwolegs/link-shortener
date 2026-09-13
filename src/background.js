@@ -1764,6 +1764,62 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }, () => void chrome.runtime.lastError);
     return undefined;
   }
+  if (msg.type === 'add-skip-domain' && typeof msg.host === 'string') {
+    // Self-healing flow (v1.13): one click in the popup excludes a hostname
+    // from the universal strip, active strip, and active skip. The storage
+    // write re-syncs the DNR rules and the content-script registration.
+    chrome.storage.sync.get({ utmStripSkipDomains: [] }, (items) => {
+      void chrome.runtime.lastError;
+      const list = Array.isArray(items.utmStripSkipDomains) ? items.utmStripSkipDomains.slice() : [];
+      list.push(msg.host);
+      const normalized = self.DnrRules
+        ? self.DnrRules.normalizeSkipDomains(list)
+        : list;
+      chrome.storage.sync.set({ utmStripSkipDomains: normalized }, () => {
+        void chrome.runtime.lastError;
+        sendResponse({ ok: true });
+      });
+    });
+    return true;
+  }
+  if (msg.type === 'clean-links-batch' && Array.isArray(msg.urls)) {
+    // "Clean all links on this page" (v1.13): the popup injects a collector
+    // into the active tab; the hrefs come here in one batch and go through
+    // the same pipeline as the bulk cleaner. Response maps ONLY the URLs
+    // that changed. Capped defensively; a page with more links than that
+    // gets its first 2000 cleaned rather than an error.
+    const urls = msg.urls.filter((u) => typeof u === 'string' && /^https?:/i.test(u)).slice(0, 2000);
+    chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false, siteOpts: {} }, (items) => {
+      void chrome.runtime.lastError;
+      const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];
+      const map = {};
+      let saved = 0;
+      for (const u of urls) {
+        let cleaned;
+        try {
+          cleaned = cleanAnyUrl(u, keepParams, { amazonSlug: self.SiteOpts.resolveKeepTitles('enabledAmazon', items) });
+        } catch (_e) {
+          cleaned = u;
+        }
+        if (cleaned && cleaned !== u) {
+          map[u] = cleaned;
+          saved += Math.max(0, u.length - cleaned.length);
+        }
+      }
+      const changed = Object.keys(map).length;
+      if (changed > 0) {
+        recordStats({ bulk: changed, urls: changed, chars: saved });
+        recordHistory({
+          host: sender && sender.tab && self.HistoryLog ? self.HistoryLog.hostOf(sender.tab.url || '') : '',
+          kind: 'bulk',
+          count: changed,
+          chars: saved,
+        });
+      }
+      sendResponse({ map });
+    });
+    return true;
+  }
   if (msg.type === 'bulk-clean' && typeof msg.text === 'string') {
     chrome.storage.sync.get({ utmStripKeepParams: [], includeAmazonTitle: false, keepTitles: false, siteOpts: {} }, (items) => {
       const keepParams = Array.isArray(items.utmStripKeepParams) ? items.utmStripKeepParams : [];

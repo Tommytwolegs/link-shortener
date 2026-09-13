@@ -427,5 +427,20 @@
   },
   "btnResumeTab": {
     "message": "Возобновить на этой вкладке"
+  },
+  "btnCleanPage": {
+    "message": "Очистить ссылки на этой странице"
+  },
+  "cleanPageDone": {
+    "message": "Очищено ссылок: $1 из $2"
+  },
+  "cleanPageNone": {
+    "message": "Ссылки уже чистые"
+  },
+  "fixSkipSite": {
+    "message": "Исключить этот сайт из фильтра слежения"
+  },
+  "fixSkipDone": {
+    "message": "$1 добавлен в список исключений"
   }
 }

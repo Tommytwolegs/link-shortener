@@ -427,5 +427,20 @@
   },
   "btnResumeTab": {
     "message": "在此标签页恢复"
+  },
+  "btnCleanPage": {
+    "message": "清理此页面上的链接"
+  },
+  "cleanPageDone": {
+    "message": "已清理 $2 个链接中的 $1 个"
+  },
+  "cleanPageNone": {
+    "message": "链接已经很干净"
+  },
+  "fixSkipSite": {
+    "message": "将此站点排除在跟踪清理之外"
+  },
+  "fixSkipDone": {
+    "message": "已将 $1 添加到跳过列表"
   }
 }

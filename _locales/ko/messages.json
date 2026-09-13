@@ -427,5 +427,20 @@
   },
   "btnResumeTab": {
     "message": "이 탭에서 다시 시작"
+  },
+  "btnCleanPage": {
+    "message": "이 페이지의 링크 정리"
+  },
+  "cleanPageDone": {
+    "message": "링크 $2개 중 $1개 정리됨"
+  },
+  "cleanPageNone": {
+    "message": "링크가 이미 깨끗합니다"
+  },
+  "fixSkipSite": {
+    "message": "이 사이트를 추적 제거에서 제외"
+  },
+  "fixSkipDone": {
+    "message": "$1을(를) 건너뛰기 목록에 추가했습니다"
   }
 }

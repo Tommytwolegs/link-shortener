@@ -427,5 +427,20 @@
   },
   "btnResumeTab": {
     "message": "Auf diesem Tab fortsetzen"
+  },
+  "btnCleanPage": {
+    "message": "Links auf dieser Seite bereinigen"
+  },
+  "cleanPageDone": {
+    "message": "$1 von $2 Links bereinigt"
+  },
+  "cleanPageNone": {
+    "message": "Links sind bereits sauber"
+  },
+  "fixSkipSite": {
+    "message": "Diese Website vom Tracking-Filter ausnehmen"
+  },
+  "fixSkipDone": {
+    "message": "$1 zur Ausnahmeliste hinzugefügt"
   }
 }
