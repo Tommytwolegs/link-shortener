@@ -364,5 +364,41 @@
   },
   "tipHideTravel": {
     "message": "Otel ve kiralama sitelerindeki yüzen kopyalama aracını gizler. Adres çubuğu temizliği çalışmaya devam eder. İpucu: Aracı başlığından sürükleyerek istediğiniz yere taşıyabilirsiniz."
+  },
+  "labelShowBadge": {
+    "message": "Simgede sayaç göster"
+  },
+  "tipShowBadge": {
+    "message": "Geçerli sayfada yapılan temizlik sayısını araç çubuğu simgesinde küçük bir sayaç olarak gösterir: adres çubuğu yeniden yazmaları, yüklenmeden önce engellenen izleyiciler ve atlanan yönlendirmeler. Her yeni sayfada sıfırlanır."
+  },
+  "labelKeepHistory": {
+    "message": "Yerel etkinlik geçmişini tut"
+  },
+  "histTitle": {
+    "message": "Son etkinlik"
+  },
+  "histHint": {
+    "message": "Bu cihazdaki son 50 temizlik: yalnızca ana bilgisayar ve parametre adları; asla tam bağlantılar veya değerler değil. Yerel olarak saklanır, asla eşitlenmez."
+  },
+  "histEmpty": {
+    "message": "Henüz yok."
+  },
+  "histClear": {
+    "message": "Geçmişi temizle"
+  },
+  "histKindRewrite": {
+    "message": "adres çubuğu"
+  },
+  "histKindActive": {
+    "message": "yüklenmeden önce engellendi"
+  },
+  "histKindSkip": {
+    "message": "yönlendirme atlandı"
+  },
+  "histKindCopy": {
+    "message": "kopyalama"
+  },
+  "histKindBulk": {
+    "message": "toplu temizlik"
   }
 }

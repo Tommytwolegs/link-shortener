@@ -364,5 +364,41 @@
   },
   "tipHideTravel": {
     "message": "Hides the floating copy widget on hotel and rental sites. Address-bar cleanup still runs. Tip: you can also drag the widget by its header to move it anywhere on the page."
+  },
+  "labelShowBadge": {
+    "message": "Show count on the icon"
+  },
+  "tipShowBadge": {
+    "message": "Shows how many cleanups happened on the current page as a small counter on the toolbar icon: address-bar rewrites, trackers blocked before load, and skipped redirects. Resets on every new page."
+  },
+  "labelKeepHistory": {
+    "message": "Keep local activity history"
+  },
+  "histTitle": {
+    "message": "Recent activity"
+  },
+  "histHint": {
+    "message": "The last 50 cleanups on this device: hostnames and parameter names only, never full links or values. Stored locally, never synced."
+  },
+  "histEmpty": {
+    "message": "Nothing yet."
+  },
+  "histClear": {
+    "message": "Clear history"
+  },
+  "histKindRewrite": {
+    "message": "address bar"
+  },
+  "histKindActive": {
+    "message": "blocked before load"
+  },
+  "histKindSkip": {
+    "message": "redirect skipped"
+  },
+  "histKindCopy": {
+    "message": "copy"
+  },
+  "histKindBulk": {
+    "message": "bulk clean"
   }
 }

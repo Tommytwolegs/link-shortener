@@ -404,10 +404,12 @@
     enabledUtmStrip: false,
     enabledActiveStrip: false,
     enabledRedirectSkip: true,
+    showBadge: true,
   };
   for (const k of SITE_KEYS) DEFAULTS[k] = true;
 
   const masterEl = document.getElementById('enabled');
+  const showBadgeEl = document.getElementById('showBadge');
   const hidePopupEl = document.getElementById('hideTravelPopup');
   const keepTitlesEl = document.getElementById('keepTitles');
   const utmStripEl = document.getElementById('enabledUtmStrip');
@@ -669,6 +671,7 @@
     lastState = state;
     masterEl.checked = state.enabled !== false;
     if (hidePopupEl) hidePopupEl.checked = state.hideTravelPopup === true;
+    if (showBadgeEl) showBadgeEl.checked = state.showBadge !== false;
     if (keepTitlesEl) keepTitlesEl.checked = state.keepTitles === true || state.includeAmazonTitle === true;
     utmStripEl.checked = state.enabledUtmStrip === true;
     if (activeStripEl) activeStripEl.checked = state.enabledActiveStrip === true;
@@ -706,6 +709,12 @@
   // sites. Independent of the master and per-site toggles.
   if (hidePopupEl) hidePopupEl.addEventListener('change', () => {
     chrome.storage.sync.set({ hideTravelPopup: hidePopupEl.checked });
+  });
+
+  // "Show count on the icon" -- per-tab cleanup counter on the toolbar
+  // badge. Background clears all badges when this flips off.
+  if (showBadgeEl) showBadgeEl.addEventListener('change', () => {
+    chrome.storage.sync.set({ showBadge: showBadgeEl.checked });
   });
 
   // "Keep item titles in links" -- when on, sites that shorten to a bare id
@@ -779,6 +788,7 @@
       || Object.prototype.hasOwnProperty.call(changes, 'enabledUtmStrip')
       || Object.prototype.hasOwnProperty.call(changes, 'enabledActiveStrip')
       || Object.prototype.hasOwnProperty.call(changes, 'enabledRedirectSkip')
+      || Object.prototype.hasOwnProperty.call(changes, 'showBadge')
       || SITE_KEYS.some((k) => Object.prototype.hasOwnProperty.call(changes, k));
     if (!touchesUs) return;
     chrome.storage.sync.get(DEFAULTS, (items) => setUi(items));
@@ -1015,6 +1025,8 @@
             type: 'record-copy',
             changed: cleaned !== original,
             saved: Math.max(0, original.length - cleaned.length),
+            // Hostname only, for the local activity history. Never the URL.
+            host: (() => { try { return new URL(cleaned).hostname; } catch (_e) { return ''; } })(),
           }, () => void chrome.runtime.lastError);
         } catch (_e) { /* ignore */ }
       }

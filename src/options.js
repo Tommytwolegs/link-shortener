@@ -200,6 +200,97 @@
     }
   })();
 
+  // -- Recent activity (v1.13) ------------------------------------------------
+  // 50-entry local ring buffer the background maintains: hostname, kind,
+  // and removed parameter NAMES only — no URLs, no values, never synced.
+  (function initHistory() {
+    const listEl = document.getElementById('history-list');
+    const emptyEl = document.getElementById('history-empty');
+    const clearBtn = document.getElementById('history-clear');
+    const keepEl = document.getElementById('keep-history');
+    if (!listEl || !chrome.storage || !chrome.storage.local) return;
+
+    const KIND_LABELS = {
+      rewrite: t('histKindRewrite', 'address bar'),
+      active: t('histKindActive', 'blocked before load'),
+      skip: t('histKindSkip', 'redirect skipped'),
+      copy: t('histKindCopy', 'copy'),
+      bulk: t('histKindBulk', 'bulk clean'),
+    };
+
+    function renderHistory(list) {
+      listEl.textContent = '';
+      const entries = Array.isArray(list) ? list : [];
+      for (const e of entries) {
+        if (!e || typeof e !== 'object') continue;
+        const li = document.createElement('li');
+
+        const when = document.createElement('span');
+        when.className = 'hist-when';
+        when.textContent = e.t ? new Date(e.t).toLocaleString() : '';
+        li.appendChild(when);
+
+        const kind = document.createElement('span');
+        kind.className = 'hist-kind hist-kind-' + (e.kind || 'rewrite');
+        kind.textContent = KIND_LABELS[e.kind] || KIND_LABELS.rewrite;
+        li.appendChild(kind);
+
+        const what = document.createElement('span');
+        what.className = 'hist-what';
+        const bits = [];
+        if (e.host) bits.push(e.host);
+        if (Array.isArray(e.params) && e.params.length) {
+          let p = e.params.join(', ');
+          if (e.more > 0) p += ' +' + e.more;
+          bits.push(p);
+        } else if (typeof e.count === 'number' && e.count > 0) {
+          bits.push('×' + e.count);
+        }
+        what.textContent = bits.join(' — ');
+        li.appendChild(what);
+
+        listEl.appendChild(li);
+      }
+      if (emptyEl) emptyEl.hidden = entries.length !== 0;
+    }
+
+    chrome.storage.local.get({ cleanHistory: [] }, (items) => {
+      void chrome.runtime.lastError;
+      renderHistory(items && items.cleanHistory);
+    });
+    chrome.storage.onChanged.addListener((changes, area) => {
+      if (area === 'local' && 'cleanHistory' in changes) {
+        renderHistory(changes.cleanHistory.newValue);
+      }
+    });
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        chrome.storage.local.set({ cleanHistory: [] }, () => void chrome.runtime.lastError);
+      });
+    }
+
+    if (keepEl && chrome.storage.sync) {
+      chrome.storage.sync.get({ keepHistory: true }, (items) => {
+        void chrome.runtime.lastError;
+        keepEl.checked = items.keepHistory !== false;
+      });
+      keepEl.addEventListener('change', () => {
+        chrome.storage.sync.set({ keepHistory: keepEl.checked });
+        // Turning collection off also empties the buffer — the setting is
+        // "keep", not "pause".
+        if (!keepEl.checked) {
+          chrome.storage.local.set({ cleanHistory: [] }, () => void chrome.runtime.lastError);
+        }
+      });
+      chrome.storage.onChanged.addListener((changes, area) => {
+        if (area === 'sync' && 'keepHistory' in changes) {
+          keepEl.checked = changes.keepHistory.newValue !== false;
+        }
+      });
+    }
+  })();
+
   // -- Backup: export / import ------------------------------------------------
   // Export is the full storage.sync contents; import validates every key
   // against the shapes this extension actually writes before setting
@@ -224,7 +315,7 @@
       let n = 0;
       if (!settings || typeof settings !== 'object' || Array.isArray(settings)) return { out, n };
       for (const [k, v] of Object.entries(settings)) {
-        if (/^(enabled|enabled[A-Z][A-Za-z0-9]*|includeAmazonTitle|keepTitles|hideTravelPopup)$/.test(k)
+        if (/^(enabled|enabled[A-Z][A-Za-z0-9]*|includeAmazonTitle|keepTitles|hideTravelPopup|showBadge|keepHistory)$/.test(k)
             && typeof v === 'boolean') {
           out[k] = v; n++;
         } else if ((k === 'utmStripSkipDomains' || k === 'utmStripKeepParams')

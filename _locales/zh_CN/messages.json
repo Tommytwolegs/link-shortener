@@ -364,5 +364,41 @@
   },
   "tipHideTravel": {
     "message": "隐藏酒店和民宿网站上的浮动复制小组件。地址栏清理仍照常进行。提示：也可以拖动小组件的标题栏，把它移到页面任意位置。"
+  },
+  "labelShowBadge": {
+    "message": "在图标上显示计数"
+  },
+  "tipShowBadge": {
+    "message": "在工具栏图标上以小计数器显示当前页面上完成的清理次数：地址栏改写、加载前拦截的跟踪器以及跳过的重定向。每个新页面都会重置。"
+  },
+  "labelKeepHistory": {
+    "message": "保留本地活动历史"
+  },
+  "histTitle": {
+    "message": "最近活动"
+  },
+  "histHint": {
+    "message": "此设备上最近的 50 次清理：仅记录主机名和参数名，绝不记录完整链接或参数值。仅保存在本地，绝不同步。"
+  },
+  "histEmpty": {
+    "message": "暂无记录。"
+  },
+  "histClear": {
+    "message": "清除历史"
+  },
+  "histKindRewrite": {
+    "message": "地址栏"
+  },
+  "histKindActive": {
+    "message": "加载前拦截"
+  },
+  "histKindSkip": {
+    "message": "已跳过重定向"
+  },
+  "histKindCopy": {
+    "message": "复制"
+  },
+  "histKindBulk": {
+    "message": "批量清理"
   }
 }

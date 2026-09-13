@@ -364,5 +364,41 @@
   },
   "tipHideTravel": {
     "message": "호텔·숙박 사이트의 플로팅 복사 위젯을 숨깁니다. 주소창 정리는 계속 작동합니다. 팁: 위젯 머리글을 드래그하여 원하는 위치로 옮길 수도 있습니다."
+  },
+  "labelShowBadge": {
+    "message": "아이콘에 횟수 표시"
+  },
+  "tipShowBadge": {
+    "message": "현재 페이지에서 수행된 정리 횟수를 툴바 아이콘의 작은 카운터로 표시합니다. 주소창 재작성, 로드 전 차단된 추적기, 건너뛴 리디렉션이 포함됩니다. 새 페이지마다 초기화됩니다."
+  },
+  "labelKeepHistory": {
+    "message": "로컬 활동 기록 유지"
+  },
+  "histTitle": {
+    "message": "최근 활동"
+  },
+  "histHint": {
+    "message": "이 기기에서의 최근 정리 50건: 호스트 이름과 매개변수 이름만 저장하며 전체 링크나 값은 저장하지 않습니다. 로컬에만 저장되고 동기화되지 않습니다."
+  },
+  "histEmpty": {
+    "message": "아직 없습니다."
+  },
+  "histClear": {
+    "message": "기록 지우기"
+  },
+  "histKindRewrite": {
+    "message": "주소창"
+  },
+  "histKindActive": {
+    "message": "로드 전 차단"
+  },
+  "histKindSkip": {
+    "message": "리디렉션 건너뜀"
+  },
+  "histKindCopy": {
+    "message": "복사"
+  },
+  "histKindBulk": {
+    "message": "일괄 정리"
   }
 }

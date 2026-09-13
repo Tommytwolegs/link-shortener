@@ -364,5 +364,41 @@
   },
   "tipHideTravel": {
     "message": "Blendet das schwebende Kopier-Widget auf Hotel- und Ferienwohnungsseiten aus. Die Bereinigung der Adressleiste läuft weiter. Tipp: Das Widget lässt sich an seiner Kopfzeile an jede beliebige Stelle ziehen."
+  },
+  "labelShowBadge": {
+    "message": "Zähler auf dem Symbol anzeigen"
+  },
+  "tipShowBadge": {
+    "message": "Zeigt als kleinen Zähler auf dem Symbolleisten-Icon, wie viele Bereinigungen auf der aktuellen Seite stattfanden: Adressleisten-Umschreibungen, vor dem Laden blockierte Tracker und übersprungene Weiterleitungen. Wird bei jeder neuen Seite zurückgesetzt."
+  },
+  "labelKeepHistory": {
+    "message": "Lokalen Aktivitätsverlauf führen"
+  },
+  "histTitle": {
+    "message": "Letzte Aktivität"
+  },
+  "histHint": {
+    "message": "Die letzten 50 Bereinigungen auf diesem Gerät: nur Hostnamen und Parameternamen, nie vollständige Links oder Werte. Lokal gespeichert, nie synchronisiert."
+  },
+  "histEmpty": {
+    "message": "Noch nichts."
+  },
+  "histClear": {
+    "message": "Verlauf löschen"
+  },
+  "histKindRewrite": {
+    "message": "Adressleiste"
+  },
+  "histKindActive": {
+    "message": "vor dem Laden blockiert"
+  },
+  "histKindSkip": {
+    "message": "Weiterleitung übersprungen"
+  },
+  "histKindCopy": {
+    "message": "Kopie"
+  },
+  "histKindBulk": {
+    "message": "Massenbereinigung"
   }
 }

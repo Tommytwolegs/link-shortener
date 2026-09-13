@@ -364,5 +364,41 @@
   },
   "tipHideTravel": {
     "message": "Masque le widget de copie flottant sur les sites d'hôtels et de locations. Le nettoyage de la barre d'adresse continue. Astuce : vous pouvez aussi déplacer le widget en le faisant glisser par son en-tête."
+  },
+  "labelShowBadge": {
+    "message": "Afficher le compteur sur l'icône"
+  },
+  "tipShowBadge": {
+    "message": "Affiche sur l'icône de la barre d'outils le nombre de nettoyages effectués sur la page actuelle : réécritures de la barre d'adresse, traceurs bloqués avant chargement et redirections ignorées. Remis à zéro à chaque nouvelle page."
+  },
+  "labelKeepHistory": {
+    "message": "Conserver l'historique local d'activité"
+  },
+  "histTitle": {
+    "message": "Activité récente"
+  },
+  "histHint": {
+    "message": "Les 50 derniers nettoyages sur cet appareil : uniquement des noms d'hôte et de paramètres, jamais de liens complets ni de valeurs. Stocké localement, jamais synchronisé."
+  },
+  "histEmpty": {
+    "message": "Rien pour l'instant."
+  },
+  "histClear": {
+    "message": "Effacer l'historique"
+  },
+  "histKindRewrite": {
+    "message": "barre d'adresse"
+  },
+  "histKindActive": {
+    "message": "bloqué avant chargement"
+  },
+  "histKindSkip": {
+    "message": "redirection ignorée"
+  },
+  "histKindCopy": {
+    "message": "copie"
+  },
+  "histKindBulk": {
+    "message": "nettoyage en masse"
   }
 }

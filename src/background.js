@@ -244,6 +244,7 @@ if (typeof importScripts === 'function') {
     'utm.js',
     'dnr.js',
     'siteopts.js',
+    'history.js',
   );
 }
 
@@ -849,6 +850,9 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
 // page never lingers on a later clean one.
 chrome.webNavigation.onCommitted.addListener((details) => {
   if (details.frameId !== 0) return;
+  // Fresh page, fresh badge count (redirect-skip credits are applied
+  // inside the reset — see pendingCredits).
+  resetTabCount(details.tabId);
   const started = pendingNav.get(details.tabId);
   pendingNav.delete(details.tabId);
   if (!started || !self.DnrRules) {
@@ -870,6 +874,16 @@ chrome.webNavigation.onCommitted.addListener((details) => {
     if (removed > 0) {
       activeBlocks.set(details.tabId, { count: removed, at: Date.now() });
       recordStats({ blocked: removed, chars: Math.max(0, started.url.length - details.url.length) });
+      bumpTabCount(details.tabId, removed);
+      if (self.HistoryLog) {
+        recordHistory({
+          host: self.HistoryLog.hostOf(details.url),
+          kind: 'active',
+          params: self.HistoryLog.removedParamNames(started.url, details.url),
+          count: removed,
+          chars: Math.max(0, started.url.length - details.url.length),
+        });
+      }
     } else {
       activeBlocks.delete(details.tabId);
     }
@@ -880,6 +894,8 @@ if (chrome.tabs && chrome.tabs.onRemoved) {
   chrome.tabs.onRemoved.addListener((tabId) => {
     activeBlocks.delete(tabId);
     pendingNav.delete(tabId);
+    tabCounts.delete(tabId);
+    pendingCredits.delete(tabId);
   });
 }
 
@@ -967,6 +983,141 @@ function recordStats(delta) {
       });
     });
   })).catch(() => { statsChain = Promise.resolve(); });
+}
+
+// -- Toolbar badge + local activity history (v1.13) ---------------------------
+// The badge shows, for the CURRENT tab, how many cleanups this extension
+// performed on the page: each address-bar rewrite counts 1, each
+// blocked-before-load parameter counts 1, each skipped redirect counts 1.
+// Ephemeral by design — the count map dies with the service worker and
+// resets on every committed navigation, so a stale number never lingers.
+//
+// The history is a 50-entry newest-first ring buffer in storage.local
+// (NEVER sync): hostnames, kinds, and parameter NAMES only — history.js
+// has no field for a full URL or a value, so none can be stored.
+const tabCounts = new Map();      // tabId -> cleanups on the current page
+const pendingCredits = new Map(); // tabId -> credit applied at the next commit
+                                  // (redirect skips land before the target
+                                  // page commits, which would wipe them)
+
+// Cached prefs for the hot paths. Lazily loaded, kept fresh by onChanged.
+let uiPrefs = null;
+function ensureUiPrefs() {
+  if (uiPrefs) return Promise.resolve(uiPrefs);
+  return new Promise((resolve) => {
+    chrome.storage.sync.get(
+      { enabled: true, showBadge: true, keepHistory: true },
+      (items) => {
+        void chrome.runtime.lastError;
+        // Another caller may have won the race; keep the first result.
+        if (!uiPrefs) {
+          uiPrefs = {
+            enabled: items.enabled !== false,
+            showBadge: items.showBadge !== false,
+            keepHistory: items.keepHistory !== false,
+          };
+        }
+        resolve(uiPrefs);
+      },
+    );
+  });
+}
+
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'sync' || !uiPrefs) return;
+  if (Object.prototype.hasOwnProperty.call(changes, 'enabled')) {
+    uiPrefs.enabled = changes.enabled.newValue !== false;
+  }
+  if (Object.prototype.hasOwnProperty.call(changes, 'showBadge')) {
+    uiPrefs.showBadge = changes.showBadge.newValue !== false;
+  }
+  if (Object.prototype.hasOwnProperty.call(changes, 'keepHistory')) {
+    uiPrefs.keepHistory = changes.keepHistory.newValue !== false;
+  }
+  if ((('showBadge' in changes) && changes.showBadge.newValue === false)
+      || (('enabled' in changes) && changes.enabled.newValue === false)) {
+    clearAllBadges();
+  }
+});
+
+// Badge colors once per worker start. Brand deep blue behind white text
+// (the orange is too light for readable badge text).
+if (chrome.action && chrome.action.setBadgeBackgroundColor) {
+  chrome.action.setBadgeBackgroundColor({ color: '#184459' }, () => void chrome.runtime.lastError);
+  if (chrome.action.setBadgeTextColor) {
+    chrome.action.setBadgeTextColor({ color: '#FFFFFF' }, () => void chrome.runtime.lastError);
+  }
+}
+
+function renderBadge(tabId) {
+  if (!chrome.action || !chrome.action.setBadgeText || tabId == null) return;
+  const n = tabCounts.get(tabId) || 0;
+  chrome.action.setBadgeText(
+    { tabId, text: n > 0 ? String(n) : '' },
+    () => void chrome.runtime.lastError,
+  );
+}
+
+function clearAllBadges() {
+  if (!chrome.action || !chrome.action.setBadgeText || !chrome.tabs || !chrome.tabs.query) return;
+  tabCounts.clear();
+  chrome.tabs.query({}, (tabs) => {
+    void chrome.runtime.lastError;
+    for (const tab of tabs || []) {
+      if (tab && tab.id != null) {
+        chrome.action.setBadgeText({ tabId: tab.id, text: '' }, () => void chrome.runtime.lastError);
+      }
+    }
+  });
+}
+
+function bumpTabCount(tabId, n) {
+  if (tabId == null || !(n > 0)) return;
+  ensureUiPrefs().then((prefs) => {
+    if (!prefs.enabled || !prefs.showBadge) return;
+    tabCounts.set(tabId, (tabCounts.get(tabId) || 0) + n);
+    renderBadge(tabId);
+  });
+}
+
+// Called from the committed-navigation listener: zero the count for the
+// new page, then apply any credit from a redirect skip that produced
+// this navigation.
+function resetTabCount(tabId) {
+  const credit = pendingCredits.get(tabId) || 0;
+  pendingCredits.delete(tabId);
+  tabCounts.set(tabId, 0);
+  if (credit > 0) {
+    bumpTabCount(tabId, credit);
+  } else {
+    ensureUiPrefs().then((prefs) => {
+      if (prefs.showBadge) renderBadge(tabId);
+    });
+  }
+}
+
+// Serialized writer for the history ring buffer, same pattern as stats.
+let historyChain = Promise.resolve();
+function recordHistory(opts) {
+  historyChain = historyChain.then(() => new Promise((resolve) => {
+    ensureUiPrefs().then((prefs) => {
+      if (!prefs.keepHistory || !self.HistoryLog) {
+        resolve();
+        return;
+      }
+      chrome.storage.local.get({ cleanHistory: [] }, (items) => {
+        void chrome.runtime.lastError;
+        const list = self.HistoryLog.push(
+          Array.isArray(items.cleanHistory) ? items.cleanHistory : [],
+          self.HistoryLog.makeEntry(opts),
+        );
+        chrome.storage.local.set({ cleanHistory: list }, () => {
+          void chrome.runtime.lastError;
+          resolve();
+        });
+      });
+    });
+  })).catch(() => { historyChain = Promise.resolve(); });
 }
 
 // Per-tab stash of the pre-rewrite URL, so the popup can show what was
@@ -1343,6 +1494,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       chars: Math.max(0, msg.original.length - msg.cleaned.length),
       site: typeof msg.site === 'string' ? msg.site.slice(0, 64) : undefined,
     });
+    bumpTabCount(tabId, 1);
+    if (self.HistoryLog) {
+      recordHistory({
+        host: self.HistoryLog.hostOf(msg.cleaned),
+        kind: 'rewrite',
+        params: self.HistoryLog.removedParamNames(msg.original, msg.cleaned),
+        chars: Math.max(0, msg.original.length - msg.cleaned.length),
+      });
+    }
     return undefined;
   }
   if (msg.type === 'record-copy') {
@@ -1351,6 +1511,13 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       urls: msg.changed ? 1 : 0,
       chars: typeof msg.saved === 'number' && msg.saved > 0 ? msg.saved : 0,
     });
+    if (msg.changed && self.HistoryLog) {
+      recordHistory({
+        host: typeof msg.host === 'string' ? msg.host.slice(0, 128) : '',
+        kind: 'copy',
+        chars: typeof msg.saved === 'number' && msg.saved > 0 ? msg.saved : 0,
+      });
+    }
     return undefined;
   }
   if (msg.type === 'open-report'
@@ -1371,6 +1538,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         : { text: msg.text, found: 0, changed: 0, saved: 0 };
       if (result.changed > 0) {
         recordStats({ bulk: result.changed, urls: result.changed, chars: result.saved });
+        recordHistory({ host: '', kind: 'bulk', count: result.changed, chars: result.saved });
       }
       sendResponse(result);
     });
@@ -1766,6 +1934,16 @@ function handleRedirectSkip(details) {
       urls: 1,
       chars: Math.max(0, details.url.length - target.length),
     });
+    // Badge credit rides to the destination page: the target's own commit
+    // resets the count first, then applies this credit.
+    pendingCredits.set(details.tabId, (pendingCredits.get(details.tabId) || 0) + 1);
+    if (self.HistoryLog) {
+      recordHistory({
+        host: self.HistoryLog.hostOf(target),
+        kind: 'skip',
+        chars: Math.max(0, details.url.length - target.length),
+      });
+    }
   });
 }
 

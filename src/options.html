@@ -80,6 +80,23 @@
       <div class="actions">
         <button id="stats-reset" type="button" class="secondary" data-i18n="statsReset">Reset stats</button>
       </div>
+
+      <details class="history-block" id="history-block">
+        <summary data-i18n="histTitle">Recent activity</summary>
+        <p class="hint" data-i18n="histHint">
+          The last 50 cleanups on this device: hostnames and parameter names
+          only, never full links or values. Stored locally, never synced.
+        </p>
+        <label class="inline-check">
+          <input type="checkbox" id="keep-history" checked />
+          <span data-i18n="labelKeepHistory">Keep local activity history</span>
+        </label>
+        <ol id="history-list" class="history-list"></ol>
+        <p class="hint" id="history-empty" hidden data-i18n="histEmpty">Nothing yet.</p>
+        <div class="actions">
+          <button id="history-clear" type="button" class="secondary" data-i18n="histClear">Clear history</button>
+        </div>
+      </details>
     </section>
 
     <section class="card" id="backup-section">

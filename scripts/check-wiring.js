@@ -45,7 +45,7 @@ const flag = (msg) => issues.push(msg);
 // Infra files that are not per-site URL modules.
 const INFRA = new Set([
   'background', 'popup', 'options', 'utm', 'utm-content', 'redirect',
-  'dnr', 'siteopts', 'texturl', 'social-content', 'content', 'amazon-content',
+  'dnr', 'siteopts', 'history', 'texturl', 'social-content', 'content', 'amazon-content',
   'travel-content', 'news-content', 'site-toolbar', 'agoda-content',
   'airbnb-content', 'booking-content', 'expedia-content',
   'hotelscom-content', 'trip-content', 'vrbo-content',

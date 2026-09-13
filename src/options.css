@@ -284,3 +284,47 @@ button:focus-visible {
   height: 16px;
   accent-color: #ff9900;
 }
+
+/* -- Recent activity (v1.13) ---------------------------------------------- */
+.history-block { margin-top: 14px; }
+.history-block > summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 4px 0;
+}
+.inline-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin: 8px 0;
+}
+.history-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  max-height: 320px;
+  overflow-y: auto;
+  font-size: 12.5px;
+}
+.history-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 2px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.hist-when { color: #667; white-space: nowrap; }
+.hist-kind {
+  flex: none;
+  padding: 1px 7px;
+  border-radius: 9px;
+  background: #e8eef2;
+  color: #184459;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.hist-kind-active { background: #fdeacc; color: #7a4c00; }
+.hist-kind-skip { background: #e2f2e5; color: #1d5c2a; }
+.hist-what { overflow-wrap: anywhere; }

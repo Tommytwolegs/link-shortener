@@ -364,5 +364,41 @@
   },
   "tipHideTravel": {
     "message": "Oculta o widget de cópia flutuante em sites de hotéis e aluguéis. A limpeza da barra de endereço continua funcionando. Dica: você também pode arrastar o widget pelo cabeçalho para movê-lo para onde quiser."
+  },
+  "labelShowBadge": {
+    "message": "Mostrar contador no ícone"
+  },
+  "tipShowBadge": {
+    "message": "Mostra no ícone da barra de ferramentas quantas limpezas ocorreram na página atual: reescritas da barra de endereço, rastreadores bloqueados antes do carregamento e redirecionamentos pulados. Zera a cada nova página."
+  },
+  "labelKeepHistory": {
+    "message": "Manter histórico local de atividade"
+  },
+  "histTitle": {
+    "message": "Atividade recente"
+  },
+  "histHint": {
+    "message": "As últimas 50 limpezas neste dispositivo: apenas nomes de host e de parâmetros, nunca links completos nem valores. Armazenado localmente, nunca sincronizado."
+  },
+  "histEmpty": {
+    "message": "Nada ainda."
+  },
+  "histClear": {
+    "message": "Limpar histórico"
+  },
+  "histKindRewrite": {
+    "message": "barra de endereço"
+  },
+  "histKindActive": {
+    "message": "bloqueado antes de carregar"
+  },
+  "histKindSkip": {
+    "message": "redirecionamento pulado"
+  },
+  "histKindCopy": {
+    "message": "cópia"
+  },
+  "histKindBulk": {
+    "message": "limpeza em massa"
   }
 }
