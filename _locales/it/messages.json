@@ -1,0 +1,458 @@
+{
+  "extDesc": {
+    "message": "Un accorcia-link che accorcia davvero: rimuove la spazzatura di tracciamento dagli URL sul posto. Per link puliti e condivisibili."
+  },
+  "menuCopyClean": {
+    "message": "Copia URL pulito"
+  },
+  "menuCopyCleanSelection": {
+    "message": "Copia URL pulito dalla selezione"
+  },
+  "copyCleanUrl": {
+    "message": "Copia URL pulito"
+  },
+  "copied": {
+    "message": "Copiato ✓"
+  },
+  "copyMore": {
+    "message": "Altri formati di copia"
+  },
+  "qrShow": {
+    "message": "Mostra codice QR"
+  },
+  "copyAsMd": {
+    "message": "Copia come Markdown"
+  },
+  "copyAsHtml": {
+    "message": "Copia come link HTML"
+  },
+  "copyAsTitle": {
+    "message": "Copia come titolo + URL"
+  },
+  "copyOriginal": {
+    "message": "Copia URL originale"
+  },
+  "alreadyClean": {
+    "message": "Già pulito"
+  },
+  "removesParamOne": {
+    "message": "Rimuove 1 parametro di tracciamento"
+  },
+  "removesParams": {
+    "message": "Rimuove $1 parametri di tracciamento"
+  },
+  "shortensUrl": {
+    "message": "Accorcia questo URL"
+  },
+  "whatRemoved": {
+    "message": "Cosa è stato rimosso ($1)"
+  },
+  "chipUnwrapped": {
+    "message": "estratto da:"
+  },
+  "chipPath": {
+    "message": "percorso:"
+  },
+  "statsLine": {
+    "message": "$1 URL puliti su questo dispositivo · $2 caratteri di spazzatura rimossi"
+  },
+  "statusOff": {
+    "message": "Spento: i link restano come sono"
+  },
+  "statusOnNothing": {
+    "message": "Acceso: ma nessun sito attivo"
+  },
+  "statusOneSiteOnly": {
+    "message": "solo $1"
+  },
+  "statusNSites": {
+    "message": "$1 siti"
+  },
+  "statusEverywhereUniversal": {
+    "message": "Attivo <em>ovunque</em> + universale"
+  },
+  "statusOnSitesUniversal": {
+    "message": "Attivo: $1 + universale"
+  },
+  "statusOnUniversalOnly": {
+    "message": "Attivo: solo universale"
+  },
+  "statusAllSites": {
+    "message": "Attivo su <em>tutti</em> i siti"
+  },
+  "statusOnSites": {
+    "message": "Attivo: $1"
+  },
+  "groupCount": {
+    "message": "$1 di $2 attivi"
+  },
+  "labelMaster": {
+    "message": "Accorcia tutti i link"
+  },
+  "labelHideTravel": {
+    "message": "Nascondi widget viaggi"
+  },
+  "labelUtmStrip": {
+    "message": "Filtro tracciamento universale"
+  },
+  "labelRedirectSkip": {
+    "message": "Salta le pagine di reindirizzamento"
+  },
+  "badgeNew": {
+    "message": "NUOVO"
+  },
+  "tipUtmStrip": {
+    "message": "Rimuove utm_*, gclid, fbclid ecc. da ogni URL su ogni sito. Richiede il permesso più ampio all'attivazione e lo restituisce alla disattivazione."
+  },
+  "tipRedirectSkip": {
+    "message": "Quando fai clic su un link avvolto da un tracciatore di clic, un wrapper social, un wrapper di affiliazione o un visualizzatore AMP, vai direttamente alla destinazione reale. La destinazione è letta dal link stesso, mai scaricata. I SafeLinks aziendali non vengono saltati di proposito."
+  },
+  "perSite": {
+    "message": "Per sito"
+  },
+  "filterPlaceholder": {
+    "message": "Filtra siti…"
+  },
+  "filterEmpty": {
+    "message": "Nessun sito corrisponde. L'elenco completo è anche sulla pagina del progetto."
+  },
+  "groupGlobal": {
+    "message": "Globale"
+  },
+  "groupAmericas": {
+    "message": "Americhe"
+  },
+  "groupApac": {
+    "message": "Asia-Pacifico"
+  },
+  "groupEurope": {
+    "message": "Europa"
+  },
+  "groupNews": {
+    "message": "Testate giornalistiche"
+  },
+  "subSearchProd": {
+    "message": "Ricerca e produttività"
+  },
+  "subAcademic": {
+    "message": "Accademico"
+  },
+  "subShopping": {
+    "message": "Shopping"
+  },
+  "subLocal": {
+    "message": "Locale"
+  },
+  "subTravel": {
+    "message": "Viaggi"
+  },
+  "subFlights": {
+    "message": "Voli"
+  },
+  "subSocial": {
+    "message": "Social"
+  },
+  "subMedia": {
+    "message": "Media e intrattenimento"
+  },
+  "subDesign": {
+    "message": "Design e immagini"
+  },
+  "subWorkTools": {
+    "message": "Strumenti di lavoro"
+  },
+  "subRealEstate": {
+    "message": "Immobili e lavoro"
+  },
+  "subAppStores": {
+    "message": "App store"
+  },
+  "subParcels": {
+    "message": "Tracciamento pacchi"
+  },
+  "subCommunity": {
+    "message": "Community ed eventi"
+  },
+  "subFood": {
+    "message": "Cibo e ricette"
+  },
+  "subSports": {
+    "message": "Sport"
+  },
+  "subSearchPortals": {
+    "message": "Ricerca e portali"
+  },
+  "newsAmericas": {
+    "message": "Americhe"
+  },
+  "newsEurope": {
+    "message": "Europa"
+  },
+  "newsApac": {
+    "message": "Asia-Pacifico"
+  },
+  "newsMea": {
+    "message": "Medio Oriente e Africa"
+  },
+  "newsAgencies": {
+    "message": "Agenzie internazionali"
+  },
+  "infoMain": {
+    "message": "Gli URL lunghi sui siti supportati vengono riscritti sul posto. Fai clic destro su un link o una pagina e scegli \"Copia URL pulito\" per una pulizia una tantum; su Amazon \"Copia indirizzo link\" dà direttamente la forma pulita. L'interruttore \"Filtro tracciamento universale\" (spento di default) rimuove i tracciatori comuni come utm_* su ogni sito."
+  },
+  "infoSelection": {
+    "message": "Hai selezionato un URL come testo? Fai clic destro per \"Copia URL pulito dalla selezione\". Oppure nella barra degli indirizzi digita <em>clean</em>, premi Tab e incolla un URL per andare alla sua forma pulita."
+  },
+  "tipShortcut": {
+    "message": "Suggerimento: $1 copia un URL pulito della pagina corrente. Puoi riassegnarlo nelle impostazioni delle scorciatoie delle estensioni del browser."
+  },
+  "tipShortcutUnset": {
+    "message": "Suggerimento: la scorciatoia per copiare l'URL pulito non è impostata (forse un'altra estensione l'ha occupata). Assegnane una nelle impostazioni delle scorciatoie del browser."
+  },
+  "footerAdvanced": {
+    "message": "Avanzate"
+  },
+  "footerBulk": {
+    "message": "Pulizia in blocco"
+  },
+  "footerReport": {
+    "message": "Segnala un problema"
+  },
+  "optTitle": {
+    "message": "Impostazioni avanzate"
+  },
+  "optSubtitle": {
+    "message": "Regola il filtro universale, controlla le statistiche locali ed esegui il backup delle impostazioni."
+  },
+  "optStripTitle": {
+    "message": "Filtro tracciamento universale"
+  },
+  "optStripIntro": {
+    "message": "Queste impostazioni valgono sia per il <strong>Filtro tracciamento universale</strong> sia per <strong>Blocca i tracciatori prima del caricamento</strong>. La pulizia per sito (Amazon, eBay, ecc.) non è interessata."
+  },
+  "optSkipTitle": {
+    "message": "Salta questi domini"
+  },
+  "optKeepTitle": {
+    "message": "Mantieni sempre questi parametri"
+  },
+  "optSave": {
+    "message": "Salva"
+  },
+  "optReset": {
+    "message": "Ripristina predefiniti"
+  },
+  "optSaved": {
+    "message": "Salvato"
+  },
+  "optStripOn": {
+    "message": "Il Filtro tracciamento universale è ATTIVO."
+  },
+  "optStripOff": {
+    "message": "Entrambi i filtri sono SPENTI. Le impostazioni qui sotto avranno effetto quando attivi il Filtro tracciamento universale o \"Blocca i tracciatori prima del caricamento\" nel popup."
+  },
+  "optAboutTitle": {
+    "message": "Informazioni"
+  },
+  "statsTitle": {
+    "message": "Statistiche"
+  },
+  "statsHint": {
+    "message": "Contate solo localmente in questo profilo del browser. Le statistiche non vengono mai sincronizzate e non lasciano mai il dispositivo, come tutto il resto in questa estensione."
+  },
+  "statsUrls": {
+    "message": "URL puliti"
+  },
+  "statsChars": {
+    "message": "Caratteri rimossi"
+  },
+  "statsCopies": {
+    "message": "Azioni di copia"
+  },
+  "statsSkips": {
+    "message": "Reindirizzamenti saltati"
+  },
+  "statsBulk": {
+    "message": "Link puliti in blocco"
+  },
+  "statsSince": {
+    "message": "Conteggio dal"
+  },
+  "statsTopSites": {
+    "message": "Siti più puliti"
+  },
+  "statsReset": {
+    "message": "Azzera statistiche"
+  },
+  "backupTitle": {
+    "message": "Backup"
+  },
+  "backupHint": {
+    "message": "Esporta ogni impostazione (interruttori, domini saltati, parametri mantenuti) come file JSON, o importane uno esportato in precedenza. Utile quando passi a un profilo senza il tuo account di sincronizzazione."
+  },
+  "backupExport": {
+    "message": "Esporta impostazioni"
+  },
+  "backupImport": {
+    "message": "Importa impostazioni"
+  },
+  "backupExported": {
+    "message": "Esportato"
+  },
+  "backupImported": {
+    "message": "Importate $1 impostazioni"
+  },
+  "backupInvalid": {
+    "message": "Non è un file di impostazioni valido"
+  },
+  "bulkTitle": {
+    "message": "Pulizia link in blocco"
+  },
+  "bulkSubtitle": {
+    "message": "Incolla qualsiasi cosa. Ogni link al suo interno viene pulito ed estratto, direttamente sul tuo dispositivo."
+  },
+  "bulkHint": {
+    "message": "Funziona con intere email, documenti o elenchi di link. Ogni URL passa per la stessa pipeline del menu contestuale: i reindirizzamenti traccianti vengono estratti, si applicano le regole per sito e si rimuovono i tracciatori universali. Il testo attorno ai link resta intatto e nulla viene inviato da nessuna parte."
+  },
+  "bulkPlaceholder": {
+    "message": "Incolla qui il testo con i link"
+  },
+  "bulkClean": {
+    "message": "Pulisci i link"
+  },
+  "bulkCopy": {
+    "message": "Copia risultato"
+  },
+  "bulkStatus": {
+    "message": "Puliti $1 link su $2, rimossi $3 caratteri"
+  },
+  "bulkEmpty": {
+    "message": "Ancora niente da pulire"
+  },
+  "bulkError": {
+    "message": "Qualcosa è andato storto; riprova"
+  },
+  "reportCleanup": {
+    "message": "Segnala: pulizia non corretta"
+  },
+  "labelKeepTitles": {
+    "message": "Mantieni i titoli nei link"
+  },
+  "tipKeepTitles": {
+    "message": "Sui siti che accorciano a un semplice ID (oggi Amazon), mantieni il titolo leggibile nel link invece della forma più corta."
+  },
+  "labelActiveStrip": {
+    "message": "Blocca i tracciatori prima del caricamento"
+  },
+  "tipActiveStrip": {
+    "message": "Rimuove i parametri di tracciamento comuni (utm_*, gclid, fbclid e altri) dalle navigazioni prima ancora che la richiesta lasci il browser, così la destinazione non li riceve mai. Usa lo stesso permesso ampio e le stesse liste del Filtro tracciamento universale. La pulizia per sito nella barra degli indirizzi continua a funzionare."
+  },
+  "blockedBeforeLoadOne": {
+    "message": "Bloccato 1 tracciatore prima del caricamento della pagina"
+  },
+  "blockedBeforeLoad": {
+    "message": "Bloccati $1 tracciatori prima del caricamento della pagina"
+  },
+  "statsBlocked": {
+    "message": "Tracciatori bloccati prima del caricamento"
+  },
+  "optStripBothOn": {
+    "message": "Filtro universale e filtro attivo sono entrambi ATTIVI."
+  },
+  "optStripActiveOnly": {
+    "message": "Il filtro attivo (blocco prima del caricamento) è ATTIVO. Le liste qui sotto valgono per esso; il Filtro tracciamento universale è spento."
+  },
+  "tipHideTravel": {
+    "message": "Nasconde il widget flottante di copia sui siti di hotel e affitti. La pulizia della barra degli indirizzi continua a funzionare. Suggerimento: puoi anche trascinare il widget dalla sua intestazione per spostarlo ovunque nella pagina."
+  },
+  "labelShowBadge": {
+    "message": "Mostra contatore sull'icona"
+  },
+  "tipShowBadge": {
+    "message": "Mostra sull'icona della barra degli strumenti un piccolo contatore delle pulizie sulla pagina corrente: riscritture della barra degli indirizzi, tracciatori bloccati prima del caricamento e reindirizzamenti saltati. Si azzera a ogni nuova pagina."
+  },
+  "labelKeepHistory": {
+    "message": "Conserva la cronologia locale delle attività"
+  },
+  "histTitle": {
+    "message": "Attività recente"
+  },
+  "histHint": {
+    "message": "Le ultime 50 pulizie su questo dispositivo: solo nomi di host e di parametri, mai link completi o valori. Salvate localmente, mai sincronizzate."
+  },
+  "histEmpty": {
+    "message": "Ancora niente."
+  },
+  "histClear": {
+    "message": "Cancella cronologia"
+  },
+  "histKindRewrite": {
+    "message": "barra degli indirizzi"
+  },
+  "histKindActive": {
+    "message": "bloccato prima del caricamento"
+  },
+  "histKindSkip": {
+    "message": "reindirizzamento saltato"
+  },
+  "histKindCopy": {
+    "message": "copia"
+  },
+  "histKindBulk": {
+    "message": "pulizia in blocco"
+  },
+  "siteOptGear": {
+    "message": "Opzioni del sito"
+  },
+  "siteOptDefault": {
+    "message": "Usa impostazione globale"
+  },
+  "siteOptAlways": {
+    "message": "Sempre attivo qui"
+  },
+  "siteOptNever": {
+    "message": "Sempre disattivo qui"
+  },
+  "siteOptHideWidget": {
+    "message": "Nascondi il widget flottante su questo sito"
+  },
+  "labelActiveSkip": {
+    "message": "Salta i reindirizzamenti prima del caricamento"
+  },
+  "tipActiveSkip": {
+    "message": "Per i wrapper di reindirizzamento noti, va direttamente alla destinazione prima ancora che la richiesta parta verso il tracciatore, che quindi non sa mai del clic. Vale solo quando la destinazione è leggibile in chiaro nel link; tutto il resto usa il normale salto dei reindirizzamenti. Usa lo stesso permesso ampio delle funzioni di tracciamento sopra. I link di protezione aziendale non vengono mai saltati."
+  },
+  "btnPauseTab": {
+    "message": "Pausa in questa scheda"
+  },
+  "btnResumeTab": {
+    "message": "Riprendi in questa scheda"
+  },
+  "btnCleanPage": {
+    "message": "Pulisci i link di questa pagina"
+  },
+  "cleanPageDone": {
+    "message": "Puliti $1 link su $2"
+  },
+  "cleanPageNone": {
+    "message": "Link già puliti"
+  },
+  "fixSkipSite": {
+    "message": "Escludi questo sito dal filtro di tracciamento"
+  },
+  "fixSkipDone": {
+    "message": "$1 aggiunto alla lista di esclusione"
+  },
+  "cmdToggleMaster": {
+    "message": "Attiva/disattiva l'interruttore principale (tutto l'accorciamento dei link)"
+  },
+  "bulkDropHint": {
+    "message": "Oppure trascina un file .txt, .md, .csv o .html in un punto qualsiasi di questa pagina. Viene letto localmente, mai caricato."
+  },
+  "bulkPickFile": {
+    "message": "Apri un file"
+  },
+  "bulkTooBig": {
+    "message": "Il file è troppo grande (limite 5 MB)"
+  }
+}

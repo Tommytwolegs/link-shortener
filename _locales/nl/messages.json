@@ -1,0 +1,458 @@
+{
+  "extDesc": {
+    "message": "Een linkverkorter die links écht verkort: verwijdert trackingrommel ter plekke uit URL's. Voor schone, deelbare links."
+  },
+  "menuCopyClean": {
+    "message": "Schone URL kopiëren"
+  },
+  "menuCopyCleanSelection": {
+    "message": "Schone URL uit selectie kopiëren"
+  },
+  "copyCleanUrl": {
+    "message": "Schone URL kopiëren"
+  },
+  "copied": {
+    "message": "Gekopieerd ✓"
+  },
+  "copyMore": {
+    "message": "Meer kopieerformaten"
+  },
+  "qrShow": {
+    "message": "QR-code tonen"
+  },
+  "copyAsMd": {
+    "message": "Kopiëren als Markdown"
+  },
+  "copyAsHtml": {
+    "message": "Kopiëren als HTML-link"
+  },
+  "copyAsTitle": {
+    "message": "Kopiëren als titel + URL"
+  },
+  "copyOriginal": {
+    "message": "Originele URL kopiëren"
+  },
+  "alreadyClean": {
+    "message": "Al schoon"
+  },
+  "removesParamOne": {
+    "message": "Verwijdert 1 trackingparameter"
+  },
+  "removesParams": {
+    "message": "Verwijdert $1 trackingparameters"
+  },
+  "shortensUrl": {
+    "message": "Verkort deze URL"
+  },
+  "whatRemoved": {
+    "message": "Wat is verwijderd ($1)"
+  },
+  "chipUnwrapped": {
+    "message": "uitgepakt van:"
+  },
+  "chipPath": {
+    "message": "pad:"
+  },
+  "statsLine": {
+    "message": "$1 URL's opgeschoond op dit apparaat · $2 tekens rommel verwijderd"
+  },
+  "statusOff": {
+    "message": "Uit: links blijven zoals ze zijn"
+  },
+  "statusOnNothing": {
+    "message": "Aan: maar niets ingeschakeld"
+  },
+  "statusOneSiteOnly": {
+    "message": "alleen $1"
+  },
+  "statusNSites": {
+    "message": "$1 sites"
+  },
+  "statusEverywhereUniversal": {
+    "message": "Aan <em>overal</em> + universeel"
+  },
+  "statusOnSitesUniversal": {
+    "message": "Aan: $1 + universeel"
+  },
+  "statusOnUniversalOnly": {
+    "message": "Aan: alleen universeel"
+  },
+  "statusAllSites": {
+    "message": "Aan op <em>alle</em> sites"
+  },
+  "statusOnSites": {
+    "message": "Aan: $1"
+  },
+  "groupCount": {
+    "message": "$1 van $2 aan"
+  },
+  "labelMaster": {
+    "message": "Alle links verkorten"
+  },
+  "labelHideTravel": {
+    "message": "Reiswidget verbergen"
+  },
+  "labelUtmStrip": {
+    "message": "Universele trackingfilter"
+  },
+  "labelRedirectSkip": {
+    "message": "Doorstuurpagina's overslaan"
+  },
+  "badgeNew": {
+    "message": "NIEUW"
+  },
+  "tipUtmStrip": {
+    "message": "Verwijdert utm_*, gclid, fbclid enz. uit elke URL op elke site. Vraagt bij inschakelen om de bredere toestemming en geeft die bij uitschakelen weer terug."
+  },
+  "tipRedirectSkip": {
+    "message": "Als je klikt op een link die is verpakt door een kliktracker, sociale wrapper, affiliate-wrapper of AMP-viewer, ga je rechtstreeks naar de echte bestemming. De bestemming wordt uit de link zelf gelezen, nooit opgehaald. Zakelijke SafeLinks worden bewust niet overgeslagen."
+  },
+  "perSite": {
+    "message": "Per site"
+  },
+  "filterPlaceholder": {
+    "message": "Sites filteren…"
+  },
+  "filterEmpty": {
+    "message": "Geen sites gevonden. De volledige lijst staat ook op de projectpagina."
+  },
+  "groupGlobal": {
+    "message": "Wereldwijd"
+  },
+  "groupAmericas": {
+    "message": "Noord- en Zuid-Amerika"
+  },
+  "groupApac": {
+    "message": "Azië-Pacific"
+  },
+  "groupEurope": {
+    "message": "Europa"
+  },
+  "groupNews": {
+    "message": "Nieuwsmedia"
+  },
+  "subSearchProd": {
+    "message": "Zoeken en productiviteit"
+  },
+  "subAcademic": {
+    "message": "Academisch"
+  },
+  "subShopping": {
+    "message": "Winkelen"
+  },
+  "subLocal": {
+    "message": "Lokaal"
+  },
+  "subTravel": {
+    "message": "Reizen"
+  },
+  "subFlights": {
+    "message": "Vluchten"
+  },
+  "subSocial": {
+    "message": "Sociaal"
+  },
+  "subMedia": {
+    "message": "Media en entertainment"
+  },
+  "subDesign": {
+    "message": "Design en afbeeldingen"
+  },
+  "subWorkTools": {
+    "message": "Werktools"
+  },
+  "subRealEstate": {
+    "message": "Vastgoed en vacatures"
+  },
+  "subAppStores": {
+    "message": "App-stores"
+  },
+  "subParcels": {
+    "message": "Pakketten volgen"
+  },
+  "subCommunity": {
+    "message": "Community en evenementen"
+  },
+  "subFood": {
+    "message": "Eten en recepten"
+  },
+  "subSports": {
+    "message": "Sport"
+  },
+  "subSearchPortals": {
+    "message": "Zoeken en portalen"
+  },
+  "newsAmericas": {
+    "message": "Noord- en Zuid-Amerika"
+  },
+  "newsEurope": {
+    "message": "Europa"
+  },
+  "newsApac": {
+    "message": "Azië-Pacific"
+  },
+  "newsMea": {
+    "message": "Midden-Oosten en Afrika"
+  },
+  "newsAgencies": {
+    "message": "Internationale persbureaus"
+  },
+  "infoMain": {
+    "message": "Lange URL's op ondersteunde sites worden ter plekke herschreven. Klik met de rechtermuisknop op een link of pagina en kies \"Schone URL kopiëren\" voor een eenmalige opschoning; op Amazon geeft \"Linkadres kopiëren\" direct de schone vorm. De schakelaar \"Universele trackingfilter\" (standaard uit) verwijdert veelvoorkomende trackers zoals utm_* op elke site."
+  },
+  "infoSelection": {
+    "message": "Een URL als tekst geselecteerd? Rechtsklik voor \"Schone URL uit selectie kopiëren\". Of typ in de adresbalk <em>clean</em>, druk op Tab en plak een URL om naar de schone vorm te gaan."
+  },
+  "tipShortcut": {
+    "message": "Tip: $1 kopieert een schone URL van de huidige pagina. Wijzig de toets in de sneltoetsinstellingen voor extensies van je browser."
+  },
+  "tipShortcutUnset": {
+    "message": "Tip: de sneltoets voor het kopiëren van een schone URL is niet ingesteld (mogelijk door een andere extensie bezet). Wijs er een toe in de sneltoetsinstellingen van je browser."
+  },
+  "footerAdvanced": {
+    "message": "Geavanceerd"
+  },
+  "footerBulk": {
+    "message": "Bulkopschoning"
+  },
+  "footerReport": {
+    "message": "Probleem melden"
+  },
+  "optTitle": {
+    "message": "Geavanceerde instellingen"
+  },
+  "optSubtitle": {
+    "message": "Stel de universele filter af, bekijk je lokale statistieken en maak een back-up van je instellingen."
+  },
+  "optStripTitle": {
+    "message": "Universele trackingfilter"
+  },
+  "optStripIntro": {
+    "message": "Deze instellingen gelden voor zowel de <strong>Universele trackingfilter</strong> als <strong>Trackers blokkeren vóór het laden</strong>. Opschoning per site (Amazon, eBay, enz.) blijft ongewijzigd."
+  },
+  "optSkipTitle": {
+    "message": "Deze domeinen overslaan"
+  },
+  "optKeepTitle": {
+    "message": "Deze parameters altijd behouden"
+  },
+  "optSave": {
+    "message": "Opslaan"
+  },
+  "optReset": {
+    "message": "Standaardwaarden herstellen"
+  },
+  "optSaved": {
+    "message": "Opgeslagen"
+  },
+  "optStripOn": {
+    "message": "De Universele trackingfilter staat AAN."
+  },
+  "optStripOff": {
+    "message": "Beide filters staan UIT. De instellingen hieronder werken zodra je in de pop-up de Universele trackingfilter of \"Trackers blokkeren vóór het laden\" inschakelt."
+  },
+  "optAboutTitle": {
+    "message": "Over"
+  },
+  "statsTitle": {
+    "message": "Statistieken"
+  },
+  "statsHint": {
+    "message": "Alleen lokaal geteld in dit browserprofiel. Statistieken worden nooit gesynchroniseerd en verlaten je apparaat nooit, net als al het andere in deze extensie."
+  },
+  "statsUrls": {
+    "message": "URL's opgeschoond"
+  },
+  "statsChars": {
+    "message": "Tekens verwijderd"
+  },
+  "statsCopies": {
+    "message": "Kopieeracties"
+  },
+  "statsSkips": {
+    "message": "Doorstuurpagina's overgeslagen"
+  },
+  "statsBulk": {
+    "message": "In bulk opgeschoonde links"
+  },
+  "statsSince": {
+    "message": "Geteld sinds"
+  },
+  "statsTopSites": {
+    "message": "Vaakst opgeschoonde sites"
+  },
+  "statsReset": {
+    "message": "Statistieken resetten"
+  },
+  "backupTitle": {
+    "message": "Back-up"
+  },
+  "backupHint": {
+    "message": "Exporteer alle instellingen (schakelaars, overgeslagen domeinen, behouden parameters) als JSON-bestand, of importeer een eerder geëxporteerd bestand. Handig bij een overstap naar een profiel zonder je synchronisatieaccount."
+  },
+  "backupExport": {
+    "message": "Instellingen exporteren"
+  },
+  "backupImport": {
+    "message": "Instellingen importeren"
+  },
+  "backupExported": {
+    "message": "Geëxporteerd"
+  },
+  "backupImported": {
+    "message": "$1 instellingen geïmporteerd"
+  },
+  "backupInvalid": {
+    "message": "Geen geldig instellingenbestand"
+  },
+  "bulkTitle": {
+    "message": "Bulk-linkopschoner"
+  },
+  "bulkSubtitle": {
+    "message": "Plak wat je wilt. Elke link erin wordt opgeschoond en uitgepakt, gewoon op je eigen apparaat."
+  },
+  "bulkHint": {
+    "message": "Werkt met hele e-mails, documenten of lijsten met links. Elke URL doorloopt dezelfde pijplijn als het rechtsklikmenu: trackende doorstuurlinks worden uitgepakt, siteregels toegepast en universele trackers verwijderd. De tekst rond je links blijft onaangetast en er wordt niets verstuurd."
+  },
+  "bulkPlaceholder": {
+    "message": "Plak hier tekst met links"
+  },
+  "bulkClean": {
+    "message": "Links opschonen"
+  },
+  "bulkCopy": {
+    "message": "Resultaat kopiëren"
+  },
+  "bulkStatus": {
+    "message": "$1 van $2 links opgeschoond, $3 tekens verwijderd"
+  },
+  "bulkEmpty": {
+    "message": "Nog niets om op te schonen"
+  },
+  "bulkError": {
+    "message": "Er ging iets mis; probeer het opnieuw"
+  },
+  "reportCleanup": {
+    "message": "Melden: dit is niet goed opgeschoond"
+  },
+  "labelKeepTitles": {
+    "message": "Titels in links behouden"
+  },
+  "tipKeepTitles": {
+    "message": "Op sites die verkorten tot een kale ID (nu Amazon) blijft de leesbare titel in de link staan in plaats van de kortste vorm."
+  },
+  "labelActiveStrip": {
+    "message": "Trackers blokkeren vóór het laden"
+  },
+  "tipActiveStrip": {
+    "message": "Verwijdert veelvoorkomende trackingparameters (utm_*, gclid, fbclid en meer) uit paginanavigaties voordat het verzoek je browser verlaat, zodat de bestemming ze nooit ontvangt. Gebruikt dezelfde brede toestemming en dezelfde lijsten als de Universele trackingfilter. Opschoning per site in de adresbalk blijft gewoon werken."
+  },
+  "blockedBeforeLoadOne": {
+    "message": "1 tracker geblokkeerd voordat deze pagina laadde"
+  },
+  "blockedBeforeLoad": {
+    "message": "$1 trackers geblokkeerd voordat deze pagina laadde"
+  },
+  "statsBlocked": {
+    "message": "Trackers geblokkeerd vóór het laden"
+  },
+  "optStripBothOn": {
+    "message": "De universele filter en de actieve filter staan allebei AAN."
+  },
+  "optStripActiveOnly": {
+    "message": "De actieve filter (blokkeren vóór het laden) staat AAN. De lijsten hieronder gelden ervoor; de universele filter staat uit."
+  },
+  "tipHideTravel": {
+    "message": "Verbergt de zwevende kopieerwidget op hotel- en verhuursites. Opschoning van de adresbalk blijft werken. Tip: je kunt de widget ook aan de kopregel slepen om hem ergens anders op de pagina te zetten."
+  },
+  "labelShowBadge": {
+    "message": "Teller op het pictogram tonen"
+  },
+  "tipShowBadge": {
+    "message": "Toont als kleine teller op het werkbalkpictogram hoeveel opschoningen er op de huidige pagina waren: adresbalkherschrijvingen, vóór het laden geblokkeerde trackers en overgeslagen doorstuurlinks. Wordt bij elke nieuwe pagina op nul gezet."
+  },
+  "labelKeepHistory": {
+    "message": "Lokale activiteitengeschiedenis bijhouden"
+  },
+  "histTitle": {
+    "message": "Recente activiteit"
+  },
+  "histHint": {
+    "message": "De laatste 50 opschoningen op dit apparaat: alleen hostnamen en parameternamen, nooit volledige links of waarden. Lokaal opgeslagen, nooit gesynchroniseerd."
+  },
+  "histEmpty": {
+    "message": "Nog niets."
+  },
+  "histClear": {
+    "message": "Geschiedenis wissen"
+  },
+  "histKindRewrite": {
+    "message": "adresbalk"
+  },
+  "histKindActive": {
+    "message": "geblokkeerd vóór het laden"
+  },
+  "histKindSkip": {
+    "message": "doorsturing overgeslagen"
+  },
+  "histKindCopy": {
+    "message": "kopie"
+  },
+  "histKindBulk": {
+    "message": "bulkopschoning"
+  },
+  "siteOptGear": {
+    "message": "Site-opties"
+  },
+  "siteOptDefault": {
+    "message": "Algemene instelling gebruiken"
+  },
+  "siteOptAlways": {
+    "message": "Hier altijd aan"
+  },
+  "siteOptNever": {
+    "message": "Hier altijd uit"
+  },
+  "siteOptHideWidget": {
+    "message": "De zwevende widget op deze site verbergen"
+  },
+  "labelActiveSkip": {
+    "message": "Doorsturingen overslaan vóór het laden"
+  },
+  "tipActiveSkip": {
+    "message": "Bij bekende doorstuur-wrappers ga je rechtstreeks naar de bestemming voordat het verzoek aan de tracker überhaupt wordt verstuurd; die verneemt dus nooit iets van de klik. Geldt alleen als de bestemming letterlijk leesbaar in de link staat; al het andere gebruikt het normale overslaan van doorstuurpagina's. Gebruikt dezelfde brede toestemming als de trackingfuncties hierboven. Zakelijke beveiligingslinks worden nooit overgeslagen."
+  },
+  "btnPauseTab": {
+    "message": "Pauzeren op dit tabblad"
+  },
+  "btnResumeTab": {
+    "message": "Hervatten op dit tabblad"
+  },
+  "btnCleanPage": {
+    "message": "Links op deze pagina opschonen"
+  },
+  "cleanPageDone": {
+    "message": "$1 van $2 links opgeschoond"
+  },
+  "cleanPageNone": {
+    "message": "Links zijn al schoon"
+  },
+  "fixSkipSite": {
+    "message": "Deze site uitsluiten van de trackingfilter"
+  },
+  "fixSkipDone": {
+    "message": "$1 toegevoegd aan de uitsluitingslijst"
+  },
+  "cmdToggleMaster": {
+    "message": "Hoofdschakelaar omzetten (al het verkorten aan/uit)"
+  },
+  "bulkDropHint": {
+    "message": "Of sleep een .txt-, .md-, .csv- of .html-bestand ergens op deze pagina. Het wordt lokaal gelezen, nooit geüpload."
+  },
+  "bulkPickFile": {
+    "message": "Bestand openen"
+  },
+  "bulkTooBig": {
+    "message": "Bestand is te groot (limiet 5 MB)"
+  }
+}

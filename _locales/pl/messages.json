@@ -1,0 +1,458 @@
+{
+  "extDesc": {
+    "message": "Skracacz linków, który naprawdę skraca: usuwa śledzące śmieci z adresów URL na miejscu. Dla czystych linków do udostępniania."
+  },
+  "menuCopyClean": {
+    "message": "Kopiuj czysty URL"
+  },
+  "menuCopyCleanSelection": {
+    "message": "Kopiuj czysty URL z zaznaczenia"
+  },
+  "copyCleanUrl": {
+    "message": "Kopiuj czysty URL"
+  },
+  "copied": {
+    "message": "Skopiowano ✓"
+  },
+  "copyMore": {
+    "message": "Więcej formatów kopiowania"
+  },
+  "qrShow": {
+    "message": "Pokaż kod QR"
+  },
+  "copyAsMd": {
+    "message": "Kopiuj jako Markdown"
+  },
+  "copyAsHtml": {
+    "message": "Kopiuj jako link HTML"
+  },
+  "copyAsTitle": {
+    "message": "Kopiuj jako tytuł + URL"
+  },
+  "copyOriginal": {
+    "message": "Kopiuj oryginalny URL"
+  },
+  "alreadyClean": {
+    "message": "Już czysty"
+  },
+  "removesParamOne": {
+    "message": "Usuwa 1 parametr śledzący"
+  },
+  "removesParams": {
+    "message": "Usuwa parametry śledzące: $1"
+  },
+  "shortensUrl": {
+    "message": "Skraca ten URL"
+  },
+  "whatRemoved": {
+    "message": "Co usunięto ($1)"
+  },
+  "chipUnwrapped": {
+    "message": "rozpakowano z:"
+  },
+  "chipPath": {
+    "message": "ścieżka:"
+  },
+  "statsLine": {
+    "message": "Wyczyszczone adresy URL na tym urządzeniu: $1 · usunięte znaki śmieci: $2"
+  },
+  "statusOff": {
+    "message": "Wyłączone: linki pozostają bez zmian"
+  },
+  "statusOnNothing": {
+    "message": "Włączone: ale nic nie jest aktywne"
+  },
+  "statusOneSiteOnly": {
+    "message": "tylko $1"
+  },
+  "statusNSites": {
+    "message": "witryn: $1"
+  },
+  "statusEverywhereUniversal": {
+    "message": "Włączone <em>wszędzie</em> + uniwersalny"
+  },
+  "statusOnSitesUniversal": {
+    "message": "Włączone: $1 + uniwersalny"
+  },
+  "statusOnUniversalOnly": {
+    "message": "Włączone: tylko uniwersalny"
+  },
+  "statusAllSites": {
+    "message": "Włączone na <em>wszystkich</em> witrynach"
+  },
+  "statusOnSites": {
+    "message": "Włączone: $1"
+  },
+  "groupCount": {
+    "message": "$1 z $2 włączonych"
+  },
+  "labelMaster": {
+    "message": "Skracaj wszystkie linki"
+  },
+  "labelHideTravel": {
+    "message": "Ukryj widżet podróży"
+  },
+  "labelUtmStrip": {
+    "message": "Uniwersalny filtr śledzenia"
+  },
+  "labelRedirectSkip": {
+    "message": "Pomijaj strony przekierowań"
+  },
+  "badgeNew": {
+    "message": "NOWOŚĆ"
+  },
+  "tipUtmStrip": {
+    "message": "Usuwa utm_*, gclid, fbclid itp. z każdego adresu URL na każdej witrynie. Przy włączeniu prosi o szersze uprawnienie, a przy wyłączeniu je oddaje."
+  },
+  "tipRedirectSkip": {
+    "message": "Gdy klikniesz link opakowany przez tracker kliknięć, społecznościowy wrapper wychodzący, wrapper afiliacyjny lub przeglądarkę AMP, przechodzisz prosto do prawdziwego celu. Cel jest odczytywany z samego linku, nigdy nie jest pobierany. Firmowe SafeLinks celowo nie są pomijane."
+  },
+  "perSite": {
+    "message": "Według witryny"
+  },
+  "filterPlaceholder": {
+    "message": "Filtruj witryny…"
+  },
+  "filterEmpty": {
+    "message": "Brak pasujących witryn. Pełna lista jest też na stronie projektu."
+  },
+  "groupGlobal": {
+    "message": "Globalne"
+  },
+  "groupAmericas": {
+    "message": "Ameryka"
+  },
+  "groupApac": {
+    "message": "Azja i Pacyfik"
+  },
+  "groupEurope": {
+    "message": "Europa"
+  },
+  "groupNews": {
+    "message": "Serwisy informacyjne"
+  },
+  "subSearchProd": {
+    "message": "Wyszukiwanie i produktywność"
+  },
+  "subAcademic": {
+    "message": "Nauka"
+  },
+  "subShopping": {
+    "message": "Zakupy"
+  },
+  "subLocal": {
+    "message": "Lokalne"
+  },
+  "subTravel": {
+    "message": "Podróże"
+  },
+  "subFlights": {
+    "message": "Loty"
+  },
+  "subSocial": {
+    "message": "Społecznościowe"
+  },
+  "subMedia": {
+    "message": "Media i rozrywka"
+  },
+  "subDesign": {
+    "message": "Design i obrazy"
+  },
+  "subWorkTools": {
+    "message": "Narzędzia do pracy"
+  },
+  "subRealEstate": {
+    "message": "Nieruchomości i praca"
+  },
+  "subAppStores": {
+    "message": "Sklepy z aplikacjami"
+  },
+  "subParcels": {
+    "message": "Śledzenie paczek"
+  },
+  "subCommunity": {
+    "message": "Społeczności i wydarzenia"
+  },
+  "subFood": {
+    "message": "Jedzenie i przepisy"
+  },
+  "subSports": {
+    "message": "Sport"
+  },
+  "subSearchPortals": {
+    "message": "Wyszukiwarki i portale"
+  },
+  "newsAmericas": {
+    "message": "Ameryka"
+  },
+  "newsEurope": {
+    "message": "Europa"
+  },
+  "newsApac": {
+    "message": "Azja i Pacyfik"
+  },
+  "newsMea": {
+    "message": "Bliski Wschód i Afryka"
+  },
+  "newsAgencies": {
+    "message": "Agencje międzynarodowe"
+  },
+  "infoMain": {
+    "message": "Długie adresy URL na obsługiwanych witrynach są przepisywane na miejscu. Kliknij prawym przyciskiem link lub stronę i wybierz „Kopiuj czysty URL”, aby wyczyścić jednorazowo; na Amazonie „Kopiuj adres linku” od razu daje czystą formę. Przełącznik „Uniwersalny filtr śledzenia” (domyślnie wyłączony) usuwa popularne trackery, np. utm_*, na każdej witrynie."
+  },
+  "infoSelection": {
+    "message": "Zaznaczyłeś URL jako tekst? Kliknij prawym przyciskiem i wybierz „Kopiuj czysty URL z zaznaczenia”. Albo w pasku adresu wpisz <em>clean</em>, naciśnij Tab i wklej URL, aby przejść do jego czystej formy."
+  },
+  "tipShortcut": {
+    "message": "Wskazówka: $1 kopiuje czysty URL bieżącej strony. Możesz zmienić skrót w ustawieniach skrótów rozszerzeń przeglądarki."
+  },
+  "tipShortcutUnset": {
+    "message": "Wskazówka: skrót kopiowania czystego adresu URL nie jest ustawiony (mogło go zająć inne rozszerzenie). Przypisz go w ustawieniach skrótów przeglądarki."
+  },
+  "footerAdvanced": {
+    "message": "Zaawansowane"
+  },
+  "footerBulk": {
+    "message": "Czyszczenie zbiorcze"
+  },
+  "footerReport": {
+    "message": "Zgłoś problem"
+  },
+  "optTitle": {
+    "message": "Ustawienia zaawansowane"
+  },
+  "optSubtitle": {
+    "message": "Dostosuj filtr uniwersalny, sprawdź lokalne statystyki i wykonaj kopię zapasową ustawień."
+  },
+  "optStripTitle": {
+    "message": "Uniwersalny filtr śledzenia"
+  },
+  "optStripIntro": {
+    "message": "Te ustawienia dotyczą zarówno <strong>Uniwersalnego filtra śledzenia</strong>, jak i funkcji <strong>Blokuj trackery przed załadowaniem</strong>. Czyszczenie według witryny (Amazon, eBay itd.) pozostaje bez zmian."
+  },
+  "optSkipTitle": {
+    "message": "Pomijaj te domeny"
+  },
+  "optKeepTitle": {
+    "message": "Zawsze zachowuj te parametry"
+  },
+  "optSave": {
+    "message": "Zapisz"
+  },
+  "optReset": {
+    "message": "Przywróć domyślne"
+  },
+  "optSaved": {
+    "message": "Zapisano"
+  },
+  "optStripOn": {
+    "message": "Uniwersalny filtr śledzenia jest WŁĄCZONY."
+  },
+  "optStripOff": {
+    "message": "Oba filtry są WYŁĄCZONE. Poniższe ustawienia zaczną działać, gdy w wyskakującym okienku włączysz Uniwersalny filtr śledzenia lub „Blokuj trackery przed załadowaniem”."
+  },
+  "optAboutTitle": {
+    "message": "Informacje"
+  },
+  "statsTitle": {
+    "message": "Statystyki"
+  },
+  "statsHint": {
+    "message": "Liczone tylko lokalnie w tym profilu przeglądarki. Statystyki nigdy nie są synchronizowane i nigdy nie opuszczają urządzenia, jak wszystko inne w tym rozszerzeniu."
+  },
+  "statsUrls": {
+    "message": "Wyczyszczone adresy URL"
+  },
+  "statsChars": {
+    "message": "Usunięte znaki"
+  },
+  "statsCopies": {
+    "message": "Operacje kopiowania"
+  },
+  "statsSkips": {
+    "message": "Pominięte przekierowania"
+  },
+  "statsBulk": {
+    "message": "Linki wyczyszczone zbiorczo"
+  },
+  "statsSince": {
+    "message": "Liczone od"
+  },
+  "statsTopSites": {
+    "message": "Najczęściej czyszczone witryny"
+  },
+  "statsReset": {
+    "message": "Wyzeruj statystyki"
+  },
+  "backupTitle": {
+    "message": "Kopia zapasowa"
+  },
+  "backupHint": {
+    "message": "Wyeksportuj wszystkie ustawienia (przełączniki, pomijane domeny, zachowywane parametry) do pliku JSON albo zaimportuj wcześniej wyeksportowany plik. Przydatne przy przenosinach do profilu bez Twojego konta synchronizacji."
+  },
+  "backupExport": {
+    "message": "Eksportuj ustawienia"
+  },
+  "backupImport": {
+    "message": "Importuj ustawienia"
+  },
+  "backupExported": {
+    "message": "Wyeksportowano"
+  },
+  "backupImported": {
+    "message": "Zaimportowane ustawienia: $1"
+  },
+  "backupInvalid": {
+    "message": "To nie jest prawidłowy plik ustawień"
+  },
+  "bulkTitle": {
+    "message": "Zbiorcze czyszczenie linków"
+  },
+  "bulkSubtitle": {
+    "message": "Wklej cokolwiek. Każdy link w środku zostanie wyczyszczony i rozpakowany, prosto na Twoim urządzeniu."
+  },
+  "bulkHint": {
+    "message": "Działa na całych e-mailach, dokumentach i listach linków. Każdy URL przechodzi tę samą ścieżkę co menu kontekstowe: śledzące przekierowania są rozpakowywane, stosowane są reguły witryn i usuwane uniwersalne trackery. Tekst wokół linków pozostaje nietknięty i nic nigdzie nie jest wysyłane."
+  },
+  "bulkPlaceholder": {
+    "message": "Wklej tu tekst z linkami"
+  },
+  "bulkClean": {
+    "message": "Wyczyść linki"
+  },
+  "bulkCopy": {
+    "message": "Kopiuj wynik"
+  },
+  "bulkStatus": {
+    "message": "Wyczyszczono $1 z $2 linków, usunięto znaków: $3"
+  },
+  "bulkEmpty": {
+    "message": "Jeszcze nie ma czego czyścić"
+  },
+  "bulkError": {
+    "message": "Coś poszło nie tak; spróbuj ponownie"
+  },
+  "reportCleanup": {
+    "message": "Zgłoś: wyczyszczono nieprawidłowo"
+  },
+  "labelKeepTitles": {
+    "message": "Zachowuj tytuły w linkach"
+  },
+  "tipKeepTitles": {
+    "message": "Na witrynach skracających do samego identyfikatora (obecnie Amazon) zachowuje czytelny tytuł w linku zamiast najkrótszej formy."
+  },
+  "labelActiveStrip": {
+    "message": "Blokuj trackery przed załadowaniem"
+  },
+  "tipActiveStrip": {
+    "message": "Usuwa popularne parametry śledzące (utm_*, gclid, fbclid i inne) z nawigacji, zanim żądanie w ogóle opuści przeglądarkę, więc witryna docelowa nigdy ich nie otrzymuje. Używa tego samego szerokiego uprawnienia i tych samych list co Uniwersalny filtr śledzenia. Czyszczenie według witryny w pasku adresu działa dalej."
+  },
+  "blockedBeforeLoadOne": {
+    "message": "Zablokowano 1 tracker przed załadowaniem strony"
+  },
+  "blockedBeforeLoad": {
+    "message": "Zablokowane trackery przed załadowaniem strony: $1"
+  },
+  "statsBlocked": {
+    "message": "Trackery zablokowane przed załadowaniem"
+  },
+  "optStripBothOn": {
+    "message": "Filtr uniwersalny i filtr aktywny są WŁĄCZONE."
+  },
+  "optStripActiveOnly": {
+    "message": "Filtr aktywny (blokowanie przed załadowaniem) jest WŁĄCZONY. Poniższe listy dotyczą jego działania; filtr uniwersalny jest wyłączony."
+  },
+  "tipHideTravel": {
+    "message": "Ukrywa pływający widżet kopiowania na witrynach hoteli i wynajmu. Czyszczenie paska adresu działa dalej. Wskazówka: widżet można też przeciągnąć za nagłówek w dowolne miejsce strony."
+  },
+  "labelShowBadge": {
+    "message": "Pokazuj licznik na ikonie"
+  },
+  "tipShowBadge": {
+    "message": "Pokazuje na ikonie paska narzędzi mały licznik czyszczeń na bieżącej stronie: przepisania paska adresu, trackery zablokowane przed załadowaniem i pominięte przekierowania. Zeruje się przy każdej nowej stronie."
+  },
+  "labelKeepHistory": {
+    "message": "Zachowuj lokalną historię aktywności"
+  },
+  "histTitle": {
+    "message": "Ostatnia aktywność"
+  },
+  "histHint": {
+    "message": "Ostatnie 50 czyszczeń na tym urządzeniu: tylko nazwy hostów i parametrów, nigdy pełne linki ani wartości. Przechowywane lokalnie, nigdy nie synchronizowane."
+  },
+  "histEmpty": {
+    "message": "Jeszcze nic."
+  },
+  "histClear": {
+    "message": "Wyczyść historię"
+  },
+  "histKindRewrite": {
+    "message": "pasek adresu"
+  },
+  "histKindActive": {
+    "message": "zablokowano przed załadowaniem"
+  },
+  "histKindSkip": {
+    "message": "pominięto przekierowanie"
+  },
+  "histKindCopy": {
+    "message": "kopiowanie"
+  },
+  "histKindBulk": {
+    "message": "czyszczenie zbiorcze"
+  },
+  "siteOptGear": {
+    "message": "Opcje witryny"
+  },
+  "siteOptDefault": {
+    "message": "Użyj ustawienia globalnego"
+  },
+  "siteOptAlways": {
+    "message": "Tutaj zawsze włączone"
+  },
+  "siteOptNever": {
+    "message": "Tutaj zawsze wyłączone"
+  },
+  "siteOptHideWidget": {
+    "message": "Ukryj pływający widżet na tej witrynie"
+  },
+  "labelActiveSkip": {
+    "message": "Pomijaj przekierowania przed załadowaniem"
+  },
+  "tipActiveSkip": {
+    "message": "W przypadku znanych wrapperów przekierowań przechodzi prosto do celu, zanim żądanie do trackera w ogóle zostanie wysłane, więc tracker nigdy nie dowiaduje się o kliknięciu. Działa tylko wtedy, gdy cel da się wprost odczytać z linku; resztą zajmuje się zwykłe pomijanie przekierowań. Używa tego samego szerokiego uprawnienia co funkcje śledzenia powyżej. Firmowe linki ochronne nigdy nie są pomijane."
+  },
+  "btnPauseTab": {
+    "message": "Wstrzymaj na tej karcie"
+  },
+  "btnResumeTab": {
+    "message": "Wznów na tej karcie"
+  },
+  "btnCleanPage": {
+    "message": "Wyczyść linki na tej stronie"
+  },
+  "cleanPageDone": {
+    "message": "Wyczyszczono $1 z $2 linków"
+  },
+  "cleanPageNone": {
+    "message": "Linki już są czyste"
+  },
+  "fixSkipSite": {
+    "message": "Wyklucz tę witrynę z filtra śledzenia"
+  },
+  "fixSkipDone": {
+    "message": "Dodano $1 do listy pomijanych"
+  },
+  "cmdToggleMaster": {
+    "message": "Przełącz główny wyłącznik (całe skracanie linków wł./wył.)"
+  },
+  "bulkDropHint": {
+    "message": "Albo upuść plik .txt, .md, .csv lub .html w dowolnym miejscu tej strony. Jest czytany lokalnie, nigdy nie jest przesyłany."
+  },
+  "bulkPickFile": {
+    "message": "Otwórz plik"
+  },
+  "bulkTooBig": {
+    "message": "Plik jest za duży (limit 5 MB)"
+  }
+}
