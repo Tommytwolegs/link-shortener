@@ -454,5 +454,8 @@
   },
   "bulkTooBig": {
     "message": "파일이 너무 큽니다(최대 5MB)"
+  },
+  "infoTitle": {
+    "message": "작동 방식"
   }
 }

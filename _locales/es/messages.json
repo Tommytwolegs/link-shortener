@@ -454,5 +454,8 @@
   },
   "bulkTooBig": {
     "message": "El archivo es demasiado grande (límite de 5 MB)"
+  },
+  "infoTitle": {
+    "message": "Cómo funciona"
   }
 }

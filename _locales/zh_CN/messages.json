@@ -454,5 +454,8 @@
   },
   "bulkTooBig": {
     "message": "文件太大（上限 5 MB）"
+  },
+  "infoTitle": {
+    "message": "工作原理"
   }
 }

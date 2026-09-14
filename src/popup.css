@@ -286,13 +286,37 @@ body {
 }
 
 .info {
-  padding: 12px 16px;
+  padding: 8px 16px;
   color: var(--text-muted);
   font-size: 12px;
 }
 
 .info p {
   margin: 0;
+}
+
+/* The explanatory paragraphs collapse under a "How it works" line by
+   default (v1.13) — the popup earns its vertical space back for the
+   switches and per-site list. */
+.info-details > summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 2px 0;
+  user-select: none;
+}
+
+.info-details > summary:hover {
+  color: var(--text);
+}
+
+.info-details[open] > summary {
+  margin-bottom: 6px;
+}
+
+.info-details p + p {
+  margin-top: 6px;
 }
 
 .info code {
@@ -333,7 +357,18 @@ footer {
   display: none;
 }
 
-footer a {
+/* Page actions (Clean links / Pause) get their own row above the footer,
+   so the footer itself stays a single line. Both rows share the pill look. */
+.page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 16px 0;
+  font-size: 11px;
+}
+
+footer a,
+.page-actions a {
   display: inline-block;
   padding: 4px 10px;
   border: 1px solid var(--border);
@@ -347,10 +382,18 @@ footer a {
 }
 
 footer a:hover,
-footer a:focus-visible {
+footer a:focus-visible,
+.page-actions a:hover,
+.page-actions a:focus-visible {
   color: var(--text);
   border-color: var(--accent);
   text-decoration: none;
+}
+
+/* Explicit display above would defeat the hidden attribute — restate. */
+footer a[hidden],
+.page-actions a[hidden] {
+  display: none;
 }
 
 /* Respect the OS-level reduced-motion preference. Disables the toggle
@@ -720,7 +763,7 @@ label.switch:hover .site-gear,
 .site-optcheck { accent-color: var(--accent, #f8990f); }
 
 /* -- Per-tab pause (v1.13) -------------------------------------------------- */
-.footer-links a.paused {
+.page-actions a.paused {
   color: var(--accent, #f8990f);
   border-color: var(--accent, #f8990f);
   font-weight: 600;

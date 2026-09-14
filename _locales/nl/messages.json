@@ -454,5 +454,8 @@
   },
   "bulkTooBig": {
     "message": "Bestand is te groot (limiet 5 MB)"
+  },
+  "infoTitle": {
+    "message": "Hoe het werkt"
   }
 }

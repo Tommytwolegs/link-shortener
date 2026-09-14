@@ -226,20 +226,28 @@
   </section>
 
   <section class="info">
-    <p data-i18n="infoMain">Long URLs on supported sites are rewritten in place. Right-click any
-       link or page and choose "Copy clean URL" for a one-off cleanup, or
-       use "Copy link address" on Amazon to get the clean form directly.
-       The "Universal tracking strip" toggle (off by default) strips
-       common trackers like utm_* from URLs on every site you visit.</p>
-    <p id="shortcut-tip">Tip: Ctrl+Shift+L (&#8984;&#8679;L on Mac) copies a
-       clean URL of the current page. Rebind it in your browser's extension
-       shortcut settings.</p>
-    <p data-i18n-html="infoSelection">Selected a URL as text? Right-click it for "Copy clean URL from
-       selection". Or in the address bar, type <em>clean</em>, press Tab,
-       and paste a URL to jump to its clean form.</p>
+    <details class="info-details">
+      <summary data-i18n="infoTitle">How it works</summary>
+      <p data-i18n="infoMain">Long URLs on supported sites are rewritten in place. Right-click any
+         link or page and choose "Copy clean URL" for a one-off cleanup, or
+         use "Copy link address" on Amazon to get the clean form directly.
+         The "Universal tracking strip" toggle (off by default) strips
+         common trackers like utm_* from URLs on every site you visit.</p>
+      <p id="shortcut-tip">Tip: Ctrl+Shift+L (&#8984;&#8679;L on Mac) copies a
+         clean URL of the current page. Rebind it in your browser's extension
+         shortcut settings.</p>
+      <p data-i18n-html="infoSelection">Selected a URL as text? Right-click it for "Copy clean URL from
+         selection". Or in the address bar, type <em>clean</em>, press Tab,
+         and paste a URL to jump to its clean form.</p>
+    </details>
   </section>
 
   <p class="stats-line" id="stats-line" hidden></p>
+
+  <div class="page-actions">
+    <a href="#" id="clean-page" hidden data-i18n="btnCleanPage">Clean links on this page</a>
+    <a href="#" id="pause-tab" hidden data-i18n="btnPauseTab">Pause on this tab</a>
+  </div>
 
   <footer>
     <span id="version"></span>
@@ -249,10 +257,6 @@
       <a href="#" id="open-bulk" data-i18n="footerBulk">Bulk cleaner</a>
       <span class="footer-sep">·</span>
       <a href="https://github.com/Tommytwolegs/link-shortener/issues" target="_blank" rel="noopener noreferrer" data-i18n="footerReport">Report an issue</a>
-      <span class="footer-sep">·</span>
-      <a href="#" id="clean-page" hidden data-i18n="btnCleanPage">Clean links on this page</a>
-      <span class="footer-sep">·</span>
-      <a href="#" id="pause-tab" hidden data-i18n="btnPauseTab">Pause on this tab</a>
     </span>
   </footer>
 
