@@ -457,5 +457,8 @@
   },
   "infoTitle": {
     "message": "仕組み"
+  },
+  "optionsTitle": {
+    "message": "オプション"
   }
 }

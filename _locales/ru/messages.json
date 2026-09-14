@@ -457,5 +457,8 @@
   },
   "infoTitle": {
     "message": "Как это работает"
+  },
+  "optionsTitle": {
+    "message": "Параметры"
   }
 }

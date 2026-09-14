@@ -457,5 +457,8 @@
   },
   "infoTitle": {
     "message": "Nasıl çalışır"
+  },
+  "optionsTitle": {
+    "message": "Seçenekler"
   }
 }

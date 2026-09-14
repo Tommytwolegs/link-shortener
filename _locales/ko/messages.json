@@ -457,5 +457,8 @@
   },
   "infoTitle": {
     "message": "작동 방식"
+  },
+  "optionsTitle": {
+    "message": "옵션"
   }
 }

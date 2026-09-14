@@ -23,7 +23,7 @@
       </svg>
     </div>
     <div class="title">
-      <h1>Link Shortener</h1>
+      <h1>Link Shortener <span class="version-tag" id="version"></span></h1>
       <p class="subtitle" id="status">Loading...</p>
     </div>
   </header>
@@ -68,7 +68,8 @@
       </span>
     </label>
 
-
+    <details class="options-group" id="options-group">
+      <summary data-i18n="optionsTitle">Options</summary>
 
     <label class="switch switch-secondary" for="enabledUtmStrip">
       <span class="switch-label">
@@ -168,6 +169,7 @@
         <span class="slider" aria-hidden="true"></span>
       </span>
     </label>
+    </details>
   </section>
 
   <section class="site-toggles" id="site-toggles">
@@ -250,14 +252,9 @@
   </div>
 
   <footer>
-    <span id="version"></span>
-    <span class="footer-links">
-      <a href="#" id="open-options" data-i18n="footerAdvanced">Advanced</a>
-      <span class="footer-sep">·</span>
-      <a href="#" id="open-bulk" data-i18n="footerBulk">Bulk cleaner</a>
-      <span class="footer-sep">·</span>
-      <a href="https://github.com/Tommytwolegs/link-shortener/issues" target="_blank" rel="noopener noreferrer" data-i18n="footerReport">Report an issue</a>
-    </span>
+    <a href="#" id="open-options" data-i18n="footerAdvanced">Advanced</a>
+    <a href="#" id="open-bulk" data-i18n="footerBulk">Bulk cleaner</a>
+    <a href="https://github.com/Tommytwolegs/link-shortener/issues" target="_blank" rel="noopener noreferrer" data-i18n="footerReport">Report an issue</a>
   </footer>
 
   <script src="i18n.js"></script>

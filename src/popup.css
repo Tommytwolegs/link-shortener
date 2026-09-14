@@ -328,56 +328,44 @@ body {
   color: var(--text);
 }
 
-/* v1.13 grew the footer from three text links to five actions — dot-
-   separated links stopped scaling. They render as small pill buttons now,
-   wrapping onto extra rows as needed; the separators are retired. */
+/* v1.13: the footer is a single row of equal-width box buttons (the
+   version tag moved up into the header). Page actions (Clean links /
+   Pause) get their own matching row above it. Buttons stretch to share
+   the row, and long labels wrap INSIDE their box rather than pushing
+   anything onto a second row. */
 footer {
-  padding: 10px 16px 12px;
+  padding: 8px 16px 12px;
   border-top: 1px solid var(--border);
   background: var(--surface);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  align-items: stretch;
   gap: 8px;
-  font-size: 11px;
-  color: var(--text-muted);
+  font-size: 11.5px;
 }
 
-.footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 6px;
-  flex: 1;
-}
-
-.footer-sep {
-  display: none;
-}
-
-/* Page actions (Clean links / Pause) get their own row above the footer,
-   so the footer itself stays a single line. Both rows share the pill look. */
 .page-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  align-items: stretch;
+  gap: 8px;
   padding: 8px 16px 0;
-  font-size: 11px;
+  font-size: 11.5px;
 }
 
 footer a,
 .page-actions a {
-  display: inline-block;
-  padding: 4px 10px;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8px 6px;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: 7px;
   background: var(--bg);
   color: var(--text-muted);
   text-decoration: none;
-  line-height: 1.3;
-  white-space: nowrap;
+  line-height: 1.25;
   transition: color 0.12s ease, border-color 0.12s ease;
 }
 
@@ -394,6 +382,35 @@ footer a:focus-visible,
 footer a[hidden],
 .page-actions a[hidden] {
   display: none;
+}
+
+/* Version tag beside the title in the header. */
+.version-tag {
+  font-size: 10.5px;
+  font-weight: 400;
+  color: var(--text-muted);
+  opacity: 0.8;
+  margin-left: 2px;
+}
+
+/* -- Options dropdown (v1.13) ------------------------------------------------
+   The secondary feature switches live collapsed under one "Options" line;
+   only the master switch stays always-visible. */
+.options-group > summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 8px 0 6px;
+  user-select: none;
+}
+
+.options-group > summary:hover {
+  color: var(--text);
+}
+
+.options-group[open] > summary {
+  margin-bottom: 2px;
 }
 
 /* Respect the OS-level reduced-motion preference. Disables the toggle
