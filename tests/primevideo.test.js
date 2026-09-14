@@ -37,6 +37,14 @@ const CASES = [
     input: 'https://www.primevideo.com/detail/ABC123/?autoplay=1&t=1520&ref_=atv_cf_strg_wb',
     expected: 'https://www.primevideo.com/detail/ABC123/?autoplay=1&t=1520' },
 
+  // v1.13: jic journey-ingress context (browse-tab attribution)
+  { name: 'jic journey context stripped',
+    input: 'https://www.primevideo.com/detail/ABC123/?jic=8%7CEgNhbGw%3D',
+    expected: 'https://www.primevideo.com/detail/ABC123/' },
+  { name: 'jic stripped, autoplay survives beside it',
+    input: 'https://www.primevideo.com/detail/ABC123/?jic=8%7CEgNhbGw%3D&autoplay=1',
+    expected: 'https://www.primevideo.com/detail/ABC123/?autoplay=1' },
+
   // Hash
   { name: 'hash preserved',
     input: 'https://www.primevideo.com/detail/ABC123/ref=atv_hm#about',

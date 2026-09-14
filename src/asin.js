@@ -268,7 +268,10 @@
   // Host-scoped tracking params, stripped on ANY matched-host path that
   // doesn't fit a recognized form above (search pages, profiles, shop
   // pages...). Denylist: functional params always survive.
-  const FALLBACK_STRIP = new Set(['ref', 'ref_', 'crid', 'sprefix', 'qid', 'sr', 'dib', 'dib_tag', 'content-id', 'linkcode', 'tag', 'linkid', 'ascsubtag', 'creative', 'creativeasin', 'camp', 'ie', 'spc', 'fbclid', 'gclid']);
+  // 'jic' (v1.13): Prime Video "journey ingress context" — stamped on
+  // /gp/video/detail/ links clicked from browse rows; encodes which tab
+  // you came from, never needed to load the title.
+  const FALLBACK_STRIP = new Set(['ref', 'ref_', 'crid', 'sprefix', 'qid', 'sr', 'dib', 'dib_tag', 'content-id', 'linkcode', 'tag', 'linkid', 'ascsubtag', 'creative', 'creativeasin', 'camp', 'ie', 'spc', 'fbclid', 'gclid', 'jic']);
   const FALLBACK_PREFIXES = ['pd_rd_', 'pf_rd_', 'utm_'];
 
   // Non-retail Amazon subdomains (AWS console, seller tools, music...) are

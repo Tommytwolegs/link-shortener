@@ -37,6 +37,9 @@
     'ascsubtag', 'linkid',
     'gclid', 'dclid', 'fbclid', 'msclkid', 'ttclid', 'twclid',
     'mc_cid', 'mc_eid',
+    // v1.13: "journey ingress context" — browse-tab attribution stamped on
+    // detail links (jic=8|EgNhbGw= and similar). Never needed to load.
+    'jic',
   ]);
   const TRACKING_PREFIXES = ['utm_', 'pf_rd_', 'pd_rd_'];
 
