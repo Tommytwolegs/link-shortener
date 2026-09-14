@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.13.0] — in development
+## [1.13.0] — 2026-09-14
 
 ### Added
 - **Active redirect skip: "Skip redirects before they load."** New opt-in
