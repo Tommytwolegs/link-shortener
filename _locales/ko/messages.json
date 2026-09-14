@@ -564,5 +564,11 @@
   },
   "subMasterAria": {
     "message": "이 카테고리의 모든 사이트 전환"
+  },
+  "menuAutoCleanOn": {
+    "message": "이 사이트의 링크 자동 정리"
+  },
+  "menuAutoCleanOff": {
+    "message": "이 사이트 자동 정리 중지"
   }
 }

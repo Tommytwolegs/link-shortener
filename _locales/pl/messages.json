@@ -564,5 +564,11 @@
   },
   "subMasterAria": {
     "message": "Przełącz wszystkie strony w tej kategorii"
+  },
+  "menuAutoCleanOn": {
+    "message": "Automatycznie czyść linki na tej witrynie"
+  },
+  "menuAutoCleanOff": {
+    "message": "Przestań automatycznie czyścić tę witrynę"
   }
 }

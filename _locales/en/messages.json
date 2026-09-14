@@ -564,5 +564,11 @@
   },
   "subMasterAria": {
     "message": "Toggle every site in this category"
+  },
+  "menuAutoCleanOn": {
+    "message": "Auto-clean links on this site"
+  },
+  "menuAutoCleanOff": {
+    "message": "Stop auto-cleaning this site"
   }
 }

@@ -564,5 +564,11 @@
   },
   "subMasterAria": {
     "message": "Activer ou désactiver tous les sites de cette catégorie"
+  },
+  "menuAutoCleanOn": {
+    "message": "Nettoyer automatiquement les liens sur ce site"
+  },
+  "menuAutoCleanOff": {
+    "message": "Arrêter le nettoyage automatique sur ce site"
   }
 }

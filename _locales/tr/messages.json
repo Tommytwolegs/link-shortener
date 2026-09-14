@@ -564,5 +564,11 @@
   },
   "subMasterAria": {
     "message": "Bu kategorideki tüm siteleri aç veya kapat"
+  },
+  "menuAutoCleanOn": {
+    "message": "Bu sitedeki bağlantıları otomatik temizle"
+  },
+  "menuAutoCleanOff": {
+    "message": "Bu sitede otomatik temizlemeyi durdur"
   }
 }

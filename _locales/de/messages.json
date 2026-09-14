@@ -564,5 +564,11 @@
   },
   "subMasterAria": {
     "message": "Alle Websites dieser Kategorie umschalten"
+  },
+  "menuAutoCleanOn": {
+    "message": "Links auf dieser Website automatisch bereinigen"
+  },
+  "menuAutoCleanOff": {
+    "message": "Automatische Bereinigung hier beenden"
   }
 }

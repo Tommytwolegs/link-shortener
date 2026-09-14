@@ -1021,6 +1021,78 @@ chrome.webNavigation.onCommitted.addListener((details) => {
   });
 });
 
+// ---------------------------------------------------------------------------
+// Per-site auto-clean (v1.13): the popup lets the user opt a specific site
+// into automatic in-page link cleaning. Each opted-in host carries its own
+// narrow *://host/* permission (requested by the POPUP, where the user
+// gesture lives — a subset of the declared optional_host_permissions), and
+// this manager keeps ONE dynamically registered content script
+// (src/autoclean-content.js) matching exactly the granted, listed hosts.
+// A host whose grant disappears (revoked in the browser's own UI) is
+// pruned from the list on the next sync, so list and grants can't drift.
+// ---------------------------------------------------------------------------
+const AUTOCLEAN_SCRIPT_ID = 'ls-autoclean';
+
+async function syncAutoCleanScripts() {
+  if (!chrome.scripting || !chrome.scripting.registerContentScripts) return;
+  const items = await chrome.storage.sync.get({ autoCleanDomains: [] });
+  const D = self.DnrRules;
+  const hosts = D
+    ? D.normalizeSkipDomains(items.autoCleanDomains) // same hostname shape rules
+    : (Array.isArray(items.autoCleanDomains) ? items.autoCleanDomains : []);
+  // Keep only hosts whose origin is actually granted (per-site grant or the
+  // broad grant the strips use).
+  const granted = [];
+  for (const h of hosts) {
+    // eslint-disable-next-line no-await-in-loop
+    const ok = await new Promise((resolve) => {
+      chrome.permissions.contains({ origins: ['*://' + h + '/*'] }, (has) => {
+        void chrome.runtime.lastError;
+        resolve(!!has);
+      });
+    });
+    if (ok) granted.push(h);
+  }
+  if (granted.length !== hosts.length
+      || granted.length !== (Array.isArray(items.autoCleanDomains) ? items.autoCleanDomains.length : 0)) {
+    chrome.storage.sync.set({ autoCleanDomains: granted });
+    // The write re-triggers this sync; register on that pass.
+    return;
+  }
+  try {
+    await chrome.scripting.unregisterContentScripts({ ids: [AUTOCLEAN_SCRIPT_ID] });
+  } catch (_e) { /* not registered */ }
+  if (granted.length === 0) return;
+  try {
+    await chrome.scripting.registerContentScripts([{
+      id: AUTOCLEAN_SCRIPT_ID,
+      matches: granted.map((h) => '*://' + h + '/*'),
+      js: ['src/autoclean-content.js'],
+      runAt: 'document_idle',
+      allFrames: false,
+      persistAcrossSessions: true,
+    }]);
+  } catch (e) {
+    console.debug('[Link Shortener] could not register auto-clean script:', e);
+  }
+}
+
+chrome.runtime.onInstalled.addListener(syncAutoCleanScripts);
+chrome.runtime.onStartup.addListener(syncAutoCleanScripts);
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'sync') return;
+  if (Object.prototype.hasOwnProperty.call(changes, 'autoCleanDomains')) {
+    syncAutoCleanScripts();
+  }
+});
+if (chrome.permissions && chrome.permissions.onRemoved) {
+  chrome.permissions.onRemoved.addListener((p) => {
+    if (p && Array.isArray(p.origins) && p.origins.length > 0) {
+      syncAutoCleanScripts();
+    }
+  });
+}
+
 // Popup + content scripts ask whether their tab is paused; the popup also
 // flips the state. Content scripts can't know their own tab id, so the
 // sender's tab fills it in for them.

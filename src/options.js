@@ -340,9 +340,12 @@
         if (/^(enabled|enabled[A-Z][A-Za-z0-9]*|includeAmazonTitle|keepTitles|hideTravelPopup|showBadge|keepHistory)$/.test(k)
             && typeof v === 'boolean') {
           out[k] = v; n++;
-        } else if ((k === 'utmStripSkipDomains' || k === 'utmStripKeepParams')
+        } else if ((k === 'utmStripSkipDomains' || k === 'utmStripKeepParams' || k === 'autoCleanDomains')
             && Array.isArray(v) && v.every((x) => typeof x === 'string' && x.length < 200)
             && v.length <= 500) {
+          // autoCleanDomains: imported hosts without a matching permission
+          // grant are pruned by the background's registration sync, so an
+          // import can never silently enable auto-clean anywhere.
           out[k] = v; n++;
         } else if (k === 'popupOpenGroups' && v && typeof v === 'object' && !Array.isArray(v)
             && Object.values(v).every((x) => typeof x === 'boolean')

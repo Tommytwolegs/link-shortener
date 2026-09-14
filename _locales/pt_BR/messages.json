@@ -564,5 +564,11 @@
   },
   "subMasterAria": {
     "message": "Alternar todos os sites desta categoria"
+  },
+  "menuAutoCleanOn": {
+    "message": "Limpar links automaticamente neste site"
+  },
+  "menuAutoCleanOff": {
+    "message": "Parar de limpar automaticamente este site"
   }
 }

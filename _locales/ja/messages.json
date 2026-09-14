@@ -564,5 +564,11 @@
   },
   "subMasterAria": {
     "message": "このカテゴリのすべてのサイトを切り替え"
+  },
+  "menuAutoCleanOn": {
+    "message": "このサイトのリンクを自動クリーンアップ"
+  },
+  "menuAutoCleanOff": {
+    "message": "このサイトの自動クリーンアップを停止"
   }
 }

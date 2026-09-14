@@ -1365,7 +1365,65 @@
             if (!menuEl.hidden && qrBox) qrBox.hidden = true;
           });
           if (copyOriginalBtn && original !== cleaned) copyOriginalBtn.hidden = false;
+          // Per-site auto-clean toggle (v1.13). The permission request MUST
+          // happen here in the popup — that's where the user gesture is;
+          // the background only reconciles the registration afterwards.
+          const autoCleanBtn = document.getElementById('auto-clean');
+          let autoHost = '';
+          try { autoHost = new URL(tabUrl).hostname.toLowerCase(); } catch (_e) { /* ignore */ }
+          let autoOn = false;
+          const renderAutoClean = () => {
+            if (!autoCleanBtn) return;
+            autoCleanBtn.textContent = autoOn
+              ? t('menuAutoCleanOff', 'Stop auto-cleaning this site')
+              : t('menuAutoCleanOn', 'Auto-clean links on this site');
+          };
+          if (autoCleanBtn && autoHost) {
+            chrome.storage.sync.get({ autoCleanDomains: [] }, (ac) => {
+              void chrome.runtime.lastError;
+              autoOn = Array.isArray(ac.autoCleanDomains)
+                && ac.autoCleanDomains.some((d) => typeof d === 'string' && d.toLowerCase() === autoHost);
+              renderAutoClean();
+            });
+          } else if (autoCleanBtn) {
+            autoCleanBtn.hidden = true;
+          }
+
           menuEl.addEventListener('click', (e) => {
+            if (e.target && e.target.getAttribute
+                && e.target.getAttribute('data-action') === 'auto-clean') {
+              if (!autoHost) return;
+              if (!autoOn) {
+                // Narrow, named grant for exactly this site.
+                chrome.permissions.request({ origins: ['*://' + autoHost + '/*'] }, (grantedPerm) => {
+                  void chrome.runtime.lastError;
+                  if (!grantedPerm) return;
+                  chrome.storage.sync.get({ autoCleanDomains: [] }, (ac) => {
+                    const list = Array.isArray(ac.autoCleanDomains) ? ac.autoCleanDomains.slice() : [];
+                    if (!list.some((d) => typeof d === 'string' && d.toLowerCase() === autoHost)) {
+                      list.push(autoHost);
+                    }
+                    chrome.storage.sync.set({ autoCleanDomains: list });
+                    autoOn = true;
+                    renderAutoClean();
+                  });
+                });
+              } else {
+                chrome.storage.sync.get({ autoCleanDomains: [] }, (ac) => {
+                  const list = (Array.isArray(ac.autoCleanDomains) ? ac.autoCleanDomains : [])
+                    .filter((d) => !(typeof d === 'string' && d.toLowerCase() === autoHost));
+                  chrome.storage.sync.set({ autoCleanDomains: list });
+                  // Hand the narrow grant back too (no-op if it was covered
+                  // by the broad strips grant instead).
+                  if (chrome.permissions && chrome.permissions.remove) {
+                    chrome.permissions.remove({ origins: ['*://' + autoHost + '/*'] }, () => void chrome.runtime.lastError);
+                  }
+                  autoOn = false;
+                  renderAutoClean();
+                });
+              }
+              return;
+            }
             if (e.target && e.target.getAttribute
                 && e.target.getAttribute('data-action') === 'fix-skip') {
               // Self-healing: one click adds this page's hostname to the

@@ -564,5 +564,11 @@
   },
   "subMasterAria": {
     "message": "切换此类别中的所有网站"
+  },
+  "menuAutoCleanOn": {
+    "message": "在此站点自动清理链接"
+  },
+  "menuAutoCleanOff": {
+    "message": "停止在此站点自动清理"
   }
 }
