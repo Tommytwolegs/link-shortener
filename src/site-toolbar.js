@@ -390,18 +390,20 @@
       // Widget visibility = global "Hide travel popup" OR the per-site
       // hideWidget override (siteOpts, resolved by siteopts.js which the
       // manifest injects before this file on every travel site).
-      const hideSettings = { hideTravelPopup: false, siteOpts: {} };
+      const hideSettings = { hideTravelPopup: true, siteOpts: {} };
       const resolveHide = () => (
         window.SiteOpts && siteKey
           ? window.SiteOpts.resolveHideWidget(siteKey, hideSettings)
           : hideSettings.hideTravelPopup === true
       );
-      const defaults = { enabled: true, hideTravelPopup: false, travelPopupPos: null, siteOpts: {} };
+      // hideTravelPopup defaults to TRUE since v1.14: the widget is
+      // opt-in. Only an explicit stored false shows it.
+      const defaults = { enabled: true, hideTravelPopup: true, travelPopupPos: null, siteOpts: {} };
       if (siteKey) defaults[siteKey] = true;
       chrome.storage.sync.get(defaults, (items) => {
         masterEnabled = items.enabled !== false;
         siteEnabled = siteKey ? items[siteKey] !== false : true;
-        hideSettings.hideTravelPopup = items.hideTravelPopup === true;
+        hideSettings.hideTravelPopup = items.hideTravelPopup !== false;
         hideSettings.siteOpts = items.siteOpts || {};
         hideToolbar = resolveHide();
         savedPos = validPos(items.travelPopupPos);
@@ -420,7 +422,7 @@
         }
         let hideTouched = false;
         if (Object.prototype.hasOwnProperty.call(changes, 'hideTravelPopup')) {
-          hideSettings.hideTravelPopup = changes.hideTravelPopup.newValue === true;
+          hideSettings.hideTravelPopup = changes.hideTravelPopup.newValue !== false;
           hideTouched = true;
         }
         if (Object.prototype.hasOwnProperty.call(changes, 'siteOpts')) {

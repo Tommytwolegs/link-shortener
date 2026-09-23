@@ -423,7 +423,7 @@
 
   const DEFAULTS = {
     enabled: true,
-    hideTravelPopup: false,
+    hideTravelPopup: true, // v1.14: widget hidden by default, opt-in to show
     includeAmazonTitle: false,
     keepTitles: false,
     enabledUtmStrip: false,
@@ -896,7 +896,7 @@
   function setUi(state) {
     lastState = state;
     masterEl.checked = state.enabled !== false;
-    if (hidePopupEl) hidePopupEl.checked = state.hideTravelPopup === true;
+    if (hidePopupEl) hidePopupEl.checked = state.hideTravelPopup !== false;
     if (showBadgeEl) showBadgeEl.checked = state.showBadge !== false;
     if (keepTitlesEl) keepTitlesEl.checked = state.keepTitles === true || state.includeAmazonTitle === true;
     utmStripEl.checked = state.enabledUtmStrip === true;

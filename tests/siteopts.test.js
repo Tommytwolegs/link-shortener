@@ -85,17 +85,22 @@ check('keepTitles: malformed siteOpts tolerated',
   resolveKeepTitles('enabledAmazon', { keepTitles: true, siteOpts: 'garbage' }), true);
 
 // ---- resolveHideWidget ------------------------------------------------------
-check('hideWidget: no settings -> false', resolveHideWidget('enabledAgoda', null), false);
+// v1.14: the widget is hidden BY DEFAULT. Absent settings/key -> hidden;
+// only an explicit hideTravelPopup: false shows it.
+check('hideWidget: no settings -> hidden (v1.14 default)',
+  resolveHideWidget('enabledAgoda', null), true);
+check('hideWidget: key absent -> hidden (v1.14 default)',
+  resolveHideWidget('enabledAgoda', { siteOpts: {} }), true);
 check('hideWidget: global hide -> true',
   resolveHideWidget('enabledAgoda', { hideTravelPopup: true }), true);
-check('hideWidget: site hide with global off -> true',
+check('hideWidget: explicit false -> shown',
+  resolveHideWidget('enabledAgoda', { hideTravelPopup: false, siteOpts: {} }), false);
+check('hideWidget: site hide beats explicit global false',
   resolveHideWidget('enabledAgoda',
     { hideTravelPopup: false, siteOpts: { enabledAgoda: { hideWidget: true } } }), true);
 check('hideWidget: other-site hide does not apply',
   resolveHideWidget('enabledAgoda',
     { hideTravelPopup: false, siteOpts: { enabledBooking: { hideWidget: true } } }), false);
-check('hideWidget: nothing set -> false',
-  resolveHideWidget('enabledAgoda', { hideTravelPopup: false, siteOpts: {} }), false);
 
 // ---- report -----------------------------------------------------------------
 if (failed) {

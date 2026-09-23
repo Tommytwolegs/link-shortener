@@ -24,7 +24,10 @@
 //     true hides the widget on that site even when the global
 //     hideTravelPopup switch is off. (There is deliberately no
 //     site-level "show" override of a global hide — one mental model:
-//     hide wins.)
+//     hide wins.) Since v1.14 the GLOBAL default is hidden: an absent
+//     hideTravelPopup means hide; only an explicit false shows the
+//     widget. Users who never touched the switch get the quieter
+//     default; anyone who had un-hidden it keeps their stored false.
 //
 // Loaded as:
 //   * a classic content script (sets `window.SiteOpts`)
@@ -80,10 +83,11 @@
       && (settings.keepTitles === true || settings.includeAmazonTitle === true));
   }
 
-  // -> boolean. Site-level hide ORs with the global hide.
+  // -> boolean. Site-level hide ORs with the global hide. The global
+  // default is HIDDEN (v1.14): only an explicit false shows the widget.
   function resolveHideWidget(siteKey, settings) {
     if (siteOpt(siteKey, settings, 'hideWidget') === true) return true;
-    return !!(settings && settings.hideTravelPopup === true);
+    return !(settings && settings.hideTravelPopup === false);
   }
 
   const api = {
