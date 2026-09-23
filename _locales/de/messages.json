@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Ein Link-Kürzer, der Links wirklich kürzt: entfernt Tracking-Müll direkt aus URLs. Für saubere, teilbare Links."
+    "message": "Der Link-Reiniger, der Links wirklich kürzt. Entfernt Tracking-Müll direkt aus URLs. Keine Umleitungen, keine Datensammlung."
   },
   "menuCopyClean": {
     "message": "Saubere URL kopieren"
@@ -515,7 +515,7 @@
     }
   },
   "welcomeTitle": {
-    "message": "Rather's Link Shortener ist bereit"
+    "message": "Rather's Link Cleaner ist bereit"
   },
   "welcomeTag": {
     "message": "Ein Link-Kürzer, der Links wirklich kürzt: Ihr Link bleibt Ihr Link, er verliert nur den Tracking-Müll am Ende."
@@ -570,5 +570,24 @@
   },
   "menuAutoCleanOff": {
     "message": "Automatische Bereinigung hier beenden"
+  },
+  "fixSiteOff": {
+    "message": "Bereinigung für $LABEL$ ausschalten",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "fixSiteDone": {
+    "message": "Bereinigung für $LABEL$ ist aus",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSkipAlsoOn": {
+    "message": "\"Weiterleitungen vor dem Laden überspringen\" ist ebenfalls AN; die Liste der übersprungenen Domains gilt auch dafür."
   }
 }

@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "링크를 정말로 짧게 만드는 단축기. URL의 추적용 쓰레기를 그 자리에서 제거해 공유하기 좋은 깔끔한 링크로 만듭니다."
+    "message": "정말로 링크를 짧게 만드는 링크 클리너. URL의 추적 정보를 즉시 제거. 리디렉션 없음, 데이터 수집 없음."
   },
   "menuCopyClean": {
     "message": "깨끗한 URL 복사"
@@ -515,7 +515,7 @@
     }
   },
   "welcomeTitle": {
-    "message": "Rather's Link Shortener가 준비되었습니다"
+    "message": "Rather's Link Cleaner가 준비되었습니다"
   },
   "welcomeTag": {
     "message": "정말로 링크를 짧게 만드는 링크 단축기. 링크는 그대로, 끝에 붙은 추적 정보만 사라집니다."
@@ -570,5 +570,24 @@
   },
   "menuAutoCleanOff": {
     "message": "이 사이트 자동 정리 중지"
+  },
+  "fixSiteOff": {
+    "message": "$LABEL$ 정리 끄기",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "fixSiteDone": {
+    "message": "$LABEL$ 정리를 껐습니다",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSkipAlsoOn": {
+    "message": "\"로드 전 리디렉션 건너뛰기\"도 켜져 있습니다. 건너뛸 도메인 목록이 여기에도 적용됩니다."
   }
 }

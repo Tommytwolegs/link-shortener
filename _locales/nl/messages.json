@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Een linkverkorter die links écht verkort: verwijdert trackingrommel ter plekke uit URL's. Voor schone, deelbare links."
+    "message": "De linkopschoner die links echt korter maakt. Verwijdert trackingrommel direct uit URL's. Geen omleiding, geen dataverzameling."
   },
   "menuCopyClean": {
     "message": "Schone URL kopiëren"
@@ -515,7 +515,7 @@
     }
   },
   "welcomeTitle": {
-    "message": "Rather's Link Shortener is klaar"
+    "message": "Rather's Link Cleaner is klaar"
   },
   "welcomeTag": {
     "message": "Een linkverkorter die links echt korter maakt: uw link blijft uw link, alleen de trackingrommel aan het einde verdwijnt."
@@ -570,5 +570,24 @@
   },
   "menuAutoCleanOff": {
     "message": "Automatisch opschonen hier stoppen"
+  },
+  "fixSiteOff": {
+    "message": "Opschonen voor $LABEL$ uitschakelen",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "fixSiteDone": {
+    "message": "Opschonen voor $LABEL$ staat uit",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSkipAlsoOn": {
+    "message": "\"Omleidingen overslaan voordat ze laden\" staat ook AAN; de lijst met over te slaan domeinen geldt hier ook voor."
   }
 }

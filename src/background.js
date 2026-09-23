@@ -1373,8 +1373,8 @@ chrome.storage.onChanged.addListener((changes, area) => {
       && chrome.action && chrome.action.setTitle) {
     chrome.action.setTitle({
       title: changes.enabled.newValue !== false
-        ? "Rather's Link Shortener"
-        : "Rather's Link Shortener (off)",
+        ? "Rather's Link Cleaner"
+        : "Rather's Link Cleaner (off)",
     }, () => void chrome.runtime.lastError);
   }
   if (!uiPrefs) return;
@@ -1561,11 +1561,23 @@ function ensureContextMenu() {
 // Build the prefilled new-issue URL for a report. Body shows the original
 // URL and the cleaned form (or "unchanged"). Values are truncated so the
 // final URL stays well under browser/GitHub URL-length limits.
-function buildReportUrl(sourceUrl, cleaned) {
+function buildReportUrl(sourceUrl, cleaned, ctx) {
   const trim = (s) => (s && s.length > 1500 ? s.slice(0, 1500) + '…' : (s || ''));
   let host = '';
   try { host = new URL(sourceUrl).hostname; } catch (_e) { /* keep '' */ }
   const title = 'Link didn\'t clean right' + (host ? ': ' + host : '');
+  const onOff = (v) => (v ? 'on' : 'off');
+  // v1.14 (fix-flow phase 2): name which layers could have acted, so the
+  // triage doesn't start with "which feature did this?".
+  const ctxLines = ctx ? [
+    '**Cleanup context** (auto-filled)',
+    '- Per-site rule for this host: '
+      + (ctx.siteKey ? '`' + ctx.siteKey.replace(/^enabled/, '') + '`' : 'none'),
+    '- Universal tracking strip: ' + onOff(ctx.utmStrip)
+      + ' / Block before load: ' + onOff(ctx.activeStrip)
+      + ' / Skip redirects: ' + onOff(ctx.activeSkip),
+    '',
+  ] : [];
   const body = [
     '**Original URL**',
     '```',
@@ -1575,12 +1587,13 @@ function buildReportUrl(sourceUrl, cleaned) {
     '```',
     cleaned === sourceUrl ? '(unchanged)' : trim(cleaned),
     '```',
+  ].concat(ctxLines, [
     '**What I expected instead**',
     '',
     '(fill in)',
     '',
     '_Reported from the right-click menu, v' + chrome.runtime.getManifest().version + '_',
-  ].join('\n');
+  ]).join('\n');
   return 'https://github.com/Tommytwolegs/link-shortener/issues/new'
     + '?title=' + encodeURIComponent(title)
     + '&body=' + encodeURIComponent(body);
@@ -1929,11 +1942,32 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === 'open-report'
       && typeof msg.original === 'string' && typeof msg.cleaned === 'string') {
     // Prefilled GitHub issue. User-initiated navigation; the extension
-    // itself still makes zero network requests.
-    chrome.tabs.create({
-      url: buildReportUrl(msg.original, msg.cleaned),
-      active: true,
-    }, () => void chrome.runtime.lastError);
+    // itself still makes zero network requests. v1.14: gather the layer
+    // context first so the issue names what could have acted.
+    let reportHost = '';
+    try { reportHost = new URL(msg.original).hostname; } catch (_e) { /* keep '' */ }
+    chrome.storage.sync.get(
+      { enabledUtmStrip: false, enabledActiveStrip: false, enabledActiveSkip: false },
+      (items) => {
+        void chrome.runtime.lastError;
+        chrome.tabs.create({
+          url: buildReportUrl(msg.original, msg.cleaned, {
+            siteKey: siteKeyForHost(reportHost),
+            utmStrip: items.enabledUtmStrip === true,
+            activeStrip: items.enabledActiveStrip === true,
+            activeSkip: items.enabledActiveSkip === true,
+          }),
+          active: true,
+        }, () => void chrome.runtime.lastError);
+      },
+    );
+    return undefined;
+  }
+  if (msg.type === 'site-key-for' && typeof msg.host === 'string') {
+    // Fix-flow phase 2 (v1.14): which per-site toggle governs this host?
+    // Walks the same registry as the copy pipeline; pack modules resolve
+    // through storageKeyFor, classic modules through STORAGE_KEY.
+    sendResponse({ key: siteKeyForHost(msg.host) });
     return undefined;
   }
   if (msg.type === 'add-skip-domain' && typeof msg.host === 'string') {
@@ -2266,6 +2300,22 @@ function isHandledHost(hostname) {
     const m = self[ns];
     return !!(m && typeof m[fn] === 'function' && m[fn](hostname));
   });
+}
+
+// v1.14: resolve which per-site storage key governs a host (null when no
+// per-site module claims it). Pack modules (news, airlines, tickets,
+// delivery) answer per-host via storageKeyFor; classic modules carry a
+// single STORAGE_KEY.
+function siteKeyForHost(hostname) {
+  if (!hostname) return null;
+  for (const [ns, fn] of HOST_CHECKS) {
+    const m = self[ns];
+    if (!m || typeof m[fn] !== 'function' || !m[fn](hostname)) continue;
+    if (typeof m.storageKeyFor === 'function') return m.storageKeyFor(hostname) || null;
+    if (typeof m.STORAGE_KEY === 'string') return m.STORAGE_KEY;
+    return null;
+  }
+  return null;
 }
 
 function pingTab(tabId, frameId) {

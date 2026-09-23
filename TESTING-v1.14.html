@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live test matrix - Rather's Link Cleaner v1.14.0</title>
+<style>
+  :root { --bg:#0f1419; --panel:#1a2027; --border:#2a323c; --text:#e7eaef;
+          --muted:#98a2b3; --accent:#ff9900; --good:#6ee7a0; --bad:#ff7a7a; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); line-height:1.55;
+         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .wrap { max-width:880px; margin:0 auto; padding:28px 20px 80px; }
+  h1 { font-size:24px; margin:0 0 4px; }
+  h2 { font-size:17px; margin:34px 0 4px; color:var(--accent); }
+  .sub { color:var(--muted); margin:0 0 18px; }
+  .progress { position:sticky; top:0; background:var(--bg); padding:10px 0;
+              border-bottom:1px solid var(--border); z-index:5; display:flex;
+              align-items:center; gap:14px; }
+  .progress b { font-size:18px; }
+  .progress button { background:transparent; border:1px solid var(--border);
+              color:var(--muted); border-radius:7px; padding:4px 12px; cursor:pointer; }
+  .note { background:var(--panel); border:1px solid var(--border); border-left:3px solid var(--accent);
+          border-radius:8px; padding:12px 16px; margin:14px 0; font-size:14px; }
+  .test { background:var(--panel); border:1px solid var(--border); border-radius:10px;
+          padding:14px 16px; margin:10px 0; }
+  .test.done { border-color:var(--good); opacity:.75; }
+  .test label.head { display:flex; gap:10px; align-items:baseline; cursor:pointer;
+          font-weight:700; font-size:15px; }
+  .test input[type=checkbox] { width:16px; height:16px; accent-color:var(--good); flex:none;
+          position:relative; top:2px; }
+  .test ol { margin:8px 0 0; padding-left:34px; color:var(--muted); font-size:14px; }
+  .test ol li { margin:3px 0; }
+  .expect { margin:8px 0 0 26px; font-size:14px; color:var(--good); }
+  .expect::before { content:"PASS when: "; font-weight:700; }
+  code, .url { font-family:ui-monospace,SFMono-Regular,Consolas,Menlo,monospace; font-size:12.5px;
+         background:var(--bg); border:1px solid var(--border); border-radius:5px; padding:1px 5px;
+         word-break:break-all; }
+  a { color:var(--accent); }
+  .testlink { display:inline-block; margin:6px 0 0 26px; font-size:13px; word-break:break-all; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Live test matrix - v1.14.0 "Rather's Link Cleaner"</h1>
+  <p class="sub">Work top to bottom. Check a box when a test passes; progress is saved in this
+     browser (localStorage) so you can close and come back.</p>
+
+  <div class="progress"><b id="count">0/0</b><span class="sub" id="pct"></span>
+    <button id="reset" type="button">Reset all</button></div>
+
+  <div class="note"><b>Before you start:</b> load the extension unpacked from the repo root
+    (chrome://extensions, Developer mode, Load unpacked). After any reload of the extension,
+    also reload any test page that was already open: content scripts do not hot-swap.
+    Tests 2 and 21 have special setup notes; read them before clicking.</div>
+
+  <h2>Identity and first run</h2>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t1">1. The rename took</label>
+    <ol>
+      <li>Open <code>chrome://extensions</code> and find the extension card.</li>
+      <li>Open the toolbar popup.</li>
+    </ol>
+    <p class="expect">The card says <b>Rather's Link Cleaner 1.14.0</b>, and the popup header
+       reads "Link Cleaner" with a v1.14.0 tag. Nothing anywhere still says Shortener.</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t2">2. Welcome page on fresh install</label>
+    <ol>
+      <li>In <code>chrome://extensions</code>, REMOVE the unpacked extension, then Load unpacked again.
+          (This counts as a fresh install. Your toggles live in sync storage and survive.)</li>
+    </ol>
+    <p class="expect">A "Rather's Link Cleaner is ready" tab opens exactly once, with five cards
+       and working Open settings / site / GitHub buttons. Reloading the extension later does NOT
+       reopen it.</p>
+  </div>
+
+  <h2>The new popup</h2>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t3">3. Category dropdowns exist</label>
+    <ol>
+      <li>Open the popup and expand the Global group.</li>
+    </ol>
+    <p class="expect">Every category (Search &amp; productivity, Shopping, ...) is a collapsed
+       dropdown row with a caret, an on-count like <code>11/11</code>, and a small checkbox on
+       the right. Opening one shows the per-site switches as before, gears included.</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t4">4. Master checkbox flips a category</label>
+    <ol>
+      <li>Open the Event tickets category. Uncheck the master checkbox in its header.</li>
+      <li>Open the dropdown: all four sites should be off. Turn ONE site back on.</li>
+      <li>Look at the master checkbox again, then re-check it.</li>
+    </ol>
+    <p class="expect">Unchecking turns all four rows off; with one row back on the master shows
+       the mixed (dash) state and the count reads 1/4; re-checking the master turns all four on.
+       Close and reopen the popup: the states stuck.</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t5">5. Airlines is now 12 toggles</label>
+    <ol>
+      <li>In the popup, find the Airlines category (near Flights).</li>
+    </ol>
+    <p class="expect">It lists 12 carriers (Delta ... Qatar Airways), each with its own switch,
+       plus the master in the header. The old single "Airlines (12 carriers)" row is gone.</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t6">6. Filter opens matching categories</label>
+    <ol>
+      <li>Type <code>delta</code> in the popup's filter box.</li>
+      <li>Clear it (Esc).</li>
+    </ol>
+    <p class="expect">While filtering, the Delta row is visible (its category opened by itself);
+       clearing folds the categories back up and restores your group arrangement.</p>
+  </div>
+
+  <h2>New site packs (live)</h2>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t7">7. Ticketmaster cleans</label>
+    <a class="testlink" href="https://www.ticketmaster.com/search?q=hamilton&camefrom=CFC_TEST123&tm_link=tm_test&utm_source=lstest" target="_blank" rel="noopener">open the dirty Ticketmaster link</a>
+    <p class="expect">After the page settles, the address bar reads
+       <code>https://www.ticketmaster.com/search?q=hamilton</code> (the search term survives,
+       camefrom / tm_link / utm_source are gone) and the toolbar badge ticks.</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t8">8. SeatGeek cleans</label>
+    <a class="testlink" href="https://seatgeek.com/concert-tickets?aid=15990&pcid=3308&utm_source=lstest" target="_blank" rel="noopener">open the dirty SeatGeek link</a>
+    <p class="expect">Address bar becomes <code>https://seatgeek.com/concert-tickets</code>.</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t9">9. DoorDash cleans</label>
+    <a class="testlink" href="https://www.doordash.com/?utm_source=lstest&utm_campaign=share&event_type=autocomplete" target="_blank" rel="noopener">open the dirty DoorDash link</a>
+    <p class="expect">Address bar becomes <code>https://www.doordash.com/</code> (DoorDash may
+       add its own location path after login; the point is OUR three params are gone).</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t10">10. Uber Eats keeps what matters</label>
+    <a class="testlink" href="https://www.ubereats.com/?diningMode=PICKUP&fbclid=IwARlstest" target="_blank" rel="noopener">open the Uber Eats link</a>
+    <p class="expect"><code>fbclid</code> disappears from the address bar while
+       <code>diningMode=PICKUP</code> survives.</p>
+  </div>
+
+  <h2>Sweep, wrappers, bookmarks</h2>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t11">11. New denylist params strip (incl. the Blueshift fix)</label>
+    <ol>
+      <li>Open the Bulk cleaner (popup footer) and paste this line:</li>
+    </ol>
+    <span class="testlink url">https://example.com/offer?bsft_eid=abc&ysclid=lx1&_bhlid=xyz&tgclid=tg1&_gl=1*abc&sku=9</span>
+    <p class="expect">Output is <code>https://example.com/offer?sku=9</code> - five trackers gone,
+       the functional <code>sku</code> kept.</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t12">12. WhatsApp wrapper unwraps on copy</label>
+    <ol>
+      <li>Bulk-clean this line:</li>
+    </ol>
+    <span class="testlink url">https://l.wl.co/l?u=https%3A%2F%2Fexample.com%2Fdeal%3Fsku%3D42</span>
+    <p class="expect">Output is <code>https://example.com/deal?sku=42</code>.</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t13">13. Threads wrapper skips on click</label>
+    <a class="testlink" href="https://l.threads.net/?u=https%3A%2F%2Fexample.com%2F" target="_blank" rel="noopener">click the wrapped Threads link</a>
+    <p class="expect">You land directly on example.com ("Skip redirect pages" is on by default);
+       the wrapper page never renders.</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t14">14. Bookmark cleaner end to end</label>
+    <ol>
+      <li>Bookmark this exact URL (Ctrl+D on any tab after pasting it):
+          <span class="url">https://example.com/article?utm_source=news&fbclid=IwARbmk1</span></li>
+      <li>Open Advanced settings &gt; Bookmark cleaner &gt; Scan bookmarks. ACCEPT the browser's
+          bookmarks-permission prompt.</li>
+      <li>Review the preview, then click the Clean button.</li>
+      <li>Open your bookmarks manager and inspect that bookmark's URL.</li>
+    </ol>
+    <p class="expect">Scan reports at least "1 of N", the preview names the bookmark, cleaning
+       reports done and says access was handed back, and the bookmark's URL is now
+       <code>https://example.com/article</code>. Scanning again asks for the permission again
+       (proof it was returned) and now says "All clean" if nothing else is dirty.</p>
+  </div>
+
+  <h2>Fix flow, auto-clean, command</h2>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t15">15. Fix menu can turn off the per-site rule</label>
+    <ol>
+      <li>Open any Amazon product page, then the popup, then the ▾ next to Copy.</li>
+      <li>Click "Turn off cleanup for Amazon".</li>
+      <li>Check the Shopping category in the site list, then turn Amazon back ON.</li>
+    </ol>
+    <p class="expect">The button appears with Amazon named, click flips only the Amazon switch
+       (category count drops by one), and the button turns into a disabled "Cleanup is off for
+       Amazon" confirmation.</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t16">16. Report carries cleanup context</label>
+    <ol>
+      <li>On the same page, popup &gt; ▾ &gt; "Report: this didn't clean right".</li>
+      <li>DON'T submit the issue - just read the prefilled body, then close the tab.</li>
+    </ol>
+    <p class="expect">The body has a "Cleanup context (auto-filled)" section naming the per-site
+       rule (Amazon) and the on/off state of the three network-layer features.</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t17">17. Per-site auto-clean</label>
+    <ol>
+      <li>Open a news article full of outbound links (e.g. any nytimes.com article), popup &gt; ▾ &gt;
+          "Auto-clean links on this site". ACCEPT the single-site permission prompt.</li>
+      <li>Reload the page. Right-click an article link that carries utm junk and Copy link address;
+          paste somewhere.</li>
+      <li>Popup &gt; ▾ &gt; "Stop auto-cleaning this site" when done.</li>
+    </ol>
+    <p class="expect">The pasted href is already clean without using Copy clean URL, and stopping
+       hands the site grant back (chrome://extensions site-access list no longer shows it).</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t18">18. Clean-page keyboard command</label>
+    <ol>
+      <li>Open <code>chrome://extensions/shortcuts</code>, give "Clean links on the current page"
+          a binding (e.g. Ctrl+Shift+9).</li>
+      <li>On a junk-heavy page (a Google search results page works), press it, then right-click
+          a result link and Copy link address.</li>
+    </ol>
+    <p class="expect">The copied href is the clean destination - same result as the popup's
+       Clean links on this page button, no popup needed.</p>
+  </div>
+
+  <h2>Defaults and regressions</h2>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t19">19. Travel widget now hidden by default</label>
+    <ol>
+      <li>Open any Booking.com property page.</li>
+      <li>Open the popup and find "Hide travel popup" among the switches.</li>
+      <li>Turn the switch OFF, reload the listing.</li>
+    </ol>
+    <p class="expect">No floating copy-widget appears by default and the switch shows ON;
+       turning it off brings the widget back after reload. (Address-bar cleanup ran the whole
+       time either way.)</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t20">20. Options status line knows all three layers</label>
+    <ol>
+      <li>In the popup's Options dropdown, turn ON "Skip redirects before they load" (accept the
+          permission prompt if asked).</li>
+      <li>Open Advanced settings and read the status line above the skip/keep lists.</li>
+      <li>Turn the toggle back off.</li>
+    </ol>
+    <p class="expect">With it on, the status line gains the sentence about "Skip redirects before
+       they load" also being ON; off removes it. If all three toggles end up off, the browser's
+       all-sites permission is handed back automatically.</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t21">21. Airlines migration honors an old "pack off"</label>
+    <ol>
+      <li>OPTIONAL (needs the pre-update state): if you still have a browser profile running
+          v1.13 with the Airlines toggle off, update it to this build.</li>
+      <li>Everyone else: just turn two carriers off, reload the extension, and confirm they stay off.</li>
+    </ol>
+    <p class="expect">Migrated profile: all 12 carriers arrive OFF. Fresh state: carrier choices
+       survive an extension reload (reason "update" does not touch them).</p>
+  </div>
+
+  <div class="test"><label class="head"><input type="checkbox" data-id="t22">22. v1.13 regression spot-check</label>
+    <a class="testlink" href="https://youtu.be/dQw4w9WgXcQ?si=lstestAbCdEf&t=43" target="_blank" rel="noopener">open the YouTube share link</a>
+    <p class="expect">Address bar loses <code>si=</code> but keeps the <code>t=43</code>
+       timestamp; badge ticks; popup chips name what was removed.</p>
+  </div>
+
+</div>
+<script>
+(function () {
+  var KEY = 'ls-test-v1.14.0';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { state = {}; }
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[type=checkbox][data-id]'));
+  function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+  function paint() {
+    var done = 0;
+    boxes.forEach(function (b) {
+      var on = !!state[b.dataset.id];
+      b.checked = on;
+      b.closest('.test').classList.toggle('done', on);
+      if (on) done++;
+    });
+    document.getElementById('count').textContent = done + '/' + boxes.length;
+    document.getElementById('pct').textContent = boxes.length
+      ? Math.round(done / boxes.length * 100) + '% complete' : '';
+  }
+  boxes.forEach(function (b) {
+    b.addEventListener('change', function () { state[b.dataset.id] = b.checked; save(); paint(); });
+  });
+  document.getElementById('reset').addEventListener('click', function () {
+    if (!confirm('Clear all checkmarks?')) return;
+    state = {}; save(); paint();
+  });
+  paint();
+})();
+</script>
+</body>
+</html>

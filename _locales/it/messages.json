@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Un accorcia-link che accorcia davvero: rimuove la spazzatura di tracciamento dagli URL sul posto. Per link puliti e condivisibili."
+    "message": "Il pulitore di link che li accorcia davvero. Rimuove il tracciamento dalle URL sul posto. Nessun redirect, nessuna raccolta dati."
   },
   "menuCopyClean": {
     "message": "Copia URL pulito"
@@ -515,7 +515,7 @@
     }
   },
   "welcomeTitle": {
-    "message": "Rather's Link Shortener è pronto"
+    "message": "Rather's Link Cleaner è pronto"
   },
   "welcomeTag": {
     "message": "Un accorcia-link che accorcia davvero i link: il tuo link resta il tuo link, perde solo la zavorra di tracciamento in coda."
@@ -570,5 +570,24 @@
   },
   "menuAutoCleanOff": {
     "message": "Interrompi la pulizia automatica su questo sito"
+  },
+  "fixSiteOff": {
+    "message": "Disattiva la pulizia per $LABEL$",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "fixSiteDone": {
+    "message": "Pulizia disattivata per $LABEL$",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSkipAlsoOn": {
+    "message": "Anche \"Salta i reindirizzamenti prima del caricamento\" è ATTIVO; l'elenco dei domini esclusi vale anche per questo."
   }
 }

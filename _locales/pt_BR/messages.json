@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Um encurtador que encurta de verdade: remove o lixo de rastreamento das URLs na hora. Para links limpos e compartilháveis."
+    "message": "O limpador de links que realmente os encurta. Remove o lixo de rastreamento das URLs no lugar. Sem redirecionamentos, sem coleta."
   },
   "menuCopyClean": {
     "message": "Copiar URL limpa"
@@ -515,7 +515,7 @@
     }
   },
   "welcomeTitle": {
-    "message": "O Rather's Link Shortener está pronto"
+    "message": "O Rather's Link Cleaner está pronto"
   },
   "welcomeTag": {
     "message": "Um encurtador que realmente encurta links: seu link continua sendo seu link, só perde o lixo de rastreamento no final."
@@ -570,5 +570,24 @@
   },
   "menuAutoCleanOff": {
     "message": "Parar de limpar automaticamente este site"
+  },
+  "fixSiteOff": {
+    "message": "Desativar a limpeza para $LABEL$",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "fixSiteDone": {
+    "message": "Limpeza desativada para $LABEL$",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSkipAlsoOn": {
+    "message": "\"Pular redirecionamentos antes de carregarem\" também está LIGADO; a lista de domínios ignorados também se aplica a ele."
   }
 }

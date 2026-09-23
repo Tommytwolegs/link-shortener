@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Rather's Link Shortener",
+  "name": "Rather's Link Cleaner",
   "short_name": "Link Shortener",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "__MSG_extDesc__",
   "default_locale": "en",
   "author": "Thomas Powers",
@@ -24,7 +24,7 @@
     "bookmarks"
   ],
   "action": {
-    "default_title": "Rather's Link Shortener",
+    "default_title": "Rather's Link Cleaner",
     "default_popup": "src/popup.html",
     "default_icon": {
       "16": "icons/icon16.png",

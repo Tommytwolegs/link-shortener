@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "真正缩短链接的工具:就地清除 URL 中的跟踪垃圾,让链接干净、便于分享。"
+    "message": "真正缩短链接的链接清理器。就地清除 URL 中的跟踪参数。无重定向，不收集数据。"
   },
   "menuCopyClean": {
     "message": "复制干净的 URL"
@@ -515,7 +515,7 @@
     }
   },
   "welcomeTitle": {
-    "message": "Rather's Link Shortener 已就绪"
+    "message": "Rather's Link Cleaner 已就绪"
   },
   "welcomeTag": {
     "message": "一个真正缩短链接的链接缩短器：链接还是原来的链接，只是去掉了末尾的跟踪参数。"
@@ -570,5 +570,24 @@
   },
   "menuAutoCleanOff": {
     "message": "停止在此站点自动清理"
+  },
+  "fixSiteOff": {
+    "message": "关闭 $LABEL$ 的清理",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "fixSiteDone": {
+    "message": "已关闭 $LABEL$ 的清理",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSkipAlsoOn": {
+    "message": "\"在加载前跳过重定向\"也已开启；跳过域名列表同样适用于它。"
   }
 }

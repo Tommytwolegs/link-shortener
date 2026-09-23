@@ -1,4 +1,8 @@
-# Rather's Link Shortener
+# Rather's Link Cleaner
+
+*(named Rather's Link Shortener through v1.13; same extension, same IDs,
+same joke, now told in the right order: the link cleaner that actually
+shortens links)*
 
 A small browser extension (Chrome MV3, also Firefox MV3) that strips
 tracking parameters and other URL clutter from shopping, travel, and
@@ -204,12 +208,14 @@ management page; the toggle will auto-untoggle in sync.
 
 ### From the Chrome Web Store
 
-[**Rather's Link Shortener**](https://chromewebstore.google.com/detail/hffnedgkbfnphmibabalnlkcglkdbkkp) on the
+[**Rather's Link Cleaner**](https://chromewebstore.google.com/detail/hffnedgkbfnphmibabalnlkcglkdbkkp) on the
 Chrome Web Store.
 
 ### From Firefox Add-ons (AMO)
 
-[**Rather's Link Shortener**](https://addons.mozilla.org/firefox/addon/rather-s-link-shortener/) on AMO.
+[**Rather's Link Cleaner**](https://addons.mozilla.org/firefox/addon/rather-s-link-shortener/) on AMO.
+(The AMO slug keeps the old name on purpose: slugs don't redirect, and
+every published link would break.)
 
 ### From source (developer mode)
 

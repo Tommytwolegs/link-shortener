@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Bağlantıları gerçekten kısaltan araç: izleme çöpünü URL'den olduğu yerde temizler. Temiz, paylaşılabilir bağlantılar için."
+    "message": "Bağlantıları gerçekten kısaltan bağlantı temizleyici. İzleme çöpünü URL'lerden yerinde temizler. Yönlendirme ve veri toplama yok."
   },
   "menuCopyClean": {
     "message": "Temiz URL'yi kopyala"
@@ -515,7 +515,7 @@
     }
   },
   "welcomeTitle": {
-    "message": "Rather's Link Shortener hazır"
+    "message": "Rather's Link Cleaner hazır"
   },
   "welcomeTag": {
     "message": "Bağlantıları gerçekten kısaltan bir kısaltıcı: bağlantınız bağlantınız olarak kalır, yalnızca sonundaki izleme çöpünden kurtulur."
@@ -570,5 +570,24 @@
   },
   "menuAutoCleanOff": {
     "message": "Bu sitede otomatik temizlemeyi durdur"
+  },
+  "fixSiteOff": {
+    "message": "$LABEL$ için temizlemeyi kapat",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "fixSiteDone": {
+    "message": "$LABEL$ için temizleme kapalı",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSkipAlsoOn": {
+    "message": "\"Yüklenmeden önce yönlendirmeleri atla\" da AÇIK; atlanacak alan adları listesi bunun için de geçerli."
   }
 }

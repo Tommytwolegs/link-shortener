@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "本当に短くするリンク短縮ツール。URLからトラッキング用のゴミをその場で取り除き、共有しやすいきれいなリンクに。"
+    "message": "本当にリンクを短くするリンククリーナー。URLからトラッキングをその場で除去。リダイレクトなし、データ収集なし。"
   },
   "menuCopyClean": {
     "message": "クリーンなURLをコピー"
@@ -515,7 +515,7 @@
     }
   },
   "welcomeTitle": {
-    "message": "Rather's Link Shortener の準備ができました"
+    "message": "Rather's Link Cleaner の準備ができました"
   },
   "welcomeTag": {
     "message": "本当にリンクを短くするリンク短縮ツール。リンクはそのまま、末尾のトラッキング情報だけがなくなります。"
@@ -570,5 +570,24 @@
   },
   "menuAutoCleanOff": {
     "message": "このサイトの自動クリーンアップを停止"
+  },
+  "fixSiteOff": {
+    "message": "$LABEL$ のクリーンアップをオフにする",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "fixSiteDone": {
+    "message": "$LABEL$ のクリーンアップをオフにしました",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSkipAlsoOn": {
+    "message": "「読み込み前にリダイレクトをスキップ」もオンです。スキップするドメインのリストはこちらにも適用されます。"
   }
 }

@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "A link shortener that actually shortens links. Strips tracking junk from URLs in place. For clean shareable links."
+    "message": "The link cleaner that actually shortens links. Strips tracking junk from URLs in place. No redirects, nothing collected."
   },
   "menuCopyClean": {
     "message": "Copy clean URL"
@@ -515,7 +515,7 @@
     }
   },
   "welcomeTitle": {
-    "message": "Rather's Link Shortener is ready"
+    "message": "Rather's Link Cleaner is ready"
   },
   "welcomeTag": {
     "message": "A link shortener that actually shortens links: your link stays your link, it just loses the tracking junk on the end."
@@ -570,5 +570,24 @@
   },
   "menuAutoCleanOff": {
     "message": "Stop auto-cleaning this site"
+  },
+  "fixSiteOff": {
+    "message": "Turn off cleanup for $LABEL$",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "fixSiteDone": {
+    "message": "Cleanup is off for $LABEL$",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSkipAlsoOn": {
+    "message": "\"Skip redirects before they load\" is also ON; the skip-domains list applies to it as well."
   }
 }

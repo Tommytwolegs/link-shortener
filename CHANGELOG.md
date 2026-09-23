@@ -1,5 +1,64 @@
 # Changelog
 
+## [1.14.0] — 2026-09-23
+
+### Renamed
+- **The extension is now Rather's Link Cleaner** (formerly Rather's Link
+  Shortener). Same extension, same IDs, same install, same settings; the
+  joke just reads in the right order now: the link cleaner that actually
+  shortens links. The AMO slug keeps the old name on purpose (slugs
+  don't redirect).
+
+### Added
+- **Per-site auto-clean.** Opt in per site from the popup's copy menu:
+  the extension keeps every link ON the page clean as you browse (a
+  debounced, idempotent observer feeding the same batch pipeline as the
+  bulk cleaner). Each site is a separate, narrow permission grant for
+  exactly that origin, handed back when you turn the site off.
+- **Bookmark cleaner.** One shot, under Advanced: borrows the optional
+  `bookmarks` permission on click, scans every bookmark (a dry run —
+  nothing is counted or changed), previews how many can be cleaned,
+  applies on confirmation, and hands the permission straight back.
+- **Category dropdowns with master switches.** Every category in the
+  popup is now its own dropdown with a tri-state master checkbox: flip
+  a whole category at once, or open it for the per-site switches.
+- **Per-carrier airline toggles.** The single Airlines switch became 12
+  individual carrier toggles under an Airlines category (if you had the
+  pack off, all carriers migrate to off).
+- **Event tickets pack**: Ticketmaster, StubHub, SeatGeek, AXS.
+- **Food delivery pack**: DoorDash, Uber Eats, Grubhub, Instacart.
+  Pickup/delivery mode, promo codes, and quantity selections survive by
+  construction.
+- **Redirector coverage**: WhatsApp's l.wl.co wrapper and Threads'
+  l.threads.net outbound links now unwrap on copy and skip on click.
+- **Denylist sweep**: ysclid and ym_tracking_id (Yandex), tgclid
+  (Telegram Ads), gad_campaignid, _gl, _bhlid (beehiiv), _cldee
+  (Dynamics 365), xtor and the at_* recipient ids, wt_mc, x-clickref,
+  the AppsFlyer measurement set, gps_adid, Attentive's sms_* set,
+  Triple Whale's tw_* set, and new itm_/_sgm_/adjust_ prefix families.
+- **Welcome page** on first install: what the badge means, the ways to
+  get a clean link, where the opt-ins live. Local, translated, no
+  scripts beyond the shared i18n applier.
+- **Keyboard command for "Clean links on this page"** (unbound by
+  default, assignable in the browser's shortcut settings).
+- **Fix flow, phase 2.** The popup's fix menu can now turn off the
+  exact per-site rule for the current host, and the prefilled GitHub
+  report names which cleanup layers were active.
+
+### Changed
+- **The floating travel widget is now hidden by default** (opt-in via
+  the "Hide travel popup" switch). Anyone who had explicitly un-hidden
+  it keeps their setting.
+- The options-page status line now reports the redirect skip alongside
+  the two strips.
+- Popup accessibility: visible keyboard focus on category headers and
+  site gears; gears announce their expanded state.
+
+### Fixed
+- **Blueshift email trackers were never stripped**: the denylist had
+  the prefix as `_bsft_`, but real-world Blueshift params (`bsft_eid`,
+  `bsft_clkid`, ...) have no leading underscore. Both forms now match.
+
 ## [1.13.0] — 2026-09-14
 
 ### Added

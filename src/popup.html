@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Link Shortener</title>
+  <title>Link Cleaner</title>
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
@@ -23,7 +23,7 @@
       </svg>
     </div>
     <div class="title">
-      <h1>Link Shortener <span class="version-tag" id="version"></span></h1>
+      <h1>Link Cleaner <span class="version-tag" id="version"></span></h1>
       <p class="subtitle" id="status">Loading...</p>
     </div>
   </header>
@@ -51,6 +51,7 @@
       <button type="button" data-fmt="original" id="copy-original" data-i18n="copyOriginal" hidden>Copy original URL</button>
       <button type="button" data-action="auto-clean" class="menu-report" id="auto-clean" data-i18n="menuAutoCleanOn">Auto-clean links on this site</button>
       <button type="button" data-action="fix-skip" class="menu-report" id="fix-skip" data-i18n="fixSkipSite">Exclude this site from tracking strip</button>
+      <button type="button" data-action="fix-site" class="menu-report" id="fix-site" hidden>Turn off this site's cleanup rule</button>
       <button type="button" data-action="report" class="menu-report" data-i18n="reportCleanup">Report: this didn't clean right</button>
     </div>
     <details class="removed-details" id="removed-details" hidden>

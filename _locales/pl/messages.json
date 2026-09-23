@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Skracacz linków, który naprawdę skraca: usuwa śledzące śmieci z adresów URL na miejscu. Dla czystych linków do udostępniania."
+    "message": "Czyściciel linków, który naprawdę je skraca. Usuwa śledzące śmieci z URL na miejscu. Bez przekierowań i zbierania danych."
   },
   "menuCopyClean": {
     "message": "Kopiuj czysty URL"
@@ -515,7 +515,7 @@
     }
   },
   "welcomeTitle": {
-    "message": "Rather's Link Shortener jest gotowy"
+    "message": "Rather's Link Cleaner jest gotowy"
   },
   "welcomeTag": {
     "message": "Skracacz linków, który naprawdę skraca linki: Twój link pozostaje Twoim linkiem, traci tylko śledzące śmieci na końcu."
@@ -570,5 +570,24 @@
   },
   "menuAutoCleanOff": {
     "message": "Przestań automatycznie czyścić tę witrynę"
+  },
+  "fixSiteOff": {
+    "message": "Wyłącz czyszczenie dla $LABEL$",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "fixSiteDone": {
+    "message": "Czyszczenie dla $LABEL$ wyłączone",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSkipAlsoOn": {
+    "message": "\"Pomijaj przekierowania przed załadowaniem\" też jest WŁĄCZONE; lista pomijanych domen dotyczy również tej funkcji."
   }
 }

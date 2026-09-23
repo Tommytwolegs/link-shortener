@@ -1389,7 +1389,40 @@
             autoCleanBtn.hidden = true;
           }
 
+          // Fix-flow phase 2 (v1.14): when a per-site rule governs this
+          // host, offer flipping exactly that toggle (the skip-list button
+          // above only stands down the universal layers). The background
+          // resolves host -> storage key via the module registry, which
+          // also handles the per-key packs (news, airlines, tickets,
+          // delivery) through storageKeyFor.
+          const fixSiteBtn = document.getElementById('fix-site');
+          let fixSiteKey = null;
+          if (fixSiteBtn && autoHost) {
+            try {
+              chrome.runtime.sendMessage({ type: 'site-key-for', host: autoHost }, (resp) => {
+                void chrome.runtime.lastError;
+                if (resp && typeof resp.key === 'string' && resp.key) {
+                  fixSiteKey = resp.key;
+                  const label = SITE_LABEL_MAP[resp.key] || resp.key.replace(/^enabled/, '');
+                  fixSiteBtn.textContent = t('fixSiteOff', 'Turn off cleanup for ' + label, [label]);
+                  fixSiteBtn.hidden = false;
+                }
+              });
+            } catch (_e) { /* extension context gone; leave hidden */ }
+          }
+
           menuEl.addEventListener('click', (e) => {
+            if (e.target && e.target.getAttribute
+                && e.target.getAttribute('data-action') === 'fix-site') {
+              if (!fixSiteKey) return;
+              chrome.storage.sync.set({ [fixSiteKey]: false }, () => {
+                void chrome.runtime.lastError;
+                const label = SITE_LABEL_MAP[fixSiteKey] || fixSiteKey.replace(/^enabled/, '');
+                e.target.textContent = t('fixSiteDone', 'Cleanup is off for ' + label, [label]);
+                e.target.disabled = true;
+              });
+              return;
+            }
             if (e.target && e.target.getAttribute
                 && e.target.getAttribute('data-action') === 'auto-clean') {
               if (!autoHost) return;

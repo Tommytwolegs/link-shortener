@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Un acortador que de verdad acorta: elimina la basura de rastreo de las URL en el acto. Para enlaces limpios y compartibles."
+    "message": "El limpiador de enlaces que realmente los acorta. Quita la basura de rastreo de las URL. Sin redirecciones, sin recopilar datos."
   },
   "menuCopyClean": {
     "message": "Copiar URL limpia"
@@ -515,7 +515,7 @@
     }
   },
   "welcomeTitle": {
-    "message": "Rather's Link Shortener está listo"
+    "message": "Rather's Link Cleaner está listo"
   },
   "welcomeTag": {
     "message": "Un acortador que realmente acorta los enlaces: su enlace sigue siendo su enlace, solo pierde la basura de rastreo del final."
@@ -570,5 +570,24 @@
   },
   "menuAutoCleanOff": {
     "message": "Dejar de limpiar automáticamente este sitio"
+  },
+  "fixSiteOff": {
+    "message": "Desactivar la limpieza para $LABEL$",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "fixSiteDone": {
+    "message": "Limpieza desactivada para $LABEL$",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSkipAlsoOn": {
+    "message": "\"Saltar redirecciones antes de que carguen\" también está ACTIVADO; la lista de dominios omitidos también se le aplica."
   }
 }

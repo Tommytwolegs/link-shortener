@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Un raccourcisseur qui raccourcit vraiment : supprime les traqueurs des URL, sur place. Pour des liens propres à partager."
+    "message": "Le nettoyeur de liens qui les raccourcit vraiment. Retire les traceurs des URL sur place. Sans redirection, sans collecte."
   },
   "menuCopyClean": {
     "message": "Copier l'URL propre"
@@ -515,7 +515,7 @@
     }
   },
   "welcomeTitle": {
-    "message": "Rather's Link Shortener est prêt"
+    "message": "Rather's Link Cleaner est prêt"
   },
   "welcomeTag": {
     "message": "Un raccourcisseur qui raccourcit vraiment les liens : votre lien reste votre lien, il perd juste les traceurs collés à la fin."
@@ -570,5 +570,24 @@
   },
   "menuAutoCleanOff": {
     "message": "Arrêter le nettoyage automatique sur ce site"
+  },
+  "fixSiteOff": {
+    "message": "Désactiver le nettoyage pour $LABEL$",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "fixSiteDone": {
+    "message": "Nettoyage désactivé pour $LABEL$",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSkipAlsoOn": {
+    "message": "« Sauter les redirections avant chargement » est aussi ACTIVÉ ; la liste des domaines ignorés s'y applique aussi."
   }
 }

@@ -33,6 +33,7 @@
   const DEFAULTS = {
     enabledUtmStrip: false,
     enabledActiveStrip: false,
+    enabledActiveSkip: false,
     utmStripSkipDomains: [],
     utmStripKeepParams: [],
   };
@@ -91,6 +92,13 @@
         'Both strips are OFF. Settings below take effect once you enable the Universal tracking strip or "Block trackers before they load" in the toolbar popup.');
       stripStatusEl.classList.remove('on');
     }
+    // v1.14: the status line learns about the third layer. The skip-domains
+    // list stands the redirect skip down too, so say so when it is on.
+    if (items.enabledActiveSkip === true) {
+      stripStatusEl.textContent += ' ' + t('optSkipAlsoOn',
+        '"Skip redirects before they load" is also ON; the skip-domains list applies to it as well.');
+      stripStatusEl.classList.add('on');
+    }
   }
 
   function flashSaved() {
@@ -131,6 +139,7 @@
     if (
       'enabledUtmStrip' in changes ||
       'enabledActiveStrip' in changes ||
+      'enabledActiveSkip' in changes ||
       'utmStripSkipDomains' in changes ||
       'utmStripKeepParams' in changes
     ) {
@@ -369,7 +378,9 @@
       chrome.storage.sync.get(null, (items) => {
         void chrome.runtime.lastError;
         const payload = {
-          app: 'rather-link-shortener',
+          // Renamed in v1.14; imports don't validate this field, so old
+          // 'rather-link-shortener' export files keep importing fine.
+          app: 'rather-link-cleaner',
           version: chrome.runtime.getManifest().version,
           exportedAt: new Date().toISOString(),
           settings: items || {},
@@ -378,7 +389,7 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'rather-link-shortener-settings.json';
+        a.download = 'rather-link-cleaner-settings.json';
         document.body.appendChild(a);
         a.click();
         a.remove();
