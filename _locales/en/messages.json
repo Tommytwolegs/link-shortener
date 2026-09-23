@@ -552,5 +552,17 @@
   },
   "welcomeSettings": {
     "message": "Open settings"
+  },
+  "subAirlines": {
+    "message": "Airlines"
+  },
+  "subTickets": {
+    "message": "Event tickets"
+  },
+  "subDelivery": {
+    "message": "Food delivery"
+  },
+  "subMasterAria": {
+    "message": "Toggle every site in this category"
   }
 }

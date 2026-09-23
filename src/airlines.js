@@ -1,7 +1,11 @@
 // airlines.js
 // ----------------------------------------------------------------------------
 // Pure functions for cleaning airline marketing links. Address-bar-only.
-// ONE module covering 12 carriers (news.js-style host table, single toggle).
+// ONE module covering 12 carriers (news.js-style host table). v1.14: each
+// carrier has its OWN toggle key (storageKeyFor, like the news pack); the
+// popup shows them under an Airlines category with a group switch. The old
+// single enabledAirlines key is migrated in background.js onInstalled
+// (update): if it was false, every carrier key is written false once.
 //
 // SCOPE NOTE (deliberate): this is a MARKETING-JUNK denylist, not an
 // itinerary cleaner. Airline booking searches run through session state
@@ -29,20 +33,20 @@
 (function (global) {
   'use strict';
 
-  // host regex -> extra per-carrier junk params (lowercase)
+  // host regex -> per-carrier toggle key + extra junk params (lowercase)
   const AIRLINES = [
-    { host: /(?:^|\.)delta\.com$/i, extra: ['cmp', 'mkcpgn'] },
-    { host: /(?:^|\.)united\.com$/i, extra: [] },
-    { host: /(?:^|\.)aa\.com$/i, extra: [] },
-    { host: /(?:^|\.)southwest\.com$/i, extra: ['clk'] },
-    { host: /(?:^|\.)jetblue\.com$/i, extra: [] },
-    { host: /(?:^|\.)alaskaair\.com$/i, extra: [] },
-    { host: /(?:^|\.)ryanair\.com$/i, extra: [] },
-    { host: /(?:^|\.)easyjet\.com$/i, extra: [] },
-    { host: /(?:^|\.)lufthansa\.com$/i, extra: [] },
-    { host: /(?:^|\.)britishairways\.com$/i, extra: [] },
-    { host: /(?:^|\.)emirates\.com$/i, extra: [] },
-    { host: /(?:^|\.)qatarairways\.com$/i, extra: [] },
+    { host: /(?:^|\.)delta\.com$/i, key: 'enabledAirDelta', extra: ['cmp', 'mkcpgn'] },
+    { host: /(?:^|\.)united\.com$/i, key: 'enabledAirUnited', extra: [] },
+    { host: /(?:^|\.)aa\.com$/i, key: 'enabledAirAmerican', extra: [] },
+    { host: /(?:^|\.)southwest\.com$/i, key: 'enabledAirSouthwest', extra: ['clk'] },
+    { host: /(?:^|\.)jetblue\.com$/i, key: 'enabledAirJetblue', extra: [] },
+    { host: /(?:^|\.)alaskaair\.com$/i, key: 'enabledAirAlaska', extra: [] },
+    { host: /(?:^|\.)ryanair\.com$/i, key: 'enabledAirRyanair', extra: [] },
+    { host: /(?:^|\.)easyjet\.com$/i, key: 'enabledAirEasyjet', extra: [] },
+    { host: /(?:^|\.)lufthansa\.com$/i, key: 'enabledAirLufthansa', extra: [] },
+    { host: /(?:^|\.)britishairways\.com$/i, key: 'enabledAirBritish', extra: [] },
+    { host: /(?:^|\.)emirates\.com$/i, key: 'enabledAirEmirates', extra: [] },
+    { host: /(?:^|\.)qatarairways\.com$/i, key: 'enabledAirQatar', extra: [] },
   ];
 
   const UNIVERSAL_PARAMS = new Set([
@@ -61,6 +65,13 @@
 
   function isAirlineHost(hostname) {
     return airlineFor(hostname) !== null;
+  }
+
+  // Per-carrier toggle key for the dispatcher (news-pack pattern). Null
+  // for non-airline hosts.
+  function storageKeyFor(hostname) {
+    const a = airlineFor(hostname);
+    return a ? a.key : null;
   }
 
   function isTrackingParam(name, airline) {
@@ -108,10 +119,13 @@
   const api = {
     isAirlineHost,
     isPostUrl,
+    storageKeyFor,
     shortenAirlineUrl,
     shortenUrl: shortenAirlineUrl,
     needsShortening,
-    STORAGE_KEY: 'enabledAirlines',
+    // v1.13-and-earlier single toggle; consumed only by the one-shot
+    // migration in background.js. NOT a live storage key anymore.
+    LEGACY_STORAGE_KEY: 'enabledAirlines',
     AIRLINES,
     UNIVERSAL_PARAMS,
   };

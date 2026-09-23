@@ -552,5 +552,17 @@
   },
   "welcomeSettings": {
     "message": "설정 열기"
+  },
+  "subAirlines": {
+    "message": "항공사"
+  },
+  "subTickets": {
+    "message": "이벤트 티켓"
+  },
+  "subDelivery": {
+    "message": "음식 배달"
+  },
+  "subMasterAria": {
+    "message": "이 카테고리의 모든 사이트 전환"
   }
 }

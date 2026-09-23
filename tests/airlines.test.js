@@ -4,6 +4,8 @@ const {
   needsShortening,
   isAirlineHost,
   isPostUrl,
+  storageKeyFor,
+  LEGACY_STORAGE_KEY,
   AIRLINES,
 } = require(path.join('..', 'src', 'airlines.js'));
 
@@ -91,6 +93,15 @@ check('isPostUrl: has junk', isPostUrl('https://www.delta.com/deals?cmp=a'), tru
 check('isPostUrl: clean', isPostUrl('https://www.delta.com/deals'), false);
 check('shorten on garbage', shortenAirlineUrl('not a url'), null);
 check('needs on garbage', needsShortening('not a url'), false);
+
+// v1.14: per-carrier toggle keys (news-pack pattern)
+check('storageKeyFor: delta', storageKeyFor('www.delta.com'), 'enabledAirDelta');
+check('storageKeyFor: qatar', storageKeyFor('www.qatarairways.com'), 'enabledAirQatar');
+check('storageKeyFor: non-airline', storageKeyFor('deltafaucet.com'), null);
+check('legacy key preserved for migration', LEGACY_STORAGE_KEY, 'enabledAirlines');
+check('every carrier row has a key',
+  AIRLINES.every((a) => typeof a.key === 'string' && /^enabledAir[A-Z]/.test(a.key)), true);
+check('carrier keys unique', new Set(AIRLINES.map((a) => a.key)).size, AIRLINES.length);
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed (' + (passed + failed) + ' total)');
 if (failed > 0) {

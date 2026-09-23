@@ -552,5 +552,17 @@
   },
   "welcomeSettings": {
     "message": "Ayarları aç"
+  },
+  "subAirlines": {
+    "message": "Havayolları"
+  },
+  "subTickets": {
+    "message": "Etkinlik biletleri"
+  },
+  "subDelivery": {
+    "message": "Yemek teslimatı"
+  },
+  "subMasterAria": {
+    "message": "Bu kategorideki tüm siteleri aç veya kapat"
   }
 }

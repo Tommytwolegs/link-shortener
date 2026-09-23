@@ -552,5 +552,17 @@
   },
   "welcomeSettings": {
     "message": "Ouvrir les réglages"
+  },
+  "subAirlines": {
+    "message": "Compagnies aériennes"
+  },
+  "subTickets": {
+    "message": "Billetterie"
+  },
+  "subDelivery": {
+    "message": "Livraison de repas"
+  },
+  "subMasterAria": {
+    "message": "Activer ou désactiver tous les sites de cette catégorie"
   }
 }

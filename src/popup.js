@@ -118,7 +118,32 @@
         ['enabledSkyscanner', 'Skyscanner', 'Skyscanner'],
         ['enabledFlightaware', 'FlightAware', 'Flightaware'],
         ['enabledFlightradar24', 'Flightradar24', 'Flightradar24'],
-        ['enabledAirlines', 'Airlines (12 carriers)', 'Airlines'],
+      ] },
+      { i18nKey: 'subAirlines', en: 'Airlines', rows: [
+        ['enabledAirDelta', 'Delta', 'AirDelta'],
+        ['enabledAirUnited', 'United', 'AirUnited'],
+        ['enabledAirAmerican', 'American Airlines', 'AirAmerican'],
+        ['enabledAirSouthwest', 'Southwest', 'AirSouthwest'],
+        ['enabledAirJetblue', 'JetBlue', 'AirJetblue'],
+        ['enabledAirAlaska', 'Alaska Airlines', 'AirAlaska'],
+        ['enabledAirRyanair', 'Ryanair', 'AirRyanair'],
+        ['enabledAirEasyjet', 'easyJet', 'AirEasyjet'],
+        ['enabledAirLufthansa', 'Lufthansa', 'AirLufthansa'],
+        ['enabledAirBritish', 'British Airways', 'AirBritish'],
+        ['enabledAirEmirates', 'Emirates', 'AirEmirates'],
+        ['enabledAirQatar', 'Qatar Airways', 'AirQatar'],
+      ] },
+      { i18nKey: 'subTickets', en: 'Event tickets', rows: [
+        ['enabledTicketmaster', 'Ticketmaster', 'Ticketmaster'],
+        ['enabledStubhub', 'StubHub', 'Stubhub'],
+        ['enabledSeatgeek', 'SeatGeek', 'Seatgeek'],
+        ['enabledAxs', 'AXS', 'Axs'],
+      ] },
+      { i18nKey: 'subDelivery', en: 'Food delivery', rows: [
+        ['enabledDoordash', 'DoorDash', 'Doordash'],
+        ['enabledUbereats', 'Uber Eats', 'Ubereats'],
+        ['enabledGrubhub', 'Grubhub', 'Grubhub'],
+        ['enabledInstacart', 'Instacart', 'Instacart'],
       ] },
       { i18nKey: 'subSocial', en: 'Social', rows: [
         ['enabledSocial', 'Facebook/Instagram', 'Social'],
@@ -594,16 +619,83 @@
     return wrap;
   }
 
+  // Category master-switch refreshers, called after any storage-driven
+  // state application so the tri-state checkboxes track their rows.
+  const sectionRefreshers = [];
+  function refreshSectionMasters() {
+    for (const f of sectionRefreshers) f();
+  }
+
+  // v1.14: each section is its own dropdown (<details class="site-sub">)
+  // with a category master checkbox in the header. Checked = every site in
+  // the category on, unchecked = every one off, indeterminate = mixed.
+  // Clicking it writes all the category's keys at once; the per-site rows
+  // inside are unchanged. Sub-dropdown open state is deliberately NOT
+  // persisted (popupOpenGroups stays capped at the five top groups).
+  function buildSection(sec, group) {
+    const det = document.createElement('details');
+    det.className = 'site-sub';
+    det.dataset.sub = sec.i18nKey;
+
+    const sum = document.createElement('summary');
+    sum.className = 'group-subhead';
+    const lbl = document.createElement('span');
+    lbl.className = 'sub-label';
+    lbl.textContent = t(sec.i18nKey, sec.en);
+    sum.appendChild(lbl);
+
+    const count = document.createElement('span');
+    count.className = 'sub-count';
+    sum.appendChild(count);
+
+    const master = document.createElement('input');
+    master.type = 'checkbox';
+    master.className = 'sub-master';
+    master.setAttribute('aria-label',
+      t('subMasterAria', 'Toggle every site in this category'));
+    // A click on the checkbox must toggle the sites, not the dropdown.
+    master.addEventListener('click', (e) => e.stopPropagation());
+    master.addEventListener('change', () => {
+      const on = master.checked;
+      const patch = {};
+      for (const r of sec.rows) patch[r[0]] = on;
+      chrome.storage.sync.set(patch);
+      for (const r of sec.rows) {
+        const el = siteEls[r[0]];
+        if (el) el.checked = on;
+      }
+      refresh();
+    });
+    sum.appendChild(master);
+    det.appendChild(sum);
+
+    const body = document.createElement('div');
+    body.className = 'sub-body';
+    for (const r of sec.rows) body.appendChild(buildRow(r[0], r[1], r[2], group));
+    det.appendChild(body);
+
+    function refresh() {
+      let on = 0;
+      for (const r of sec.rows) {
+        const el = siteEls[r[0]];
+        if (el && el.checked) on++;
+      }
+      master.checked = on === sec.rows.length;
+      master.indeterminate = on > 0 && on < sec.rows.length;
+      count.textContent = on + '/' + sec.rows.length;
+    }
+    refresh();
+    body.addEventListener('change', refresh);
+    sectionRefreshers.push(refresh);
+    return det;
+  }
+
   function renderGroup(group) {
     if (renderedGroups.has(group) || !groupBodies[group]) return;
     renderedGroups.add(group);
     const frag = document.createDocumentFragment();
     for (const sec of SITE_GROUPS[group] || []) {
-      const sub = document.createElement('p');
-      sub.className = 'group-subhead';
-      sub.textContent = t(sec.i18nKey, sec.en);
-      frag.appendChild(sub);
-      for (const r of sec.rows) frag.appendChild(buildRow(r[0], r[1], r[2], group));
+      frag.appendChild(buildSection(sec, group));
     }
     groupBodies[group].appendChild(frag);
     if (onGroupRendered) onGroupRendered();
@@ -631,7 +723,22 @@
     Researchgate: 'ResearchGate',
     Flightaware: 'FlightAware',
     Flightradar24: 'Flightradar24',
-    Airlines: 'Airlines (12 carriers)',
+    AirDelta: 'Delta',
+    AirUnited: 'United',
+    AirAmerican: 'American Airlines',
+    AirSouthwest: 'Southwest',
+    AirJetblue: 'JetBlue',
+    AirAlaska: 'Alaska Airlines',
+    AirRyanair: 'Ryanair',
+    AirEasyjet: 'easyJet',
+    AirLufthansa: 'Lufthansa',
+    AirBritish: 'British Airways',
+    AirEmirates: 'Emirates',
+    AirQatar: 'Qatar Airways',
+    Stubhub: 'StubHub',
+    Seatgeek: 'SeatGeek',
+    Axs: 'AXS',
+    Ubereats: 'Uber Eats',
     Netsuite: 'NetSuite',
     Playstore: 'Google Play',
     Appstore: 'Apple App Store',
@@ -799,6 +906,7 @@
     for (const k of SITE_KEYS) {
       if (siteEls[k]) siteEls[k].checked = state[k] !== false;
     }
+    refreshSectionMasters();
     siteTogglesEl.classList.toggle('disabled', state.enabled === false);
     syncCurrentPageVisibility();
     setStatusText(state);
@@ -1384,6 +1492,7 @@
         const labelEl = row.querySelector('.switch-label');
         rows.push({
           row,
+          sub: row.closest('details.site-sub'),
           text: ((labelEl && labelEl.textContent) || '').toLowerCase(),
           group: el.dataset.group,
         });
@@ -1406,6 +1515,12 @@
         if (emptyEl) emptyEl.hidden = true;
         siteTogglesEl.classList.remove('filtering');
         for (const r of rows) r.row.classList.remove('filter-hidden');
+        // Category sub-dropdowns: un-hide and fold back up (their open
+        // state is never persisted, so closed is the resting state).
+        for (const sub of document.querySelectorAll('details.site-sub')) {
+          sub.classList.remove('filter-hidden');
+          sub.open = false;
+        }
         for (const el of groupEls) {
           el.classList.remove('filter-hidden');
           if (preFilterOpen && Object.prototype.hasOwnProperty.call(preFilterOpen, el.dataset.group)) {
@@ -1425,10 +1540,19 @@
       filtering = true;
       siteTogglesEl.classList.add('filtering');
       const groupHits = {};
+      const subHits = new Set();
       for (const r of rows) {
         const hit = r.text.indexOf(q) !== -1;
         r.row.classList.toggle('filter-hidden', !hit);
-        if (hit) groupHits[r.group] = (groupHits[r.group] || 0) + 1;
+        if (hit) {
+          groupHits[r.group] = (groupHits[r.group] || 0) + 1;
+          if (r.sub) subHits.add(r.sub);
+        }
+      }
+      for (const sub of document.querySelectorAll('details.site-sub')) {
+        const hit = subHits.has(sub);
+        sub.classList.toggle('filter-hidden', !hit);
+        sub.open = hit;
       }
       let anyHit = false;
       for (const el of groupEls) {

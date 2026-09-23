@@ -272,6 +272,8 @@ m["background"] = {
         "src/flightaware.js",
         "src/flightradar24.js",
         "src/airlines.js",
+        "src/tickets.js",
+        "src/fooddelivery.js",
         "src/netsuite.js",
         "src/atlassian.js",
         "src/notion.js",

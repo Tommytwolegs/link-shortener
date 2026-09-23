@@ -169,6 +169,8 @@ if (typeof importScripts === 'function') {
     'flightaware.js',
     'flightradar24.js',
     'airlines.js',
+    'tickets.js',
+    'fooddelivery.js',
     'netsuite.js',
     'atlassian.js',
     'notion.js',
@@ -617,6 +619,27 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
     { url: chrome.runtime.getURL('src/welcome.html') },
     () => void chrome.runtime.lastError
   );
+});
+
+// -- One-shot migration: Airlines pack toggle -> per-carrier toggles (v1.14) --
+// The single enabledAirlines key governed all 12 carriers through v1.13.
+// Carriers now have their own keys (default true, like every site key), so
+// the only state worth carrying over is "the user had the pack OFF": write
+// all carrier keys false once. The legacy key itself is left in storage,
+// harmless and ignored.
+
+chrome.runtime.onInstalled.addListener(({ reason }) => {
+  if (reason !== 'update') return;
+  if (!self.AirlinesLinkShortener) return;
+  const legacy = self.AirlinesLinkShortener.LEGACY_STORAGE_KEY;
+  chrome.storage.sync.get({ [legacy]: true }, (items) => {
+    void chrome.runtime.lastError;
+    if (items[legacy] === false) {
+      const off = {};
+      for (const a of self.AirlinesLinkShortener.AIRLINES) off[a.key] = false;
+      chrome.storage.sync.set(off);
+    }
+  });
 });
 
 // -- On-update tab reload ----------------------------------------------------
@@ -2074,6 +2097,8 @@ const HOST_CHECKS = [
   ['FlightawareLinkShortener', 'isFlightawareHost'],
   ['FlightradarLinkShortener', 'isFlightradarHost'],
   ['AirlinesLinkShortener', 'isAirlineHost'],
+  ['TicketsLinkShortener', 'isTicketsHost'],
+  ['FooddeliveryLinkShortener', 'isFooddeliveryHost'],
   ['NetsuiteLinkShortener', 'isNetsuiteHost'],
   ['AtlassianLinkShortener', 'isAtlassianHost'],
   ['NotionLinkShortener', 'isNotionHost'],

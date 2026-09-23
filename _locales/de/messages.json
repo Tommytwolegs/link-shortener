@@ -552,5 +552,17 @@
   },
   "welcomeSettings": {
     "message": "Einstellungen öffnen"
+  },
+  "subAirlines": {
+    "message": "Fluggesellschaften"
+  },
+  "subTickets": {
+    "message": "Veranstaltungstickets"
+  },
+  "subDelivery": {
+    "message": "Essenslieferung"
+  },
+  "subMasterAria": {
+    "message": "Alle Websites dieser Kategorie umschalten"
   }
 }

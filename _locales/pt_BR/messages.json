@@ -552,5 +552,17 @@
   },
   "welcomeSettings": {
     "message": "Abrir configurações"
+  },
+  "subAirlines": {
+    "message": "Companhias aéreas"
+  },
+  "subTickets": {
+    "message": "Ingressos para eventos"
+  },
+  "subDelivery": {
+    "message": "Entrega de comida"
+  },
+  "subMasterAria": {
+    "message": "Alternar todos os sites desta categoria"
   }
 }

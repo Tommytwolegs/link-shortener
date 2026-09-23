@@ -552,5 +552,17 @@
   },
   "welcomeSettings": {
     "message": "Открыть настройки"
+  },
+  "subAirlines": {
+    "message": "Авиакомпании"
+  },
+  "subTickets": {
+    "message": "Билеты на мероприятия"
+  },
+  "subDelivery": {
+    "message": "Доставка еды"
+  },
+  "subMasterAria": {
+    "message": "Переключить все сайты этой категории"
   }
 }

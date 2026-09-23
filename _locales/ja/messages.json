@@ -552,5 +552,17 @@
   },
   "welcomeSettings": {
     "message": "設定を開く"
+  },
+  "subAirlines": {
+    "message": "航空会社"
+  },
+  "subTickets": {
+    "message": "イベントチケット"
+  },
+  "subDelivery": {
+    "message": "フードデリバリー"
+  },
+  "subMasterAria": {
+    "message": "このカテゴリのすべてのサイトを切り替え"
   }
 }

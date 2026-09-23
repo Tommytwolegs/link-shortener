@@ -552,5 +552,17 @@
   },
   "welcomeSettings": {
     "message": "打开设置"
+  },
+  "subAirlines": {
+    "message": "航空公司"
+  },
+  "subTickets": {
+    "message": "活动票务"
+  },
+  "subDelivery": {
+    "message": "外卖"
+  },
+  "subMasterAria": {
+    "message": "切换此类别中的所有网站"
   }
 }

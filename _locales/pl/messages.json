@@ -552,5 +552,17 @@
   },
   "welcomeSettings": {
     "message": "Otwórz ustawienia"
+  },
+  "subAirlines": {
+    "message": "Linie lotnicze"
+  },
+  "subTickets": {
+    "message": "Bilety na wydarzenia"
+  },
+  "subDelivery": {
+    "message": "Dostawa jedzenia"
+  },
+  "subMasterAria": {
+    "message": "Przełącz wszystkie strony w tej kategorii"
   }
 }

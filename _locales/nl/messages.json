@@ -552,5 +552,17 @@
   },
   "welcomeSettings": {
     "message": "Instellingen openen"
+  },
+  "subAirlines": {
+    "message": "Luchtvaartmaatschappijen"
+  },
+  "subTickets": {
+    "message": "Evenementtickets"
+  },
+  "subDelivery": {
+    "message": "Maaltijdbezorging"
+  },
+  "subMasterAria": {
+    "message": "Alle sites in deze categorie in- of uitschakelen"
   }
 }

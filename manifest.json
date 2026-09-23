@@ -612,7 +612,15 @@
     "*://*.magazineluiza.com.br/*",
     "*://*.wildberries.ru/*",
     "*://*.ozon.ru/*",
-    "*://*.avito.ru/*"
+    "*://*.avito.ru/*",
+    "*://*.ticketmaster.com/*",
+    "*://*.stubhub.com/*",
+    "*://*.seatgeek.com/*",
+    "*://*.axs.com/*",
+    "*://*.doordash.com/*",
+    "*://*.ubereats.com/*",
+    "*://*.grubhub.com/*",
+    "*://*.instacart.com/*"
   ],
   "optional_host_permissions": [
     "*://*/*"
@@ -2569,6 +2577,34 @@
       ],
       "js": [
         "src/airlines.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.ticketmaster.com/*",
+        "*://*.stubhub.com/*",
+        "*://*.seatgeek.com/*",
+        "*://*.axs.com/*"
+      ],
+      "js": [
+        "src/tickets.js",
+        "src/social-content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.doordash.com/*",
+        "*://*.ubereats.com/*",
+        "*://*.grubhub.com/*",
+        "*://*.instacart.com/*"
+      ],
+      "js": [
+        "src/fooddelivery.js",
         "src/social-content.js"
       ],
       "run_at": "document_start",

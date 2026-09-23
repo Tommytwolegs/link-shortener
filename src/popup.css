@@ -434,6 +434,48 @@ footer a[hidden],
   opacity: 0.55;
 }
 
+/* v1.14: every category is its own dropdown with a master switch. The
+   summary reuses the subhead typography; the checkbox is a native
+   tri-state (indeterminate when the category is mixed). */
+details.site-sub { margin: 0 0 2px; }
+details.site-sub > summary.group-subhead {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 3px 2px;
+  padding: 2px 0;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  opacity: 0.8;
+}
+details.site-sub > summary.group-subhead::-webkit-details-marker { display: none; }
+details.site-sub > summary.group-subhead::before {
+  content: '\25B8';
+  font-size: 9px;
+  opacity: 0.8;
+}
+details.site-sub[open] > summary.group-subhead::before { content: '\25BE'; }
+.sub-label { flex: 1 1 auto; }
+.sub-count {
+  font-weight: 400;
+  letter-spacing: 0;
+  opacity: 0.9;
+}
+.sub-master {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  accent-color: var(--accent, #f8990f);
+  cursor: pointer;
+}
+.sub-master:focus-visible {
+  outline: 2px solid var(--accent, #f8990f);
+  outline-offset: 1px;
+}
+.sub-body { padding-left: 6px; }
+details.site-sub.filter-hidden { display: none; }
+
 /* -- Current page: clean-URL preview + copy button --------------------------- */
 
 .current-page {
