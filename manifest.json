@@ -20,6 +20,9 @@
     "activeTab",
     "declarativeNetRequestWithHostAccess"
   ],
+  "optional_permissions": [
+    "bookmarks"
+  ],
   "action": {
     "default_title": "Rather's Link Shortener",
     "default_popup": "src/popup.html",
@@ -42,6 +45,9 @@
     },
     "toggle-master": {
       "description": "__MSG_cmdToggleMaster__"
+    },
+    "clean-page": {
+      "description": "__MSG_cmdCleanPage__"
     }
   },
   "host_permissions": [

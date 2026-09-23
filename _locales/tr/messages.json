@@ -460,5 +460,97 @@
   },
   "optionsTitle": {
     "message": "Seçenekler"
+  },
+  "cmdCleanPage": {
+    "message": "Geçerli sayfadaki bağlantıları temizle"
+  },
+  "bmkTitle": {
+    "message": "Yer imi temizleyici"
+  },
+  "bmkIntro": {
+    "message": "Mevcut yer imleriniz için tek seferlik temizlik. Tarama sırasında tarayıcı yer imi erişimi ister; izin, temizlik bitince otomatik olarak geri verilir ve her zamanki gibi hiçbir şey tarayıcınızdan dışarı çıkmaz."
+  },
+  "bmkScan": {
+    "message": "Yer imlerini tara"
+  },
+  "bmkScanning": {
+    "message": "Taranıyor..."
+  },
+  "bmkDenied": {
+    "message": "Yer imi erişimi reddedildi."
+  },
+  "bmkNone": {
+    "message": "Hepsi temiz. $TOTAL$ yer iminizin hiçbirinde izleme çöpü yok.",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkFound": {
+    "message": "$TOTAL$ yer iminden $COUNT$ tanesi temizlenebilir:",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "bmkClean": {
+    "message": "$COUNT$ yer imini temizle",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkDone": {
+    "message": "$COUNT$ yer imi temizlendi. Yer imi erişimi geri verildi.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Rather's Link Shortener hazır"
+  },
+  "welcomeTag": {
+    "message": "Bağlantıları gerçekten kısaltan bir kısaltıcı: bağlantınız bağlantınız olarak kalır, yalnızca sonundaki izleme çöpünden kurtulur."
+  },
+  "welcomeAutoTitle": {
+    "message": "Şimdiden çalışıyor"
+  },
+  "welcomeAutoText": {
+    "message": "Kapsanan yaklaşık 300 sitede adres çubuğu, sayfa yüklendikten sonra kendini temizler; bu yüzden hiçbir şey bozulmaz. Kopyaladığınız bağlantı temiz olandır."
+  },
+  "welcomeBadgeTitle": {
+    "message": "Rozeti izleyin"
+  },
+  "welcomeBadgeText": {
+    "message": "Araç çubuğu simgesindeki sayaç, bulunduğunuz sayfada ne kadar temizlendiğini gösterir. Hangi parametrelerin kaldırıldığını görmek ve temiz bağlantıyı istediğiniz biçimde kopyalamak için tıklayın."
+  },
+  "welcomeCopyTitle": {
+    "message": "Her bağlantıyı her yerde temizleyin"
+  },
+  "welcomeCopyText": {
+    "message": "Herhangi bir bağlantıya sağ tıklayıp \"Temiz URL'yi kopyala\"yı seçin. Her sitede çalışır, yönlendirme sarmalayıcılarının içini görür; ayrıca bir klavye kısayolu, bir adres çubuğu anahtar kelimesi ve e-postaların tamamı için toplu temizleyici de vardır."
+  },
+  "welcomeOptinsTitle": {
+    "message": "İstediğinizde üç gelişmiş mod"
+  },
+  "welcomeOptinsText": {
+    "message": "Açılır pencerenin Seçenekler bölümünde: ziyaret ettiğiniz her siteyi temizleme, istek tarayıcınızdan çıkmadan önce izleyicileri engelleme ve izleyici yönlendirme sayfalarını tamamen atlama. Hepsi varsayılan olarak kapalı; tarayıcı ek izni yalnızca birini açtığınızda ister ve hepsi kapatıldığında izni geri verir."
+  },
+  "welcomePrivacyTitle": {
+    "message": "Sıfır veri toplama"
+  },
+  "welcomePrivacyText": {
+    "message": "Analitik yok, telemetri yok, hiçbir türde ağ isteği yok. Saklanan tek şey ayarlarınızdır. Açık kaynak, böylece bunların her kelimesini doğrulayabilirsiniz."
+  },
+  "welcomeSettings": {
+    "message": "Ayarları aç"
   }
 }

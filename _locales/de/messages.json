@@ -460,5 +460,97 @@
   },
   "optionsTitle": {
     "message": "Optionen"
+  },
+  "cmdCleanPage": {
+    "message": "Links auf der aktuellen Seite bereinigen"
+  },
+  "bmkTitle": {
+    "message": "Lesezeichen-Reiniger"
+  },
+  "bmkIntro": {
+    "message": "Einmalige Bereinigung Ihrer vorhandenen Lesezeichen. Beim Scannen fragt der Browser nach Lesezeichen-Zugriff; die Berechtigung wird nach Abschluss automatisch zurückgegeben, und wie immer verlässt nichts Ihren Browser."
+  },
+  "bmkScan": {
+    "message": "Lesezeichen scannen"
+  },
+  "bmkScanning": {
+    "message": "Wird gescannt..."
+  },
+  "bmkDenied": {
+    "message": "Lesezeichen-Zugriff wurde abgelehnt."
+  },
+  "bmkNone": {
+    "message": "Alles sauber. Keines Ihrer $TOTAL$ Lesezeichen enthält Tracking-Müll.",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkFound": {
+    "message": "$COUNT$ von $TOTAL$ Lesezeichen können bereinigt werden:",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "bmkClean": {
+    "message": "$COUNT$ Lesezeichen bereinigen",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkDone": {
+    "message": "$COUNT$ Lesezeichen bereinigt. Der Lesezeichen-Zugriff wurde zurückgegeben.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Rather's Link Shortener ist bereit"
+  },
+  "welcomeTag": {
+    "message": "Ein Link-Kürzer, der Links wirklich kürzt: Ihr Link bleibt Ihr Link, er verliert nur den Tracking-Müll am Ende."
+  },
+  "welcomeAutoTitle": {
+    "message": "Es funktioniert bereits"
+  },
+  "welcomeAutoText": {
+    "message": "Auf fast 300 abgedeckten Websites bereinigt sich die Adressleiste von selbst, nachdem die Seite geladen ist, sodass nie etwas kaputtgeht. Der Link, den Sie kopieren, ist der saubere."
+  },
+  "welcomeBadgeTitle": {
+    "message": "Achten Sie auf die Zahl am Symbol"
+  },
+  "welcomeBadgeText": {
+    "message": "Der Zähler auf dem Symbolleisten-Icon zeigt, wie viel auf der aktuellen Seite bereinigt wurde. Klicken Sie darauf, um genau zu sehen, welche Parameter entfernt wurden, und um den sauberen Link in jedem Format zu kopieren."
+  },
+  "welcomeCopyTitle": {
+    "message": "Jeden Link bereinigen, überall"
+  },
+  "welcomeCopyText": {
+    "message": "Klicken Sie mit rechts auf einen Link und wählen Sie „Saubere URL kopieren\". Das funktioniert auf jeder Website, durchschaut Weiterleitungs-Wrapper, und es gibt auch ein Tastenkürzel, ein Adressleisten-Schlüsselwort und einen Massen-Reiniger für ganze E-Mails."
+  },
+  "welcomeOptinsTitle": {
+    "message": "Drei erweiterte Modi, wenn Sie sie möchten"
+  },
+  "welcomeOptinsText": {
+    "message": "In den Optionen des Popups: jede besuchte Website bereinigen, Tracker blockieren, bevor die Anfrage den Browser verlässt, und Tracker-Weiterleitungsseiten ganz überspringen. Alles standardmäßig aus; der Browser fragt nur beim Einschalten nach der zusätzlichen Berechtigung, und sie wird zurückgegeben, wenn alles aus ist."
+  },
+  "welcomePrivacyTitle": {
+    "message": "Null Datenerfassung"
+  },
+  "welcomePrivacyText": {
+    "message": "Keine Analysen, keine Telemetrie, keinerlei Netzwerkanfragen. Gespeichert werden nur Ihre Einstellungen. Open Source, damit Sie jedes Wort davon überprüfen können."
+  },
+  "welcomeSettings": {
+    "message": "Einstellungen öffnen"
   }
 }

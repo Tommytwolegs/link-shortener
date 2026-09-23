@@ -99,6 +99,22 @@
       </details>
     </section>
 
+    <section class="card" id="bookmarks-section">
+      <h2 data-i18n="bmkTitle">Bookmark cleaner</h2>
+      <p class="hint" data-i18n="bmkIntro">
+        One-time cleanup for the bookmarks you already have. Your browser
+        will ask for bookmark access when you scan; the permission is handed
+        back automatically when the cleanup finishes, and as always nothing
+        leaves your browser.
+      </p>
+      <div class="actions">
+        <button id="bmk-scan" type="button" class="primary" data-i18n="bmkScan">Scan bookmarks</button>
+        <button id="bmk-apply" type="button" class="primary" hidden></button>
+        <span class="saved-indicator" id="bmk-status" aria-live="polite"></span>
+      </div>
+      <ol id="bmk-preview" class="history-list" hidden></ol>
+    </section>
+
     <section class="card" id="backup-section">
       <h2 data-i18n="backupTitle">Backup</h2>
       <p class="hint" data-i18n="backupHint">

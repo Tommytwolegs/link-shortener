@@ -748,7 +748,20 @@ label.switch:hover .site-gear,
 .site-gear.open {
   opacity: 1;
 }
+.site-gear:focus-visible {
+  outline: 2px solid var(--accent, #f8990f);
+  outline-offset: 1px;
+  border-radius: 4px;
+}
 .site-gear.open { color: var(--accent, #f8990f); }
+
+/* v1.14 a11y: visible keyboard focus on the collapsible group headers
+   (Options dropdown, category groups, description). */
+summary:focus-visible {
+  outline: 2px solid var(--accent, #f8990f);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
 .site-optrow {
   margin: 2px 0 6px 14px;
   padding: 6px 10px;

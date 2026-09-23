@@ -606,6 +606,19 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
 });
 
+// -- First-run welcome page (v1.14) -------------------------------------------
+// Fresh installs only (never updates): a local, bundled page explaining the
+// badge, the ways to get a clean link, and where the opt-ins live. Zero
+// network, like everything else.
+
+chrome.runtime.onInstalled.addListener(({ reason }) => {
+  if (reason !== 'install') return;
+  chrome.tabs.create(
+    { url: chrome.runtime.getURL('src/welcome.html') },
+    () => void chrome.runtime.lastError
+  );
+});
+
 // -- On-update tab reload ----------------------------------------------------
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
@@ -1644,6 +1657,45 @@ if (chrome.commands && chrome.commands.onCommand) {
       });
       return;
     }
+    // "clean-page" (v1.14): the popup button's one-shot, from the keyboard.
+    // Ships UNBOUND like toggle-master. The shortcut press is the user
+    // gesture that grants activeTab, so no broad permissions are involved;
+    // the injected function is byte-identical to the popup's.
+    if (command === 'clean-page') {
+      const run = (theTab) => {
+        if (!theTab || theTab.id == null || !theTab.url || !/^https?:/i.test(theTab.url)) return;
+        if (!chrome.scripting || !chrome.scripting.executeScript) return;
+        chrome.scripting.executeScript({
+          target: { tabId: theTab.id },
+          func: async () => {
+            const anchors = Array.from(document.links || []);
+            const urls = [];
+            const seen = new Set();
+            for (const a of anchors) {
+              const h = a.href;
+              if (!/^https?:/i.test(h) || seen.has(h)) continue;
+              seen.add(h);
+              urls.push(h);
+            }
+            if (urls.length === 0) return { changed: 0, total: 0 };
+            const resp = await chrome.runtime.sendMessage({ type: 'clean-links-batch', urls });
+            const map = resp && resp.map ? resp.map : {};
+            let changed = 0;
+            for (const a of anchors) {
+              const clean = map[a.href];
+              if (clean) {
+                a.href = clean;
+                changed++;
+              }
+            }
+            return { changed, total: urls.length };
+          },
+        }, () => void chrome.runtime.lastError);
+      };
+      if (tab && tab.id != null) run(tab);
+      else chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => run(tabs && tabs[0]));
+      return;
+    }
     if (command !== 'copy-clean-url') return;
     const run = (t) => {
       if (t && t.id != null && t.url && /^https?:/i.test(t.url)) {
@@ -1832,10 +1884,17 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         }
       }
       const changed = Object.keys(map).length;
-      if (changed > 0) {
+      // dryRun (v1.14): the bookmark cleaner's SCAN pass previews what
+      // would change without counting anything; only its apply pass (and
+      // every other caller) records stats and history.
+      if (changed > 0 && !msg.dryRun) {
         recordStats({ bulk: changed, urls: changed, chars: saved });
         recordHistory({
-          host: sender && sender.tab && self.HistoryLog ? self.HistoryLog.hostOf(sender.tab.url || '') : '',
+          // The bookmark cleaner reuses this pipeline from the options
+          // page, where there is no sender.tab; it labels itself.
+          host: msg.source === 'bookmarks'
+            ? 'bookmarks'
+            : (sender && sender.tab && self.HistoryLog ? self.HistoryLog.hostOf(sender.tab.url || '') : ''),
           kind: 'bulk',
           count: changed,
           chars: saved,
@@ -2174,6 +2233,8 @@ const REDIRECT_SKIP_FILTERS = [
   { hostEquals: 'lm.facebook.com' },
   { hostEquals: 'l.messenger.com' },
   { hostEquals: 'l.instagram.com' },
+  { hostEquals: 'l.threads.net' },
+  { hostEquals: 'l.wl.co', pathPrefix: '/l' },
   { hostEquals: 'out.reddit.com' },
   { hostEquals: 'www.youtube.com', pathPrefix: '/redirect' },
   { hostEquals: 'youtube.com', pathPrefix: '/redirect' },

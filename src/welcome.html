@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--
+  First-run welcome page (v1.14). Opened once by background.js on fresh
+  install (never on updates). Fully local: no remote assets, no scripts
+  beyond the shared i18n applier, zero network requests.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rather's Link Shortener</title>
+<style>
+  :root {
+    --bg: #f6f8fa; --card: #ffffff; --border: #d8dee6;
+    --text: #1b2733; --muted: #5b6b7b;
+    --navy: #1b2a4e; --teal: #0f7b8a; --accent: #ff9900;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1419; --card: #1a2027; --border: #2a323c;
+      --text: #e7eaef; --muted: #98a2b3;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 40px 20px 60px; }
+  header { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+  header img { width: 48px; height: 48px; }
+  h1 { font-size: 26px; letter-spacing: -.02em; margin: 0; }
+  .tag { color: var(--muted); font-size: 15.5px; margin: 6px 0 26px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px; margin-bottom: 14px;
+  }
+  .card h2 { font-size: 16px; margin: 0 0 6px; }
+  .card h2 .dot {
+    display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--accent); margin-right: 8px; vertical-align: 1px;
+  }
+  .card p { margin: 0; color: var(--muted); font-size: 14px; }
+  kbd {
+    font-family: ui-monospace, SFMono-Regular, Consolas, Menlo, monospace;
+    font-size: .9em; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 5px; padding: 1px 6px;
+  }
+  .privacy {
+    background: linear-gradient(135deg, var(--navy), var(--teal));
+    color: #ffffff; border: 0;
+  }
+  .privacy p { color: #dbe6ee; }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+  .actions a {
+    display: inline-block; text-decoration: none; font-size: 14px; font-weight: 600;
+    border-radius: 8px; padding: 9px 16px;
+  }
+  .actions a.primary { background: var(--accent); color: #1a1105; }
+  .actions a.secondary { border: 1px solid var(--border); color: var(--text); }
+  .actions a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="../icons/icon128.png" alt="">
+    <h1 data-i18n="welcomeTitle">Rather's Link Shortener is ready</h1>
+  </header>
+  <p class="tag" data-i18n="welcomeTag">A link shortener that actually shortens links: your link stays your link, it just loses the tracking junk on the end.</p>
+
+  <div class="card">
+    <h2><span class="dot"></span><span data-i18n="welcomeAutoTitle">It's already working</span></h2>
+    <p data-i18n="welcomeAutoText">Visit any of nearly 300 covered sites and the address bar cleans itself in place, after the page loads, so nothing ever breaks. The link you copy is the clean one.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="dot"></span><span data-i18n="welcomeBadgeTitle">Watch the badge</span></h2>
+    <p data-i18n="welcomeBadgeText">The counter on the toolbar icon shows how much was cleaned on the page you are on. Click it to see exactly which parameters were removed, and to copy the clean link in any format.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="dot"></span><span data-i18n="welcomeCopyTitle">Clean any link, anywhere</span></h2>
+    <p data-i18n="welcomeCopyText">Right-click any link and choose "Copy clean URL". It works on every site, sees through redirect wrappers, and there is a keyboard shortcut, an address-bar keyword, and a bulk cleaner for whole emails too.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="dot"></span><span data-i18n="welcomeOptinsTitle">Three deeper modes, when you want them</span></h2>
+    <p data-i18n="welcomeOptinsText">In the popup's Options: clean every site you visit, block trackers before the request even leaves your browser, and skip tracker redirect pages entirely. All off by default; your browser asks for the extra permission only when you turn one on, and it is handed back when they are all off.</p>
+  </div>
+
+  <div class="card privacy">
+    <h2><span data-i18n="welcomePrivacyTitle">Zero data collection</span></h2>
+    <p data-i18n="welcomePrivacyText">No analytics, no telemetry, no network requests of any kind. Your settings are the only thing stored. Open source, so you can verify every word of that.</p>
+  </div>
+
+  <div class="actions">
+    <a class="primary" href="options.html" data-i18n="welcomeSettings">Open settings</a>
+    <a class="secondary" href="https://ratherlinks.com" target="_blank" rel="noopener">ratherlinks.com</a>
+    <a class="secondary" href="https://github.com/Tommytwolegs/link-shortener" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</div>
+<script src="i18n.js"></script>
+</body>
+</html>

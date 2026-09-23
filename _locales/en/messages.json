@@ -460,5 +460,97 @@
   },
   "optionsTitle": {
     "message": "Options"
+  },
+  "cmdCleanPage": {
+    "message": "Clean links on the current page"
+  },
+  "bmkTitle": {
+    "message": "Bookmark cleaner"
+  },
+  "bmkIntro": {
+    "message": "One-time cleanup for the bookmarks you already have. Your browser will ask for bookmark access when you scan; the permission is handed back automatically when the cleanup finishes, and as always nothing leaves your browser."
+  },
+  "bmkScan": {
+    "message": "Scan bookmarks"
+  },
+  "bmkScanning": {
+    "message": "Scanning..."
+  },
+  "bmkDenied": {
+    "message": "Bookmark access was declined."
+  },
+  "bmkNone": {
+    "message": "All clean. None of your $TOTAL$ bookmarks carry tracking junk.",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkFound": {
+    "message": "$COUNT$ of $TOTAL$ bookmarks can be cleaned:",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "bmkClean": {
+    "message": "Clean $COUNT$ bookmarks",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkDone": {
+    "message": "Cleaned $COUNT$ bookmarks. Bookmark access has been handed back.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Rather's Link Shortener is ready"
+  },
+  "welcomeTag": {
+    "message": "A link shortener that actually shortens links: your link stays your link, it just loses the tracking junk on the end."
+  },
+  "welcomeAutoTitle": {
+    "message": "It's already working"
+  },
+  "welcomeAutoText": {
+    "message": "Visit any of nearly 300 covered sites and the address bar cleans itself in place, after the page loads, so nothing ever breaks. The link you copy is the clean one."
+  },
+  "welcomeBadgeTitle": {
+    "message": "Watch the badge"
+  },
+  "welcomeBadgeText": {
+    "message": "The counter on the toolbar icon shows how much was cleaned on the page you are on. Click it to see exactly which parameters were removed, and to copy the clean link in any format."
+  },
+  "welcomeCopyTitle": {
+    "message": "Clean any link, anywhere"
+  },
+  "welcomeCopyText": {
+    "message": "Right-click any link and choose \"Copy clean URL\". It works on every site, sees through redirect wrappers, and there is a keyboard shortcut, an address-bar keyword, and a bulk cleaner for whole emails too."
+  },
+  "welcomeOptinsTitle": {
+    "message": "Three deeper modes, when you want them"
+  },
+  "welcomeOptinsText": {
+    "message": "In the popup's Options: clean every site you visit, block trackers before the request even leaves your browser, and skip tracker redirect pages entirely. All off by default; your browser asks for the extra permission only when you turn one on, and it is handed back when they are all off."
+  },
+  "welcomePrivacyTitle": {
+    "message": "Zero data collection"
+  },
+  "welcomePrivacyText": {
+    "message": "No analytics, no telemetry, no network requests of any kind. Your settings are the only thing stored. Open source, so you can verify every word of that."
+  },
+  "welcomeSettings": {
+    "message": "Open settings"
   }
 }

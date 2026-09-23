@@ -50,8 +50,18 @@
       'hsa_tgt', 'hsa_kw', 'hsa_mt', 'hsa_net', 'hsa_ver',
     ],
     '_bsft_': ['_bsft_aaid', '_bsft_eid', '_bsft_mime_type', '_bsft_link_id', '_bsft_tv'],
+    'bsft_': [
+      'bsft_clkid', 'bsft_eid', 'bsft_mid', 'bsft_uid',
+      'bsft_aaid', 'bsft_ek', 'bsft_tv', 'bsft_lx',
+    ],
     'iterable_': ['iterable_campaign', 'iterable_template'],
     'mailgun_': ['mailgun_cid', 'mailgun_mid'],
+    'itm_': ['itm_source', 'itm_medium', 'itm_campaign', 'itm_content', 'itm_term'],
+    '_sgm_': ['_sgm_campaign', '_sgm_source', '_sgm_action', '_sgm_term', '_sgm_pinned'],
+    'adjust_': [
+      'adjust_tracker', 'adjust_campaign', 'adjust_adgroup', 'adjust_creative',
+      'adjust_referrer', 'adjust_tracker_limit',
+    ],
   };
 
   // Hostname entries from the user's skip list, normalized for DNR's

@@ -460,5 +460,97 @@
   },
   "optionsTitle": {
     "message": "Opções"
+  },
+  "cmdCleanPage": {
+    "message": "Limpar os links da página atual"
+  },
+  "bmkTitle": {
+    "message": "Limpador de favoritos"
+  },
+  "bmkIntro": {
+    "message": "Limpeza única dos favoritos que você já tem. O navegador pedirá acesso aos favoritos ao escanear; a permissão é devolvida automaticamente ao terminar e, como sempre, nada sai do seu navegador."
+  },
+  "bmkScan": {
+    "message": "Escanear favoritos"
+  },
+  "bmkScanning": {
+    "message": "Escaneando..."
+  },
+  "bmkDenied": {
+    "message": "O acesso aos favoritos foi negado."
+  },
+  "bmkNone": {
+    "message": "Tudo limpo. Nenhum dos seus $TOTAL$ favoritos contém lixo de rastreamento.",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkFound": {
+    "message": "$COUNT$ de $TOTAL$ favoritos podem ser limpos:",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "bmkClean": {
+    "message": "Limpar $COUNT$ favoritos",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkDone": {
+    "message": "$COUNT$ favoritos limpos. O acesso aos favoritos foi devolvido.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "O Rather's Link Shortener está pronto"
+  },
+  "welcomeTag": {
+    "message": "Um encurtador que realmente encurta links: seu link continua sendo seu link, só perde o lixo de rastreamento no final."
+  },
+  "welcomeAutoTitle": {
+    "message": "Já está funcionando"
+  },
+  "welcomeAutoText": {
+    "message": "Em quase 300 sites cobertos, a barra de endereço se limpa sozinha depois que a página carrega, então nada quebra. O link que você copia é o limpo."
+  },
+  "welcomeBadgeTitle": {
+    "message": "Observe o selo"
+  },
+  "welcomeBadgeText": {
+    "message": "O contador no ícone da barra de ferramentas mostra quanto foi limpo na página atual. Clique nele para ver exatamente quais parâmetros foram removidos e copiar o link limpo em qualquer formato."
+  },
+  "welcomeCopyTitle": {
+    "message": "Limpe qualquer link, em qualquer lugar"
+  },
+  "welcomeCopyText": {
+    "message": "Clique com o botão direito em qualquer link e escolha \"Copiar URL limpa\". Funciona em todos os sites, enxerga através dos redirecionamentos, e há também um atalho de teclado, uma palavra-chave na barra de endereço e um limpador em massa para e-mails inteiros."
+  },
+  "welcomeOptinsTitle": {
+    "message": "Três modos avançados, quando você quiser"
+  },
+  "welcomeOptinsText": {
+    "message": "Nas Opções do popup: limpar todos os sites que você visita, bloquear rastreadores antes mesmo de a requisição sair do navegador e pular completamente as páginas de redirecionamento. Tudo desligado por padrão; o navegador pede a permissão extra apenas quando você ativa um deles, e ela é devolvida quando todos estão desligados."
+  },
+  "welcomePrivacyTitle": {
+    "message": "Zero coleta de dados"
+  },
+  "welcomePrivacyText": {
+    "message": "Sem análises, sem telemetria, sem requisições de rede de qualquer tipo. A única coisa armazenada são suas configurações. Código aberto, para você conferir cada palavra."
+  },
+  "welcomeSettings": {
+    "message": "Abrir configurações"
   }
 }

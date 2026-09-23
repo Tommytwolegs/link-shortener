@@ -460,5 +460,97 @@
   },
   "optionsTitle": {
     "message": "Opcje"
+  },
+  "cmdCleanPage": {
+    "message": "Wyczyść linki na bieżącej stronie"
+  },
+  "bmkTitle": {
+    "message": "Czyszczenie zakładek"
+  },
+  "bmkIntro": {
+    "message": "Jednorazowe czyszczenie istniejących zakładek. Podczas skanowania przeglądarka poprosi o dostęp do zakładek; uprawnienie jest automatycznie zwracane po zakończeniu, a jak zawsze nic nie opuszcza Twojej przeglądarki."
+  },
+  "bmkScan": {
+    "message": "Skanuj zakładki"
+  },
+  "bmkScanning": {
+    "message": "Skanowanie..."
+  },
+  "bmkDenied": {
+    "message": "Odmówiono dostępu do zakładek."
+  },
+  "bmkNone": {
+    "message": "Wszystko czyste. Żadna z $TOTAL$ zakładek nie zawiera śmieci śledzących.",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkFound": {
+    "message": "$COUNT$ z $TOTAL$ zakładek można wyczyścić:",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "bmkClean": {
+    "message": "Wyczyść $COUNT$ zakładek",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkDone": {
+    "message": "Wyczyszczono $COUNT$ zakładek. Dostęp do zakładek został zwrócony.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Rather's Link Shortener jest gotowy"
+  },
+  "welcomeTag": {
+    "message": "Skracacz linków, który naprawdę skraca linki: Twój link pozostaje Twoim linkiem, traci tylko śledzące śmieci na końcu."
+  },
+  "welcomeAutoTitle": {
+    "message": "Już działa"
+  },
+  "welcomeAutoText": {
+    "message": "Na prawie 300 obsługiwanych stronach pasek adresu czyści się sam po załadowaniu strony, więc nic się nie psuje. Kopiowany link jest już czysty."
+  },
+  "welcomeBadgeTitle": {
+    "message": "Obserwuj plakietkę"
+  },
+  "welcomeBadgeText": {
+    "message": "Licznik na ikonie paska narzędzi pokazuje, ile wyczyszczono na bieżącej stronie. Kliknij, aby zobaczyć dokładnie, które parametry usunięto, i skopiować czysty link w dowolnym formacie."
+  },
+  "welcomeCopyTitle": {
+    "message": "Wyczyść dowolny link, wszędzie"
+  },
+  "welcomeCopyText": {
+    "message": "Kliknij link prawym przyciskiem i wybierz \"Kopiuj czysty URL\". Działa na każdej stronie, przenika przez przekierowania śledzące, a do tego jest skrót klawiszowy, słowo kluczowe w pasku adresu i masowe czyszczenie całych e-maili."
+  },
+  "welcomeOptinsTitle": {
+    "message": "Trzy głębsze tryby, kiedy chcesz"
+  },
+  "welcomeOptinsText": {
+    "message": "W Opcjach wyskakującego okna: czyszczenie każdej odwiedzanej strony, blokowanie śledzików zanim żądanie opuści przeglądarkę i całkowite pomijanie stron przekierowań. Wszystko domyślnie wyłączone; przeglądarka prosi o dodatkowe uprawnienie tylko przy włączaniu, a oddaje je, gdy wszystko jest wyłączone."
+  },
+  "welcomePrivacyTitle": {
+    "message": "Zero zbierania danych"
+  },
+  "welcomePrivacyText": {
+    "message": "Bez analityki, bez telemetrii, bez żadnych żądań sieciowych. Zapisywane są tylko Twoje ustawienia. Otwarty kod źródłowy, więc możesz zweryfikować każde słowo."
+  },
+  "welcomeSettings": {
+    "message": "Otwórz ustawienia"
   }
 }

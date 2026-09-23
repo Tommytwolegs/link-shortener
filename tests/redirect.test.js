@@ -53,7 +53,7 @@ check('google search NOT a redirector',
   null);
 check('garbage passthrough', unwrapRedirects('not a url'), 'not a url'.replace('not a url','not a url'));
 check('unwrapOnce on garbage', unwrapOnce('not a url'), null);
-check('redirector count', REDIRECTORS.length, 36);
+check('redirector count', REDIRECTORS.length, 38); // v1.14: +l.threads.net, +l.wl.co
 
 // --- v1.10: Skimlinks affiliate wrappers ---
 check('go.redirectingat.com unwrapped',
@@ -246,6 +246,25 @@ check('l.instagram.com unwrapped',
   'https://example.com/shop');
 check('l.messenger.com unwrapped',
   unwrapRedirects('https://l.messenger.com/l.php?u=https%3A%2F%2Fexample.com%2F&h=AT1a'),
+  'https://example.com/');
+
+// Threads outbound (v1.14) — same linkshim family as l.instagram.com
+check('l.threads.net unwrapped',
+  unwrapRedirects('https://l.threads.net/?u=https%3A%2F%2Fexample.com%2Farticle%3Fid%3D7&e=AT2bXw'),
+  'https://example.com/article?id=7');
+check('threads.net itself NOT treated as redirector',
+  unwrapOnce('https://www.threads.net/@someuser/post/C1a2b3'),
+  null);
+
+// WhatsApp Web/Desktop wrapper (v1.14): l.wl.co/l?u=<encoded>
+check('l.wl.co unwrapped',
+  unwrapRedirects('https://l.wl.co/l?u=https%3A%2F%2Fexample.com%2Fdeal%3Fsku%3D42'),
+  'https://example.com/deal?sku=42');
+check('l.wl.co without /l path NOT unwrapped',
+  unwrapOnce('https://l.wl.co/?u=https%3A%2F%2Fexample.com%2F'),
+  null);
+check('l.wl.co nested tracking cleaned after unwrap',
+  unwrapRedirects('https://l.wl.co/l?u=https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fexample.com%252F'),
   'https://example.com/');
 
 // Steam linkfilter (u= current, url= legacy)

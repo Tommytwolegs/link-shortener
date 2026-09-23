@@ -13,6 +13,8 @@
 //   google.com/url?q=            Gmail + Google Docs outbound links
 //   l.facebook.com/l.php?u=      Facebook (+ lm. and l.messenger.com)
 //   l.instagram.com/?u=          Instagram bio/DM links
+//   l.threads.net/?u=            Threads outbound links
+//   l.wl.co/l?u=                 WhatsApp (Web/Desktop) link wrapper
 //   out.reddit.com/?url=         Reddit outbound
 //   youtube.com/redirect?q=      YouTube descriptions/comments
 //   youtube.com/attribution_link?u=             YouTube attribution links
@@ -156,6 +158,12 @@
     { host: /^lm\.facebook\.com$/i, path: /^\/l\.php\/?$/, params: ['u'] },
     { host: /^l\.messenger\.com$/i, path: /^\/l\.php\/?$/, params: ['u'] },
     { host: /^l\.instagram\.com$/i, path: /^\/?$/, params: ['u'] },
+    // Threads outbound wrapper — same linkshim family as l.instagram.com.
+    { host: /^l\.threads\.net$/i, path: /^\/?$/, params: ['u'] },
+    // WhatsApp Web/Desktop wraps clicked links through l.wl.co/l?u=.
+    // Target is percent-encoded in practice, so the click-skip rides the
+    // tab layer (no DNR rule — consistent with the encoded-target policy).
+    { host: /^l\.wl\.co$/i, path: /^\/l\/?$/i, params: ['u'] },
     { host: /^out\.reddit\.com$/i, path: /^\/?$/, params: ['url'] },
     { host: /^(?:www\.|m\.)?youtube\.com$/i, path: /^\/redirect\/?$/, params: ['q'] },
     // YouTube attribution wrapper: u= is usually a RELATIVE path

@@ -460,5 +460,97 @@
   },
   "optionsTitle": {
     "message": "选项"
+  },
+  "cmdCleanPage": {
+    "message": "清理当前页面的链接"
+  },
+  "bmkTitle": {
+    "message": "书签清理器"
+  },
+  "bmkIntro": {
+    "message": "对现有书签进行一次性清理。扫描时浏览器会请求书签访问权限；清理完成后权限会自动交还，而且一如既往，任何数据都不会离开您的浏览器。"
+  },
+  "bmkScan": {
+    "message": "扫描书签"
+  },
+  "bmkScanning": {
+    "message": "正在扫描..."
+  },
+  "bmkDenied": {
+    "message": "书签访问被拒绝。"
+  },
+  "bmkNone": {
+    "message": "全部干净。您的 $TOTAL$ 个书签均不含跟踪参数。",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkFound": {
+    "message": "$TOTAL$ 个书签中有 $COUNT$ 个可以清理：",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "bmkClean": {
+    "message": "清理 $COUNT$ 个书签",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkDone": {
+    "message": "已清理 $COUNT$ 个书签。书签访问权限已交还。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Rather's Link Shortener 已就绪"
+  },
+  "welcomeTag": {
+    "message": "一个真正缩短链接的链接缩短器：链接还是原来的链接，只是去掉了末尾的跟踪参数。"
+  },
+  "welcomeAutoTitle": {
+    "message": "已经开始工作"
+  },
+  "welcomeAutoText": {
+    "message": "在近 300 个支持的网站上，页面加载后地址栏会自动清理，因此不会破坏任何功能。您复制的就是干净的链接。"
+  },
+  "welcomeBadgeTitle": {
+    "message": "留意角标"
+  },
+  "welcomeBadgeText": {
+    "message": "工具栏图标上的计数器显示当前页面清理了多少内容。点击它可以查看具体移除了哪些参数，并以任意格式复制干净的链接。"
+  },
+  "welcomeCopyTitle": {
+    "message": "随时随地清理任何链接"
+  },
+  "welcomeCopyText": {
+    "message": "右键点击任何链接，选择\"复制干净的 URL\"。它适用于所有网站，能看穿重定向包装，还有键盘快捷键、地址栏关键字，以及可处理整封邮件的批量清理器。"
+  },
+  "welcomeOptinsTitle": {
+    "message": "需要时可开启的三种深度模式"
+  },
+  "welcomeOptinsText": {
+    "message": "在弹出窗口的选项中：清理您访问的每个网站、在请求离开浏览器之前拦截跟踪器、完全跳过跟踪重定向页面。全部默认关闭；只有开启时浏览器才会请求额外权限，全部关闭后权限会交还。"
+  },
+  "welcomePrivacyTitle": {
+    "message": "零数据收集"
+  },
+  "welcomePrivacyText": {
+    "message": "没有分析，没有遥测，没有任何网络请求。唯一存储的是您的设置。开源，因此每一个字您都可以验证。"
+  },
+  "welcomeSettings": {
+    "message": "打开设置"
   }
 }

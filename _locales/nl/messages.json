@@ -460,5 +460,97 @@
   },
   "optionsTitle": {
     "message": "Opties"
+  },
+  "cmdCleanPage": {
+    "message": "Links op de huidige pagina opschonen"
+  },
+  "bmkTitle": {
+    "message": "Bladwijzer-opschoner"
+  },
+  "bmkIntro": {
+    "message": "Eenmalige opschoning van uw bestaande bladwijzers. De browser vraagt om bladwijzertoegang bij het scannen; de machtiging wordt na afloop automatisch teruggegeven en zoals altijd verlaat niets uw browser."
+  },
+  "bmkScan": {
+    "message": "Bladwijzers scannen"
+  },
+  "bmkScanning": {
+    "message": "Bezig met scannen..."
+  },
+  "bmkDenied": {
+    "message": "Bladwijzertoegang is geweigerd."
+  },
+  "bmkNone": {
+    "message": "Alles schoon. Geen van uw $TOTAL$ bladwijzers bevat trackingrommel.",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkFound": {
+    "message": "$COUNT$ van de $TOTAL$ bladwijzers kunnen worden opgeschoond:",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "bmkClean": {
+    "message": "$COUNT$ bladwijzers opschonen",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkDone": {
+    "message": "$COUNT$ bladwijzers opgeschoond. De bladwijzertoegang is teruggegeven.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Rather's Link Shortener is klaar"
+  },
+  "welcomeTag": {
+    "message": "Een linkverkorter die links echt korter maakt: uw link blijft uw link, alleen de trackingrommel aan het einde verdwijnt."
+  },
+  "welcomeAutoTitle": {
+    "message": "Het werkt al"
+  },
+  "welcomeAutoText": {
+    "message": "Op bijna 300 ondersteunde sites schoont de adresbalk zichzelf op nadat de pagina is geladen, dus er gaat nooit iets kapot. De link die u kopieert is de schone."
+  },
+  "welcomeBadgeTitle": {
+    "message": "Let op de badge"
+  },
+  "welcomeBadgeText": {
+    "message": "De teller op het werkbalkpictogram laat zien hoeveel er op de huidige pagina is opgeschoond. Klik erop om precies te zien welke parameters zijn verwijderd en om de schone link in elk formaat te kopiëren."
+  },
+  "welcomeCopyTitle": {
+    "message": "Elke link opschonen, overal"
+  },
+  "welcomeCopyText": {
+    "message": "Klik met de rechtermuisknop op een link en kies \"Schone URL kopiëren\". Het werkt op elke site, kijkt dwars door omleidingswrappers heen, en er is ook een sneltoets, een adresbalk-trefwoord en een bulkopschoner voor hele e-mails."
+  },
+  "welcomeOptinsTitle": {
+    "message": "Drie diepere modi, wanneer u wilt"
+  },
+  "welcomeOptinsText": {
+    "message": "In de Opties van de pop-up: elke bezochte site opschonen, trackers blokkeren voordat het verzoek uw browser verlaat, en tracker-omleidingspagina's volledig overslaan. Alles staat standaard uit; de browser vraagt alleen om de extra machtiging wanneer u er een inschakelt, en geeft die terug wanneer alles uit staat."
+  },
+  "welcomePrivacyTitle": {
+    "message": "Geen gegevensverzameling"
+  },
+  "welcomePrivacyText": {
+    "message": "Geen analytics, geen telemetrie, geen enkele netwerkaanvraag. Alleen uw instellingen worden opgeslagen. Open source, dus u kunt elk woord hiervan verifiëren."
+  },
+  "welcomeSettings": {
+    "message": "Instellingen openen"
   }
 }

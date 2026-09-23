@@ -577,6 +577,7 @@
     gear.textContent = '⚙';
     gear.title = t('siteOptGear', 'Site options');
     gear.setAttribute('aria-label', t('siteOptGear', 'Site options'));
+    gear.setAttribute('aria-expanded', 'false');
     // Inside a <label>, a plain click would toggle the site checkbox too.
     const optRow = buildOptRow(key, opts);
     gear.addEventListener('click', (e) => {
@@ -584,6 +585,7 @@
       e.stopPropagation();
       optRow.hidden = !optRow.hidden;
       gear.classList.toggle('open', !optRow.hidden);
+      gear.setAttribute('aria-expanded', optRow.hidden ? 'false' : 'true');
       if (!optRow.hidden) optRow.refreshFromStorage();
     });
     lab.insertBefore(gear, ctrl);

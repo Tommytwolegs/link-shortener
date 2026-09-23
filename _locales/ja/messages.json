@@ -460,5 +460,97 @@
   },
   "optionsTitle": {
     "message": "オプション"
+  },
+  "cmdCleanPage": {
+    "message": "現在のページのリンクをクリーンアップ"
+  },
+  "bmkTitle": {
+    "message": "ブックマーククリーナー"
+  },
+  "bmkIntro": {
+    "message": "既存のブックマークを一度だけクリーンアップします。スキャン時にブラウザがブックマークへのアクセスを求めます。完了すると権限は自動的に返却され、いつも通りデータがブラウザの外に出ることはありません。"
+  },
+  "bmkScan": {
+    "message": "ブックマークをスキャン"
+  },
+  "bmkScanning": {
+    "message": "スキャン中..."
+  },
+  "bmkDenied": {
+    "message": "ブックマークへのアクセスが拒否されました。"
+  },
+  "bmkNone": {
+    "message": "すべてクリーンです。$TOTAL$ 件のブックマークにトラッキング情報は見つかりませんでした。",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkFound": {
+    "message": "$TOTAL$ 件中 $COUNT$ 件のブックマークをクリーンアップできます:",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "bmkClean": {
+    "message": "$COUNT$ 件のブックマークをクリーンアップ",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkDone": {
+    "message": "$COUNT$ 件のブックマークをクリーンアップしました。ブックマークへのアクセス権は返却されました。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Rather's Link Shortener の準備ができました"
+  },
+  "welcomeTag": {
+    "message": "本当にリンクを短くするリンク短縮ツール。リンクはそのまま、末尾のトラッキング情報だけがなくなります。"
+  },
+  "welcomeAutoTitle": {
+    "message": "すでに動作しています"
+  },
+  "welcomeAutoText": {
+    "message": "対応する約300のサイトでは、ページの読み込み後にアドレスバーが自動的にクリーンになります。読み込み後に処理するため、何も壊れません。コピーするリンクは常にクリーンです。"
+  },
+  "welcomeBadgeTitle": {
+    "message": "バッジに注目"
+  },
+  "welcomeBadgeText": {
+    "message": "ツールバーアイコンのカウンターは、表示中のページでどれだけクリーンアップされたかを示します。クリックすると、削除されたパラメーターを確認したり、クリーンなリンクを好きな形式でコピーしたりできます。"
+  },
+  "welcomeCopyTitle": {
+    "message": "どんなリンクもどこでもクリーンに"
+  },
+  "welcomeCopyText": {
+    "message": "リンクを右クリックして「クリーンなURLをコピー」を選択。どのサイトでも機能し、リダイレクトのラッパーも見抜きます。キーボードショートカット、アドレスバーのキーワード、メール全体を処理する一括クリーナーもあります。"
+  },
+  "welcomeOptinsTitle": {
+    "message": "必要なときに使える3つの強力モード"
+  },
+  "welcomeOptinsText": {
+    "message": "ポップアップのオプションでは、訪問するすべてのサイトのクリーンアップ、リクエストがブラウザを出る前のトラッカーのブロック、トラッカーのリダイレクトページの完全スキップが可能です。すべてデフォルトでオフ。オンにしたときだけブラウザが追加の権限を求め、すべてオフにすると権限は返却されます。"
+  },
+  "welcomePrivacyTitle": {
+    "message": "データ収集ゼロ"
+  },
+  "welcomePrivacyText": {
+    "message": "分析なし、テレメトリーなし、いかなるネットワークリクエストもありません。保存されるのは設定だけです。オープンソースなので、そのすべてを検証できます。"
+  },
+  "welcomeSettings": {
+    "message": "設定を開く"
   }
 }

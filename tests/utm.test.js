@@ -338,6 +338,66 @@ const CASES = [
   { name: 'sfnsn + fbclid on a recipe link (FB app share)',
     input: 'https://cook.example.com/pie?sfnsn=mo&fbclid=IwAR0abc&step=2',
     expected: 'https://cook.example.com/pie?step=2' },
+
+  // ----- v1.14 sweep (AdGuard TrackParamFilter diff, 2026-09)
+  { name: 'REGRESSION: Blueshift params have no leading underscore (bsft_eid)',
+    input: 'https://example.com/offer?bsft_eid=abc123&bsft_clkid=def456',
+    expected: 'https://example.com/offer' },
+  { name: 'Blueshift underscore form still covered (_bsft_eid)',
+    input: 'https://example.com/?_bsft_eid=abc',
+    expected: 'https://example.com/' },
+  { name: 'ysclid + ym_tracking_id (Yandex Metrika)',
+    input: 'https://example.com/page?ysclid=lx1abc&ym_tracking_id=99',
+    expected: 'https://example.com/page' },
+  { name: 'tgclid (Telegram Ads)',
+    input: 'https://example.com/?tgclid=tg_abc',
+    expected: 'https://example.com/' },
+  { name: 'gad_campaignid (newer Google Ads marker)',
+    input: 'https://example.com/?gad_source=1&gad_campaignid=222',
+    expected: 'https://example.com/' },
+  { name: '_gl cross-domain linker stripped, real param kept',
+    input: 'https://example.com/cart?_gl=1*abc123*_ga*MTIz&sku=9',
+    expected: 'https://example.com/cart?sku=9' },
+  { name: '_bhlid (beehiiv recipient id)',
+    input: 'https://example.com/issue-42?_bhlid=deadbeef',
+    expected: 'https://example.com/issue-42' },
+  { name: '_cldee + _clde (Dynamics 365 marketing email)',
+    input: 'https://example.com/?_cldee=AbC&_clde=xyz',
+    expected: 'https://example.com/' },
+  { name: 'xtor (AT Internet) + at_recipient_id',
+    input: 'https://news.example.fr/article?xtor=EPR-32&at_recipient_id=u123',
+    expected: 'https://news.example.fr/article' },
+  { name: 'wt_mc (Mapp) alongside functional param',
+    input: 'https://docs.example.com/api?wt_mc=email.body.link&view=full',
+    expected: 'https://docs.example.com/api?view=full' },
+  { name: 'x-clickref (Partnerize)',
+    input: 'https://store.example.com/?x-clickref=1101abc',
+    expected: 'https://store.example.com/' },
+  { name: 'itm_ prefix (internal campaigns)',
+    input: 'https://example.com/home?itm_source=hp&itm_campaign=banner&itm_custom=x',
+    expected: 'https://example.com/home' },
+  { name: '_sgm_ prefix (Segmentify)',
+    input: 'https://shop.example.com/p/1?_sgm_campaign=rec&_sgm_action=click',
+    expected: 'https://shop.example.com/p/1' },
+  { name: 'adjust_ prefix strips, bare adj_t does NOT (deep-link router)',
+    input: 'https://example.com/?adjust_tracker=abc&adjust_campaign=x&adj_t=keepme',
+    expected: 'https://example.com/?adj_t=keepme' },
+  { name: 'AppsFlyer measurement set (af_xp, af_ad, af_adset)',
+    input: 'https://example.com/?af_xp=social&af_ad=ad1&af_adset=set1&af_dp=app%3A%2F%2Fhome',
+    expected: 'https://example.com/?af_dp=app%3A%2F%2Fhome' },
+  { name: 'gps_adid (advertising id in a URL)',
+    input: 'https://example.com/?gps_adid=38400000-8cf0',
+    expected: 'https://example.com/' },
+  { name: 'Attentive SMS set',
+    input: 'https://example.com/sale?sms_click=1&sms_source=att&sms_uph=hash',
+    expected: 'https://example.com/sale' },
+  { name: 'Triple Whale set on a Shopify store',
+    input: 'https://store.example.com/products/x?tw_source=klaviyo&tw_medium=email&tw_profile_id=p1&variant=2',
+    expected: 'https://store.example.com/products/x?variant=2' },
+  { name: 'keepParams beats the new sweep entries too',
+    input: 'https://example.com/?ysclid=keep_me&x=1',
+    options: { keepParams: ['ysclid'] },
+    expected: 'https://example.com/?ysclid=keep_me&x=1' },
 ];
 
 let passed = 0;
@@ -354,10 +414,12 @@ function check(label, actual, expected) {
 }
 
 for (const c of CASES) {
-  const got = stripTrackingParams(c.input);
+  const got = stripTrackingParams(c.input, c.options);
   check('strip - ' + c.name, got, c.expected);
-  const expectedNeeds = c.input !== c.expected;
-  check('needs - ' + c.name, needsStripping(c.input), expectedNeeds);
+  if (!c.options) {
+    const expectedNeeds = c.input !== c.expected;
+    check('needs - ' + c.name, needsStripping(c.input), expectedNeeds);
+  }
 }
 
 // isTrackingParam unit checks
@@ -368,6 +430,12 @@ check('isTrackingParam: pk_campaign true (prefix)', isTrackingParam('pk_campaign
 check('isTrackingParam: hsa_acc true (prefix)', isTrackingParam('hsa_acc'), true);
 check('isTrackingParam: mtm_kwd true (Matomo modern prefix)', isTrackingParam('mtm_kwd'), true);
 check('isTrackingParam: _bsft_eid true (Blueshift prefix)', isTrackingParam('_bsft_eid'), true);
+check('isTrackingParam: bsft_eid true (Blueshift wild form, v1.14 fix)', isTrackingParam('bsft_eid'), true);
+check('isTrackingParam: itm_source true (v1.14 prefix)', isTrackingParam('itm_source'), true);
+check('isTrackingParam: adjust_campaign true (v1.14 prefix)', isTrackingParam('adjust_campaign'), true);
+check('isTrackingParam: adj_t false (deep-link router, deliberately kept)', isTrackingParam('adj_t'), false);
+check('isTrackingParam: ysclid true (v1.14)', isTrackingParam('ysclid'), true);
+check('isTrackingParam: _bhlid true (v1.14)', isTrackingParam('_bhlid'), true);
 check('isTrackingParam: iterable_campaign true (Iterable prefix)', isTrackingParam('iterable_campaign'), true);
 check('isTrackingParam: ttclid true', isTrackingParam('ttclid'), true);
 check('isTrackingParam: twclid true', isTrackingParam('twclid'), true);

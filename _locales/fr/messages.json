@@ -460,5 +460,97 @@
   },
   "optionsTitle": {
     "message": "Options"
+  },
+  "cmdCleanPage": {
+    "message": "Nettoyer les liens de la page actuelle"
+  },
+  "bmkTitle": {
+    "message": "Nettoyeur de favoris"
+  },
+  "bmkIntro": {
+    "message": "Nettoyage ponctuel des favoris que vous avez déjà. Le navigateur demandera l'accès aux favoris lors de l'analyse ; la permission est rendue automatiquement une fois le nettoyage terminé et, comme toujours, rien ne quitte votre navigateur."
+  },
+  "bmkScan": {
+    "message": "Analyser les favoris"
+  },
+  "bmkScanning": {
+    "message": "Analyse en cours..."
+  },
+  "bmkDenied": {
+    "message": "L'accès aux favoris a été refusé."
+  },
+  "bmkNone": {
+    "message": "Tout est propre. Aucun de vos $TOTAL$ favoris ne contient de traceurs.",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkFound": {
+    "message": "$COUNT$ favoris sur $TOTAL$ peuvent être nettoyés :",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "bmkClean": {
+    "message": "Nettoyer $COUNT$ favoris",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkDone": {
+    "message": "$COUNT$ favoris nettoyés. L'accès aux favoris a été rendu.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Rather's Link Shortener est prêt"
+  },
+  "welcomeTag": {
+    "message": "Un raccourcisseur qui raccourcit vraiment les liens : votre lien reste votre lien, il perd juste les traceurs collés à la fin."
+  },
+  "welcomeAutoTitle": {
+    "message": "C'est déjà actif"
+  },
+  "welcomeAutoText": {
+    "message": "Sur près de 300 sites couverts, la barre d'adresse se nettoie d'elle-même après le chargement de la page, donc rien ne casse jamais. Le lien que vous copiez est le lien propre."
+  },
+  "welcomeBadgeTitle": {
+    "message": "Surveillez le badge"
+  },
+  "welcomeBadgeText": {
+    "message": "Le compteur sur l'icône de la barre d'outils indique ce qui a été nettoyé sur la page en cours. Cliquez dessus pour voir exactement quels paramètres ont été retirés et copier le lien propre dans le format de votre choix."
+  },
+  "welcomeCopyTitle": {
+    "message": "Nettoyez n'importe quel lien, partout"
+  },
+  "welcomeCopyText": {
+    "message": "Faites un clic droit sur n'importe quel lien et choisissez « Copier l'URL propre ». Cela fonctionne sur tous les sites, voit à travers les redirections traceuses, et il existe aussi un raccourci clavier, un mot-clé de barre d'adresse et un nettoyeur en masse pour des e-mails entiers."
+  },
+  "welcomeOptinsTitle": {
+    "message": "Trois modes avancés, quand vous les voulez"
+  },
+  "welcomeOptinsText": {
+    "message": "Dans les Options du popup : nettoyer tous les sites que vous visitez, bloquer les traceurs avant même que la requête quitte votre navigateur, et sauter entièrement les pages de redirection traceuses. Tout est désactivé par défaut ; le navigateur ne demande la permission supplémentaire que lorsque vous en activez un, et elle est rendue quand tout est désactivé."
+  },
+  "welcomePrivacyTitle": {
+    "message": "Zéro collecte de données"
+  },
+  "welcomePrivacyText": {
+    "message": "Pas d'analyse, pas de télémétrie, aucune requête réseau d'aucune sorte. Seuls vos réglages sont enregistrés. Open source, pour que vous puissiez vérifier chaque mot."
+  },
+  "welcomeSettings": {
+    "message": "Ouvrir les réglages"
   }
 }

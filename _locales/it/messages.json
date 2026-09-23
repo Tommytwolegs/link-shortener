@@ -460,5 +460,97 @@
   },
   "optionsTitle": {
     "message": "Opzioni"
+  },
+  "cmdCleanPage": {
+    "message": "Pulisci i link della pagina corrente"
+  },
+  "bmkTitle": {
+    "message": "Pulizia dei segnalibri"
+  },
+  "bmkIntro": {
+    "message": "Pulizia una tantum dei segnalibri esistenti. Il browser chiederà l'accesso ai segnalibri durante la scansione; il permesso viene restituito automaticamente al termine e, come sempre, nulla lascia il tuo browser."
+  },
+  "bmkScan": {
+    "message": "Scansiona i segnalibri"
+  },
+  "bmkScanning": {
+    "message": "Scansione in corso..."
+  },
+  "bmkDenied": {
+    "message": "L'accesso ai segnalibri è stato negato."
+  },
+  "bmkNone": {
+    "message": "Tutto pulito. Nessuno dei tuoi $TOTAL$ segnalibri contiene tracciamenti.",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkFound": {
+    "message": "$COUNT$ segnalibri su $TOTAL$ possono essere puliti:",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "bmkClean": {
+    "message": "Pulisci $COUNT$ segnalibri",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkDone": {
+    "message": "$COUNT$ segnalibri puliti. L'accesso ai segnalibri è stato restituito.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Rather's Link Shortener è pronto"
+  },
+  "welcomeTag": {
+    "message": "Un accorcia-link che accorcia davvero i link: il tuo link resta il tuo link, perde solo la zavorra di tracciamento in coda."
+  },
+  "welcomeAutoTitle": {
+    "message": "È già al lavoro"
+  },
+  "welcomeAutoText": {
+    "message": "Su quasi 300 siti coperti la barra degli indirizzi si pulisce da sola, dopo il caricamento della pagina, così non si rompe mai nulla. Il link che copi è quello pulito."
+  },
+  "welcomeBadgeTitle": {
+    "message": "Osserva il contatore"
+  },
+  "welcomeBadgeText": {
+    "message": "Il contatore sull'icona mostra quanto è stato pulito nella pagina corrente. Cliccalo per vedere esattamente quali parametri sono stati rimossi e per copiare il link pulito in qualsiasi formato."
+  },
+  "welcomeCopyTitle": {
+    "message": "Pulisci qualsiasi link, ovunque"
+  },
+  "welcomeCopyText": {
+    "message": "Fai clic destro su un link e scegli \"Copia URL pulito\". Funziona su ogni sito, vede attraverso i wrapper di reindirizzamento, e ci sono anche una scorciatoia da tastiera, una parola chiave nella barra degli indirizzi e una pulizia in blocco per intere email."
+  },
+  "welcomeOptinsTitle": {
+    "message": "Tre modalità avanzate, quando le vuoi"
+  },
+  "welcomeOptinsText": {
+    "message": "Nelle Opzioni del popup: pulire ogni sito che visiti, bloccare i tracker prima che la richiesta lasci il browser e saltare del tutto le pagine di reindirizzamento. Tutto disattivato per impostazione predefinita; il browser chiede il permesso extra solo quando ne attivi una, e lo restituisce quando sono tutte spente."
+  },
+  "welcomePrivacyTitle": {
+    "message": "Zero raccolta dati"
+  },
+  "welcomePrivacyText": {
+    "message": "Niente analisi, niente telemetria, nessuna richiesta di rete di alcun tipo. Le uniche cose salvate sono le tue impostazioni. Open source, così puoi verificare ogni parola."
+  },
+  "welcomeSettings": {
+    "message": "Apri le impostazioni"
   }
 }

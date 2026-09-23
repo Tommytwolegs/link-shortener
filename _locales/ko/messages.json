@@ -460,5 +460,97 @@
   },
   "optionsTitle": {
     "message": "옵션"
+  },
+  "cmdCleanPage": {
+    "message": "현재 페이지의 링크 정리"
+  },
+  "bmkTitle": {
+    "message": "북마크 클리너"
+  },
+  "bmkIntro": {
+    "message": "이미 저장된 북마크를 한 번에 정리합니다. 스캔 시 브라우저가 북마크 접근 권한을 요청하며, 정리가 끝나면 권한은 자동으로 반환됩니다. 언제나처럼 어떤 데이터도 브라우저 밖으로 나가지 않습니다."
+  },
+  "bmkScan": {
+    "message": "북마크 스캔"
+  },
+  "bmkScanning": {
+    "message": "스캔 중..."
+  },
+  "bmkDenied": {
+    "message": "북마크 접근이 거부되었습니다."
+  },
+  "bmkNone": {
+    "message": "모두 깨끗합니다. 북마크 $TOTAL$개에 추적 정보가 없습니다.",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkFound": {
+    "message": "북마크 $TOTAL$개 중 $COUNT$개를 정리할 수 있습니다:",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "bmkClean": {
+    "message": "북마크 $COUNT$개 정리",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkDone": {
+    "message": "북마크 $COUNT$개를 정리했습니다. 북마크 접근 권한이 반환되었습니다.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Rather's Link Shortener가 준비되었습니다"
+  },
+  "welcomeTag": {
+    "message": "정말로 링크를 짧게 만드는 링크 단축기. 링크는 그대로, 끝에 붙은 추적 정보만 사라집니다."
+  },
+  "welcomeAutoTitle": {
+    "message": "이미 작동 중입니다"
+  },
+  "welcomeAutoText": {
+    "message": "약 300개의 지원 사이트에서 페이지가 로드된 후 주소창이 자동으로 정리됩니다. 로드 후에 처리하므로 아무것도 깨지지 않습니다. 복사하는 링크는 항상 깨끗합니다."
+  },
+  "welcomeBadgeTitle": {
+    "message": "배지를 확인하세요"
+  },
+  "welcomeBadgeText": {
+    "message": "툴바 아이콘의 카운터는 현재 페이지에서 얼마나 정리되었는지 보여줍니다. 클릭하면 어떤 매개변수가 제거되었는지 확인하고 원하는 형식으로 깨끗한 링크를 복사할 수 있습니다."
+  },
+  "welcomeCopyTitle": {
+    "message": "어디서든 어떤 링크든 정리"
+  },
+  "welcomeCopyText": {
+    "message": "링크를 오른쪽 클릭하고 \"깨끗한 URL 복사\"를 선택하세요. 모든 사이트에서 작동하고 리디렉션 래퍼도 꿰뚫어 봅니다. 키보드 단축키, 주소창 키워드, 이메일 전체를 처리하는 대량 클리너도 있습니다."
+  },
+  "welcomeOptinsTitle": {
+    "message": "원할 때 켜는 세 가지 심화 모드"
+  },
+  "welcomeOptinsText": {
+    "message": "팝업의 옵션에서: 방문하는 모든 사이트 정리, 요청이 브라우저를 떠나기 전에 추적기 차단, 추적 리디렉션 페이지 완전히 건너뛰기. 모두 기본적으로 꺼져 있으며, 하나를 켤 때만 브라우저가 추가 권한을 요청하고 모두 끄면 권한이 반환됩니다."
+  },
+  "welcomePrivacyTitle": {
+    "message": "데이터 수집 제로"
+  },
+  "welcomePrivacyText": {
+    "message": "분석 없음, 원격 측정 없음, 어떤 종류의 네트워크 요청도 없습니다. 저장되는 것은 설정뿐입니다. 오픈 소스이므로 이 모든 것을 직접 확인할 수 있습니다."
+  },
+  "welcomeSettings": {
+    "message": "설정 열기"
   }
 }

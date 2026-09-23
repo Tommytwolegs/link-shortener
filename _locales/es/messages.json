@@ -460,5 +460,97 @@
   },
   "optionsTitle": {
     "message": "Opciones"
+  },
+  "cmdCleanPage": {
+    "message": "Limpiar los enlaces de la página actual"
+  },
+  "bmkTitle": {
+    "message": "Limpiador de marcadores"
+  },
+  "bmkIntro": {
+    "message": "Limpieza única de los marcadores que ya tiene. El navegador pedirá acceso a los marcadores al escanear; el permiso se devuelve automáticamente al terminar y, como siempre, nada sale de su navegador."
+  },
+  "bmkScan": {
+    "message": "Escanear marcadores"
+  },
+  "bmkScanning": {
+    "message": "Escaneando..."
+  },
+  "bmkDenied": {
+    "message": "Se rechazó el acceso a los marcadores."
+  },
+  "bmkNone": {
+    "message": "Todo limpio. Ninguno de sus $TOTAL$ marcadores contiene basura de rastreo.",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkFound": {
+    "message": "$COUNT$ de $TOTAL$ marcadores se pueden limpiar:",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "bmkClean": {
+    "message": "Limpiar $COUNT$ marcadores",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bmkDone": {
+    "message": "Se limpiaron $COUNT$ marcadores. El acceso a los marcadores se ha devuelto.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Rather's Link Shortener está listo"
+  },
+  "welcomeTag": {
+    "message": "Un acortador que realmente acorta los enlaces: su enlace sigue siendo su enlace, solo pierde la basura de rastreo del final."
+  },
+  "welcomeAutoTitle": {
+    "message": "Ya está funcionando"
+  },
+  "welcomeAutoText": {
+    "message": "En casi 300 sitios cubiertos, la barra de direcciones se limpia sola después de cargar la página, así que nada se rompe. El enlace que copia es el limpio."
+  },
+  "welcomeBadgeTitle": {
+    "message": "Observe la insignia"
+  },
+  "welcomeBadgeText": {
+    "message": "El contador del icono muestra cuánto se limpió en la página actual. Haga clic para ver exactamente qué parámetros se eliminaron y copiar el enlace limpio en cualquier formato."
+  },
+  "welcomeCopyTitle": {
+    "message": "Limpie cualquier enlace, donde sea"
+  },
+  "welcomeCopyText": {
+    "message": "Haga clic derecho en cualquier enlace y elija \"Copiar URL limpia\". Funciona en todos los sitios, ve a través de los redireccionamientos, y también hay un atajo de teclado, una palabra clave en la barra de direcciones y un limpiador masivo para correos enteros."
+  },
+  "welcomeOptinsTitle": {
+    "message": "Tres modos avanzados, cuando los quiera"
+  },
+  "welcomeOptinsText": {
+    "message": "En las Opciones del popup: limpiar todos los sitios que visita, bloquear rastreadores antes de que la petición salga del navegador y saltarse por completo las páginas de redirección. Todo desactivado por defecto; el navegador pide el permiso extra solo al activar uno, y se devuelve cuando todos están apagados."
+  },
+  "welcomePrivacyTitle": {
+    "message": "Cero recopilación de datos"
+  },
+  "welcomePrivacyText": {
+    "message": "Sin análisis, sin telemetría, sin peticiones de red de ningún tipo. Lo único que se guarda son sus ajustes. Código abierto, para que pueda verificar cada palabra."
+  },
+  "welcomeSettings": {
+    "message": "Abrir ajustes"
   }
 }

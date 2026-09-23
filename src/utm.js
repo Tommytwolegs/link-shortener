@@ -81,6 +81,10 @@
   const TRACKING_PARAMS = new Set([
     // Google Ads
     'gclid', 'gclsrc', 'dclid', 'gbraid', 'wbraid', 'gad_source', 'gad',
+    'gad_campaignid',
+    // Google Analytics cross-domain linker (carries the client id between
+    // domains; the page renders identically without it)
+    '_gl',
     // Facebook
     'fbclid', '_fbc', '_fbp',
     'fb_action_ids', 'fb_action_types', 'fb_ref', 'fb_source',
@@ -104,7 +108,9 @@
     // Branch.io
     '_branch_match_id', '_branch_referrer',
     // Yandex
-    'yclid', 'ymclid',
+    'yclid', 'ymclid', 'ysclid', 'ym_tracking_id',
+    // Telegram Ads
+    'tgclid',
     // MailChimp
     'mc_cid', 'mc_eid',
     // Marketo
@@ -119,6 +125,10 @@
     '_bta_tid', '_bta_c',
     // ConvertKit
     'ck_subscriber_id',
+    // beehiiv newsletter link id (identifies the recipient)
+    '_bhlid',
+    // Microsoft Dynamics 365 marketing email (identifies the recipient)
+    '_cldee', '_clde',
     // Drip
     '__s',
     // ExactTarget / Salesforce Marketing Cloud
@@ -130,14 +140,20 @@
     'tduid',                                  // TradeDoubler
     'raneaid', 'ranmid', 'ransiteid',         // Rakuten
     'cjevent', 'cjdata',                      // Commission Junction (CJ Affiliate)
+    'x-clickref',                             // Partnerize clickref on destination URLs
     // Wicked Reports
     'wickedid', 'wickedsource', 'wickedlocation',
     // Omeda
     'oly_anon_id', 'oly_enc_id',
     // Webtrends (also covered by prefix below but exact-match is fine)
     'wt.mc_id', 'wt.tsrc',
+    // Mapp URL Campaign Mapper (underscore cousin of wt.mc_id)
+    'wt_mc',
     // Adobe
     's_kwcid', 'ef_id', 'at_medium', 'at_campaign', 's_cid',
+    // AT Internet campaign links (xtor rides on French/European news links
+    // everywhere; the at_* pair below identify the email recipient)
+    'xtor', 'at_link_id', 'at_recipient_id', 'at_recipient_list',
     // Eloqua (Oracle Marketing) email links
     'elqtrackid', 'elq', 'elqaid', 'elqat',
     // dotdigital email links
@@ -159,6 +175,15 @@
     'pr_prod_strat', 'pr_rec_id', 'pr_rec_pid', 'pr_ref_pid', 'pr_seq',
     // Generic campaign identifiers
     'cmpid', 'cm_mmc',
+    // AppsFlyer web attribution (af_dp and deep-link routing params are
+    // deliberately NOT here; these four are measurement-only)
+    'af_xp', 'af_ad', 'af_adset', 'af_click_lookback',
+    // Adjust: the Google advertising id itself, stamped into URLs
+    'gps_adid',
+    // Attentive SMS marketing
+    'sms_click', 'sms_source', 'sms_uph',
+    // Triple Whale (Shopify analytics)
+    'tw_source', 'tw_medium', 'tw_profile_id',
   ]);
 
   // Prefix-match families. A param is stripped if its lowercased name
@@ -170,9 +195,17 @@
     'mtm_',       // Matomo (modern)
     'matomo_',    // Matomo (alternative naming)
     'hsa_',       // HubSpot ad attribution
-    '_bsft_',     // Blueshift / Salesforce Marketing Cloud
+    '_bsft_',     // Blueshift (underscore form, kept for safety)
+    'bsft_',      // Blueshift as actually seen in the wild (bsft_eid,
+                  // bsft_clkid, ...) — the underscore-only prefix above
+                  // never matched these; fixed in v1.14
     'iterable_',  // Iterable email marketing
     'mailgun_',   // Mailgun
+    'itm_',       // internal campaign tags (Parse.ly convention)
+    '_sgm_',      // Segmentify e-commerce tracking
+    'adjust_',    // Adjust web attribution (adjust_tracker, adjust_campaign,
+                  // ...; the deep-link router param adj_t is deliberately
+                  // NOT covered — it routes app deep links on *.go.link)
   ];
 
   function isTrackingParam(name, keepSet) {

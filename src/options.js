@@ -416,4 +416,160 @@
       reader.readAsText(file);
     });
   })();
+
+  // --- Bookmark cleaner (v1.14) --------------------------------------------
+  // One-shot: borrows the optional `bookmarks` permission on click, scans
+  // every bookmark through the same pipeline as the bulk cleaner (dry run,
+  // so nothing is counted until the user applies), shows a preview, applies
+  // on confirmation, and hands the permission straight back.
+  (function initBookmarkCleaner() {
+    const scanBtn = document.getElementById('bmk-scan');
+    const applyBtn = document.getElementById('bmk-apply');
+    const statusEl = document.getElementById('bmk-status');
+    const previewEl = document.getElementById('bmk-preview');
+    if (!scanBtn || !applyBtn || !statusEl || !previewEl) return;
+
+    let plan = null; // [{ id, from, to, title }]
+
+    function releasePermission() {
+      try {
+        chrome.permissions.remove({ permissions: ['bookmarks'] }, () => {
+          void chrome.runtime.lastError;
+        });
+      } catch (_e) { /* older Firefox: leaving it granted is harmless */ }
+    }
+
+    function hostOf(u) {
+      try { return new URL(u).hostname.replace(/^www\./, ''); } catch (_e) { return ''; }
+    }
+
+    function flatten(nodes, out) {
+      for (const n of nodes || []) {
+        if (n.url && /^https?:/i.test(n.url)) {
+          out.push({ id: n.id, url: n.url, title: n.title || '' });
+        }
+        if (n.children) flatten(n.children, out);
+      }
+      return out;
+    }
+
+    // Chunked round-trips to stay under the handler's per-message cap.
+    function cleanBatch(urls, dryRun) {
+      const merged = {};
+      let p = Promise.resolve();
+      for (let i = 0; i < urls.length; i += 1000) {
+        const chunk = urls.slice(i, i + 1000);
+        p = p.then(() => new Promise((resolve) => {
+          chrome.runtime.sendMessage(
+            { type: 'clean-links-batch', urls: chunk, source: 'bookmarks', dryRun: !!dryRun },
+            (resp) => {
+              void chrome.runtime.lastError;
+              if (resp && resp.map) Object.assign(merged, resp.map);
+              resolve();
+            }
+          );
+        }));
+      }
+      return p.then(() => merged);
+    }
+
+    function renderPreview(changes) {
+      previewEl.replaceChildren();
+      const MAX_SHOWN = 20;
+      for (const c of changes.slice(0, MAX_SHOWN)) {
+        const li = document.createElement('li');
+        const name = document.createElement('strong');
+        name.textContent = c.title || hostOf(c.from);
+        const detail = document.createElement('span');
+        detail.className = 'hist-params';
+        detail.textContent = ' ' + hostOf(c.from) + ' (-' +
+          Math.max(0, c.from.length - c.to.length) + ')';
+        li.append(name, detail);
+        previewEl.appendChild(li);
+      }
+      if (changes.length > MAX_SHOWN) {
+        const li = document.createElement('li');
+        li.className = 'hist-params';
+        li.textContent = '+' + (changes.length - MAX_SHOWN);
+        previewEl.appendChild(li);
+      }
+      previewEl.hidden = false;
+    }
+
+    scanBtn.addEventListener('click', () => {
+      statusEl.textContent = '';
+      applyBtn.hidden = true;
+      previewEl.hidden = true;
+      plan = null;
+      chrome.permissions.request({ permissions: ['bookmarks'] }, (granted) => {
+        void chrome.runtime.lastError;
+        if (!granted || !chrome.bookmarks) {
+          statusEl.textContent = t('bmkDenied', 'Bookmark access was declined.');
+          return;
+        }
+        scanBtn.disabled = true;
+        statusEl.textContent = t('bmkScanning', 'Scanning...');
+        chrome.bookmarks.getTree((tree) => {
+          void chrome.runtime.lastError;
+          const all = flatten(tree, []);
+          const urls = Array.from(new Set(all.map((b) => b.url)));
+          cleanBatch(urls, true).then((map) => {
+            scanBtn.disabled = false;
+            const changes = all
+              .filter((b) => map[b.url] && map[b.url] !== b.url)
+              .map((b) => ({ id: b.id, from: b.url, to: map[b.url], title: b.title }));
+            if (!changes.length) {
+              statusEl.textContent = t('bmkNone',
+                'All clean. None of your ' + all.length + ' bookmarks carry tracking junk.',
+                [String(all.length)]);
+              releasePermission();
+              return;
+            }
+            plan = changes;
+            statusEl.textContent = t('bmkFound',
+              changes.length + ' of ' + all.length + ' bookmarks can be cleaned:',
+              [String(changes.length), String(all.length)]);
+            renderPreview(changes);
+            applyBtn.textContent = t('bmkClean',
+              'Clean ' + changes.length + ' bookmarks', [String(changes.length)]);
+            applyBtn.hidden = false;
+          });
+        });
+      });
+    });
+
+    applyBtn.addEventListener('click', () => {
+      if (!plan || !plan.length || !chrome.bookmarks) return;
+      const changes = plan;
+      plan = null;
+      applyBtn.disabled = true;
+      scanBtn.disabled = true;
+      // Non-dry pass over just the changed originals: records stats and one
+      // history entry with the real count, and re-derives the targets.
+      cleanBatch(changes.map((c) => c.from), false).then((freshMap) => {
+        let done = 0;
+        let p = Promise.resolve();
+        for (const c of changes) {
+          const target = freshMap[c.from] || c.to;
+          if (!target || target === c.from) continue;
+          p = p.then(() => new Promise((resolve) => {
+            chrome.bookmarks.update(c.id, { url: target }, () => {
+              if (!chrome.runtime.lastError) done++;
+              resolve();
+            });
+          }));
+        }
+        p.then(() => {
+          applyBtn.disabled = false;
+          scanBtn.disabled = false;
+          applyBtn.hidden = true;
+          previewEl.hidden = true;
+          statusEl.textContent = t('bmkDone',
+            'Cleaned ' + done + ' bookmarks. Bookmark access has been handed back.',
+            [String(done)]);
+          releasePermission();
+        });
+      });
+    });
+  })();
 })();
