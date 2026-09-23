@@ -89,6 +89,22 @@ on main at 453d1c8, all suites green (utm 255 / dnr 155 / redirect 109,
   Counts now: 218 modules / 285 toggles / 570 host permissions / 227
   test files.
 
+## Status 2026-09-24: BUILD COMPLETE, awaiting Thomas's steps
+
+Everything below is DONE and committed through 7314aed; packages
+dist/link-shortener-1.14.0.{zip,xpi} built and verified; tag v1.14.0.
+Landed since the slate update: auto-clean merged from the wip branch
+(a04c219), fix-flow phase 2 (site-key resolver + per-site off button +
+report context), options status line knows the redirect skip, travel
+widget hidden by default, and the FULL rebrand in-package (manifest,
+extDesc x13, welcome, popup/options headers, README). The site rename
+is deliberately NOT applied: jimothylinks/scripts/rebrand-site.js runs
+it on submission day (same day as the store uploads, never before).
+Remaining human steps: visual pass, screenshots, Firefox Android test,
+v1.13-is-live confirmation, uploads, site deploys, git push.
+Expedia/Agoda modal item: considered MOOT (widget now hidden by
+default); reopen only if a report comes in.
+
 ## Extension track (one submission)
 
 1. **Per-site auto-clean** — the headline. Fully built and parked on
