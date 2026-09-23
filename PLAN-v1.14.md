@@ -42,6 +42,45 @@ Mechanics checklist (extension track):
 
 ---
 
+## Slate update 2026-09-23 (approved)
+
+Second research pass (AdGuard TrackParamFilter diff + our AMO reviews,
+which are still zero). Approved additions A/B/D/E/F built and committed
+on main at 453d1c8, all suites green (utm 255 / dnr 155 / redirect 109,
+225 files):
+
+- **A. Denylist sweep 2026** — DONE. Includes a real bug fix: the
+  Blueshift prefix was `_bsft_` but wild params are `bsft_eid` etc., so
+  it never matched; both prefixes now listed. New exacts: ysclid,
+  ym_tracking_id, tgclid, gad_campaignid, _gl, _bhlid (beehiiv),
+  _cldee/_clde (Dynamics 365), xtor, wt_mc, x-clickref, af_xp/af_ad/
+  af_adset/af_click_lookback, gps_adid, sms_click/sms_source/sms_uph,
+  tw_source/tw_medium/tw_profile_id, at_link_id/at_recipient_id/
+  at_recipient_list. New prefixes: itm_, _sgm_, adjust_, bsft_ (each
+  with a dnr.js PREFIX_EXPANSIONS row). Deliberately skipped: adj_t
+  (deep-link router on *.go.link), erid (Russian ad-label law),
+  is_retargeting (generic name).
+- **B. Redirectors** — DONE. l.wl.co (WhatsApp Web/Desktop wrapper,
+  /l?u=) and l.threads.net (?u=) in the unwrap table + tab-layer skip
+  filters. No DNR rules: targets are percent-encoded in practice.
+- **D. Bookmark cleaner** — DONE. Options page section; optional
+  `bookmarks` permission requested on click and REMOVED automatically
+  after (scan-with-no-changes or apply); dry-run scan previews via the
+  clean-links-batch pipeline (new dryRun flag so scans count nothing);
+  apply re-runs non-dry for correct stats/history (host 'bookmarks').
+- **E. Welcome page** — DONE. src/welcome.html, opened by onInstalled
+  reason 'install' only. Badge, always-working, copy-anywhere, opt-ins,
+  zero-data cards; fully local; 13 locales.
+- **F. clean-page command + a11y** — DONE. Unbound command mirrors the
+  popup button (activeTab granted by the shortcut press); gear buttons
+  got aria-expanded, summary/gear focus-visible styles.
+- 23 new i18n keys x 13 locales. NEW PERMISSION for reviewer notes:
+  optional_permissions ["bookmarks"] (runtime-requested, auto-returned).
+- Site: _bhlid + ysclid glossary pages added (21 total).
+- **C. Coverage packs** — APPROVED: ticketing (Ticketmaster, StubHub,
+  SeatGeek, AXS) and food delivery (DoorDash, Uber Eats, Grubhub,
+  Instacart). Scope discussion pending; NOT started.
+
 ## Extension track (one submission)
 
 1. **Per-site auto-clean** — the headline. Fully built and parked on
