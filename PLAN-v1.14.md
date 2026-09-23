@@ -77,9 +77,17 @@ on main at 453d1c8, all suites green (utm 255 / dnr 155 / redirect 109,
 - 23 new i18n keys x 13 locales. NEW PERMISSION for reviewer notes:
   optional_permissions ["bookmarks"] (runtime-requested, auto-returned).
 - Site: _bhlid + ysclid glossary pages added (21 total).
-- **C. Coverage packs** — APPROVED: ticketing (Ticketmaster, StubHub,
-  SeatGeek, AXS) and food delivery (DoorDash, Uber Eats, Grubhub,
-  Instacart). Scope discussion pending; NOT started.
+- **C. Coverage packs + category dropdowns** — DONE at 5bab1e9, scope
+  settled 2026-09-23 (core-four ticketing US domains, US-four delivery).
+  Per Thomas's direction the pack-vs-per-site question became "both":
+  every popup category is now a dropdown with a tri-state master switch
+  in the header and per-site toggles inside. Airlines split from one
+  enabledAirlines key into 12 per-carrier keys (storageKeyFor pattern)
+  with a one-shot update migration (pack off -> all carriers off). New
+  modules tickets.js + fooddelivery.js, same pattern. NEEDS A VISUAL
+  PASS: the popup dropdown redesign has not been seen by human eyes yet.
+  Counts now: 218 modules / 285 toggles / 570 host permissions / 227
+  test files.
 
 ## Extension track (one submission)
 
