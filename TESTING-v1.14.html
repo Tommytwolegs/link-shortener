@@ -266,6 +266,20 @@
        timestamp; badge ticks; popup chips name what was removed.</p>
   </div>
 
+  <div class="test"><label class="head"><input type="checkbox" data-id="t23">23. No AI answers in Google searches</label>
+    <ol>
+      <li>In the popup's Options dropdown, turn ON "No AI answers in Google searches".</li>
+      <li>Search Google for <code>best running shoes</code> from the normal search box.</li>
+      <li>Search Google for <code>what is ai</code>.</li>
+      <li>Run an IMAGE search for anything.</li>
+      <li>Turn the switch back OFF and repeat the first search.</li>
+    </ol>
+    <p class="expect">Search 1: the query in the box and address bar becomes
+       <code>best running shoes -ai</code> after a quick same-tab hop, and no AI Overview
+       appears. Search 2: untouched (the guard stands down on AI-topic queries). Image
+       search: untouched. With the switch off: untouched. No reload loops anywhere.</p>
+  </div>
+
 </div>
 <script>
 (function () {

@@ -589,5 +589,11 @@
   },
   "optSkipAlsoOn": {
     "message": "\"在加载前跳过重定向\"也已开启；跳过域名列表同样适用于它。"
+  },
+  "labelNoAiSearch": {
+    "message": "在 Google 搜索中不显示 AI 回答"
+  },
+  "tipNoAiSearch": {
+    "message": "悄悄在您的 Google 网页搜索后添加 -ai，从而阻止 AI 概览出现。当搜索本身与 AI 相关时（排除运算符会隐藏您想要的结果），以及在图片、新闻和购物搜索中会自动跳过。"
   }
 }

@@ -589,5 +589,11 @@
   },
   "optSkipAlsoOn": {
     "message": "\"Pomijaj przekierowania przed załadowaniem\" też jest WŁĄCZONE; lista pomijanych domen dotyczy również tej funkcji."
+  },
+  "labelNoAiSearch": {
+    "message": "Bez odpowiedzi AI w wyszukiwaniu Google"
+  },
+  "tipNoAiSearch": {
+    "message": "Po cichu dodaje -ai do wyszukiwań w Google, co zapobiega pojawianiu się przeglądu AI. Pomijane, gdy wyszukiwanie samo dotyczy AI (operator ukryłby szukane wyniki) oraz w wyszukiwaniu grafiki, wiadomości i zakupów."
   }
 }

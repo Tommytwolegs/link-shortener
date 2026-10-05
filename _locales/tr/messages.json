@@ -589,5 +589,11 @@
   },
   "optSkipAlsoOn": {
     "message": "\"Yüklenmeden önce yönlendirmeleri atla\" da AÇIK; atlanacak alan adları listesi bunun için de geçerli."
+  },
+  "labelNoAiSearch": {
+    "message": "Google aramalarında yapay zeka yanıtları olmasın"
+  },
+  "tipNoAiSearch": {
+    "message": "Google web aramalarınıza sessizce -ai ekler ve yapay zeka özetinin görünmesini engeller. Aramanız zaten yapay zeka hakkındaysa (operatör istediğiniz sonuçları gizlerdi) ve Görseller, Haberler ile Alışveriş aramalarında atlanır."
   }
 }

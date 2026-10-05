@@ -589,5 +589,11 @@
   },
   "optSkipAlsoOn": {
     "message": "Anche \"Salta i reindirizzamenti prima del caricamento\" è ATTIVO; l'elenco dei domini esclusi vale anche per questo."
+  },
+  "labelNoAiSearch": {
+    "message": "Niente risposte IA nelle ricerche Google"
+  },
+  "tipNoAiSearch": {
+    "message": "Aggiunge silenziosamente -ai alle tue ricerche web su Google, impedendo la comparsa del riepilogo IA. Viene saltato quando la ricerca riguarda l'IA stessa (l'operatore nasconderebbe i risultati che cerchi) e nelle ricerche Immagini, Notizie e Shopping."
   }
 }

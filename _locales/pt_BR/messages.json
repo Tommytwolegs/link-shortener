@@ -589,5 +589,11 @@
   },
   "optSkipAlsoOn": {
     "message": "\"Pular redirecionamentos antes de carregarem\" também está LIGADO; a lista de domínios ignorados também se aplica a ele."
+  },
+  "labelNoAiSearch": {
+    "message": "Sem respostas de IA nas buscas do Google"
+  },
+  "tipNoAiSearch": {
+    "message": "Adiciona discretamente -ai às suas buscas na web do Google, o que impede o resumo de IA de aparecer. Ignorado quando a própria busca é sobre IA (o operador esconderia os resultados que você quer) e em buscas de Imagens, Notícias e Shopping."
   }
 }

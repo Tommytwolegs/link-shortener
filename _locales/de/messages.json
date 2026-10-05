@@ -589,5 +589,11 @@
   },
   "optSkipAlsoOn": {
     "message": "\"Weiterleitungen vor dem Laden überspringen\" ist ebenfalls AN; die Liste der übersprungenen Domains gilt auch dafür."
+  },
+  "labelNoAiSearch": {
+    "message": "Keine KI-Antworten in Google-Suchen"
+  },
+  "tipNoAiSearch": {
+    "message": "Hängt still -ai an Ihre Google-Websuchen an, wodurch die KI-Übersicht nicht erscheint. Wird übersprungen, wenn Ihre Suche selbst von KI handelt (der Operator würde die gewünschten Ergebnisse ausblenden) sowie bei Bilder-, News- und Shopping-Suchen."
   }
 }

@@ -589,5 +589,11 @@
   },
   "optSkipAlsoOn": {
     "message": "\"Skip redirects before they load\" is also ON; the skip-domains list applies to it as well."
+  },
+  "labelNoAiSearch": {
+    "message": "No AI answers in Google searches"
+  },
+  "tipNoAiSearch": {
+    "message": "Quietly adds -ai to your Google web searches, which stops the AI Overview from appearing. Skipped when your search is itself about AI (the operator would hide the results you want) and on Image, News, and Shopping searches."
   }
 }

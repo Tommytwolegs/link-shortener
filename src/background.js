@@ -171,6 +171,7 @@ if (typeof importScripts === 'function') {
     'airlines.js',
     'tickets.js',
     'fooddelivery.js',
+    'noai.js',
     'netsuite.js',
     'atlassian.js',
     'notion.js',
@@ -2485,3 +2486,29 @@ function handleRedirectSkip(details) {
 chrome.webNavigation.onBeforeNavigate.addListener(handleRedirectSkip, {
   url: REDIRECT_SKIP_FILTERS,
 });
+
+// -- No AI answers in Google searches (v1.14, opt-in, off by default) ---------
+// Google suppresses its AI Overview when the query carries a negative
+// operator, so the switch appends ` -ai` to web searches. Same tab-layer
+// mechanism as the redirect skip above: webNavigation + one tabs.update,
+// no new permissions. All the judgment (which hosts, which verticals,
+// queries that are themselves about AI, the loop guard) lives in
+// src/noai.js as pure, unit-tested logic. The listener is unfiltered
+// because Google's ccTLDs don't enumerate well in event filters; the
+// transform's host regex rejects everything else on the first check.
+function handleNoAiSearch(details) {
+  if (details.frameId !== 0) return;
+  if (!self.NoAiSearch) return;
+  const target = self.NoAiSearch.transformSearchUrl(details.url);
+  if (!target) return;
+  chrome.storage.sync.get({ enabled: true, enabledNoAiSearch: false }, async (items) => {
+    void chrome.runtime.lastError;
+    if (items.enabled === false || items.enabledNoAiSearch !== true) return;
+    // Per-tab pause suspends this layer too.
+    const pausedMap = await getPausedTabs();
+    if (String(details.tabId) in pausedMap) return;
+    chrome.tabs.update(details.tabId, { url: target }, () => void chrome.runtime.lastError);
+  });
+}
+
+chrome.webNavigation.onBeforeNavigate.addListener(handleNoAiSearch);

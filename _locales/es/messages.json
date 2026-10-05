@@ -589,5 +589,11 @@
   },
   "optSkipAlsoOn": {
     "message": "\"Saltar redirecciones antes de que carguen\" también está ACTIVADO; la lista de dominios omitidos también se le aplica."
+  },
+  "labelNoAiSearch": {
+    "message": "Sin respuestas de IA en las búsquedas de Google"
+  },
+  "tipNoAiSearch": {
+    "message": "Añade silenciosamente -ai a sus búsquedas web de Google, lo que evita que aparezca el resumen de IA. Se omite cuando su búsqueda trata sobre IA (el operador ocultaría los resultados que busca) y en búsquedas de Imágenes, Noticias y Shopping."
   }
 }

@@ -589,5 +589,11 @@
   },
   "optSkipAlsoOn": {
     "message": "\"로드 전 리디렉션 건너뛰기\"도 켜져 있습니다. 건너뛸 도메인 목록이 여기에도 적용됩니다."
+  },
+  "labelNoAiSearch": {
+    "message": "Google 검색에서 AI 답변 숨기기"
+  },
+  "tipNoAiSearch": {
+    "message": "Google 웹 검색에 조용히 -ai를 추가하여 AI 개요가 표시되지 않게 합니다. 검색 자체가 AI에 관한 것일 때(연산자가 원하는 결과를 숨기게 되므로)와 이미지, 뉴스, 쇼핑 검색에서는 건너뜁니다."
   }
 }

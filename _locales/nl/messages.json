@@ -589,5 +589,11 @@
   },
   "optSkipAlsoOn": {
     "message": "\"Omleidingen overslaan voordat ze laden\" staat ook AAN; de lijst met over te slaan domeinen geldt hier ook voor."
+  },
+  "labelNoAiSearch": {
+    "message": "Geen AI-antwoorden in Google-zoekopdrachten"
+  },
+  "tipNoAiSearch": {
+    "message": "Voegt stilletjes -ai toe aan uw Google-webzoekopdrachten, waardoor het AI-overzicht niet verschijnt. Wordt overgeslagen wanneer uw zoekopdracht zelf over AI gaat (de operator zou de gewenste resultaten verbergen) en bij zoeken naar afbeeldingen, nieuws en shopping."
   }
 }

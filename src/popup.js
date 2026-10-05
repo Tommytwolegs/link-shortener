@@ -430,6 +430,7 @@
     enabledActiveStrip: false,
     enabledActiveSkip: false,
     enabledRedirectSkip: true,
+    enabledNoAiSearch: false,
     showBadge: true,
   };
   for (const k of SITE_KEYS) DEFAULTS[k] = true;
@@ -442,6 +443,7 @@
   const activeStripEl = document.getElementById('enabledActiveStrip');
   const activeSkipEl = document.getElementById('enabledActiveSkip');
   const redirectSkipEl = document.getElementById('enabledRedirectSkip');
+  const noAiSearchEl = document.getElementById('enabledNoAiSearch');
   const status = document.getElementById('status');
   const versionEl = document.getElementById('version');
   const siteTogglesEl = document.getElementById('site-toggles');
@@ -903,6 +905,7 @@
     if (activeStripEl) activeStripEl.checked = state.enabledActiveStrip === true;
     if (activeSkipEl) activeSkipEl.checked = state.enabledActiveSkip === true;
     redirectSkipEl.checked = state.enabledRedirectSkip !== false;
+    if (noAiSearchEl) noAiSearchEl.checked = state.enabledNoAiSearch === true;
     for (const k of SITE_KEYS) {
       if (siteEls[k]) siteEls[k].checked = state[k] !== false;
     }
@@ -1008,6 +1011,14 @@
   redirectSkipEl.addEventListener('change', () => {
     chrome.storage.sync.set({ enabledRedirectSkip: redirectSkipEl.checked });
   });
+
+  // "No AI answers in Google searches" (v1.14): plain flag, no permission
+  // involved — the tab-layer rewrite rides webNavigation, held since v1.0.
+  if (noAiSearchEl) {
+    noAiSearchEl.addEventListener('change', () => {
+      chrome.storage.sync.set({ enabledNoAiSearch: noAiSearchEl.checked });
+    });
+  }
 
   // "Skip redirects before they load" -- the Active skip (v1.13): DNR rules
   // that jump to the destination before the wrapper request is sent. Same
