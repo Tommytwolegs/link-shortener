@@ -117,10 +117,18 @@
   <h2>New site packs (live)</h2>
 
   <div class="test"><label class="head"><input type="checkbox" data-id="t7">7. Ticketmaster cleans</label>
-    <a class="testlink" href="https://www.ticketmaster.com/search?q=hamilton&camefrom=CFC_TEST123&tm_link=tm_test&utm_source=lstest" target="_blank" rel="noopener">open the dirty Ticketmaster link</a>
+    <a class="testlink" href="https://www.ticketmaster.com/search?q=hamilton&utm_source=lstest&utm_campaign=share&tm_link=tm_homeA_header" target="_blank" rel="noopener">open the dirty Ticketmaster link</a>
     <p class="expect">After the page settles, the address bar reads
        <code>https://www.ticketmaster.com/search?q=hamilton</code> (the search term survives,
-       camefrom / tm_link / utm_source are gone) and the toolbar badge ticks.</p>
+       utm_* / tm_link are gone) and the toolbar badge ticks. The camefrom partner param is
+       covered by unit tests; it is kept out of this live link because fabricated partner
+       codes can trip TM's bot wall.</p>
+    <p class="expect" style="color:var(--muted)">NOTE if you hit "Your Browsing Activity Has
+       Been Paused": that is Ticketmaster's bot screening, not the extension (our rewrite is
+       post-load and makes no requests). Check the ADDRESS BAR of whatever page loaded: if the
+       junk params are already gone, the cleanup worked and the test PASSES. To double-check
+       blame, flip the Ticketmaster toggle off and reopen the link: the wall behaves the same
+       either way. Signing in or waiting a minute usually clears it.</p>
   </div>
 
   <div class="test"><label class="head"><input type="checkbox" data-id="t8">8. SeatGeek cleans</label>
