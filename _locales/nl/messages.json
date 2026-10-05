@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "De linkopschoner die links echt korter maakt. Verwijdert trackingrommel direct uit URL's. Geen omleiding, geen dataverzameling."
+    "message": "Ruimt rommelige links overal op het web ter plekke op. Trackingrommel weg, niets breekt, niets wordt verzameld."
   },
   "menuCopyClean": {
     "message": "Schone URL kopiëren"
@@ -518,7 +518,7 @@
     "message": "Rather's Link Cleaner is klaar"
   },
   "welcomeTag": {
-    "message": "Een linkverkorter die links echt korter maakt: uw link blijft uw link, alleen de trackingrommel aan het einde verdwijnt."
+    "message": "Rommelige links van overal op het web, ter plekke opgeschoond: uw link blijft uw link, alleen de trackingrommel verdwijnt."
   },
   "welcomeAutoTitle": {
     "message": "Het werkt al"

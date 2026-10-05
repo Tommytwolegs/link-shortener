@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Czyściciel linków, który naprawdę je skraca. Usuwa śledzące śmieci z URL na miejscu. Bez przekierowań i zbierania danych."
+    "message": "Czyści zaśmiecone linki w całej sieci, na miejscu. Śledzące śmieci znikają, nic się nie psuje, nic nie jest zbierane."
   },
   "menuCopyClean": {
     "message": "Kopiuj czysty URL"
@@ -518,7 +518,7 @@
     "message": "Rather's Link Cleaner jest gotowy"
   },
   "welcomeTag": {
-    "message": "Skracacz linków, który naprawdę skraca linki: Twój link pozostaje Twoim linkiem, traci tylko śledzące śmieci na końcu."
+    "message": "Zaśmiecone linki z całej sieci, czyszczone na miejscu: Twój link pozostaje Twoim linkiem, traci tylko śledzące śmieci."
   },
   "welcomeAutoTitle": {
     "message": "Już działa"

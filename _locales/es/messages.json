@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "El limpiador de enlaces que realmente los acorta. Quita la basura de rastreo de las URL. Sin redirecciones, sin recopilar datos."
+    "message": "Limpia enlaces desordenados por toda la web, en el sitio. Basura de rastreo fuera, nada se rompe, nada se recopila."
   },
   "menuCopyClean": {
     "message": "Copiar URL limpia"
@@ -518,7 +518,7 @@
     "message": "Rather's Link Cleaner está listo"
   },
   "welcomeTag": {
-    "message": "Un acortador que realmente acorta los enlaces: su enlace sigue siendo su enlace, solo pierde la basura de rastreo del final."
+    "message": "Enlaces desordenados de toda la web, limpiados en el sitio: su enlace sigue siendo su enlace, solo pierde la basura de rastreo."
   },
   "welcomeAutoTitle": {
     "message": "Ya está funcionando"

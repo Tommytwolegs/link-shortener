@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "真正缩短链接的链接清理器。就地清除 URL 中的跟踪参数。无重定向，不收集数据。"
+    "message": "就地清理全网乱糟糟的链接。跟踪参数消失，不破坏任何功能，不收集任何数据。"
   },
   "menuCopyClean": {
     "message": "复制干净的 URL"
@@ -518,7 +518,7 @@
     "message": "Rather's Link Cleaner 已就绪"
   },
   "welcomeTag": {
-    "message": "一个真正缩短链接的链接缩短器：链接还是原来的链接，只是去掉了末尾的跟踪参数。"
+    "message": "来自全网的乱糟糟链接，就地清理：链接还是原来的链接，只是去掉了跟踪参数。"
   },
   "welcomeAutoTitle": {
     "message": "已经开始工作"

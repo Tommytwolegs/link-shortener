@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "O limpador de links que realmente os encurta. Remove o lixo de rastreamento das URLs no lugar. Sem redirecionamentos, sem coleta."
+    "message": "Limpa links bagunçados por toda a web, no lugar. Lixo de rastreamento some, nada quebra, nada é coletado."
   },
   "menuCopyClean": {
     "message": "Copiar URL limpa"
@@ -518,7 +518,7 @@
     "message": "O Rather's Link Cleaner está pronto"
   },
   "welcomeTag": {
-    "message": "Um encurtador que realmente encurta links: seu link continua sendo seu link, só perde o lixo de rastreamento no final."
+    "message": "Links bagunçados de toda a web, limpos no lugar: seu link continua sendo seu link, só perde o lixo de rastreamento."
   },
   "welcomeAutoTitle": {
     "message": "Já está funcionando"

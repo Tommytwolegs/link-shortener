@@ -1,8 +1,7 @@
 # Rather's Link Cleaner
 
-*(named Rather's Link Shortener through v1.13; same extension, same IDs,
-same joke, now told in the right order: the link cleaner that actually
-shortens links)*
+*(named Rather's Link Shortener through v1.13; same extension, same IDs.
+Messy links all over the web, cleaned in place.)*
 
 A small browser extension (Chrome MV3, also Firefox MV3) that strips
 tracking parameters and other URL clutter from shopping, travel, and

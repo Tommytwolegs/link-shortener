@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Bağlantıları gerçekten kısaltan bağlantı temizleyici. İzleme çöpünü URL'lerden yerinde temizler. Yönlendirme ve veri toplama yok."
+    "message": "Web'in her yerindeki dağınık bağlantıları yerinde temizler. İzleme çöpü gider, hiçbir şey bozulmaz, hiçbir şey toplanmaz."
   },
   "menuCopyClean": {
     "message": "Temiz URL'yi kopyala"
@@ -518,7 +518,7 @@
     "message": "Rather's Link Cleaner hazır"
   },
   "welcomeTag": {
-    "message": "Bağlantıları gerçekten kısaltan bir kısaltıcı: bağlantınız bağlantınız olarak kalır, yalnızca sonundaki izleme çöpünden kurtulur."
+    "message": "Web'in her yerinden dağınık bağlantılar, yerinde temizlenir: bağlantınız bağlantınız olarak kalır, yalnızca izleme çöpünü kaybeder."
   },
   "welcomeAutoTitle": {
     "message": "Şimdiden çalışıyor"

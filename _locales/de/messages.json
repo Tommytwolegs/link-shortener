@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Der Link-Reiniger, der Links wirklich kürzt. Entfernt Tracking-Müll direkt aus URLs. Keine Umleitungen, keine Datensammlung."
+    "message": "Räumt unordentliche Links im ganzen Web direkt an Ort und Stelle auf. Tracking-Müll weg, nichts kaputt, nichts gesammelt."
   },
   "menuCopyClean": {
     "message": "Saubere URL kopieren"
@@ -518,7 +518,7 @@
     "message": "Rather's Link Cleaner ist bereit"
   },
   "welcomeTag": {
-    "message": "Ein Link-Kürzer, der Links wirklich kürzt: Ihr Link bleibt Ihr Link, er verliert nur den Tracking-Müll am Ende."
+    "message": "Unordentliche Links aus dem ganzen Web, direkt an Ort und Stelle bereinigt: Ihr Link bleibt Ihr Link, er verliert nur den Tracking-Müll."
   },
   "welcomeAutoTitle": {
     "message": "Es funktioniert bereits"

@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Le nettoyeur de liens qui les raccourcit vraiment. Retire les traceurs des URL sur place. Sans redirection, sans collecte."
+    "message": "Nettoie les liens encombrés partout sur le web, sur place. Traceurs supprimés, rien ne casse, rien n'est collecté."
   },
   "menuCopyClean": {
     "message": "Copier l'URL propre"
@@ -518,7 +518,7 @@
     "message": "Rather's Link Cleaner est prêt"
   },
   "welcomeTag": {
-    "message": "Un raccourcisseur qui raccourcit vraiment les liens : votre lien reste votre lien, il perd juste les traceurs collés à la fin."
+    "message": "Des liens encombrés de partout sur le web, nettoyés sur place : votre lien reste votre lien, il perd juste les traceurs."
   },
   "welcomeAutoTitle": {
     "message": "C'est déjà actif"

@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "The link cleaner that actually shortens links. Strips tracking junk from URLs in place. No redirects, nothing collected."
+    "message": "Cleans messy links all over the web, in place. Tracking junk gone, nothing breaks, nothing collected."
   },
   "menuCopyClean": {
     "message": "Copy clean URL"
@@ -518,7 +518,7 @@
     "message": "Rather's Link Cleaner is ready"
   },
   "welcomeTag": {
-    "message": "A link shortener that actually shortens links: your link stays your link, it just loses the tracking junk on the end."
+    "message": "Messy links from all over the web, cleaned in place: your link stays your link, it just loses the tracking junk."
   },
   "welcomeAutoTitle": {
     "message": "It's already working"

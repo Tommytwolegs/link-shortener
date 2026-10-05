@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Il pulitore di link che li accorcia davvero. Rimuove il tracciamento dalle URL sul posto. Nessun redirect, nessuna raccolta dati."
+    "message": "Pulisce i link disordinati in tutto il web, sul posto. Via il tracciamento, niente si rompe, niente viene raccolto."
   },
   "menuCopyClean": {
     "message": "Copia URL pulito"
@@ -518,7 +518,7 @@
     "message": "Rather's Link Cleaner è pronto"
   },
   "welcomeTag": {
-    "message": "Un accorcia-link che accorcia davvero i link: il tuo link resta il tuo link, perde solo la zavorra di tracciamento in coda."
+    "message": "Link disordinati da tutto il web, puliti sul posto: il tuo link resta il tuo link, perde solo la zavorra di tracciamento."
   },
   "welcomeAutoTitle": {
     "message": "È già al lavoro"

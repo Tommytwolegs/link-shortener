@@ -5,9 +5,9 @@
 ### Renamed
 - **The extension is now Rather's Link Cleaner** (formerly Rather's Link
   Shortener). Same extension, same IDs, same install, same settings; the
-  joke just reads in the right order now: the link cleaner that actually
-  shortens links. The AMO slug keeps the old name on purpose (slugs
-  don't redirect).
+  name now just says what it does. New tagline to match: messy links all
+  over the web, cleaned in place. The AMO slug keeps the old name on
+  purpose (slugs don't redirect).
 
 ### Added
 - **Per-site auto-clean.** Opt in per site from the popup's copy menu:
