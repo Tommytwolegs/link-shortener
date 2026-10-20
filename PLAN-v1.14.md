@@ -1,5 +1,16 @@
 # Plan: v1.14 — "Rather's Link Cleaner"
 
+**SHIPPED 2026-10-20: approved and published on both stores.** The
+rename is live everywhere (stores, site, package). Loose ends carried
+to v1.15: regenerate og-image + promo tiles with the new wordmark (old
+wordmark still live, non-blocking); a fresh "what was removed" store
+screenshot (slide 02, retired for this release); udm=14 as a gear
+option on the No-AI switch if users ask; Vivid Seats / Deliveroo / Wolt
+pack expansions; Eventbrite ccTLDs still parked; Firefox Android
+physical test never happened. Watch after rollout: reactions to the
+travel widget now being hidden by default, and the airlines migration
+on real profiles.
+
 Drafted 2026-09-21, while v1.13.0 sits in store review. Decision log and
 work slate for the next cycle. Two tracks: the SITE track ships
 immediately (no store review involved), the EXTENSION track ships as one
