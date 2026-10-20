@@ -1,56 +1,66 @@
 const path = require('path');
-const { transformSearchUrl } = require(path.join('..', 'src', 'noai.js'));
+const { transformSearchUrl, SUFFIX } = require(path.join('..', 'src', 'noai.js'));
+
+// q=... with the suffix appended, as URLSearchParams serializes it:
+// space -> +, quote -> %22.
+const ENC_SUFFIX = '+-%22AI+Overview%22';
 
 const CASES = [
   // Appends
   { name: 'plain web search gets the suffix',
     input: 'https://www.google.com/search?q=best+laptop',
-    expected: 'https://www.google.com/search?q=best+laptop+-ai' },
+    expected: 'https://www.google.com/search?q=best+laptop' + ENC_SUFFIX },
   { name: 'bare google.com host works',
     input: 'https://google.com/search?q=weather+boston',
-    expected: 'https://google.com/search?q=weather+boston+-ai' },
+    expected: 'https://google.com/search?q=weather+boston' + ENC_SUFFIX },
   { name: 'ccTLD: google.de',
     input: 'https://www.google.de/search?q=waschmaschine+test',
-    expected: 'https://www.google.de/search?q=waschmaschine+test+-ai' },
+    expected: 'https://www.google.de/search?q=waschmaschine+test' + ENC_SUFFIX },
   { name: 'ccTLD: google.co.uk',
     input: 'https://www.google.co.uk/search?q=train+times',
-    expected: 'https://www.google.co.uk/search?q=train+times+-ai' },
+    expected: 'https://www.google.co.uk/search?q=train+times' + ENC_SUFFIX },
   { name: 'ccTLD: google.com.br',
     input: 'https://www.google.com.br/search?q=receita+de+bolo',
-    expected: 'https://www.google.com.br/search?q=receita+de+bolo+-ai' },
+    expected: 'https://www.google.com.br/search?q=receita+de+bolo' + ENC_SUFFIX },
   { name: 'other params and hash survive',
     input: 'https://www.google.com/search?q=hotels&hl=en&num=20#top',
-    expected: 'https://www.google.com/search?q=hotels+-ai&hl=en&num=20#top' },
-  { name: 'openai is not the ai token: still appends',
+    expected: 'https://www.google.com/search?q=hotels' + ENC_SUFFIX + '&hl=en&num=20#top' },
+  { name: 'AI-topic query STILL works (the phrase form needs no guard)',
+    input: 'https://www.google.com/search?q=what+is+ai',
+    expected: 'https://www.google.com/search?q=what+is+ai' + ENC_SUFFIX },
+  { name: 'ai-generated art appends too',
+    input: 'https://www.google.com/search?q=ai-generated+art',
+    expected: 'https://www.google.com/search?q=ai-generated+art' + ENC_SUFFIX },
+  { name: 'openai appends',
     input: 'https://www.google.com/search?q=openai+pricing',
-    expected: 'https://www.google.com/search?q=openai+pricing+-ai' },
-  { name: 'air fryer is not the ai token: still appends',
-    input: 'https://www.google.com/search?q=air+fryer+recipes',
-    expected: 'https://www.google.com/search?q=air+fryer+recipes+-ai' },
-  { name: 'bonsai is not the ai token: still appends',
-    input: 'https://www.google.com/search?q=bonsai+care',
-    expected: 'https://www.google.com/search?q=bonsai+care+-ai' },
+    expected: 'https://www.google.com/search?q=openai+pricing' + ENC_SUFFIX },
+  { name: 'hyphenated word is not an exclusion: gluten-free appends',
+    input: 'https://www.google.com/search?q=gluten-free+recipes',
+    expected: 'https://www.google.com/search?q=gluten-free+recipes' + ENC_SUFFIX },
 
-  // Stand-downs: loop guard
-  { name: 'already suffixed (the rewritten navigation): null',
+  // Stand-downs: an exclusion operator is already there
+  { name: 'our own suffix (the rewritten navigation): null',
+    input: 'https://www.google.com/search?q=best+laptop' + ENC_SUFFIX,
+    expected: null },
+  { name: 'user excluded a word themselves: null',
+    input: 'https://www.google.com/search?q=best+phones+-samsung',
+    expected: null },
+  { name: 'user excluded a quoted phrase: null',
+    input: 'https://www.google.com/search?q=robots+-%22sci+fi%22',
+    expected: null },
+  { name: 'the old -ai trick typed by hand: null (already suppressed)',
     input: 'https://www.google.com/search?q=best+laptop+-ai',
     expected: null },
-  { name: 'user typed -ai themselves mid-query: null',
-    input: 'https://www.google.com/search?q=-ai+best+laptop',
-    expected: null },
-  { name: 'quoted exclusion -"ai": null',
-    input: 'https://www.google.com/search?q=robots+-%22ai%22',
+  { name: 'exclusion at the start: null',
+    input: 'https://www.google.com/search?q=-ads+best+vpn',
     expected: null },
 
-  // Stand-downs: the query is about AI
-  { name: 'query about ai: null (would exclude wanted results)',
-    input: 'https://www.google.com/search?q=what+is+ai',
+  // Stand-downs: the query is about AI Overviews themselves
+  { name: 'searching about ai overview: null',
+    input: 'https://www.google.com/search?q=google+ai+overview+rollout',
     expected: null },
-  { name: 'ai-generated (hyphenated token): null',
-    input: 'https://www.google.com/search?q=ai-generated+art',
-    expected: null },
-  { name: 'ai at the start: null',
-    input: 'https://www.google.com/search?q=ai+safety+jobs',
+  { name: 'searching how to turn off ai overviews: null',
+    input: 'https://www.google.com/search?q=turn+off+ai+overviews',
     expected: null },
 
   // Stand-downs: verticals and hosts
@@ -103,6 +113,8 @@ for (const c of CASES) {
     check('idempotent - ' + c.name, transformSearchUrl(c.expected), null);
   }
 }
+
+check('exported suffix is the quoted-phrase form', SUFFIX, ' -"AI Overview"');
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed (' + (passed + failed) + ' total)');
 if (failed > 0) {

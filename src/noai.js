@@ -2,10 +2,19 @@
 // ----------------------------------------------------------------------------
 // Pure logic for the opt-in "No AI answers in Google searches" switch
 // (v1.14, off by default). Google suppresses its AI Overview whenever the
-// query carries a negative search operator, so appending ` -ai` to the
-// query hides the overview. The background's webNavigation listener calls
+// query carries an exclusion operator, so appending one hides the
+// overview. The background's webNavigation listener calls
 // transformSearchUrl() and re-navigates the tab once — the same tab-layer
 // mechanism as the redirect skip, no new permissions.
+//
+// WHAT we append: ` -"AI Overview"` — a quoted-phrase exclusion. The
+// suppression comes from the operator's PRESENCE, not from which term is
+// excluded, so the excluded term is chosen to be nearly free of
+// collateral damage: almost no ordinary page contains the literal phrase
+// "AI Overview", while excluding the bare token `ai` (the trick as
+// usually passed around) silently filters every page that mentions AI
+// anywhere — which in 2026 is a lot of the web. A bonus of the phrase
+// form: searches ABOUT AI still work, so no AI-topic guard is needed.
 //
 // transformSearchUrl returns the amended URL, or null when it must stand
 // down. It stands down — by construction, which is also what makes the
@@ -16,15 +25,14 @@
 //   * the path is not /search, or there is no non-empty q=;
 //   * the search is a non-web vertical (tbm= or udm= present): Images,
 //     News, Shopping, and the udm tabs have their own UIs and no AI
-//     Overview, and -ai would distort their results for nothing;
-//   * the query ALREADY carries -ai (the rewritten navigation itself —
-//     this is the loop guard);
-//   * the query is itself about AI ("ai" appears as a standalone token:
-//     'what is ai', 'ai-generated art'). The minus operator is a real
-//     exclusion — appending it to an AI query would filter out exactly
-//     the results the user wants. Better to show the overview than to
-//     break the search. Token-wise, 'openai', 'bonsai', and 'air fryer'
-//     do NOT count as being about AI and still get the suffix.
+//     Overview;
+//   * the query ALREADY carries any exclusion operator (-word or
+//     -"phrase"): the overview is already suppressed, so appending would
+//     be pure meddling — and since our own suffix is an exclusion, this
+//     is the loop guard too. Users who type -ai by hand stay untouched;
+//   * the query is about AI Overviews themselves ("ai overview" as a
+//     phrase in the query): excluding the phrase would hide exactly the
+//     pages the user is looking for.
 //
 // Loaded as a service-worker importScripts target (and a CommonJS module
 // from Node-based unit tests). Never a content script — it acts on
@@ -39,12 +47,15 @@
   // excluded on purpose).
   const HOST_RE = /^(?:www\.)?google\.[a-z]{2,3}(?:\.[a-z]{2})?$/i;
 
-  // The query already excludes ai (bare or quoted): nothing to do.
-  const ALREADY_RE = /(?:^|\s)-(?:"ai"|ai)(?=\s|$)/i;
+  // Any exclusion operator already present: -word or -"phrase" after the
+  // start or whitespace. Hyphenated words (gluten-free) don't match —
+  // no leading whitespace before their dash.
+  const HAS_EXCLUSION_RE = /(?:^|\s)-["\w]/;
 
-  // "ai" as a standalone token anywhere in the query (not a substring of
-  // another word).
-  const ABOUT_AI_RE = /(?:^|[^a-z0-9])ai(?=[^a-z0-9]|$)/i;
+  // The query is about AI Overviews themselves.
+  const ABOUT_OVERVIEW_RE = /ai\s+overviews?/i;
+
+  const SUFFIX = ' -"AI Overview"';
 
   function transformSearchUrl(input) {
     let url;
@@ -59,13 +70,13 @@
     if (url.searchParams.has('tbm') || url.searchParams.has('udm')) return null;
     const q = url.searchParams.get('q');
     if (!q || !q.trim()) return null;
-    if (ALREADY_RE.test(q)) return null;
-    if (ABOUT_AI_RE.test(q)) return null;
-    url.searchParams.set('q', q + ' -ai');
+    if (HAS_EXCLUSION_RE.test(q)) return null;
+    if (ABOUT_OVERVIEW_RE.test(q)) return null;
+    url.searchParams.set('q', q + SUFFIX);
     return url.href;
   }
 
-  const api = { transformSearchUrl, HOST_RE, ABOUT_AI_RE };
+  const api = { transformSearchUrl, HOST_RE, SUFFIX };
   global.NoAiSearch = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

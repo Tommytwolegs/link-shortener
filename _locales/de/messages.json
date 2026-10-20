@@ -594,6 +594,6 @@
     "message": "Keine KI-Antworten in Google-Suchen"
   },
   "tipNoAiSearch": {
-    "message": "Hängt still -ai an Ihre Google-Websuchen an, wodurch die KI-Übersicht nicht erscheint. Wird übersprungen, wenn Ihre Suche selbst von KI handelt (der Operator würde die gewünschten Ergebnisse ausblenden) sowie bei Bilder-, News- und Shopping-Suchen."
+    "message": "Schließt still die Phrase \"AI Overview\" aus Ihren Google-Websuchen aus, wodurch die KI-Übersicht nicht erscheint, Ihre Ergebnisse aber unverändert bleiben. Wird übersprungen, wenn Ihre Suche bereits einen Ausschluss verwendet, wenn Sie nach AI Overviews selbst suchen sowie bei Bilder-, News- und Shopping-Suchen."
   }
 }

@@ -42,12 +42,15 @@
 - **Keyboard command for "Clean links on this page"** (unbound by
   default, assignable in the browser's shortcut settings).
 - **No AI answers in Google searches** (opt-in, off by default).
-  Quietly appends the `-ai` operator to Google web searches, which
-  keeps the AI Overview from appearing. Deliberately skipped when the
-  search is itself about AI (the operator would hide the results you
-  want), when the query already carries it, and on Image, News,
-  Shopping, and udm-tab searches. Tab-layer rewrite over the
-  webNavigation permission held since v1.0 — no new permissions.
+  Quietly appends `-"AI Overview"` to Google web searches: the presence
+  of an exclusion operator keeps the AI Overview from appearing, and
+  excluding that particular phrase leaves the actual results intact
+  (almost no ordinary page contains it), so even searches about AI
+  work normally. Skipped when the query already uses any exclusion
+  operator (including a hand-typed -ai), when the search is about AI
+  Overviews themselves, and on Image, News, Shopping, and udm-tab
+  searches. Tab-layer rewrite over the webNavigation permission held
+  since v1.0 — no new permissions.
 - **Fix flow, phase 2.** The popup's fix menu can now turn off the
   exact per-site rule for the current host, and the prefilled GitHub
   report names which cleanup layers were active.

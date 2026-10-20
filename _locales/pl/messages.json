@@ -594,6 +594,6 @@
     "message": "Bez odpowiedzi AI w wyszukiwaniu Google"
   },
   "tipNoAiSearch": {
-    "message": "Po cichu dodaje -ai do wyszukiwań w Google, co zapobiega pojawianiu się przeglądu AI. Pomijane, gdy wyszukiwanie samo dotyczy AI (operator ukryłby szukane wyniki) oraz w wyszukiwaniu grafiki, wiadomości i zakupów."
+    "message": "Po cichu wyklucza frazę \"AI Overview\" z wyszukiwań w Google, co zapobiega pojawianiu się przeglądu AI, nie zmieniając wyników. Pomijane, gdy wyszukiwanie już używa wykluczenia, gdy szukasz informacji o samych AI Overview oraz w wyszukiwaniu grafiki, wiadomości i zakupów."
   }
 }

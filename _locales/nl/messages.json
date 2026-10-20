@@ -594,6 +594,6 @@
     "message": "Geen AI-antwoorden in Google-zoekopdrachten"
   },
   "tipNoAiSearch": {
-    "message": "Voegt stilletjes -ai toe aan uw Google-webzoekopdrachten, waardoor het AI-overzicht niet verschijnt. Wordt overgeslagen wanneer uw zoekopdracht zelf over AI gaat (de operator zou de gewenste resultaten verbergen) en bij zoeken naar afbeeldingen, nieuws en shopping."
+    "message": "Sluit stilletjes de frase \"AI Overview\" uit van uw Google-webzoekopdrachten, waardoor het AI-overzicht niet verschijnt terwijl uw resultaten intact blijven. Wordt overgeslagen wanneer uw zoekopdracht al een uitsluiting gebruikt, wanneer u over AI Overviews zelf zoekt en bij zoeken naar afbeeldingen, nieuws en shopping."
   }
 }

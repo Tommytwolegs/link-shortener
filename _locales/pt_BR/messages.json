@@ -594,6 +594,6 @@
     "message": "Sem respostas de IA nas buscas do Google"
   },
   "tipNoAiSearch": {
-    "message": "Adiciona discretamente -ai às suas buscas na web do Google, o que impede o resumo de IA de aparecer. Ignorado quando a própria busca é sobre IA (o operador esconderia os resultados que você quer) e em buscas de Imagens, Notícias e Shopping."
+    "message": "Exclui discretamente a frase \"AI Overview\" das suas buscas na web do Google, o que impede o resumo de IA de aparecer sem mexer nos seus resultados. Ignorado quando a busca já usa uma exclusão, quando você pesquisa sobre os próprios AI Overviews e em buscas de Imagens, Notícias e Shopping."
   }
 }

@@ -594,6 +594,6 @@
     "message": "No AI answers in Google searches"
   },
   "tipNoAiSearch": {
-    "message": "Quietly adds -ai to your Google web searches, which stops the AI Overview from appearing. Skipped when your search is itself about AI (the operator would hide the results you want) and on Image, News, and Shopping searches."
+    "message": "Quietly excludes the phrase \"AI Overview\" from your Google web searches, which stops the AI Overview from appearing while leaving your results intact. Skipped when your search already uses an exclusion, when you are searching about AI Overviews themselves, and on Image, News, and Shopping searches."
   }
 }

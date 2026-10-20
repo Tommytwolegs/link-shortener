@@ -594,6 +594,6 @@
     "message": "Niente risposte IA nelle ricerche Google"
   },
   "tipNoAiSearch": {
-    "message": "Aggiunge silenziosamente -ai alle tue ricerche web su Google, impedendo la comparsa del riepilogo IA. Viene saltato quando la ricerca riguarda l'IA stessa (l'operatore nasconderebbe i risultati che cerchi) e nelle ricerche Immagini, Notizie e Shopping."
+    "message": "Esclude silenziosamente la frase \"AI Overview\" dalle tue ricerche web su Google, impedendo la comparsa del riepilogo IA senza toccare i risultati. Viene saltato quando la ricerca usa già un'esclusione, quando cerchi informazioni sugli stessi AI Overview e nelle ricerche Immagini, Notizie e Shopping."
   }
 }

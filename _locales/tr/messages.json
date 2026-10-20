@@ -594,6 +594,6 @@
     "message": "Google aramalarında yapay zeka yanıtları olmasın"
   },
   "tipNoAiSearch": {
-    "message": "Google web aramalarınıza sessizce -ai ekler ve yapay zeka özetinin görünmesini engeller. Aramanız zaten yapay zeka hakkındaysa (operatör istediğiniz sonuçları gizlerdi) ve Görseller, Haberler ile Alışveriş aramalarında atlanır."
+    "message": "Google web aramalarınızdan \"AI Overview\" ifadesini sessizce hariç tutar; yapay zeka özeti görünmez, sonuçlarınız ise olduğu gibi kalır. Aramanız zaten bir hariç tutma kullanıyorsa, AI Overview'ların kendisi hakkında arama yapıyorsanız ve Görseller, Haberler ile Alışveriş aramalarında atlanır."
   }
 }

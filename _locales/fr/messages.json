@@ -594,6 +594,6 @@
     "message": "Pas de réponses IA dans les recherches Google"
   },
   "tipNoAiSearch": {
-    "message": "Ajoute discrètement -ai à vos recherches web Google, ce qui empêche l'apparition de l'aperçu IA. Ignoré quand votre recherche porte elle-même sur l'IA (l'opérateur masquerait les résultats voulus) et pour les recherches Images, Actualités et Shopping."
+    "message": "Exclut discrètement l'expression « AI Overview » de vos recherches web Google, ce qui empêche l'aperçu IA d'apparaître sans toucher à vos résultats. Ignoré quand votre recherche utilise déjà une exclusion, quand vous cherchez des informations sur les AI Overviews eux-mêmes, et pour les recherches Images, Actualités et Shopping."
   }
 }
